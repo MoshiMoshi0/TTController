@@ -4,24 +4,16 @@ namespace TTController.Service.Hardware.Temperature
 {
     public class TemperatureProvider : ITemperatureProvider
     {
-        public ISensor Sensor { get; }
+        protected float? CurrentValue { set; get; }
+        protected ISensor Sensor { get; }
         
         public TemperatureProvider(ISensor sensor)
         {
             Sensor = sensor;
         }
 
-        public virtual float Value()
-        {
-            return ValueOrDefault(float.NaN);
-        }
-
-        public virtual float ValueOrDefault(float defaultValue)
-        {
-            if (Sensor == null)
-                return defaultValue;
-
-            return Sensor.Value.GetValueOrDefault(defaultValue);
-        }
+        public virtual void Update() => CurrentValue = Sensor.Value;
+        public virtual float Value() => ValueOrDefault(float.NaN);
+        public virtual float ValueOrDefault(float defaultValue) => CurrentValue.GetValueOrDefault(defaultValue);
     }
 }

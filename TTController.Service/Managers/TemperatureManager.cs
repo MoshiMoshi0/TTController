@@ -10,7 +10,7 @@ namespace TTController.Service.Managers
     {
         private readonly Computer _computer;
         private readonly List<ISensor> _sensors;
-        private readonly Dictionary<Identifier, ITemperatureProvider> _providers;
+        private readonly Dictionary<Identifier, ITemperatureProvider> _providerMap;
         private readonly ITemperatureProviderFactory _providerFactory;
 
         public TemperatureManager(ITemperatureProviderFactory providerFactory)
@@ -18,7 +18,7 @@ namespace TTController.Service.Managers
             _providerFactory = providerFactory;
 
             _sensors = new List<ISensor>();
-            _providers = new Dictionary<Identifier, ITemperatureProvider>();
+            _providerMap = new Dictionary<Identifier, ITemperatureProvider>();
             
             _computer = new Computer()
             {
@@ -38,33 +38,36 @@ namespace TTController.Service.Managers
         public void Update()
         {
             //TODO: should we cache this in Enable/Disable sensor?
-            var hardwareList = _providers
+            var hardwareList = _providerMap
                 .Select(kv => _sensors.FirstOrDefault(s => s.Identifier == kv.Key)?.Hardware)
                 .Where(h => h != null)
                 .Distinct();
 
             foreach (var hardware in hardwareList)
                 hardware.Update();
+
+            foreach (var provider in _providerMap.Values)
+                provider.Update();
         }
 
         public void EnableSensor(Identifier identifier)
         {
-            if (_providers.ContainsKey(identifier))
+            if (_providerMap.ContainsKey(identifier))
                 return;
 
             var sensor = _sensors.FirstOrDefault(s => s.Identifier == identifier);
             if (sensor == null)
                 return;
 
-            _providers.Add(identifier, _providerFactory.Create(sensor));
+            _providerMap.Add(identifier, _providerFactory.Create(sensor));
         }
 
         public void DisableSensor(Identifier identifier)
         {
-            if (!_providers.ContainsKey(identifier))
+            if (!_providerMap.ContainsKey(identifier))
                 return;
 
-            _providers.Remove(identifier);
+            _providerMap.Remove(identifier);
         }
     }
 }
