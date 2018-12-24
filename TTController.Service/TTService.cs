@@ -32,13 +32,13 @@ namespace TTController.Service
             _configManager = new ConfigManager("config.json");
             _configManager.LoadOrCreateConfig();
 
-            var alpha = Math.Exp(_configManager.Config.TemperatureTimerInterval / (double)_configManager.Config.DeviceSpeedTimerInterval);
+            var alpha = Math.Exp(_configManager.CurrentConfig.TemperatureTimerInterval / (double)_configManager.CurrentConfig.DeviceSpeedTimerInterval);
             var providerFactory = new MovingAverageTemperatureProviderFactory(alpha);
             _temperatureManager = new TemperatureManager(providerFactory);
             _temperatureManager.EnableSensor(new Identifier("intelcpu", "0", "temperature", "8"));
 
             _timerManager = new TimerManager();
-            _timerManager.RegisterTimer(_configManager.Config.TemperatureTimerInterval, () =>
+            _timerManager.RegisterTimer(_configManager.CurrentConfig.TemperatureTimerInterval, () =>
             {
                 lock (_temperatureManager)
                     _temperatureManager.Update();

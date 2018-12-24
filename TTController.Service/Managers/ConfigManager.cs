@@ -9,8 +9,8 @@ namespace TTController.Service.Managers
     {
         private readonly string _filename;
         private readonly JsonSerializerSettings _serializerSettings;
-
-        private ConfigData _config;
+        
+        public ConfigData CurrentConfig { private set; get; }
 
         public ConfigManager(string filename)
         {
@@ -28,9 +28,9 @@ namespace TTController.Service.Managers
         {
             using (var writer = new StreamWriter(GetConfigAbsolutePath(), false))
             {
-                lock (_config)
+                lock (CurrentConfig)
                 {
-                    writer.Write(JsonConvert.SerializeObject(_config, _serializerSettings));
+                    writer.Write(JsonConvert.SerializeObject(CurrentConfig, _serializerSettings));
                 }
             }
         }
@@ -40,18 +40,18 @@ namespace TTController.Service.Managers
             var path = GetConfigAbsolutePath();
             if (!File.Exists(path))
             {
-                _config = ConfigData.CreateDefault();
+                CurrentConfig = ConfigData.CreateDefault();
                 SaveConfig();
             }
             else
             {
                 using (var reader = new StreamReader(GetConfigAbsolutePath()))
                 {
-                    _config = JsonConvert.DeserializeObject<ConfigData>(reader.ReadToEnd(), _serializerSettings);
+                    CurrentConfig = JsonConvert.DeserializeObject<ConfigData>(reader.ReadToEnd(), _serializerSettings);
                 }
             }
 
-            return _config;
+            return CurrentConfig;
         }
 
 
