@@ -58,6 +58,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config\Converter\PortIdentifierConverter.cs" />
     <Compile Include="Hardware\Device\IDeviceDefinition.cs" />
     <Compile Include="Hardware\Device\RiingControllerDefinition.cs" />
     <Compile Include="Hardware\Device\RiingPlusControllerDefinition.cs" />
@@ -67,10 +68,10 @@
     <Compile Include="Hardware\Temperature\MovingAverageTemperatureProvider.cs" />
     <Compile Include="Hardware\Temperature\MovingAverageTemperatureProviderFactory.cs" />
     <Compile Include="Hardware\Temperature\TemperatureProvider.cs" />
-    <Compile Include="Managers\ConfigManager.cs" />
-    <Compile Include="Managers\DeviceManager.cs" />
-    <Compile Include="Managers\TemperatureManager.cs" />
-    <Compile Include="Managers\TimerManager.cs" />
+    <Compile Include="Manager\ConfigManager.cs" />
+    <Compile Include="Manager\DeviceManager.cs" />
+    <Compile Include="Manager\TemperatureManager.cs" />
+    <Compile Include="Manager\TimerManager.cs" />
     <Compile Include="TTInstaller.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -95,5 +96,6 @@
       <Name>TTController.Common</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
