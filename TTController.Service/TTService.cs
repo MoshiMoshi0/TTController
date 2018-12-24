@@ -3,7 +3,7 @@ using System.ServiceProcess;
 using System.Threading;
 using OpenHardwareMonitor.Hardware;
 using TTController.Service.Hardware.Temperature;
-using TTController.Service.Managers;
+using TTController.Service.Manager;
 
 namespace TTController.Service
 {
@@ -105,6 +105,10 @@ namespace TTController.Service
             if (IsDisposed)
                 return;
             
+            _timerManager.Dispose();
+            _temperatureManager.Dispose();
+            _deviceManager.Dispose();
+
             base.Dispose();
             IsDisposed = true;
         }

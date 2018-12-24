@@ -5,9 +5,9 @@ using System.Reflection;
 using HidLibrary;
 using TTController.Service.Hardware.Device;
 
-namespace TTController.Service.Managers
+namespace TTController.Service.Manager
 {
-    public class DeviceManager
+    public class DeviceManager : IDisposable
     {
         private readonly IReadOnlyList<IDeviceDefinition> _definitions;
         private readonly IReadOnlyList<HidDevice> _devices;
@@ -48,6 +48,12 @@ namespace TTController.Service.Managers
             if (!WriteBytes(device, bytes))
                 return Enumerable.Empty<byte>();
             return ReadBytes(device);
+        }
+
+        public void Dispose()
+        {
+            foreach (var device in _devices)
+                device.Dispose();
         }
     }
 }

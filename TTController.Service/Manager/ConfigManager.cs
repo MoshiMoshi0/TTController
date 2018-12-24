@@ -1,9 +1,9 @@
 ﻿using System.Globalization;
 using System.IO;
 using Newtonsoft.Json;
-using TTController.Config;
+using TTController.Common;
 
-namespace TTController.Service.Managers
+namespace TTController.Service.Manager
 {
     public class ConfigManager
     {

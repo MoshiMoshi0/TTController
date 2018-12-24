@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenHardwareMonitor.Hardware;
 using TTController.Service.Hardware.Temperature;
 
-namespace TTController.Service.Managers
+namespace TTController.Service.Manager
 {
-    public class TemperatureManager
+    public class TemperatureManager : IDisposable
     {
         private readonly Computer _computer;
         private readonly List<ISensor> _sensors;
@@ -68,6 +68,11 @@ namespace TTController.Service.Managers
                 return;
 
             _providerMap.Remove(identifier);
+        }
+
+        public void Dispose()
+        {
+            _computer?.Close();
         }
     }
 }
