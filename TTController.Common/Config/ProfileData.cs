@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace TTController.Common
+namespace TTController.Common.Config
 {
     public class ProfileData
     {
         public Guid Guid { protected set; get; }
         public string Name { protected set; get; }
         public List<PortIdentifier> Ports { protected set; get; }
+        public List<LedColor> LedColors { protected set; get; }
 
         public ProfileData(string name)
         {
