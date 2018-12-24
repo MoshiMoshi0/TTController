@@ -1,7 +1,8 @@
 ﻿using System.Globalization;
 using System.IO;
 using Newtonsoft.Json;
-using TTController.Common;
+using TTController.Common.Config;
+using TTController.Service.Config.Converter;
 
 namespace TTController.Service.Manager
 {
@@ -22,6 +23,7 @@ namespace TTController.Service.Manager
                 Formatting = Formatting.Indented,
                 Culture = CultureInfo.InvariantCulture
             };
+            _serializerSettings.Converters.Add(new PortIdentifierConverter());
         }
 
         public void SaveConfig()
@@ -47,7 +49,12 @@ namespace TTController.Service.Manager
             {
                 using (var reader = new StreamReader(GetConfigAbsolutePath()))
                 {
-                    CurrentConfig = JsonConvert.DeserializeObject<ConfigData>(reader.ReadToEnd(), _serializerSettings);
+                    lock (CurrentConfig)
+                    {
+                        CurrentConfig =
+                            JsonConvert.DeserializeObject<ConfigData>(reader.ReadToEnd(), _serializerSettings) ??
+                            ConfigData.CreateDefault();
+                    }
                 }
             }
 
