@@ -1,7 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.ServiceProcess;
 using System.Threading;
+using System.Threading.Tasks;
 using OpenHardwareMonitor.Hardware;
+using TTController.Common;
+using TTController.Common.Config;
 using TTController.Service.Hardware.Temperature;
 using TTController.Service.Manager;
 
@@ -44,9 +50,42 @@ namespace TTController.Service
                     _temperatureManager.Update();
                 return true;
             });
-            _timerManager.Start();
+            _timerManager.RegisterTimer(_configManager.CurrentConfig.DeviceSpeedTimerInterval, () =>
+            {
+                lock(_deviceManager) lock (_configManager) lock(_temperatureManager)
+                {
+                    foreach (var profile in _configManager.CurrentConfig.Profiles)
+                    {
+                        foreach (var port in profile.Ports)
+                        {
+                            var controller = _deviceManager.GetController(port);
+                            if (controller == null)
+                                continue;
+                        }
+                    }
+                }
 
-            Thread.Sleep(10000);
+                return true;
+            });
+            _timerManager.RegisterTimer(_configManager.CurrentConfig.DeviceRgbTimerInterval, () =>
+            {
+                lock(_deviceManager) lock (_configManager)
+                {
+                    foreach (var profile in _configManager.CurrentConfig.Profiles)
+                    {
+                        foreach (var port in profile.Ports)
+                        {
+                            var controller = _deviceManager.GetController(port);
+                            if (controller == null)
+                                continue;
+                        }
+                    }
+                }
+
+                return true;
+            });
+
+            _timerManager.Start();
             return true;
         }
 
