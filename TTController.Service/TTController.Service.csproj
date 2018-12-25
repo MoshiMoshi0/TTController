@@ -59,10 +59,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config\Converter\PortIdentifierConverter.cs" />
-    <Compile Include="Hardware\Device\IDeviceDefinition.cs" />
-    <Compile Include="Hardware\Device\RiingControllerDefinition.cs" />
-    <Compile Include="Hardware\Device\RiingPlusControllerDefinition.cs" />
-    <Compile Include="Hardware\Device\RiingTrioControllerDefinition.cs" />
+    <Compile Include="Hardware\Controller\Command\ControllerCommandFactory.cs" />
+    <Compile Include="Hardware\Controller\Command\ControllerProxy.cs" />
+    <Compile Include="Hardware\Controller\Command\IControllerCommandFactory.cs" />
+    <Compile Include="Hardware\Controller\Command\IControllerProxy.cs" />
+    <Compile Include="Hardware\Controller\IControllerDefinition.cs" />
+    <Compile Include="Hardware\Controller\RiingControllerDefinition.cs" />
+    <Compile Include="Hardware\Controller\RiingPlusControllerDefinition.cs" />
+    <Compile Include="Hardware\Controller\RiingTrioControllerDefinition.cs" />
+    <Compile Include="Hardware\HidDeviceProxy.cs" />
+    <Compile Include="Hardware\IHidDeviceProxy.cs" />
     <Compile Include="Hardware\Temperature\ITemperatureProvider.cs" />
     <Compile Include="Hardware\Temperature\ITemperatureProviderFactory.cs" />
     <Compile Include="Hardware\Temperature\MovingAverageTemperatureProvider.cs" />
