@@ -2,14 +2,14 @@
 {
     public struct PortIdentifier
     {
-        public int VendorId { get; }
-        public int ProductId { get; }
-        public int Id { get; }
+        public int ControllerVendorId { get; }
+        public int ControllerProductId { get; }
+        public byte Id { get; }
 
-        public PortIdentifier(int vendorId, int productId, int id)
+        public PortIdentifier(int controllerVendorId, int controllerProductId, byte id)
         {
-            VendorId = vendorId;
-            ProductId = productId;
+            ControllerVendorId = controllerVendorId;
+            ControllerProductId = controllerProductId;
             Id = id;
         }
 
@@ -19,16 +19,16 @@
                 return false;
 
             var identifier = (PortIdentifier)obj;
-            return VendorId == identifier.VendorId &&
-                   ProductId == identifier.ProductId &&
+            return ControllerVendorId == identifier.ControllerVendorId &&
+                   ControllerProductId == identifier.ControllerProductId &&
                    Id == identifier.Id;
         }
 
         public override int GetHashCode()
         {
             var hashCode = -1710605561;
-            hashCode = hashCode * -1521134295 + VendorId.GetHashCode();
-            hashCode = hashCode * -1521134295 + ProductId.GetHashCode();
+            hashCode = hashCode * -1521134295 + ControllerVendorId.GetHashCode();
+            hashCode = hashCode * -1521134295 + ControllerProductId.GetHashCode();
             hashCode = hashCode * -1521134295 + Id.GetHashCode();
             return hashCode;
         }
