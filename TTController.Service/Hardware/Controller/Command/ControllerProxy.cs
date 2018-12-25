@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
@@ -58,8 +58,8 @@ namespace TTController.Service.Hardware.Controller.Command
 
         public bool IsValidPort(PortIdentifier port)
         {
-            return port.ProductId == _device.ProductId &&
-                   port.VendorId == _device.VendorId &&
+            return port.ControllerProductId == _device.ProductId &&
+                   port.ControllerVendorId == _device.VendorId &&
                    port.Id >= 1 && port.Id <= _definition.PortCount;
         }
         #endregion
