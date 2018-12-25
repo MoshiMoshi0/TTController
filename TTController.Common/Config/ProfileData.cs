@@ -5,17 +5,14 @@ namespace TTController.Common.Config
 {
     public class ProfileData
     {
-        public Guid Guid { set; get; }
         public string Name { set; get; }
-        public List<PortIdentifier> Ports { set; get; }
-        public List<LedColor> LedColors { set; get; }
+        public Guid Guid { set; get; } = Guid.NewGuid();
+        public List<PortIdentifier> Ports { set; get; } = new List<PortIdentifier>();
+        public List<LedColor> LedColors { set; get; } = new List<LedColor>();
 
         public ProfileData(string name)
         {
             Name = name;
-
-            Guid = Guid.NewGuid();
-            Ports = new List<PortIdentifier>();
         }
     }
 }
