@@ -4,12 +4,12 @@ namespace TTController.Common.Config
 {
     public class ConfigData
     {
-        public List<ProfileData> Profiles { protected set; get; } = new List<ProfileData>();
-        public List<PortConfigData> PortConfig { protected set; get; } = new List<PortConfigData>();
+        public List<ProfileData> Profiles { set; get; } = new List<ProfileData>();
+        public List<PortConfigData> PortConfig { set; get; } = new List<PortConfigData>();
 
-        public int TemperatureTimerInterval { protected set; get; } = 250;
-        public int DeviceSpeedTimerInterval { protected set; get; } = 2500;
-        public int DeviceRgbTimerInterval { protected set; get; } = (int)(1000 / 60.0);
+        public int TemperatureTimerInterval { set; get; } = 250;
+        public int DeviceSpeedTimerInterval { set; get; } = 2500;
+        public int DeviceRgbTimerInterval { set; get; } = (int) (1000.0 / 60.0);
         
         public static ConfigData CreateDefault()
         {
