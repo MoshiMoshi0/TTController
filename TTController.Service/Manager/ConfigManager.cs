@@ -30,10 +30,7 @@ namespace TTController.Service.Manager
         {
             using (var writer = new StreamWriter(GetConfigAbsolutePath(), false))
             {
-                lock (CurrentConfig)
-                {
-                    writer.Write(JsonConvert.SerializeObject(CurrentConfig, _serializerSettings));
-                }
+                writer.Write(JsonConvert.SerializeObject(CurrentConfig, _serializerSettings));
             }
         }
 
@@ -47,14 +44,11 @@ namespace TTController.Service.Manager
             }
             else
             {
-                using (var reader = new StreamReader(GetConfigAbsolutePath()))
+                using (var reader = new StreamReader(path))
                 {
-                    lock (CurrentConfig)
-                    {
-                        CurrentConfig =
-                            JsonConvert.DeserializeObject<ConfigData>(reader.ReadToEnd(), _serializerSettings) ??
-                            ConfigData.CreateDefault();
-                    }
+                    CurrentConfig =
+                        JsonConvert.DeserializeObject<ConfigData>(reader.ReadToEnd(), _serializerSettings) ??
+                        ConfigData.CreateDefault();
                 }
             }
 
