@@ -50,6 +50,14 @@ namespace TTController.Service.Manager
                 provider.Update();
         }
 
+        public float GetSensorValue(Identifier identifier)
+        {
+            if (!_providerMap.ContainsKey(identifier))
+                return float.NaN;
+
+            return _providerMap[identifier].ValueOrDefault(float.NaN);
+        }
+
         public void EnableSensor(Identifier identifier)
         {
             if (_providerMap.ContainsKey(identifier))
