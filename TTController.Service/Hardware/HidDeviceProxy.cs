@@ -23,7 +23,7 @@ namespace TTController.Service.Hardware
         {
             lock (_device)
             {
-                return _device.Write(bytes.ToArray());
+                return _device.Write(bytes.Prepend((byte)0).ToArray());
             }
         }
 
@@ -35,7 +35,7 @@ namespace TTController.Service.Hardware
                 if (data.Status != HidDeviceData.ReadStatus.Success)
                     return Enumerable.Empty<byte>();
 
-                return data.Data;
+                return data.Data.Skip(3);
             }
         }
 

@@ -9,7 +9,7 @@ namespace TTController.Service.Hardware.Controller.Command
         IEnumerable<byte> SetSpeedBytes(byte port, byte speed);
         IEnumerable<byte> SetPwmBytes(byte port, int rpm);
 
-        IEnumerable<byte> GetPortData(byte port);
+        IEnumerable<byte> GetPortDataBytes(byte port);
         IEnumerable<byte> InitBytes();
     }
 }

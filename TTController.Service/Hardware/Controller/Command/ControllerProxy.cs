@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
@@ -43,7 +43,7 @@ namespace TTController.Service.Hardware.Controller.Command
 
         public PortData GetPortData(byte port)
         {
-            var result = _device.WriteReadBytes(_commandFactory.GetPortData(port)).ToList();
+            var result = _device.WriteReadBytes(_commandFactory.GetPortDataBytes(port)).ToList();
             if (result.Count != 5)
                 return null;
 
