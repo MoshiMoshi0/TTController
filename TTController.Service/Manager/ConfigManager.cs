@@ -24,6 +24,8 @@ namespace TTController.Service.Manager
                 Culture = CultureInfo.InvariantCulture
             };
             _serializerSettings.Converters.Add(new PortIdentifierConverter());
+            _serializerSettings.Converters.Add(new CurvePointConverter());
+            _serializerSettings.Converters.Add(new LedColorConverter());
         }
 
         public void SaveConfig()
