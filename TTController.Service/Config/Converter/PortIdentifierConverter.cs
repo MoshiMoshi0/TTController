@@ -19,7 +19,7 @@ namespace TTController.Service.Config.Converter
             JsonSerializer serializer)
         {
             JArray array = JArray.Load(reader);
-            return new PortIdentifier(array[0].Value<int>(), array[1].Value<int>(), array[2].Value<int>());
+            return new PortIdentifier(array[0].Value<int>(), array[1].Value<int>(), (byte)array[2].Value<int>());
         }
     }
 }
