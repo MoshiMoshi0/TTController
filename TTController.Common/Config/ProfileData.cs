@@ -5,10 +5,10 @@ namespace TTController.Common.Config
 {
     public class ProfileData
     {
-        public Guid Guid { protected set; get; }
-        public string Name { protected set; get; }
-        public List<PortIdentifier> Ports { protected set; get; }
-        public List<LedColor> LedColors { protected set; get; }
+        public Guid Guid { set; get; }
+        public string Name { set; get; }
+        public List<PortIdentifier> Ports { set; get; }
+        public List<LedColor> LedColors { set; get; }
 
         public ProfileData(string name)
         {

@@ -2,6 +2,6 @@
 {
     public class PortConfigData
     {
-        public string Name { protected set; get; }
+        public string Name { set; get; }
     }
 }
