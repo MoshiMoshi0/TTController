@@ -13,8 +13,8 @@ namespace TTController.Service.Manager
     public class DeviceManager : IDisposable
     {
         //private readonly List<IControllerDefinition> _definitions;
-        private readonly List<HidDevice> _devices;
-        private readonly List<IControllerProxy> _controllers;
+        private readonly IReadOnlyList<HidDevice> _devices;
+        private readonly IReadOnlyList<IControllerProxy> _controllers;
 
         public DeviceManager()
         {
@@ -27,6 +27,8 @@ namespace TTController.Service.Manager
                 .Select(t => (IControllerDefinition)Activator.CreateInstance(t))
                 .ToList();
             
+            var devices = new List<HidDevice>();
+            var controllers = new List<IControllerProxy>();
             foreach (var definition in definitions)
             {
                 var detectedDevices = HidDevices.Enumerate(definition.VendorId, definition.ProductIds.ToArray());
@@ -36,10 +38,13 @@ namespace TTController.Service.Manager
                     if(!controller.Init())
                         continue;
 
-                    _devices.Add(device);
-                    _controllers.Add(controller);
+                    devices.Add(device);
+                    controllers.Add(controller);
                 }
             }
+
+            _devices = devices;
+            _controllers = controllers;
         }
         
         public IControllerProxy GetController(PortIdentifier port)

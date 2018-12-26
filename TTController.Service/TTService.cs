@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -52,7 +52,7 @@ namespace TTController.Service
             });
             _timerManager.RegisterTimer(_configManager.CurrentConfig.DeviceSpeedTimerInterval, () =>
             {
-                lock(_deviceManager) lock (_configManager) lock(_temperatureManager)
+                lock (_configManager) lock(_temperatureManager)
                 {
                     foreach (var profile in _configManager.CurrentConfig.Profiles)
                     {
@@ -69,7 +69,7 @@ namespace TTController.Service
             });
             _timerManager.RegisterTimer(_configManager.CurrentConfig.DeviceRgbTimerInterval, () =>
             {
-                lock(_deviceManager) lock (_configManager)
+                lock (_configManager)
                 {
                     foreach (var profile in _configManager.CurrentConfig.Profiles)
                     {
