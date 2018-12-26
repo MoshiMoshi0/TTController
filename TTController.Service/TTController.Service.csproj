@@ -39,9 +39,6 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="HidLibrary">
-      <HintPath>C:\Users\kamil\.nuget\packages\hidlibrary\3.2.46\lib\HidLibrary.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -96,6 +93,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\HidLibrary\src\HidLibrary\HidLibrary.csproj">
+      <Project>{9e8f1d50-74ea-4c60-bd5c-ab2c5b53bc66}</Project>
+      <Name>HidLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LibreHardwareMonitor\OpenHardwareMonitorLib.csproj">
       <Project>{bbc31437-ded6-4f85-b634-c4f03ad3d8b2}</Project>
       <Name>OpenHardwareMonitorLib</Name>
