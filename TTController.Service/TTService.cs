@@ -19,6 +19,7 @@ namespace TTController.Service
         private ConfigManager _configManager;
         private TemperatureManager _temperatureManager;
         private TimerManager _timerManager;
+        private EffectManager _effectManager;
 
         protected bool IsDisposed;
 
@@ -38,6 +39,7 @@ namespace TTController.Service
             _configManager = new ConfigManager("config.json");
             _configManager.LoadOrCreateConfig();
 
+            _effectManager = new EffectManager();
             var alpha = Math.Exp(- _configManager.CurrentConfig.TemperatureTimerInterval / (double)_configManager.CurrentConfig.DeviceSpeedTimerInterval);
             var providerFactory = new MovingAverageTemperatureProviderFactory(alpha);
             _temperatureManager = new TemperatureManager(providerFactory);
@@ -69,15 +71,25 @@ namespace TTController.Service
             });
             _timerManager.RegisterTimer(_configManager.CurrentConfig.DeviceRgbTimerInterval, () =>
             {
-                lock (_configManager)
+                lock (_configManager) lock(_effectManager)
                 {
                     foreach (var profile in _configManager.CurrentConfig.Profiles)
                     {
+                        var effect = _effectManager.GetEffect(profile.Guid);
+                        if(!effect.NeedsUpdate())
+                            continue;
+
+                        var portConfigs = profile.Ports.Select(p => _configManager.CurrentConfig.PortConfig.FirstOrDefault(c => Equals(c.Port, p)));
+                        var colors = effect.GenerateColors(portConfigs);
+
+                        var i = 0;
                         foreach (var port in profile.Ports)
                         {
                             var controller = _deviceManager.GetController(port);
                             if (controller == null)
                                 continue;
+
+                            controller.SetRgb(port.Id, effect.EffectByte, colors[i++]);
                         }
                     }
                 }
