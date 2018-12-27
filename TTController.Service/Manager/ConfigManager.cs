@@ -9,7 +9,6 @@ namespace TTController.Service.Manager
     public class ConfigManager
     {
         private readonly string _filename;
-        private readonly JsonSerializerSettings _serializerSettings;
         
         public ConfigData CurrentConfig { private set; get; }
 
@@ -17,22 +16,28 @@ namespace TTController.Service.Manager
         {
             _filename = filename;
 
-            _serializerSettings = new JsonSerializerSettings()
+            JsonConvert.DefaultSettings = () =>
             {
-                NullValueHandling = NullValueHandling.Ignore,
-                Formatting = Formatting.Indented,
-                Culture = CultureInfo.InvariantCulture
+                var settings = new JsonSerializerSettings()
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+                    Formatting = Formatting.Indented,
+                    Culture = CultureInfo.InvariantCulture
+                };
+
+                settings.Converters.Add(new PortIdentifierConverter());
+                settings.Converters.Add(new CurvePointConverter());
+                settings.Converters.Add(new LedColorConverter());
+
+                return settings;
             };
-            _serializerSettings.Converters.Add(new PortIdentifierConverter());
-            _serializerSettings.Converters.Add(new CurvePointConverter());
-            _serializerSettings.Converters.Add(new LedColorConverter());
         }
 
         public void SaveConfig()
         {
             using (var writer = new StreamWriter(GetConfigAbsolutePath(), false))
             {
-                writer.Write(JsonConvert.SerializeObject(CurrentConfig, _serializerSettings));
+                writer.Write(JsonConvert.SerializeObject(CurrentConfig));
             }
         }
 
@@ -49,7 +54,7 @@ namespace TTController.Service.Manager
                 using (var reader = new StreamReader(path))
                 {
                     CurrentConfig =
-                        JsonConvert.DeserializeObject<ConfigData>(reader.ReadToEnd(), _serializerSettings) ??
+                        JsonConvert.DeserializeObject<ConfigData>(reader.ReadToEnd()) ??
                         ConfigData.CreateDefault();
                 }
             }
