@@ -9,8 +9,7 @@ namespace TTController.Common.Config
         public Guid Guid { set; get; } = Guid.NewGuid();
         public List<PortIdentifier> Ports { set; get; } = new List<PortIdentifier>();
         public List<CurvePoint> CurvePoints { set; get; } = new List<CurvePoint>();
-        public string RgbEffect { set; get; }
-        public dynamic RgbEffectConfig { set; get; }
+        public Dictionary<string, dynamic> Effects { get; set; } = new Dictionary<string, dynamic>();
 
         public ProfileData(string name)
         {

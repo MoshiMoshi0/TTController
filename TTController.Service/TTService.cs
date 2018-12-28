@@ -40,6 +40,10 @@ namespace TTController.Service
             _configManager.LoadOrCreateConfig();
 
             _effectManager = new EffectManager();
+            foreach (var profile in _configManager.CurrentConfig.Profiles)
+                foreach (var kv in profile.Effects)
+                    _effectManager.CreateEffect(profile.Guid, kv.Key, kv.Value);
+
             var alpha = Math.Exp(- _configManager.CurrentConfig.TemperatureTimerInterval / (double)_configManager.CurrentConfig.DeviceSpeedTimerInterval);
             var providerFactory = new MovingAverageTemperatureProviderFactory(alpha);
             _temperatureManager = new TemperatureManager(providerFactory);
@@ -75,21 +79,21 @@ namespace TTController.Service
                 {
                     foreach (var profile in _configManager.CurrentConfig.Profiles)
                     {
-                        var effect = _effectManager.GetEffect(profile.Guid);
-                        if(!effect.NeedsUpdate())
+                        var effects = _effectManager.GetEffects(profile.Guid);
+                        var effect = effects.FirstOrDefault(e => e.NeedsUpdate());
+                        if(effect == null)
                             continue;
 
-                        var portConfigs = profile.Ports.Select(p => _configManager.CurrentConfig.PortConfig.FirstOrDefault(c => Equals(c.Port, p)));
-                        var colors = effect.GenerateColors(portConfigs);
-
-                        var i = 0;
-                        foreach (var port in profile.Ports)
+                        var portConfigs = profile.Ports.ToDictionary(p => p, p => _configManager.CurrentConfig.PortConfig.GetValueOrDefault(p, PortConfigData.Default));
+                        var colorMap = effect.GenerateColors(portConfigs);
+                            
+                        foreach (var pair in colorMap)
                         {
-                            var controller = _deviceManager.GetController(port);
+                            var controller = _deviceManager.GetController(pair.Key);
                             if (controller == null)
                                 continue;
 
-                            controller.SetRgb(port.Id, effect.EffectByte, colors[i++]);
+                            controller.SetRgb(pair.Key.Id, effect.EffectByte, pair.Value);
                         }
                     }
                 }

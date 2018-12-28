@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -55,10 +55,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config\ContractResolver.cs" />
     <Compile Include="Config\Converter\CurvePointConverter.cs" />
     <Compile Include="Config\Converter\LedColorConverter.cs" />
     <Compile Include="Config\Converter\ObjectToArrayConverter.cs" />
     <Compile Include="Config\Converter\PortIdentifierConverter.cs" />
+    <Compile Include="Config\Converter\TriggerConverter.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="Hardware\Controller\Command\ControllerCommandFactory.cs" />
     <Compile Include="Hardware\Controller\Command\ControllerProxy.cs" />
     <Compile Include="Hardware\Controller\Command\IControllerCommandFactory.cs" />
@@ -79,8 +82,16 @@
     <Compile Include="Manager\EffectManager.cs" />
     <Compile Include="Manager\TemperatureManager.cs" />
     <Compile Include="Manager\TimerManager.cs" />
-    <Compile Include="Rgb\StaticByLedEffect.cs" />
+    <Compile Include="Rgb\EffectConfigBase.cs" />
+    <Compile Include="Trigger\AlwaysTrigger.cs" />
+    <Compile Include="Trigger\OneTimeTrigger.cs" />
+    <Compile Include="Trigger\ProcessTrigger.cs" />
+    <Compile Include="Trigger\TriggerBase.cs" />
+    <Compile Include="Rgb\Effect\FullColorEffect.cs" />
+    <Compile Include="Rgb\Effect\SnakeEffect.cs" />
+    <Compile Include="Rgb\Effect\ByLedColorEffect.cs" />
     <Compile Include="Rgb\EffectBase.cs" />
+    <Compile Include="Trigger\TriggerConfigBase.cs" />
     <Compile Include="TTInstaller.cs">
       <SubType>Component</SubType>
     </Compile>

@@ -2,6 +2,7 @@
 using System.IO;
 using Newtonsoft.Json;
 using TTController.Common.Config;
+using TTController.Service.Config;
 using TTController.Service.Config.Converter;
 
 namespace TTController.Service.Manager
@@ -22,12 +23,14 @@ namespace TTController.Service.Manager
                 {
                     NullValueHandling = NullValueHandling.Ignore,
                     Formatting = Formatting.Indented,
-                    Culture = CultureInfo.InvariantCulture
+                    Culture = CultureInfo.InvariantCulture,
+                    ContractResolver = new ContractResolver()
                 };
 
                 settings.Converters.Add(new PortIdentifierConverter());
                 settings.Converters.Add(new CurvePointConverter());
                 settings.Converters.Add(new LedColorConverter());
+                settings.Converters.Add(new TriggerConverter());
 
                 return settings;
             };

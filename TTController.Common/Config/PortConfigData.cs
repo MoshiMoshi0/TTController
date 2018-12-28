@@ -1,16 +1,14 @@
-﻿namespace TTController.Common.Config
+﻿using System.ComponentModel;
+
+namespace TTController.Common.Config
 {
     public class PortConfigData
     {
-        public PortIdentifier Port { set; get; }
-        public string Name { set; get; }
-        public int LedCount { set; get; }
-        public int LedRotation { set; get; }
-        public bool LedReverse { set; get; }
-
-        public PortConfigData(PortIdentifier port)
-        {
-            Port = port;
-        }
+        public string Name { set; get; } = "Unknown";
+        public int LedCount { set; get; } = 12;
+        public int LedRotation { set; get; } = 0;
+        public bool LedReverse { set; get; } = false;
+        
+        public static PortConfigData Default = new PortConfigData();
     }
 }

@@ -6,19 +6,19 @@ using TTController.Service.Rgb;
 
 namespace TTController.Service.Manager
 {
-    public class EffectManager
+    public class EffectManager : IDisposable
     {
         private readonly Dictionary<string, Type> _effectTypeMap;
-        private readonly Dictionary<Guid, EffectBase> _effects;
+        private readonly Dictionary<Guid, List<IEffectBase>> _effectsGuidMap;
 
         public EffectManager()
         {
-            _effectTypeMap = Assembly.GetAssembly(typeof(EffectBase))
+            _effectTypeMap = Assembly.GetAssembly(typeof(IEffectBase))
                 .GetTypes()
-                .Where(t => t.IsClass && !t.IsAbstract && t.IsSubclassOf(typeof(EffectBase)))
-                .ToDictionary(t => t.Name, t => t);
+                .Where(t => t.IsClass && !t.IsAbstract && typeof(IEffectBase).IsAssignableFrom(t))
+                .ToDictionary(t => t.Name, t => t, StringComparer.OrdinalIgnoreCase);
 
-            _effects = new Dictionary<Guid, EffectBase>();
+            _effectsGuidMap = new Dictionary<Guid, List<IEffectBase>>();
         }
 
         public void CreateEffect(Guid guid, string name, dynamic config)
@@ -27,16 +27,26 @@ namespace TTController.Service.Manager
                 return;
 
             var type = _effectTypeMap[name];
-            var effect = (EffectBase) Activator.CreateInstance(type, new object[]{config});
-            _effects.Add(guid, effect);
+            var effect = (IEffectBase) Activator.CreateInstance(type, new object[]{config});
+
+            if(!_effectsGuidMap.ContainsKey(guid))
+                _effectsGuidMap.Add(guid, new List<IEffectBase>());
+            _effectsGuidMap[guid].Add(effect);
         }
 
-        public EffectBase GetEffect(Guid guid)
+        public List<IEffectBase> GetEffects(Guid guid)
         {
-            if (!_effects.ContainsKey(guid))
+            if (!_effectsGuidMap.ContainsKey(guid))
                 return null;
 
-            return _effects[guid];
+            return _effectsGuidMap[guid];
+        }
+
+        public void Dispose()
+        {
+            foreach (var effects in _effectsGuidMap.Values)
+                foreach (var effect in effects)
+                    effect.Dispose();
         }
     }
 }

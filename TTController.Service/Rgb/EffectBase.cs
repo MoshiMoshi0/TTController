@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using TTController.Common;
 using TTController.Common.Config;
 
@@ -20,13 +24,27 @@ namespace TTController.Service.Rgb
         Full = 0x19
     }
 
-    public abstract class EffectBase
+    public interface IEffectBase : IDisposable
     {
-        protected dynamic Config;
-        protected EffectBase(dynamic config) => Config = config;
+        bool NeedsUpdate();
+        byte EffectByte { get; }
+        IDictionary<PortIdentifier, List<LedColor>> GenerateColors(IDictionary<PortIdentifier, PortConfigData> portConfigMap);
+    }
+
+    public abstract class EffectBase<T> : IEffectBase where T : EffectConfigBase
+    {
+        protected T Config { get; }
+
+        protected EffectBase(dynamic rawConfig)
+        {
+            Config = JsonConvert.DeserializeObject(rawConfig.ToString(), typeof(T));
+        }
+
+        public virtual void Dispose() { }
+        public virtual bool NeedsUpdate() => Config.Trigger.Value();
 
         public abstract byte EffectByte { get; } 
-        public abstract bool NeedsUpdate();
-        public abstract IList<IEnumerable<LedColor>> GenerateColors(IEnumerable<PortConfigData> ports);
+        public abstract IDictionary<PortIdentifier, List<LedColor>> GenerateColors(IDictionary<PortIdentifier, PortConfigData> portConfigMap);
+
     }
 }

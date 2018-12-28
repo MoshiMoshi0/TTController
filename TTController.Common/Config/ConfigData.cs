@@ -5,7 +5,7 @@ namespace TTController.Common.Config
     public class ConfigData
     {
         public List<ProfileData> Profiles { set; get; } = new List<ProfileData>();
-        public List<PortConfigData> PortConfig { set; get; } = new List<PortConfigData>();
+        public IDictionary<PortIdentifier, PortConfigData> PortConfig { set; get; } = new Dictionary<PortIdentifier, PortConfigData>();
 
         public int TemperatureTimerInterval { set; get; } = 250;
         public int DeviceSpeedTimerInterval { set; get; } = 2500;
