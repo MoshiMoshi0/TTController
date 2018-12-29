@@ -7,20 +7,23 @@ namespace TTController.Service.Manager
 {
     public class TimerManager : IDisposable
     {
-        private readonly List<HighResolutionTimer> _timers;
+        private readonly List<Timer> _timers;
 
         public TimerManager()
         {
-            _timers = new List<HighResolutionTimer>();
+            _timers = new List<Timer>();
         }
 
         public void RegisterTimer(int interval, Func<bool> callback)
         {
-            var timer = new HighResolutionTimer(interval);
+            var timer = new Timer(interval)
+            {
+                UseThreadSpinWait = false
+            };
 
             timer.Elapsed += (sender, args) =>
             {
-                if (!(sender is HighResolutionTimer _this))
+                if (!(sender is Timer _this))
                     return;
                 
                 if (!callback())
@@ -42,7 +45,7 @@ namespace TTController.Service.Manager
                 timer.Stop();
         }
 
-        #region HighResolutionTimer
+        #region Timer
         /// <summary>
         /// Hight precision non overlapping timer
         /// Came from 
@@ -54,7 +57,7 @@ namespace TTController.Service.Manager
         /// Which is important, because a state of the event handler attached to  Elapsed,
         /// may be left unprotected of multi threaded access
         /// </remarks>
-        public class HighResolutionTimer
+        public class Timer
         {
             /// <summary>
             /// Tick time length in [ms]
@@ -74,7 +77,7 @@ namespace TTController.Service.Manager
             /// <summary>
             /// Invoked when the timer is elapsed
             /// </summary>
-            public event EventHandler<HighResolutionTimerElapsedEventArgs> Elapsed;
+            public event EventHandler<TimerElapsedEventArgs> Elapsed;
 
             /// <summary>
             /// The interval of timer ticks [ms]
@@ -94,7 +97,7 @@ namespace TTController.Service.Manager
             /// <summary>
             /// Creates a timer with 1 [ms] interval
             /// </summary>
-            public HighResolutionTimer() : this(1f)
+            public Timer() : this(1f)
             {
             }
 
@@ -102,7 +105,7 @@ namespace TTController.Service.Manager
             /// Creates timer with interval in [ms]
             /// </summary>
             /// <param name="interval">Interval time in [ms]</param>
-            public HighResolutionTimer(float interval)
+            public Timer(float interval)
             {
                 Interval = interval;
             }
@@ -139,6 +142,15 @@ namespace TTController.Service.Manager
             public bool UseHighPriorityThread { get; set; } = false;
 
             /// <summary>
+            /// If true, uses <see cref="Thread.SpinWait(int)"/> to
+            /// make the timer delay as close to 0 [ms] as possible
+            /// </summary>
+            /// <remarks>
+            /// Trades precision for cpu usage
+            /// </remarks>
+            public bool UseThreadSpinWait { get; set; } = true;
+
+            /// <summary>
             /// Starts the timer
             /// </summary>
             public void Start()
@@ -167,7 +179,7 @@ namespace TTController.Service.Manager
             public void Stop(bool joinThread = true)
             {
                 _isRunning = false;
-
+                
                 // Even if _thread.Join may take time it is guaranteed that 
                 // Elapsed event is never called overlapped with different threads
                 if (joinThread && Thread.CurrentThread != _thread)
@@ -195,9 +207,9 @@ namespace TTController.Service.Manager
                         if (diff <= 0f)
                             break;
 
-                        if (diff < 1f)
+                        if (diff < 1f && UseThreadSpinWait)
                             Thread.SpinWait(10);
-                        else if (diff < 5f)
+                        else if (diff < 5f && UseThreadSpinWait)
                             Thread.SpinWait(100);
                         else if (diff < 15f)
                             Thread.Sleep(1);
@@ -210,7 +222,7 @@ namespace TTController.Service.Manager
 
 
                     double delay = elapsed - nextTrigger;
-                    Elapsed?.Invoke(this, new HighResolutionTimerElapsedEventArgs(delay));
+                    Elapsed?.Invoke(this, new TimerElapsedEventArgs(delay));
 
                     if (!_isRunning)
                         return;
@@ -232,12 +244,12 @@ namespace TTController.Service.Manager
             }
         }
         
-        public class HighResolutionTimerElapsedEventArgs : EventArgs
+        public class TimerElapsedEventArgs : EventArgs
         {
             /// <summary>/// Real timer delay in [ms]/// </summary>
             public double Delay { get; }
 
-            internal HighResolutionTimerElapsedEventArgs(double delay)
+            internal TimerElapsedEventArgs(double delay)
             {
                 Delay = delay;
             }
