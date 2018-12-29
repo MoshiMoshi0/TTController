@@ -13,9 +13,7 @@ namespace TTController.Common.Config
         
         public static ConfigData CreateDefault()
         {
-            var result = new ConfigData();
-            result.Profiles.Add(new ProfileData("test"));
-            return result;
+            return new ConfigData();
         }
     }
 }
