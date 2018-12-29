@@ -7,8 +7,9 @@ namespace TTController.Common.Config
     {
         public string Name { set; get; }
         public Guid Guid { set; get; } = Guid.NewGuid();
-        public List<PortIdentifier> Ports { set; get; } = new List<PortIdentifier>();
-        public List<CurvePoint> CurvePoints { set; get; } = new List<CurvePoint>();
+        public List<PortIdentifier> Ports { get; set; } = new List<PortIdentifier>();
+
+        public Dictionary<string, dynamic> SpeedControllers { get; set; } = new Dictionary<string, dynamic>();
         public Dictionary<string, dynamic> Effects { get; set; } = new Dictionary<string, dynamic>();
 
         public ProfileData(string name)

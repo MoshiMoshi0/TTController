@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -20,6 +20,7 @@ namespace TTController.Service
         private TemperatureManager _temperatureManager;
         private TimerManager _timerManager;
         private EffectManager _effectManager;
+        private SpeedControllerManager _speedControllerManager;
 
         protected bool IsDisposed;
 
@@ -39,15 +40,21 @@ namespace TTController.Service
             _configManager = new ConfigManager("config.json");
             _configManager.LoadOrCreateConfig();
 
-            _effectManager = new EffectManager();
-            foreach (var profile in _configManager.CurrentConfig.Profiles)
-                foreach (var kv in profile.Effects)
-                    _effectManager.CreateEffect(profile.Guid, kv.Key, kv.Value);
-
             var alpha = Math.Exp(- _configManager.CurrentConfig.TemperatureTimerInterval / (double)_configManager.CurrentConfig.DeviceSpeedTimerInterval);
             var providerFactory = new MovingAverageTemperatureProviderFactory(alpha);
             _temperatureManager = new TemperatureManager(providerFactory);
             _temperatureManager.EnableSensor(new Identifier("intelcpu", "0", "temperature", "8"));
+
+            _effectManager = new EffectManager();
+            _speedControllerManager = new SpeedControllerManager(_temperatureManager);
+
+            foreach (var profile in _configManager.CurrentConfig.Profiles)
+            {
+                foreach (var kv in profile.Effects)
+                    _effectManager.CreateEffect(profile.Guid, kv.Key, kv.Value);
+                foreach (var kv in profile.SpeedControllers)
+                    _speedControllerManager.CreateSpeedController(profile.Guid, kv.Key, kv.Value);
+            }
 
             _timerManager = new TimerManager();
             _timerManager.RegisterTimer(_configManager.CurrentConfig.TemperatureTimerInterval, () =>
@@ -58,15 +65,32 @@ namespace TTController.Service
             });
             _timerManager.RegisterTimer(_configManager.CurrentConfig.DeviceSpeedTimerInterval, () =>
             {
-                lock (_configManager) lock(_temperatureManager)
+                lock(_temperatureManager)
                 {
                     foreach (var profile in _configManager.CurrentConfig.Profiles)
                     {
-                        foreach (var port in profile.Ports)
+                        var speedControllers = _speedControllerManager.GetSpeedControllers(profile.Guid);
+                        var speedController = speedControllers.FirstOrDefault(c => c.Enabled);
+                        if (speedController == null)
+                            continue;
+
+                        var portDataMap = profile.Ports
+                            .ToDictionary(p => p, p => {
+                                var controller = _deviceManager.GetController(p);
+                                return controller?.GetPortData(p.Id);
+                            })
+                            .Where(kv => kv.Value != null)
+                            .ToDictionary(kv => kv.Key, kv => kv.Value);
+
+                        var speedMap = speedController.GenerateSpeeds(portDataMap);
+                        foreach (var pair in speedMap)
                         {
-                            var controller = _deviceManager.GetController(port);
+                            var controller = _deviceManager.GetController(pair.Key);
                             if (controller == null)
                                 continue;
+
+                            Console.WriteLine($"{pair.Key} {pair.Value}");
+                            controller.SetSpeed(pair.Key.Id, pair.Value);
                         }
                     }
                 }
@@ -75,7 +99,6 @@ namespace TTController.Service
             });
             _timerManager.RegisterTimer(_configManager.CurrentConfig.DeviceRgbTimerInterval, () =>
             {
-                lock (_configManager) lock(_effectManager)
                 {
                     foreach (var profile in _configManager.CurrentConfig.Profiles)
                     {
@@ -102,6 +125,7 @@ namespace TTController.Service
             });
 
             _timerManager.Start();
+            Console.ReadKey();
             return true;
         }
 

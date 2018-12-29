@@ -31,6 +31,7 @@ namespace TTController.Service.Manager
                 settings.Converters.Add(new CurvePointConverter());
                 settings.Converters.Add(new LedColorConverter());
                 settings.Converters.Add(new TriggerConverter());
+                settings.Converters.Add(new IdentifierConverter());
 
                 return settings;
             };

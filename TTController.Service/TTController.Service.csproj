@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="Config\ContractResolver.cs" />
     <Compile Include="Config\Converter\CurvePointConverter.cs" />
+    <Compile Include="Config\Converter\IdentifierConverter.cs" />
     <Compile Include="Config\Converter\LedColorConverter.cs" />
     <Compile Include="Config\Converter\ObjectToArrayConverter.cs" />
     <Compile Include="Config\Converter\PortIdentifierConverter.cs" />
@@ -80,9 +81,14 @@
     <Compile Include="Manager\ConfigManager.cs" />
     <Compile Include="Manager\DeviceManager.cs" />
     <Compile Include="Manager\EffectManager.cs" />
+    <Compile Include="Manager\SpeedControllerManager.cs" />
     <Compile Include="Manager\TemperatureManager.cs" />
     <Compile Include="Manager\TimerManager.cs" />
     <Compile Include="Rgb\EffectConfigBase.cs" />
+    <Compile Include="Speed\Controller\PwmSpeedController.cs" />
+    <Compile Include="Speed\Controller\StaticSpeedController.cs" />
+    <Compile Include="Speed\SpeedControllerBase.cs" />
+    <Compile Include="Speed\SpeedControllerConfigBase.cs" />
     <Compile Include="Trigger\AlwaysTrigger.cs" />
     <Compile Include="Trigger\OneTimeTrigger.cs" />
     <Compile Include="Trigger\ProcessTrigger.cs" />
