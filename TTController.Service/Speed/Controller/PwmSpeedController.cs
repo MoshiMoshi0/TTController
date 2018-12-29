@@ -64,12 +64,6 @@ namespace TTController.Service.Speed.Controller
             var result = new Dictionary<PortIdentifier, byte>();
             foreach (var pair in portDataMap)
             {
-                if (pair.Value == null)
-                {
-                    result.Add(pair.Key, 100);
-                    continue;
-                }
-
                 var currentSpeed = pair.Value.Speed;
                 var targetSpeed = currentSpeed;
                 var speedDiff = curveTargetSpeed - currentSpeed;
