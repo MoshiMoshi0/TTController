@@ -32,5 +32,7 @@
             hashCode = hashCode * -1521134295 + Id.GetHashCode();
             return hashCode;
         }
+
+        public override string ToString() => $"[{Id}, 0x{ControllerVendorId:x}, 0x{ControllerProductId:x}]";
     }
 }

@@ -12,5 +12,7 @@
             G = g;
             B = b;
         }
+        
+        public override string ToString() => $"[{R}, {G}, {B}]";
     }
 }

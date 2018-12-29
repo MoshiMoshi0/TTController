@@ -16,5 +16,7 @@ namespace TTController.Common
             Temperature = temperature;
             Speed = speed;
         }
+
+        public override string ToString() => $"[{Temperature}°C, {Speed}%]";
     }
 }

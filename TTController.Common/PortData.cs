@@ -20,5 +20,7 @@ namespace TTController.Common
             Speed = speed;
             Rpm = rpm;
         }
+
+        public override string ToString() => $"[{Id}, 0x{Unknown:x}, {Speed}%, {Rpm} RPM]";
     }
 }
