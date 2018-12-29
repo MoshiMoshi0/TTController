@@ -80,7 +80,7 @@ namespace TTController.Service
                     foreach (var profile in _configManager.CurrentConfig.Profiles)
                     {
                         var effects = _effectManager.GetEffects(profile.Guid);
-                        var effect = effects.FirstOrDefault(e => e.NeedsUpdate());
+                        var effect = effects.FirstOrDefault(e => e.Enabled);
                         if(effect == null)
                             continue;
 

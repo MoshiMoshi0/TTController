@@ -22,7 +22,6 @@ namespace TTController.Service.Rgb.Effect
         }
 
         public override byte EffectByte => (byte) EffectType.ByLed;
-        public override bool NeedsUpdate() => true;
 
         public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(IDictionary<PortIdentifier, PortConfigData> portConfigMap)
         {

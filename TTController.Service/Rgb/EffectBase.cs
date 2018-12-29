@@ -26,7 +26,7 @@ namespace TTController.Service.Rgb
 
     public interface IEffectBase : IDisposable
     {
-        bool NeedsUpdate();
+        bool Enabled { get; }
         byte EffectByte { get; }
         IDictionary<PortIdentifier, List<LedColor>> GenerateColors(IDictionary<PortIdentifier, PortConfigData> portConfigMap);
     }
@@ -34,6 +34,7 @@ namespace TTController.Service.Rgb
     public abstract class EffectBase<T> : IEffectBase where T : EffectConfigBase
     {
         protected T Config { get; }
+        public virtual bool Enabled => Config.Trigger.Value();
 
         protected EffectBase(dynamic rawConfig)
         {
@@ -41,7 +42,6 @@ namespace TTController.Service.Rgb
         }
 
         public virtual void Dispose() { }
-        public virtual bool NeedsUpdate() => Config.Trigger.Value();
 
         public abstract byte EffectByte { get; } 
         public abstract IDictionary<PortIdentifier, List<LedColor>> GenerateColors(IDictionary<PortIdentifier, PortConfigData> portConfigMap);
