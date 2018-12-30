@@ -187,6 +187,9 @@ namespace TTController.Service
             _timerManager.Dispose();
             _temperatureManager.Dispose();
             _deviceManager.Dispose();
+            _effectManager.Dispose();
+            _speedControllerManager.Dispose();
+            _configManager.Dispose();
 
             base.Dispose();
             IsDisposed = true;

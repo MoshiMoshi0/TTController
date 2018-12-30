@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -7,7 +8,7 @@ using TTController.Service.Config.Converter;
 
 namespace TTController.Service.Manager
 {
-    public class ConfigManager
+    public class ConfigManager : IDisposable
     {
         private readonly string _filename;
         
@@ -75,5 +76,7 @@ namespace TTController.Service.Manager
             var directory = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
             return Path.Combine(directory, _filename);
         }
+
+        public void Dispose() {}
     }
 }
