@@ -69,8 +69,8 @@
     <Compile Include="Config\PortConfigData.cs" />
     <Compile Include="Config\ProfileData.cs" />
     <Compile Include="Config\SpeedControllerData.cs" />
-    <Compile Include="Config\TypeUtils.cs" />
-    <Compile Include="Extensions.cs" />
+    <Compile Include="Utils\TypeUtils.cs" />
+    <Compile Include="Utils\Extensions.cs" />
     <Compile Include="Hardware\Controller\Command\ControllerCommandFactory.cs" />
     <Compile Include="Hardware\Controller\Command\ControllerProxy.cs" />
     <Compile Include="Hardware\Controller\Command\IControllerCommandFactory.cs" />
