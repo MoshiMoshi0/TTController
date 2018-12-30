@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 using TTController.Common;
 using TTController.Service.Manager;
 
@@ -16,13 +15,13 @@ namespace TTController.Service.Speed
     {
         //TODO: this should be a proxy
         protected TemperatureManager TemperatureManager { get; }
-        protected T Config { get; }
-        public virtual bool Enabled => Config.Trigger.Value();
+        public T Config { get; }
+        public virtual bool Enabled => Config.Trigger?.Value() ?? false;
 
-        protected SpeedControllerBase(TemperatureManager temperatureManager, dynamic rawConfig)
+        protected SpeedControllerBase(TemperatureManager temperatureManager, T config)
         {
             TemperatureManager = temperatureManager;
-            Config = JsonConvert.DeserializeObject(rawConfig.ToString(), typeof(T));
+            Config = config;
         }
 
         public virtual void Dispose() { }

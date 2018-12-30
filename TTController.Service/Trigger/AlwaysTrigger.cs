@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TTController.Service.Rgb;
-
-namespace TTController.Service.Trigger
+﻿namespace TTController.Service.Trigger
 {
-    public class AlwaysTrigger : TriggerBase
+    public class AlwaysTriggerConfig : TriggerConfigBase { }
+
+    public class AlwaysTrigger : TriggerBase<AlwaysTriggerConfig>
     {
+        public AlwaysTrigger(AlwaysTriggerConfig config) : base(config) { }
+
         public override bool Value() => true;
+
     }
 }

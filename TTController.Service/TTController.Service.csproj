@@ -55,13 +55,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config\ConfigData.cs" />
     <Compile Include="Config\ContractResolver.cs" />
     <Compile Include="Config\Converter\CurvePointConverter.cs" />
     <Compile Include="Config\Converter\IdentifierConverter.cs" />
     <Compile Include="Config\Converter\LedColorConverter.cs" />
     <Compile Include="Config\Converter\ObjectToArrayConverter.cs" />
     <Compile Include="Config\Converter\PortIdentifierConverter.cs" />
+    <Compile Include="Config\Converter\EffectDataConverter.cs" />
+    <Compile Include="Config\Converter\SpeedControllerDataConverter.cs" />
     <Compile Include="Config\Converter\TriggerConverter.cs" />
+    <Compile Include="Config\EffectData.cs" />
+    <Compile Include="Config\PortConfigData.cs" />
+    <Compile Include="Config\ProfileData.cs" />
+    <Compile Include="Config\SpeedControllerData.cs" />
+    <Compile Include="Config\TypeUtils.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Hardware\Controller\Command\ControllerCommandFactory.cs" />
     <Compile Include="Hardware\Controller\Command\ControllerProxy.cs" />

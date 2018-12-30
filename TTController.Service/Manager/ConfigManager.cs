@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using System.IO;
 using Newtonsoft.Json;
-using TTController.Common.Config;
+using Newtonsoft.Json.Converters;
 using TTController.Service.Config;
 using TTController.Service.Config.Converter;
 
@@ -27,6 +27,9 @@ namespace TTController.Service.Manager
                     ContractResolver = new ContractResolver()
                 };
 
+                settings.Converters.Add(new StringEnumConverter());
+                settings.Converters.Add(new EffectDataConverter());
+                settings.Converters.Add(new SpeedControllerDataConverter());
                 settings.Converters.Add(new PortIdentifierConverter());
                 settings.Converters.Add(new CurvePointConverter());
                 settings.Converters.Add(new LedColorConverter());

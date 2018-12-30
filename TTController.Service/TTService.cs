@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.ServiceProcess;
-using System.Threading;
-using System.Threading.Tasks;
-using OpenHardwareMonitor.Hardware;
-using TTController.Common;
-using TTController.Common.Config;
+using TTController.Service.Config;
 using TTController.Service.Hardware.Temperature;
 using TTController.Service.Manager;
+using TTController.Service.Speed.Controller;
+using TTController.Service.Utils;
 
 namespace TTController.Service
 {
@@ -36,24 +32,28 @@ namespace TTController.Service
 
         public bool Initialize()
         {
-            _deviceManager = new DeviceManager();
             _configManager = new ConfigManager("config.json");
             _configManager.LoadOrCreateConfig();
 
             var alpha = Math.Exp(- _configManager.CurrentConfig.TemperatureTimerInterval / (double)_configManager.CurrentConfig.DeviceSpeedTimerInterval);
             var providerFactory = new MovingAverageTemperatureProviderFactory(alpha);
             _temperatureManager = new TemperatureManager(providerFactory);
-            _temperatureManager.EnableSensor(new Identifier("intelcpu", "0", "temperature", "8"));
 
             _effectManager = new EffectManager();
             _speedControllerManager = new SpeedControllerManager(_temperatureManager);
+            _deviceManager = new DeviceManager();
 
             foreach (var profile in _configManager.CurrentConfig.Profiles)
             {
-                foreach (var kv in profile.Effects)
-                    _effectManager.CreateEffect(profile.Guid, kv.Key, kv.Value);
-                foreach (var kv in profile.SpeedControllers)
-                    _speedControllerManager.CreateSpeedController(profile.Guid, kv.Key, kv.Value);
+                foreach (var effect in profile.Effects)
+                    _effectManager.CreateEffect(profile.Guid, effect.Type, effect.Config);
+
+                foreach (var speedController in profile.SpeedControllers)
+                    _speedControllerManager.CreateSpeedController(profile.Guid, speedController.Type, speedController.Config);
+
+                foreach (var pwmSpeedController in _speedControllerManager.GetSpeedControllers(profile.Guid).OfType<PwmSpeedController>())
+                    foreach (var sensor in pwmSpeedController.Config.Sensors)
+                        _temperatureManager.EnableSensor(sensor);
             }
 
             _timerManager = new TimerManager();

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace TTController.Common.Config
+﻿namespace TTController.Service.Config
 {
     public class PortConfigData
     {

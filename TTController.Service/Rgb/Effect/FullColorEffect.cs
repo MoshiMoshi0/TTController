@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using TTController.Common;
-using TTController.Common.Config;
+using TTController.Service.Config;
 
 namespace TTController.Service.Rgb.Effect
 {
@@ -12,7 +12,7 @@ namespace TTController.Service.Rgb.Effect
 
     public class FullColorEffect : EffectBase<FullColorEffectConfig>
     {
-        public FullColorEffect(dynamic rawConfig) : base((object)rawConfig){}
+        public FullColorEffect(FullColorEffectConfig config) : base(config){}
 
         public override byte EffectByte => (byte) EffectType.Full;
 

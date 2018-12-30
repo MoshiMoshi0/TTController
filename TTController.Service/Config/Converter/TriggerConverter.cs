@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using TTController.Service.Rgb;
 using TTController.Service.Trigger;
+using TTController.Service.Utils;
 
 namespace TTController.Service.Config.Converter
 {
@@ -15,27 +11,27 @@ namespace TTController.Service.Config.Converter
     {
         public override void WriteJson(JsonWriter writer, ITriggerBase value, JsonSerializer serializer)
         {
-            throw new NotImplementedException();
+            var triggerType = value.GetType();
+            var triggerName = triggerType.Name;
+            var triggerConfig = triggerType.GetProperty("Config").GetValue(value, null);
+            
+            var o = new JObject {{triggerName, JToken.FromObject(triggerConfig ?? new object()) }};
+            o.WriteTo(writer);
         }
 
         public override ITriggerBase ReadJson(JsonReader reader, Type objectType, ITriggerBase existingValue, bool hasExistingValue,
             JsonSerializer serializer)
         {
-            var o = JObject.ReadFrom(reader);
-            var pair = o.ToObject<Dictionary<string, dynamic>>().First();
+            var o = JObject.ReadFrom(reader).First() as JProperty;
+            var triggerTypeName = o.Name;
+            var triggerType = TypeUtils.FindInAssemblies<ITriggerBase>()
+                .First(t => string.CompareOrdinal(t.Name, triggerTypeName) == 0);
+            
+            var configType = TypeUtils.FindInAssemblies<TriggerConfigBase>()
+                .First(t => string.CompareOrdinal(t.Name, $"{triggerTypeName}Config") == 0);
 
-            var type = Assembly
-                .GetAssembly(typeof(ITriggerBase))
-                .GetTypes()
-                .Where(t => t.IsClass && !t.IsAbstract && typeof(ITriggerBase).IsAssignableFrom(t))
-                .FirstOrDefault(t => string.CompareOrdinal(t.Name, pair.Key) == 0);
-
-            if (type == null)
-                return null;
-
-            if ((pair.Value as JObject).HasValues)
-                return (ITriggerBase)Activator.CreateInstance(type, new object[] { pair.Value });
-            return (ITriggerBase) Activator.CreateInstance(type);
+            var config = (TriggerConfigBase)JsonConvert.DeserializeObject(o.Value.ToString(), configType);
+            return (ITriggerBase)Activator.CreateInstance(triggerType, new object[] { config });
         }
     }
 }

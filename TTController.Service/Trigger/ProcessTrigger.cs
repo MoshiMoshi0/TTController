@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TTController.Service.Rgb;
 
 namespace TTController.Service.Trigger
 {
@@ -13,12 +9,12 @@ namespace TTController.Service.Trigger
         public string[] Processes { get; set; }
     }
 
-    public class ProcessTrigger : ConfigurableTriggerBase<ProcessTriggerConfig>
+    public class ProcessTrigger : TriggerBase<ProcessTriggerConfig>
     {
         private long _ticks;
         private bool _needsUpdate;
 
-        public ProcessTrigger(dynamic rawConfig) : base((object)rawConfig)
+        public ProcessTrigger(ProcessTriggerConfig config) : base(config)
         {
             _ticks = Environment.TickCount;
         }

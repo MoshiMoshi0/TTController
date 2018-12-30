@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using OpenHardwareMonitor.Hardware;
 using TTController.Common;
 using TTController.Service.Manager;
@@ -27,8 +25,8 @@ namespace TTController.Service.Speed.Controller
 
     public class PwmSpeedController : SpeedControllerBase<PwmSpeedControllerConfig>
     {
-        public PwmSpeedController(TemperatureManager temperatureManager, dynamic config) :
-            base(temperatureManager, (object) config)
+        public PwmSpeedController(TemperatureManager temperatureManager, PwmSpeedControllerConfig config) :
+            base(temperatureManager, config)
         {
         }
 

@@ -1,14 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using TTController.Common;
-using TTController.Common.Config;
+using TTController.Service.Config;
 
 namespace TTController.Service.Rgb
 {
@@ -33,12 +26,12 @@ namespace TTController.Service.Rgb
 
     public abstract class EffectBase<T> : IEffectBase where T : EffectConfigBase
     {
-        protected T Config { get; }
-        public virtual bool Enabled => Config.Trigger.Value();
+        public T Config { get; }
+        public virtual bool Enabled => Config.Trigger?.Value() ?? false;
 
-        protected EffectBase(dynamic rawConfig)
+        protected EffectBase(T config)
         {
-            Config = JsonConvert.DeserializeObject(rawConfig.ToString(), typeof(T));
+            Config = config;
         }
 
         public virtual void Dispose() { }

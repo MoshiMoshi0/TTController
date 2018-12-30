@@ -41,13 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Config\ConfigData.cs" />
     <Compile Include="CurvePoint.cs" />
     <Compile Include="LedColor.cs" />
-    <Compile Include="Config\PortConfigData.cs" />
     <Compile Include="PortData.cs" />
     <Compile Include="PortIdentifier.cs" />
-    <Compile Include="Config\ProfileData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using TTController.Common;
-using TTController.Common.Config;
+using TTController.Service.Config;
 
 namespace TTController.Service.Rgb.Effect
 {
@@ -16,7 +16,7 @@ namespace TTController.Service.Rgb.Effect
     {
         private int _head;
 
-        public SnakeEffect(dynamic config) : base((object) config)
+        public SnakeEffect(SnakeEffectConfig config) : base(config)
         {
             _head = 0;
         }

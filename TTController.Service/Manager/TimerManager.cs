@@ -207,9 +207,9 @@ namespace TTController.Service.Manager
                         if (diff <= 0f)
                             break;
 
-                        if (diff < 1f && UseThreadSpinWait)
+                        if (UseThreadSpinWait && diff < 1f)
                             Thread.SpinWait(10);
-                        else if (diff < 5f && UseThreadSpinWait)
+                        else if (UseThreadSpinWait && diff < 5f)
                             Thread.SpinWait(100);
                         else if (diff < 15f)
                             Thread.Sleep(1);

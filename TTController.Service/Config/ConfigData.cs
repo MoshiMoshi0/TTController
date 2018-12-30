@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using TTController.Common;
 
-namespace TTController.Common.Config
+namespace TTController.Service.Config
 {
     public class ConfigData
     {

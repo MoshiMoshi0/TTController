@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using TTController.Common;
 
-namespace TTController.Common.Config
+namespace TTController.Service.Config
 {
     public class ProfileData
     {
@@ -9,8 +10,8 @@ namespace TTController.Common.Config
         public Guid Guid { set; get; } = Guid.NewGuid();
         public List<PortIdentifier> Ports { get; set; } = new List<PortIdentifier>();
 
-        public Dictionary<string, dynamic> SpeedControllers { get; set; } = new Dictionary<string, dynamic>();
-        public Dictionary<string, dynamic> Effects { get; set; } = new Dictionary<string, dynamic>();
+        public List<SpeedControllerData> SpeedControllers { get; set; } = new List<SpeedControllerData>();
+        public List<EffectData> Effects { get; set; } = new List<EffectData>();
 
         public ProfileData(string name)
         {

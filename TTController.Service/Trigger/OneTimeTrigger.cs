@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TTController.Service.Trigger
+﻿namespace TTController.Service.Trigger
 {
-    public class OneTimeTrigger : TriggerBase
+    public class OneTimeTriggerConfig : TriggerConfigBase { }
+
+    public class OneTimeTrigger : TriggerBase<OneTimeTriggerConfig>
     {
         private bool _triggered;
 
-        public OneTimeTrigger()
+        public OneTimeTrigger(OneTimeTriggerConfig config) : base(config)
         {
             _triggered = false;
         }

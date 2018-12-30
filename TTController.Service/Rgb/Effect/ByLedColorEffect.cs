@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using TTController.Common;
-using TTController.Common.Config;
+using TTController.Service.Config;
 
 namespace TTController.Service.Rgb.Effect
 {
@@ -14,7 +14,7 @@ namespace TTController.Service.Rgb.Effect
     {
         public override byte EffectByte => (byte) EffectType.ByLed;
 
-        public ByLedColorEffect(dynamic config) : base((object)config) {}
+        public ByLedColorEffect(ByLedColorEffectConfig config) : base(config) {}
 
         public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(IDictionary<PortIdentifier, PortConfigData> portConfigMap)
         {

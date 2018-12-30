@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using HidLibrary;
 using TTController.Common;
 using TTController.Service.Hardware;
 using TTController.Service.Hardware.Controller;
 using TTController.Service.Hardware.Controller.Command;
+using TTController.Service.Utils;
 
 namespace TTController.Service.Manager
 {
@@ -21,9 +21,7 @@ namespace TTController.Service.Manager
             _devices = new List<HidDevice>();
             _controllers = new List<IControllerProxy>();
 
-            var definitions = Assembly.GetAssembly(typeof(IControllerDefinition))
-                .GetTypes()
-                .Where(t => t.IsClass && !t.IsAbstract && typeof(IControllerDefinition).IsAssignableFrom(t))
+            var definitions = TypeUtils.FindInAssemblies<IControllerDefinition>()
                 .Select(t => (IControllerDefinition)Activator.CreateInstance(t))
                 .ToList();
             

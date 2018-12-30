@@ -1,5 +1,4 @@
 ﻿using System;
-using Newtonsoft.Json;
 
 namespace TTController.Service.Trigger
 {
@@ -8,20 +7,17 @@ namespace TTController.Service.Trigger
         bool Value();
     }
 
-    public abstract class TriggerBase : ITriggerBase
+    public abstract class TriggerBase<T> : ITriggerBase where T : TriggerConfigBase
     {
+        public T Config { set; get; }
+
+        protected TriggerBase(T config)
+        {
+            Config = config;
+        }
+
         public virtual void Dispose() {}
 
         public abstract bool Value();
-    }
-
-    public abstract class ConfigurableTriggerBase<T> : TriggerBase where T : TriggerConfigBase
-    {
-        protected T Config { get; }
-
-        protected ConfigurableTriggerBase(dynamic rawConfig)
-        {
-            Config = JsonConvert.DeserializeObject(rawConfig.ToString(), typeof(T));
-        }
     }
 }
