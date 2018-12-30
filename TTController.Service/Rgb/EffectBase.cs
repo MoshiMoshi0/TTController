@@ -17,6 +17,14 @@ namespace TTController.Service.Rgb
         Full = 0x19
     }
 
+    public enum EffectSpeed
+    {
+        Slow = 0x03,
+        Normal = 0x02,
+        Fast = 0x01,
+        Extreme = 0x00
+    }
+
     public interface IEffectBase : IDisposable
     {
         bool Enabled { get; }

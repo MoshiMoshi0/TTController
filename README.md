@@ -69,9 +69,13 @@ TTController is a service that allows you to control all Thermaltake devices.
       ],
       "Effects": [
         {
-          "Type": "FullColorEffect",
+          "Type": "DefaultEffect",
           "Config": {
-            "Color": [255, 0, 0],
+            "Type": "Ripple",
+            "Speed": "Normal",
+            "Colors": [
+              [255, 0, 0]
+            ],
             "Trigger": {
               "OneTimeTrigger": {}
             }

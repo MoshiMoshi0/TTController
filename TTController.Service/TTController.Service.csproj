@@ -69,6 +69,7 @@
     <Compile Include="Config\PortConfigData.cs" />
     <Compile Include="Config\ProfileData.cs" />
     <Compile Include="Config\SpeedControllerData.cs" />
+    <Compile Include="Rgb\Effect\DefaultEffect.cs" />
     <Compile Include="Utils\TypeUtils.cs" />
     <Compile Include="Utils\Extensions.cs" />
     <Compile Include="Hardware\Controller\Command\ControllerCommandFactory.cs" />
@@ -101,9 +102,7 @@
     <Compile Include="Trigger\OneTimeTrigger.cs" />
     <Compile Include="Trigger\ProcessTrigger.cs" />
     <Compile Include="Trigger\TriggerBase.cs" />
-    <Compile Include="Rgb\Effect\FullColorEffect.cs" />
     <Compile Include="Rgb\Effect\SnakeEffect.cs" />
-    <Compile Include="Rgb\Effect\ByLedColorEffect.cs" />
     <Compile Include="Rgb\EffectBase.cs" />
     <Compile Include="Trigger\TriggerConfigBase.cs" />
     <Compile Include="TTInstaller.cs">
