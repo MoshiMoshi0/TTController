@@ -63,13 +63,15 @@ namespace TTController.Service.Speed.Controller
                 var targetSpeed = currentSpeed;
                 var speedDiff = curveTargetSpeed - currentSpeed;
 
-                if (Math.Abs(speedDiff) >= Config.MinimumChange)
+                if (Math.Abs(speedDiff) >= Config.MinimumChange || curveTargetSpeed >= 100 || curveTargetSpeed <= 20)
                 {
                     targetSpeed = (byte) (currentSpeed +
                                           Math.Sign(speedDiff) * Math.Min(Config.MaximumChange, Math.Abs(speedDiff)));
 
                     if (targetSpeed < 20)
                         targetSpeed = curveTargetSpeed == 0 ? (byte)0 : (byte)20;
+                    else if (targetSpeed > 100)
+                        targetSpeed = 100;
                 }
 
                 result.Add(port, targetSpeed);
