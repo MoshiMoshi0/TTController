@@ -8,24 +8,21 @@ namespace TTController.Service.Speed
     public interface ISpeedControllerBase : IDisposable
     {
         bool Enabled { get; }
-        IDictionary<PortIdentifier, byte> GenerateSpeeds(IDictionary<PortIdentifier, PortData> portDataMap);
+        IDictionary<PortIdentifier, byte> GenerateSpeeds(List<PortIdentifier> ports, ICacheProvider cache);
     }
 
     public abstract class SpeedControllerBase<T> : ISpeedControllerBase where T : SpeedControllerConfigBase
     {
-        //TODO: this should be a proxy
-        protected TemperatureManager TemperatureManager { get; }
         public T Config { get; }
         public virtual bool Enabled => Config.Trigger?.Value() ?? false;
 
-        protected SpeedControllerBase(TemperatureManager temperatureManager, T config)
+        protected SpeedControllerBase(T config)
         {
-            TemperatureManager = temperatureManager;
             Config = config;
         }
 
         public virtual void Dispose() { }
 
-        public abstract IDictionary<PortIdentifier, byte> GenerateSpeeds(IDictionary<PortIdentifier, PortData> portDataMap);
+        public abstract IDictionary<PortIdentifier, byte> GenerateSpeeds(List<PortIdentifier> ports, ICacheProvider cache);
     }
 }

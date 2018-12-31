@@ -25,14 +25,11 @@ namespace TTController.Service.Speed.Controller
 
     public class PwmSpeedController : SpeedControllerBase<PwmSpeedControllerConfig>
     {
-        public PwmSpeedController(TemperatureManager temperatureManager, PwmSpeedControllerConfig config) :
-            base(temperatureManager, config)
-        {
-        }
+        public PwmSpeedController(PwmSpeedControllerConfig config) : base(config) {}
 
-        public override IDictionary<PortIdentifier, byte> GenerateSpeeds(IDictionary<PortIdentifier, PortData> portDataMap)
+        public override IDictionary<PortIdentifier, byte> GenerateSpeeds(List<PortIdentifier> ports, ICacheProvider cache)
         {
-            var temperatures = Config.Sensors.Select(s => TemperatureManager.GetSensorValue(s));
+            var temperatures = Config.Sensors.Select(cache.GetTemperature);
             var temperature = float.NaN;
             if (Config.SensorMixFunction == SensorMixFunction.Average)
                 temperature = temperatures.Average();
@@ -60,9 +57,9 @@ namespace TTController.Service.Speed.Controller
             }
 
             var result = new Dictionary<PortIdentifier, byte>();
-            foreach (var pair in portDataMap)
+            foreach (var port in ports)
             {
-                var currentSpeed = pair.Value.Speed;
+                var currentSpeed = cache.GetPortData(port).Speed;
                 var targetSpeed = currentSpeed;
                 var speedDiff = curveTargetSpeed - currentSpeed;
 
@@ -75,7 +72,7 @@ namespace TTController.Service.Speed.Controller
                         targetSpeed = curveTargetSpeed == 0 ? (byte)0 : (byte)20;
                 }
 
-                result.Add(pair.Key, targetSpeed);
+                result.Add(port, targetSpeed);
             }
 
             return result;

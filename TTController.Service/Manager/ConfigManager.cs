@@ -8,7 +8,7 @@ using TTController.Service.Config.Converter;
 
 namespace TTController.Service.Manager
 {
-    public class ConfigManager : IDisposable
+    public class ConfigManager : IDataProvider, IDisposable
     {
         private readonly string _filename;
         
@@ -77,6 +77,12 @@ namespace TTController.Service.Manager
             return Path.Combine(directory, _filename);
         }
 
-        public void Dispose() {}
+        public void Visit(ICacheCollector collector)
+        {
+            foreach (var pair in CurrentConfig.PortConfig)
+                collector.StorePortConfig(pair.Key, pair.Value);
+        }
+
+        public void Dispose() { }
     }
 }

@@ -6,18 +6,16 @@ namespace TTController.Service.Manager
 {
     public class SpeedControllerManager : IDisposable
     {
-        private readonly TemperatureManager _temperatureManager;
         private readonly Dictionary<Guid, List<ISpeedControllerBase>> _speedControllerGuidMap;
 
-        public SpeedControllerManager(TemperatureManager temperatureManager)
+        public SpeedControllerManager()
         {
-            _temperatureManager = temperatureManager;
             _speedControllerGuidMap = new Dictionary<Guid, List<ISpeedControllerBase>>();
         }
 
         public void CreateSpeedController(Guid guid, Type type, SpeedControllerConfigBase config)
         {
-            var speedController = (ISpeedControllerBase)Activator.CreateInstance(type, new object[] { _temperatureManager, config });
+            var speedController = (ISpeedControllerBase)Activator.CreateInstance(type, new object[] { config });
 
             if (!_speedControllerGuidMap.ContainsKey(guid))
                 _speedControllerGuidMap.Add(guid, new List<ISpeedControllerBase>());

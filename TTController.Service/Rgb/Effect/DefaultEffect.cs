@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TTController.Common;
 using TTController.Service.Config;
+using TTController.Service.Manager;
 
 namespace TTController.Service.Rgb.Effect
 {
@@ -21,9 +22,9 @@ namespace TTController.Service.Rgb.Effect
 
         public DefaultEffect(DefaultEffectConfig config) : base(config) {}
         
-        public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(IDictionary<PortIdentifier, PortConfigData> portConfigMap)
+        public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
         {
-            return portConfigMap.ToDictionary(p => p.Key, p => Config.Colors);
+            return ports.ToDictionary(p => p, p => Config.Colors);
         }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using TTController.Common;
 using TTController.Service.Config;
+using TTController.Service.Manager;
 
 namespace TTController.Service.Rgb
 {
@@ -29,7 +31,7 @@ namespace TTController.Service.Rgb
     {
         bool Enabled { get; }
         byte EffectByte { get; }
-        IDictionary<PortIdentifier, List<LedColor>> GenerateColors(IDictionary<PortIdentifier, PortConfigData> portConfigMap);
+        IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache);
     }
 
     public abstract class EffectBase<T> : IEffectBase where T : EffectConfigBase
@@ -45,7 +47,7 @@ namespace TTController.Service.Rgb
         public virtual void Dispose() { }
 
         public abstract byte EffectByte { get; } 
-        public abstract IDictionary<PortIdentifier, List<LedColor>> GenerateColors(IDictionary<PortIdentifier, PortConfigData> portConfigMap);
+        public abstract IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache);
 
     }
 }

@@ -2,6 +2,7 @@
 using System.Linq;
 using TTController.Common;
 using TTController.Service.Config;
+using TTController.Service.Manager;
 
 namespace TTController.Service.Rgb.Effect
 {
@@ -23,29 +24,28 @@ namespace TTController.Service.Rgb.Effect
 
         public override byte EffectByte => (byte) EffectType.ByLed;
 
-        public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(IDictionary<PortIdentifier, PortConfigData> portConfigMap)
+        public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
         {
             int Wrap(int a, int b) => (a % b + b) % b;
 
-            var ledCount = portConfigMap.Select(kv => kv.Value.LedCount).Sum();
+            var ledCount = ports.Select(p => cache.GetPortConfig(p).LedCount).Sum();
             var colors = Enumerable.Range(0, ledCount).Select(x => Config.BackgroundColor).ToList(); 
             for (var i = 0; i < Config.Length; i++)
                 colors[Wrap(_head - i, ledCount)] = Config.SnakeColor;
 
             var sliceOffset = 0;
             var result = new Dictionary<PortIdentifier, List<LedColor>>();
-            foreach (var kv in portConfigMap)
+            foreach (var port in ports)
             {
-                var port = kv.Key;
-                var portConfig = kv.Value;
+                var config = cache.GetPortConfig(port);
 
-                var slice = colors.GetRange(sliceOffset, portConfig.LedCount);
-                if (portConfig.LedRotation > 0)
-                    slice = slice.Skip(portConfig.LedRotation).Concat(slice.Take(portConfig.LedRotation)).ToList();
-                if (portConfig.LedReverse)
+                var slice = colors.GetRange(sliceOffset, config.LedCount);
+                if (config.LedRotation > 0)
+                    slice = slice.Skip(config.LedRotation).Concat(slice.Take(config.LedRotation)).ToList();
+                if (config.LedReverse)
                     slice.Reverse();
 
-                sliceOffset += portConfig.LedCount;
+                sliceOffset += config.LedCount;
                 result.Add(port, slice);
             }
 

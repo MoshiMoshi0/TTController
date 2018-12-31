@@ -12,11 +12,11 @@ namespace TTController.Service.Speed.Controller
 
     public class StaticSpeedController : SpeedControllerBase<StaticSpeedControllerConfig>
     {
-        public StaticSpeedController(TemperatureManager temperatureManager, StaticSpeedControllerConfig config) : base(temperatureManager, config) {}
+        public StaticSpeedController(StaticSpeedControllerConfig config) : base(config) {}
 
-        public override IDictionary<PortIdentifier, byte> GenerateSpeeds(IDictionary<PortIdentifier, PortData> portDataMap)
+        public override IDictionary<PortIdentifier, byte> GenerateSpeeds(List<PortIdentifier> ports, ICacheProvider cache)
         {
-            return portDataMap.ToDictionary(kv => kv.Key, kv => Config.Speed);
+            return ports.ToDictionary(p => p, p => Config.Speed);
         }
     }
 }

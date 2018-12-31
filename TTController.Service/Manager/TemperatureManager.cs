@@ -6,7 +6,7 @@ using TTController.Service.Hardware.Temperature;
 
 namespace TTController.Service.Manager
 {
-    public class TemperatureManager : IDisposable
+    public class TemperatureManager : IDataProvider, IDisposable
     {
         private readonly Computer _computer;
         private readonly List<ISensor> _sensors;
@@ -76,6 +76,12 @@ namespace TTController.Service.Manager
                 return;
 
             _providerMap.Remove(identifier);
+        }
+
+        public void Visit(ICacheCollector collector)
+        {
+            foreach (var pair in _providerMap)
+                collector.StoreTemperature(pair.Key, pair.Value.Value());
         }
 
         public void Dispose()

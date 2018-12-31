@@ -17,6 +17,7 @@ namespace TTController.Service
         private TimerManager _timerManager;
         private EffectManager _effectManager;
         private SpeedControllerManager _speedControllerManager;
+        private DataCache _cache;
 
         protected bool IsDisposed;
 
@@ -32,15 +33,17 @@ namespace TTController.Service
 
         public bool Initialize()
         {
+            _cache = new DataCache();
             _configManager = new ConfigManager("config.json");
             _configManager.LoadOrCreateConfig();
+            _configManager.Visit(_cache);
 
             var alpha = Math.Exp(- _configManager.CurrentConfig.TemperatureTimerInterval / (double)_configManager.CurrentConfig.DeviceSpeedTimerInterval);
             var providerFactory = new MovingAverageTemperatureProviderFactory(alpha);
             _temperatureManager = new TemperatureManager(providerFactory);
 
             _effectManager = new EffectManager();
-            _speedControllerManager = new SpeedControllerManager(_temperatureManager);
+            _speedControllerManager = new SpeedControllerManager();
             _deviceManager = new DeviceManager();
 
             foreach (var profile in _configManager.CurrentConfig.Profiles)
@@ -59,39 +62,35 @@ namespace TTController.Service
             _timerManager = new TimerManager();
             _timerManager.RegisterTimer(_configManager.CurrentConfig.TemperatureTimerInterval, () =>
             {
-                lock (_temperatureManager)
-                    _temperatureManager.Update();
+                _temperatureManager.Update();
+                _temperatureManager.Visit(_cache);
                 return true;
             });
             _timerManager.RegisterTimer(_configManager.CurrentConfig.DeviceSpeedTimerInterval, () =>
             {
-                lock(_temperatureManager)
+                foreach (var profile in _configManager.CurrentConfig.Profiles)
                 {
-                    foreach (var profile in _configManager.CurrentConfig.Profiles)
+                    var speedControllers = _speedControllerManager.GetSpeedControllers(profile.Guid);
+                    var speedController = speedControllers.FirstOrDefault(c => c.Enabled);
+                    if (speedController == null)
+                        continue;
+
+                    foreach (var port in profile.Ports)
                     {
-                        var speedControllers = _speedControllerManager.GetSpeedControllers(profile.Guid);
-                        var speedController = speedControllers.FirstOrDefault(c => c.Enabled);
-                        if (speedController == null)
+                        var controller = _deviceManager.GetController(port);
+                        var data = controller?.GetPortData(port.Id);
+                        _cache.StorePortData(port, data);
+                    }
+
+                    var speedMap = speedController.GenerateSpeeds(profile.Ports, _cache.GetProxy());
+                    foreach (var pair in speedMap)
+                    {
+                        var controller = _deviceManager.GetController(pair.Key);
+                        if (controller == null)
                             continue;
 
-                        var portDataMap = profile.Ports
-                            .ToDictionary(p => p, p => {
-                                var controller = _deviceManager.GetController(p);
-                                return controller?.GetPortData(p.Id);
-                            })
-                            .Where(kv => kv.Value != null)
-                            .ToDictionary(kv => kv.Key, kv => kv.Value);
-
-                        var speedMap = speedController.GenerateSpeeds(portDataMap);
-                        foreach (var pair in speedMap)
-                        {
-                            var controller = _deviceManager.GetController(pair.Key);
-                            if (controller == null)
-                                continue;
-
-                            Console.WriteLine($"{pair.Key} {pair.Value}");
-                            controller.SetSpeed(pair.Key.Id, pair.Value);
-                        }
+                        Console.WriteLine($"{pair.Key} {pair.Value}");
+                        controller.SetSpeed(pair.Key.Id, pair.Value);
                     }
                 }
 
@@ -99,25 +98,21 @@ namespace TTController.Service
             });
             _timerManager.RegisterTimer(_configManager.CurrentConfig.DeviceRgbTimerInterval, () =>
             {
+                foreach (var profile in _configManager.CurrentConfig.Profiles)
                 {
-                    foreach (var profile in _configManager.CurrentConfig.Profiles)
+                    var effects = _effectManager.GetEffects(profile.Guid);
+                    var effect = effects.FirstOrDefault(e => e.Enabled);
+                    if(effect == null)
+                        continue;
+
+                    var colorMap = effect.GenerateColors(profile.Ports, _cache.GetProxy());
+                    foreach (var pair in colorMap)
                     {
-                        var effects = _effectManager.GetEffects(profile.Guid);
-                        var effect = effects.FirstOrDefault(e => e.Enabled);
-                        if(effect == null)
+                        var controller = _deviceManager.GetController(pair.Key);
+                        if (controller == null)
                             continue;
 
-                        var portConfigs = profile.Ports.ToDictionary(p => p, p => _configManager.CurrentConfig.PortConfig.GetValueOrDefault(p, PortConfigData.Default));
-                        var colorMap = effect.GenerateColors(portConfigs);
-                            
-                        foreach (var pair in colorMap)
-                        {
-                            var controller = _deviceManager.GetController(pair.Key);
-                            if (controller == null)
-                                continue;
-
-                            controller.SetRgb(pair.Key.Id, effect.EffectByte, pair.Value);
-                        }
+                        controller.SetRgb(pair.Key.Id, effect.EffectByte, pair.Value);
                     }
                 }
 
