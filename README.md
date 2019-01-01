@@ -25,6 +25,7 @@ TTController is a service that allows you to control all Thermaltake devices.
 #### TODO:
 * Write full documentation and readme
 * Add API for effects and speed controllers
+* Add support for boot/shutdown profiles
 * Add GUI to control the service (maybe)
 
 # Example config
