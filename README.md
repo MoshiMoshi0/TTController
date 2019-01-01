@@ -3,9 +3,17 @@ TTController is a service that allows you to control all Thermaltake devices.
 
 #### FEATURES:
 * Rgb Effects
-  * ByLed
-  * Full
+  * Default
+    * Flow
+    * Spectrum
+    * Ripple
+    * Blink
+    * Pulse
+    * Wave
+    * ByLed
+    * Full
   * Snake
+  * Temperature
 * Speed Controllers
   * Static speed
   * Pwm
