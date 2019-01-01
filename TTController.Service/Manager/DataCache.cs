@@ -27,6 +27,7 @@ namespace TTController.Service.Manager
         void StoreTemperature(Identifier sensor, float temperature);
         void StorePortData(PortIdentifier port, PortData data);
         void StorePortConfig(PortIdentifier port, PortConfigData config);
+        void Clear();
     }
 
     public class DataCache : ICacheCollector, ICacheProvider
@@ -54,6 +55,13 @@ namespace TTController.Service.Manager
 
         public PortConfigData GetPortConfig(PortIdentifier port) => _portConfigCache.TryGetValue(port, out var config) ? config : null;
         public void StorePortConfig(PortIdentifier port, PortConfigData config) => _portConfigCache[port] = config;
+
+        public void Clear()
+        {
+            _portConfigCache.Clear();
+            _portConfigCache.Clear();
+            _temperatureCache.Clear();
+        }
     }
 
     public class CacheProviderProxy : ICacheProvider

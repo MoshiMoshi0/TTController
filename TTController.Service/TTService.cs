@@ -191,6 +191,7 @@ namespace TTController.Service
             _effectManager.Dispose();
             _speedControllerManager.Dispose();
             _configManager.Dispose();
+            _cache.Clear();
 
             base.Dispose();
             IsDisposed = true;
