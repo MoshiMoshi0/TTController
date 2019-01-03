@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using TTController.Service.Config;
 using TTController.Service.Config.Converter;
+using TTController.Service.Utils;
 
 namespace TTController.Service.Manager
 {
@@ -80,8 +81,8 @@ namespace TTController.Service.Manager
 
         public void Visit(ICacheCollector collector)
         {
-            foreach (var pair in CurrentConfig.PortConfig)
-                collector.StorePortConfig(pair.Key, pair.Value);
+            foreach (var (port, config) in CurrentConfig.PortConfig)
+                collector.StorePortConfig(port, config);
         }
 
         public void Dispose() { }

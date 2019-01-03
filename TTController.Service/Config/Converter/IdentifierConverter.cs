@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using OpenHardwareMonitor.Hardware;
+using TTController.Service.Utils;
 
 namespace TTController.Service.Config.Converter
 {
@@ -26,8 +27,8 @@ namespace TTController.Service.Config.Converter
         public override void WriteJson(JsonWriter writer, IDictionary<Identifier, TValue> value, JsonSerializer serializer)
         {
             var o = new JObject();
-            foreach (var kvp in value)
-                o.Add(kvp.Key.ToString(), JToken.FromObject(kvp.Value));
+            foreach (var (sensor, v) in value)
+                o.Add(sensor.ToString(), JToken.FromObject(v));
             o.WriteTo(writer);
         }
 

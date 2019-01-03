@@ -101,14 +101,14 @@ namespace TTController.Service
                                 continue;
 
                             var speedMap = speedController.GenerateSpeeds(profile.Ports, _cache.GetProxy());
-                            foreach (var pair in speedMap)
+                            foreach (var (port, speed) in speedMap)
                             {
-                                var controller = _deviceManager.GetController(pair.Key);
+                                var controller = _deviceManager.GetController(port);
                                 if (controller == null)
                                     continue;
 
-                                Console.WriteLine($"{pair.Key} {pair.Value}");
-                                controller.SetSpeed(pair.Key.Id, pair.Value);
+                                Console.WriteLine($"{port} {speed}");
+                                controller.SetSpeed(port.Id, speed);
                             }
                         }
                     }
@@ -128,13 +128,13 @@ namespace TTController.Service
                             continue;
 
                         var colorMap = effect.GenerateColors(profile.Ports, _cache.GetProxy());
-                        foreach (var pair in colorMap)
+                        foreach (var (port, colors) in colorMap)
                         {
-                            var controller = _deviceManager.GetController(pair.Key);
+                            var controller = _deviceManager.GetController(port);
                             if (controller == null)
                                 continue;
 
-                            controller.SetRgb(pair.Key.Id, effect.EffectByte, pair.Value);
+                            controller.SetRgb(port.Id, effect.EffectByte, colors);
                         }
                     }
                 }

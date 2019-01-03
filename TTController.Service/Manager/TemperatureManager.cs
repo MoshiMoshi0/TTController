@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenHardwareMonitor.Hardware;
 using TTController.Service.Hardware.Temperature;
+using TTController.Service.Utils;
 
 namespace TTController.Service.Manager
 {
@@ -80,8 +81,8 @@ namespace TTController.Service.Manager
 
         public void Visit(ICacheCollector collector)
         {
-            foreach (var pair in _providerMap)
-                collector.StoreTemperature(pair.Key, pair.Value.Value());
+            foreach (var (sensor, provider) in _providerMap)
+                collector.StoreTemperature(sensor, provider.Value());
         }
 
         public void Dispose()
