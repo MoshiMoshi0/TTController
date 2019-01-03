@@ -113,6 +113,9 @@ TTController is a service that allows you to control all Thermaltake devices.
       }
     }
   ],
+  "CriticalTemperature": {
+    "/intelcpu/0/temperature/8": 90
+  },
   "TemperatureTimerInterval": 250,
   "DeviceSpeedTimerInterval": 2500,
   "DeviceRgbTimerInterval": 32

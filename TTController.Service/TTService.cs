@@ -70,13 +70,11 @@ namespace TTController.Service
             {
                 lock (_deviceManager)
                 {
+                    var isCriticalTemperature = _configManager.CurrentConfig.CriticalTemperature.Any(pair =>
+                        _cache.GetTemperature(pair.Key) >= pair.Value);
+
                     foreach (var profile in _configManager.CurrentConfig.Profiles)
                     {
-                        var speedControllers = _speedControllerManager.GetSpeedControllers(profile.Guid);
-                        var speedController = speedControllers.FirstOrDefault(c => c.Enabled);
-                        if (speedController == null)
-                            continue;
-
                         foreach (var port in profile.Ports)
                         {
                             var controller = _deviceManager.GetController(port);
@@ -84,15 +82,34 @@ namespace TTController.Service
                             _cache.StorePortData(port, data);
                         }
 
-                        var speedMap = speedController.GenerateSpeeds(profile.Ports, _cache.GetProxy());
-                        foreach (var pair in speedMap)
+                        if (isCriticalTemperature)
                         {
-                            var controller = _deviceManager.GetController(pair.Key);
-                            if (controller == null)
+                            foreach (var port in profile.Ports)
+                            {
+                                var controller = _deviceManager.GetController(port);
+                                if (controller == null)
+                                    continue;
+
+                                controller.SetSpeed(port.Id, 100);
+                            }
+                        }
+                        else
+                        {
+                            var speedControllers = _speedControllerManager.GetSpeedControllers(profile.Guid);
+                            var speedController = speedControllers.FirstOrDefault(c => c.Enabled);
+                            if (speedController == null)
                                 continue;
 
-                            Console.WriteLine($"{pair.Key} {pair.Value}");
-                            controller.SetSpeed(pair.Key.Id, pair.Value);
+                            var speedMap = speedController.GenerateSpeeds(profile.Ports, _cache.GetProxy());
+                            foreach (var pair in speedMap)
+                            {
+                                var controller = _deviceManager.GetController(pair.Key);
+                                if (controller == null)
+                                    continue;
+
+                                Console.WriteLine($"{pair.Key} {pair.Value}");
+                                controller.SetSpeed(pair.Key.Id, pair.Value);
+                            }
                         }
                     }
                 }

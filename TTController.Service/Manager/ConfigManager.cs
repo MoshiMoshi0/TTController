@@ -36,6 +36,7 @@ namespace TTController.Service.Manager
                 settings.Converters.Add(new LedColorConverter());
                 settings.Converters.Add(new TriggerConverter());
                 settings.Converters.Add(new IdentifierConverter());
+                settings.Converters.Add(new IdentifierDictionaryConverter<int>());
 
                 return settings;
             };
