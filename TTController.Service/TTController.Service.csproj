@@ -72,6 +72,7 @@
     <Compile Include="Manager\DataCache.cs" />
     <Compile Include="Rgb\Effect\DefaultEffect.cs" />
     <Compile Include="Rgb\Effect\TemperatureEffect.cs" />
+    <Compile Include="Trigger\LogicTrigger.cs" />
     <Compile Include="Utils\TypeUtils.cs" />
     <Compile Include="Utils\Extensions.cs" />
     <Compile Include="Hardware\Controller\Command\ControllerCommandFactory.cs" />
