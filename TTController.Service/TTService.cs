@@ -45,6 +45,7 @@ namespace TTController.Service
             _effectManager = new EffectManager();
             _speedControllerManager = new SpeedControllerManager();
             _deviceManager = new DeviceManager();
+            _deviceManager.Visit(_cache);
 
             foreach (var profile in _configManager.CurrentConfig.Profiles)
             {

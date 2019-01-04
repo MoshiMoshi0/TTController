@@ -19,6 +19,9 @@ namespace TTController.Service.Hardware.Controller.Command
         }
 
         #region IControllerProxy
+        public IEnumerable<PortIdentifier> Ports => Enumerable.Range(1, _definition.PortCount)
+            .Select(x => new PortIdentifier(_device.VendorId, _device.ProductId, (byte) x));
+
         public bool SetRgb(byte port, byte mode, IEnumerable<LedColor> colors)
         {
             var result = _device.WriteReadBytes(_commandFactory.SetRgbBytes(port, mode, colors));

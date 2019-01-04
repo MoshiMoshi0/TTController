@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using HidLibrary;
 using TTController.Common;
+using TTController.Service.Config;
 using TTController.Service.Hardware;
 using TTController.Service.Hardware.Controller;
 using TTController.Service.Hardware.Controller.Command;
@@ -10,7 +11,7 @@ using TTController.Service.Utils;
 
 namespace TTController.Service.Manager
 {
-    public class DeviceManager : IDisposable
+    public class DeviceManager : IDataProvider, IDisposable
     {
         //private readonly List<IControllerDefinition> _definitions;
         private readonly IReadOnlyList<HidDevice> _devices;
@@ -54,6 +55,13 @@ namespace TTController.Service.Manager
         {
             foreach (var device in _devices)
                 device.Dispose();
+        }
+
+        public void Visit(ICacheCollector collector)
+        {
+            foreach (var controller in _controllers)
+                foreach (var port in controller.Ports)
+                    collector.StorePortConfig(port, PortConfigData.Default);
         }
     }
 }
