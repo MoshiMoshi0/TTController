@@ -7,6 +7,11 @@ namespace TTController.Service.Trigger
         bool Value();
     }
 
+    public abstract class TriggerConfigBase
+    {
+        protected TriggerConfigBase() { }
+    }
+
     public abstract class TriggerBase<T> : ITriggerBase where T : TriggerConfigBase
     {
         public T Config { set; get; }

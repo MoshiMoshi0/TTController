@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TTController.Common;
 using TTController.Service.Manager;
+using TTController.Service.Trigger;
 
 namespace TTController.Service.Speed
 {
@@ -9,6 +10,11 @@ namespace TTController.Service.Speed
     {
         bool Enabled { get; }
         IDictionary<PortIdentifier, byte> GenerateSpeeds(List<PortIdentifier> ports, ICacheProvider cache);
+    }
+
+    public abstract class SpeedControllerConfigBase
+    {
+        public ITriggerBase Trigger { get; set; }
     }
 
     public abstract class SpeedControllerBase<T> : ISpeedControllerBase where T : SpeedControllerConfigBase

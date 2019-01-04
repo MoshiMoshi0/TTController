@@ -96,18 +96,15 @@
     <Compile Include="Manager\SpeedControllerManager.cs" />
     <Compile Include="Manager\TemperatureManager.cs" />
     <Compile Include="Manager\TimerManager.cs" />
-    <Compile Include="Rgb\EffectConfigBase.cs" />
     <Compile Include="Speed\Controller\PwmSpeedController.cs" />
     <Compile Include="Speed\Controller\StaticSpeedController.cs" />
     <Compile Include="Speed\SpeedControllerBase.cs" />
-    <Compile Include="Speed\SpeedControllerConfigBase.cs" />
     <Compile Include="Trigger\AlwaysTrigger.cs" />
     <Compile Include="Trigger\OneTimeTrigger.cs" />
     <Compile Include="Trigger\ProcessTrigger.cs" />
     <Compile Include="Trigger\TriggerBase.cs" />
     <Compile Include="Rgb\Effect\SnakeEffect.cs" />
     <Compile Include="Rgb\EffectBase.cs" />
-    <Compile Include="Trigger\TriggerConfigBase.cs" />
     <Compile Include="TTInstaller.cs">
       <SubType>Component</SubType>
     </Compile>
