@@ -144,7 +144,6 @@ namespace TTController.Service
             });
 
             _timerManager.Start();
-            Console.ReadKey();
             return true;
         }
 

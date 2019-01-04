@@ -12,8 +12,15 @@ namespace TTController.Service
         {
             if (Environment.UserInteractive)
             {
-                //ManageService();
-                new TTService().Initialize();
+                if (args.Length > 0 && args[0] == "--console")
+                {
+                    new TTService().Initialize();
+                    Console.ReadKey();
+                }
+                else
+                {
+                    ManageService();
+                }
             }
             else
             {
