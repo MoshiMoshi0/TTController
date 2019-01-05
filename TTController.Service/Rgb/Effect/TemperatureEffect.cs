@@ -22,13 +22,15 @@ namespace TTController.Service.Rgb.Effect
 
     public class TemperatureEffect : EffectBase<TemperatureEffectConfig>
     {
-        private LedColor _lastColor;
+        private float _r, _g, _b;
 
         public override byte EffectByte => (byte) EffectType.Full;
 
         public TemperatureEffect(TemperatureEffectConfig config) : base(config)
         {
-            _lastColor = Config.StartColor;
+            _r = Config.StartColor.R;
+            _g = Config.StartColor.G;
+            _b = Config.StartColor.B;
         }
 
         public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
@@ -47,22 +49,29 @@ namespace TTController.Service.Rgb.Effect
             if (temperature > Config.EndTemperature)
                 temperature = Config.EndTemperature;
 
-            var t = (temperature - Config.StartTemperature) /
-                               (Config.EndTemperature - Config.StartTemperature);
+            if (float.IsNaN(temperature))
+            {
+                _r = Config.EndColor.R;
+                _r = Config.EndColor.G;
+                _r = Config.EndColor.B;
+            }
+            else
+            {
+                var t = (temperature - Config.StartTemperature) /
+                        (Config.EndTemperature - Config.StartTemperature);
 
-            var rr = Config.StartColor.R * (1 - t) + Config.EndColor.R * t;
-            var gg = Config.StartColor.G * (1 - t) + Config.EndColor.G * t;
-            var bb = Config.StartColor.B * (1 - t) + Config.EndColor.B * t;
-            var target = new LedColor((byte) rr, (byte) gg, (byte) bb);
-            
-            t = 0.9f;
-            rr = _lastColor.R * (1 - t) + target.R * t;
-            gg = _lastColor.G * (1 - t) + target.G * t;
-            bb = _lastColor.B * (1 - t) + target.B * t;
+                var rr = Config.StartColor.R * (1 - t) + Config.EndColor.R * t;
+                var gg = Config.StartColor.G * (1 - t) + Config.EndColor.G * t;
+                var bb = Config.StartColor.B * (1 - t) + Config.EndColor.B * t;
 
-            var color = new LedColor((byte) rr, (byte) gg, (byte) bb);
-            _lastColor = color;
-            return ports.ToDictionary(p => p, p => new List<LedColor>{color});
+                t = 0.05f;
+                _r = _r * (1 - t) + rr * t;
+                _g = _g * (1 - t) + gg * t;
+                _b = _b * (1 - t) + bb * t;
+            }
+
+            var color = new LedColor((byte) _r, (byte) _g, (byte) _b);
+            return ports.ToDictionary(p => p, p => new List<LedColor>{ color });
         }
     }
 }
