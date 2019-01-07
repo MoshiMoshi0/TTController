@@ -12,7 +12,7 @@ namespace TTController.Service.Config
 
         public int TemperatureTimerInterval { set; get; } = 250;
         public int DeviceSpeedTimerInterval { set; get; } = 2500;
-        public int DeviceRgbTimerInterval { set; get; } = (int) (1000.0 / 60.0);
+        public int DeviceRgbTimerInterval { set; get; } = (int) (1000.0 / 30.0);
         
         public static ConfigData CreateDefault()
         {
