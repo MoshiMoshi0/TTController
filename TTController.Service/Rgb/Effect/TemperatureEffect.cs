@@ -52,8 +52,8 @@ namespace TTController.Service.Rgb.Effect
             if (float.IsNaN(temperature))
             {
                 _r = Config.EndColor.R;
-                _r = Config.EndColor.G;
-                _r = Config.EndColor.B;
+                _g = Config.EndColor.G;
+                _b = Config.EndColor.B;
             }
             else
             {
