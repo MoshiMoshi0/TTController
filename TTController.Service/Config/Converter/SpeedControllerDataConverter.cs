@@ -32,11 +32,7 @@ namespace TTController.Service.Config.Converter
 
             var json = (o.Last() as JProperty).Value.ToString();
             var config = (SpeedControllerConfigBase) JsonConvert.DeserializeObject(json, configType);
-            return new SpeedControllerData()
-            {
-                Type = speedControllerType,
-                Config = config
-            };
+            return new SpeedControllerData(speedControllerType, config);
         }
     }
 }

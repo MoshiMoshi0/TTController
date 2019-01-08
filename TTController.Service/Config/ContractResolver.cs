@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 
 namespace TTController.Service.Config
@@ -19,6 +22,16 @@ namespace TTController.Service.Config
             }
 
             return base.CreateContract(objectType);
+        }
+
+        protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
+        {
+            var property = base.CreateProperty(member, memberSerialization);
+            if (property.Writable)
+                return property;
+
+            property.Writable = (member as PropertyInfo)?.SetMethod != null;
+            return property;
         }
     }
 }

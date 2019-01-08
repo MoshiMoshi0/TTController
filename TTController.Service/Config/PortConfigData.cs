@@ -2,10 +2,10 @@
 {
     public class PortConfigData
     {
-        public string Name { set; get; } = "Unknown";
-        public int LedCount { set; get; } = 12;
-        public int LedRotation { set; get; } = 0;
-        public bool LedReverse { set; get; } = false;
+        public string Name { get; private set; } = "Unknown";
+        public int LedCount { get; private set; } = 12;
+        public int LedRotation { get; private set; } = 0;
+        public bool LedReverse { get; private set; } = false;
         
         public static PortConfigData Default = new PortConfigData();
     }

@@ -32,11 +32,7 @@ namespace TTController.Service.Config.Converter
 
             var json = (o.Last() as JProperty).Value.ToString();
             var config = (EffectConfigBase) JsonConvert.DeserializeObject(json, configType);
-            return new EffectData()
-            {
-                Type = effectType,
-                Config = config
-            };
+            return new EffectData(effectType, config);
         }
     }
 }
