@@ -160,7 +160,10 @@ It allows great configurability by using various speed controllers and rgb effec
 {
   "Type": "StaticSpeedController", 
   "Config": {
-    "Speed": 50
+    "Speed": 50,
+    "Trigger": {
+      "AlwaysTrigger": {}
+    }
   }
 }
 ```
@@ -201,7 +204,7 @@ It allows great configurability by using various speed controllers and rgb effec
 ### Trigger
 ```json
 {
-  "Property where name is trigger class name and value is trigger config"
+  "Property where key is trigger class name and value is trigger config"
   "Config depends on trigger type"
   "<type>": {}
 }
