@@ -67,12 +67,12 @@ It allows great configurability by using various speed controllers and rgb effec
 ```json
 {
   "List of profiles"
-  "Profiles": [<Profile>],
+  "Profiles": ["<Profile>"],
 
   "List of port configs"
   "The values in this list are optional, if PortConfig for a port is not present"
   "the default values will be used"
-  "PortConfig": [<PortConfig>],
+  "PortConfig": ["<PortConfig>"],
 
   "Sensor -> Critical Temperature map"
   "If the temperature of a sensor exceeds critical temperature"
@@ -80,21 +80,21 @@ It allows great configurability by using various speed controllers and rgb effec
   "CriticalTemperature": {},
 
   "Miliseconds between temperature updates"
-  "TemperatureTimerInterval": <int>,
+  "TemperatureTimerInterval": "<int>",
 
   "Miliseconds between speed updates"
-  "DeviceSpeedTimerInterval": <int>,
+  "DeviceSpeedTimerInterval": "<int>",
 
   "Miliseconds between rgb updates"
-  "DeviceRgbTimerInterval": <int>
+  "DeviceRgbTimerInterval": "<int>"
 }
 ```
 
 ##### Examples:
 ```json
 {
-  "Profiles": [...],
-  "PortConfig": [...],
+  "Profiles": ["..."],
+  "PortConfig": ["..."],
   "CriticalTemperature": {
     "/intelcpu/0/temperature/8": 90
   },
@@ -110,19 +110,19 @@ It allows great configurability by using various speed controllers and rgb effec
 ```json
 {
   "Name of the profile"
-  "Name": <string>,
+  "Name": "<string>",
 
   "GUID string"
-  "Guid": <string>,
+  "Guid": "<string>",
 
   "List of port identifiers that this profile controls"
-  "Ports": [<PortIdentifier>],
+  "Ports": ["<PortIdentifier>"],
 
   "List of speed controllers"
-  "SpeedControllers": [<SpeedController>],
+  "SpeedControllers": ["<SpeedController>"],
 
   "List of effects"
-  "Effects": [<Effect>]
+  "Effects": ["<Effect>"]
 }
 ```
 
@@ -136,8 +136,8 @@ It allows great configurability by using various speed controllers and rgb effec
     [9802, 8101, 2],
     [9802, 8101, 1]
   ],
-  "SpeedControllers": [...],
-  "Effects": [...]
+  "SpeedControllers": ["..."],
+  "Effects": ["..."]
 }
 ```
 
@@ -147,10 +147,10 @@ It allows great configurability by using various speed controllers and rgb effec
 ```json
 {
   "The class name of the speed controller"
-  "Type": <string>, 
+  "Type": "<string>", 
 
   "Config json for this speed controller, depends on controller type"
-  "Must contain a "Trigger" property"
+  "Must contain a 'Trigger' property"
   "Config": {}
 }
 ```
@@ -171,10 +171,10 @@ It allows great configurability by using various speed controllers and rgb effec
 ```json
 {
   "The class name of the effect"
-  "Type": <string>, 
+  "Type": "<string>", 
 
   "Config json for this effect, depends on effect type"
-  "Must contain a "Trigger" property"
+  "Must contain a 'Trigger' property"
   "Config": {}
 }
 ```
@@ -203,7 +203,7 @@ It allows great configurability by using various speed controllers and rgb effec
 {
   "Property where name is trigger class name and value is trigger config"
   "Config depends on trigger type"
-  "<Type>": {}
+  "<type>": {}
 }
 ```
 
@@ -227,21 +227,21 @@ It allows great configurability by using various speed controllers and rgb effec
 ```json
 {
   "Port identifier that this config applies to"
-  "Key": <PortIdentifier>,
+  "Key": "<PortIdentifier>",
 
   "Port config"
   "Value": {
     "Port name"
-    "Name": <string>,
+    "Name": "<string>",
 
     "Port led count"
-    "LedCount": <int>,
+    "LedCount": "<int>",
 
     "Led rotation/offset for rgb effects"
-    "LedRotation": <int>,
+    "LedRotation": "<int>",
 
     "If true led indexes are reversed"
-    "LedReverse": <bool>
+    "LedReverse": "<bool>"
   }
 }
 ```
