@@ -31,6 +31,7 @@ namespace TTController.Service.Rgb
     public interface IEffectBase : IDisposable
     {
         bool Enabled { get; }
+        bool HandlesLedTransformation { get; }
         byte EffectByte { get; }
         IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache);
     }
@@ -44,6 +45,7 @@ namespace TTController.Service.Rgb
     {
         public T Config { get; }
         public virtual bool Enabled => Config.Trigger?.Value() ?? false;
+        public virtual bool HandlesLedTransformation => false;
 
         protected EffectBase(T config)
         {

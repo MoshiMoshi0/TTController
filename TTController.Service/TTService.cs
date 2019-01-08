@@ -129,6 +129,25 @@ namespace TTController.Service
                             continue;
 
                         var colorMap = effect.GenerateColors(profile.Ports, _cache.GetProxy());
+                        if (!effect.HandlesLedTransformation)
+                        {
+                            foreach (var port in profile.Ports)
+                            {
+                                var config = _cache.GetPortConfig(port);
+                                if (config.LedRotation > 0 || config.LedReverse)
+                                {
+                                    var colors = colorMap[port];
+
+                                    if (config.LedRotation > 0)
+                                        colors = colors.Skip(config.LedRotation).Concat(colors.Take(config.LedRotation)).ToList();
+                                    if (config.LedReverse)
+                                        colors.Reverse();
+
+                                    colorMap[port] = colors;
+                                }
+                            }
+                        }
+
                         foreach (var (port, colors) in colorMap)
                         {
                             var controller = _deviceManager.GetController(port);

@@ -38,15 +38,8 @@ namespace TTController.Service.Rgb.Effect
             foreach (var port in ports)
             {
                 var config = cache.GetPortConfig(port);
-
-                var slice = colors.GetRange(sliceOffset, config.LedCount);
-                if (config.LedRotation > 0)
-                    slice = slice.Skip(config.LedRotation).Concat(slice.Take(config.LedRotation)).ToList();
-                if (config.LedReverse)
-                    slice.Reverse();
-
+                result.Add(port, colors.GetRange(sliceOffset, config.LedCount));
                 sliceOffset += config.LedCount;
-                result.Add(port, slice);
             }
 
             _head = ++_head % ledCount;
