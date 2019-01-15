@@ -10,6 +10,7 @@ namespace TTController.Service.Hardware.Controller.Command
         IEnumerable<byte> SetPwmBytes(byte port, int rpm);
 
         IEnumerable<byte> GetPortDataBytes(byte port);
+        IEnumerable<byte> SaveProfileBytes();
         IEnumerable<byte> InitBytes();
     }
 }

@@ -11,6 +11,7 @@ namespace TTController.Service.Hardware.Controller.Command
         bool SetSpeed(byte port, byte speed);
         bool SetPwm(byte port, int rpm);
         PortData GetPortData(byte port);
+        void SaveProfile();
         bool Init();
         bool IsValidPort(PortIdentifier port);
     }

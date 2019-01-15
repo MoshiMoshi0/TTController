@@ -60,6 +60,8 @@ namespace TTController.Service
                         _temperatureManager.EnableSensor(sensor);
             }
 
+            ApplyStateChangeProfiles(StateChangeType.Boot);
+
             _timerManager = new TimerManager();
             _timerManager.RegisterTimer(_configManager.CurrentConfig.TemperatureTimerInterval, () =>
             {
@@ -180,14 +182,20 @@ namespace TTController.Service
 
         protected override void OnStop()
         {
-            Dispose();
+            Dispose(StateChangeType.Shutdown);
             base.OnStop();
         }
 
         protected override void OnShutdown()
         {
-            Dispose();
+            Dispose(StateChangeType.Shutdown);
             base.OnShutdown();
+        }
+
+        protected void OnSuspend()
+        {
+            Dispose(StateChangeType.Suspend);
+            base.OnStop();
         }
 
         protected override bool OnPowerEvent(PowerBroadcastStatus powerStatus)
@@ -206,7 +214,7 @@ namespace TTController.Service
 
                 case PowerBroadcastStatus.QuerySuspend:
                 case PowerBroadcastStatus.Suspend:
-                    OnStop();
+                    OnSuspend();
                     break;
 
                 default:
@@ -216,12 +224,15 @@ namespace TTController.Service
             return base.OnPowerEvent(powerStatus);
         }
 
-        public new void Dispose()
+        public void Dispose(StateChangeType state)
         {
             if (IsDisposed)
                 return;
             
             _timerManager.Dispose();
+
+            ApplyStateChangeProfiles(state);
+
             _temperatureManager.Dispose();
             _deviceManager.Dispose();
             _effectManager.Dispose();
@@ -229,8 +240,35 @@ namespace TTController.Service
             _configManager.Dispose();
             _cache.Clear();
 
-            base.Dispose();
+            Dispose();
             IsDisposed = true;
+        }
+
+        private void ApplyStateChangeProfiles(StateChangeType state)
+        {
+            lock (_deviceManager)
+            {
+                foreach (var profile in _configManager.CurrentConfig.StateChangeProfiles.Where(p => p.StateChangeType == state))
+                {
+                    foreach (var port in profile.Ports)
+                    {
+                        var controller = _deviceManager.GetController(port);
+                        if (controller == null)
+                            continue;
+
+                        controller.SetSpeed(port.Id, profile.Speed);
+
+                        var mode = (byte) profile.EffectType;
+                        if (profile.EffectType.HasSpeed())
+                            mode += (byte) profile.EffectSpeed;
+
+                        controller.SetRgb(port.Id, mode, profile.EffectColors);
+
+                        if(state == StateChangeType.Boot)
+                            controller.SaveProfile();
+                    }
+                }
+            }
         }
     }
 }

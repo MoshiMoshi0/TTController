@@ -7,6 +7,7 @@ namespace TTController.Service.Config
     public class ConfigData
     {
         public List<ProfileData> Profiles { get; private set; } = new List<ProfileData>();
+        public List<StateChangeProfileData> StateChangeProfiles { get; private set; } = new List<StateChangeProfileData>();
         public IDictionary<PortIdentifier, PortConfigData> PortConfig { get; private set; } = new Dictionary<PortIdentifier, PortConfigData>();
         public IDictionary<Identifier, int> CriticalTemperature { get; private set; } = new Dictionary<Identifier, int>();
 

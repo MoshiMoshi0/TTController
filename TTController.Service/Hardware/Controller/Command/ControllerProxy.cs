@@ -46,6 +46,11 @@ namespace TTController.Service.Hardware.Controller.Command
             return new PortData(result[0], result[1], result[2], (result[4] << 8) + result[3]);
         }
 
+        public void SaveProfile()
+        {
+            var result = _device.WriteReadBytes(_commandFactory.SaveProfileBytes());
+        }
+
         public bool Init()
         {
             var result = _device.WriteReadBytes(_commandFactory.InitBytes());

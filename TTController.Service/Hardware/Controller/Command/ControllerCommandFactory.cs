@@ -28,6 +28,9 @@ namespace TTController.Service.Hardware.Controller.Command
         public IEnumerable<byte> GetPortDataBytes(byte port) => 
             new List<byte> { 0x33, 0x51, port };
 
+        public IEnumerable<byte> SaveProfileBytes() =>
+            new List<byte> { 0x32, 0x53 };
+
         public IEnumerable<byte> InitBytes() =>
             new List<byte> { 0xfe, 0x33 };
     }
