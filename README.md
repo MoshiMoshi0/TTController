@@ -3,15 +3,6 @@ TTController is a service that can control usb connected Thermaltake devices.
 
 It allows great configurability by using various speed controllers and rgb effects.
 
-## Speed Controllers:
-* Static speed
-* PWM
-
-## Effects:
-* Default
-* Snake
-* Temperature
-
 # Config
 ## Example
 ```json
@@ -62,6 +53,21 @@ It allows great configurability by using various speed controllers and rgb effec
 ```
 
 ## Documentation
+### Speed Controllers:
+* StaticSpeedController
+* PwmSpeedController
+
+### Effects:
+* DefaultEffect
+* SnakeEffect
+* TemperatureEffect
+
+### Triggers
+* AlwaysTrigger
+* OneTimeTrigger
+* ProcessTrigger
+* PulseTrigger
+* LogicTrigger
 
 ### Root
 ```json
