@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Configuration;
 using System.Linq;
 using System.ServiceProcess;
 using TTController.Service.Config;
@@ -246,6 +247,20 @@ namespace TTController.Service
 
         private void ApplyStateChangeProfiles(StateChangeType state)
         {
+            if (state == StateChangeType.Boot)
+            {
+                var configManager = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                var configCollection = configManager.AppSettings.Settings;
+
+                var key = "boot-profile-saved";
+                if (configCollection[key] != null)
+                    return;
+                
+                configCollection.Add(key, "");
+                configManager.Save(ConfigurationSaveMode.Modified);
+                ConfigurationManager.RefreshSection(configManager.AppSettings.SectionInformation.Name);
+            }
+
             lock (_deviceManager)
             {
                 foreach (var profile in _configManager.CurrentConfig.StateChangeProfiles.Where(p => p.StateChangeType == state))
