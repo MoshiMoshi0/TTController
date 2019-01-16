@@ -3,6 +3,7 @@ using System.Configuration.Install;
 using System.Linq;
 using System.Reflection;
 using System.ServiceProcess;
+using TTController.Service.Manager;
 
 namespace TTController.Service
 {
@@ -12,9 +13,13 @@ namespace TTController.Service
         {
             if (Environment.UserInteractive)
             {
-                if (args.Length > 0 && args[0] == "--console")
+                if (args.Length > 0)
                 {
-                    new TTService().Initialize();
+                    if(args[0] == "--console")
+                        new TTService().Initialize();
+                    else if (args[0] == "--info")
+                        ShowInfo();
+
                     Console.ReadKey();
                 }
                 else
@@ -35,6 +40,29 @@ namespace TTController.Service
                 UninstallService();
             else
                 InstallService();
+        }
+
+        private static void ShowInfo()
+        {
+            var deviceManager = new DeviceManager();
+            foreach (var controller in deviceManager.Controllers)
+            {
+                Console.WriteLine($"Name: {controller.Name}" +
+                                  $"\nVendorId: {controller.VendorId}" +
+                                  $"\nProductId: {controller.ProductId}" + 
+                                  $"\nPorts:");
+                foreach (var port in controller.Ports)
+                {
+                    var data = controller.GetPortData(port.Id);
+                    Console.WriteLine($"\tId: {port.Id}" +
+                                      $"\n\tStats:" +
+                                      $"\n\t\tSpeed: {data.Speed}%" +
+                                      $"\n\t\tRPM: {data.Rpm} RPM" +
+                                      $"\n\t\tUnknown: {data.Unknown}" +
+                                      $"\n\tIdentifier: [{port.ControllerVendorId}, {port.ControllerProductId}, {port.Id}]" +
+                                      $"\n");
+                }
+            }
         }
 
         private static void InstallService()

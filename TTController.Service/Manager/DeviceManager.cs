@@ -17,6 +17,8 @@ namespace TTController.Service.Manager
         private readonly IReadOnlyList<HidDevice> _devices;
         private readonly IReadOnlyList<IControllerProxy> _controllers;
 
+        public IReadOnlyList<IControllerProxy> Controllers => _controllers;
+
         public DeviceManager()
         {
             _devices = new List<HidDevice>();

@@ -19,6 +19,10 @@ namespace TTController.Service.Hardware.Controller.Command
         }
 
         #region IControllerProxy
+
+        public string Name => _definition.Name;
+        public int VendorId => _device.VendorId;
+        public int ProductId => _device.ProductId;
         public IEnumerable<PortIdentifier> Ports => Enumerable.Range(1, _definition.PortCount)
             .Select(x => new PortIdentifier(_device.VendorId, _device.ProductId, (byte) x));
 
