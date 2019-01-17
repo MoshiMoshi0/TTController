@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Configuration.Install;
 using System.Linq;
 using System.Reflection;
@@ -13,18 +13,22 @@ namespace TTController.Service
         {
             if (Environment.UserInteractive)
             {
-                if (args.Length > 0)
+                switch (AskChoice(  "[1]\tManage Service" + 
+                                  "\n[2]\tRun in console" +
+                                  "\n[3]\tDump info" + 
+                                  "\n", '1', '2', '3'))
                 {
-                    if(args[0] == "--console")
+                    case '1':
+                        ManageService();
+                        break;
+                    case '2':
                         new TTService().Initialize();
-                    else if (args[0] == "--info")
+                        Console.ReadKey();
+                        break;
+                    case '3':
                         ShowInfo();
-
-                    Console.ReadKey();
-                }
-                else
-                {
-                    ManageService();
+                        Console.ReadKey();
+                        break;
                 }
             }
             else
@@ -67,9 +71,9 @@ namespace TTController.Service
 
         private static void InstallService()
         {
-            if (AskChoice("Service not found. Install?", 'y', 'n') == 'y')
+            if (AskChoice("Service not found. Install? ", 'y', 'n') == 'y')
             {
-                if (AskChoice("Install as custom user?", 'y', 'n') == 'y')
+                if (AskChoice("Install as custom user? ", 'y', 'n') == 'y')
                     TTInstaller.Account = ServiceAccount.User;
 
                 ManagedInstallerClass.InstallHelper(new[] { "/LogFile=", "/LogToConsole=true", Assembly.GetExecutingAssembly().Location });
@@ -78,7 +82,7 @@ namespace TTController.Service
 
         private static void UninstallService()
         {
-            if (AskChoice("Service already installed. Uninstall?", 'y', 'n') == 'y')
+            if (AskChoice("Service already installed. Uninstall? ", 'y', 'n') == 'y')
                 ManagedInstallerClass.InstallHelper(new[] { "/u", "/LogFile=", "/LogToConsole=true", Assembly.GetExecutingAssembly().Location });
         }
 
@@ -86,14 +90,16 @@ namespace TTController.Service
         {
             while (true)
             {
-                Console.Write($"{message} [{string.Join(", ", choices)}]");
+                Console.Write($"{message}[{string.Join(", ", choices)}]: ");
                 var keyInfo = Console.ReadKey(true);
 
                 if (choices.Contains(keyInfo.KeyChar))
                 {
-                    Console.WriteLine($": {keyInfo.KeyChar}");
+                    Console.WriteLine($"{keyInfo.KeyChar}");
                     return keyInfo.KeyChar;
                 }
+
+                Console.WriteLine();
             }
         }
     }
