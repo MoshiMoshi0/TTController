@@ -75,6 +75,9 @@ It allows great configurability by using various speed controllers and rgb effec
   "List of profiles"
   "Profiles": ["<Profile>"],
 
+  "List of state change profiles"
+  "StateChangeProfiles": ["<StateChangeProfile>"],
+
   "List of port configs"
   "The values in this list are optional, if PortConfig for a port is not present"
   "the default values will be used"
@@ -227,6 +230,52 @@ It allows great configurability by using various speed controllers and rgb effec
   "ProcessTrigger": {
     "Processes": ["cmd"]
   }
+}
+```
+
+---
+
+### StateChangeProfile
+```json
+{
+  "State change type. One of:"
+  "[Boot, Shutdown, Suspend]" 
+  "StateChangeType": "<string>",
+
+  "List of port identifiers that this profile controls"
+  "Ports": ["<PortIdentifier>"],
+
+  "Speed from 0% to 100%"
+  "Speed": "<int>",
+
+  "Rgb effect type. One of:"
+  "[Flow, Spectrum, Ripple, Blink, Pulse, Wave, ByLed, Full]"
+  "EffectType": "<string>",
+
+  "Rgb effect speed. One of:"
+  "[Slow, Normal, Fast, Extreme]"
+  "EffectSpeed": "Normal",
+
+  "List of LedColor that the effect should use."
+  "EffectColors": ["<LedColor>"]
+}
+```
+
+##### Examples:
+```json
+{
+  "StateChangeType": "Boot",
+  "Ports": [
+    [9802, 8101, 3],
+    [9802, 8101, 2],
+    [9802, 8101, 1]
+  ],
+  "Speed": 35,
+  "EffectType": "Full",
+  "EffectSpeed": "Normal",
+  "EffectColors": [
+    [0, 255, 0]
+  ]
 }
 ```
 
