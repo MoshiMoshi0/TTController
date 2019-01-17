@@ -1,8 +1,9 @@
-using System;
+﻿using System;
 using System.Configuration.Install;
 using System.Linq;
 using System.Reflection;
 using System.ServiceProcess;
+using OpenHardwareMonitor.Hardware;
 using TTController.Service.Manager;
 
 namespace TTController.Service
@@ -48,23 +49,44 @@ namespace TTController.Service
 
         private static void ShowInfo()
         {
-            var deviceManager = new DeviceManager();
-            foreach (var controller in deviceManager.Controllers)
+            Console.WriteLine("Controllers");
+            Console.WriteLine("-------------------------------");
+            using (var deviceManager = new DeviceManager())
             {
-                Console.WriteLine($"Name: {controller.Name}" +
-                                  $"\nVendorId: {controller.VendorId}" +
-                                  $"\nProductId: {controller.ProductId}" + 
-                                  $"\nPorts:");
-                foreach (var port in controller.Ports)
+                foreach (var controller in deviceManager.Controllers)
                 {
-                    var data = controller.GetPortData(port.Id);
-                    Console.WriteLine($"\tId: {port.Id}" +
-                                      $"\n\tStats:" +
-                                      $"\n\t\tSpeed: {data.Speed}%" +
-                                      $"\n\t\tRPM: {data.Rpm} RPM" +
-                                      $"\n\t\tUnknown: {data.Unknown}" +
-                                      $"\n\tIdentifier: [{port.ControllerVendorId}, {port.ControllerProductId}, {port.Id}]" +
-                                      $"\n");
+                    Console.WriteLine($"Name: {controller.Name}" +
+                                      $"\nVendorId: {controller.VendorId}" +
+                                      $"\nProductId: {controller.ProductId}" +
+                                      $"\nPorts:");
+                    foreach (var port in controller.Ports)
+                    {
+                        var data = controller.GetPortData(port.Id);
+                        Console.WriteLine($"\tId: {port.Id}" +
+                                          $"\n\tStats:" +
+                                          $"\n\t\tSpeed: {data.Speed}%" +
+                                          $"\n\t\tRPM: {data.Rpm} RPM" +
+                                          $"\n\t\tUnknown: {data.Unknown}" +
+                                          $"\n\tIdentifier: [{port.ControllerVendorId}, {port.ControllerProductId}, {port.Id}]" +
+                                          $"\n");
+                    }
+                }
+            }
+
+            Console.WriteLine("Sensors");
+            Console.WriteLine("-------------------------------");
+            using (var temperatureManager = new TemperatureManager(null))
+            {
+                foreach (var hardware in temperatureManager.Sensors.Select(s => s.Hardware).Distinct())
+                {
+                    hardware.Update();
+
+                    Console.WriteLine($"{hardware.Name}:");
+                    foreach (var sensor in hardware.Sensors.Where(s => s.SensorType == SensorType.Temperature))
+                        Console.WriteLine($"\t{sensor.Identifier}:" +
+                                          $"\n\t\tName: {sensor.Name}" + 
+                                          $"\n\t\tValue: {sensor.Value ?? float.NaN}" +
+                                          $"\t");
                 }
             }
         }

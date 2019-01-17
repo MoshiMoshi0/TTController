@@ -14,6 +14,8 @@ namespace TTController.Service.Manager
         private readonly Dictionary<Identifier, ITemperatureProvider> _providerMap;
         private readonly ITemperatureProviderFactory _providerFactory;
 
+        public IReadOnlyList<ISensor> Sensors => _sensors.AsReadOnly();
+
         public TemperatureManager(ITemperatureProviderFactory providerFactory)
         {
             _providerFactory = providerFactory;
