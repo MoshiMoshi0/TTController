@@ -35,6 +35,7 @@ namespace TTController.Service.Manager
             {
                 if (sensor.SensorType == SensorType.Temperature)
                     _sensors.Add(sensor);
+                sensor.ValuesTimeWindow = TimeSpan.Zero;
             }));
         }
 
