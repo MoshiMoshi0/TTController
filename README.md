@@ -3,6 +3,23 @@ TTController is a service that can control usb connected Thermaltake devices.
 
 It allows great configurability by using various speed controllers and rgb effects.
 
+# Device support
+| Device                      | Support            | Confirmed          |
+|-----------------------------|--------------------|--------------------|
+| Riing Plus 12/14/20         | :heavy_check_mark: | :heavy_check_mark: |
+| Pure Plus 12/14             | :heavy_check_mark: | :x:                |
+| Floe Riing RGB 240/280/360  | :heavy_check_mark: | :x:                |
+| WaterRam RGB                | :heavy_check_mark: | :x:                |
+| Pacific PR22-D5 Plus        | :heavy_check_mark: | :x:                |
+| Pacific CL360/RL360         | :heavy_check_mark: | :x:                |
+| Pacific W4/W5/W6            | :heavy_check_mark: | :x:                |
+| Pacific V-GTX/V-RTX         | :heavy_check_mark: | :x:                |
+| Pacific Lumi/Rad/R1/Fitting | :heavy_check_mark: | :x:                |
+| Riing Trio 12/14            | :x:                | :x:                |
+| Toughpower iRGB PLUS        | :x:                | :heavy_check_mark: |
+| TT Premium X1               | :x:                | :heavy_check_mark: |
+| Nemesis/Iris                | :x:                | :heavy_check_mark: |
+
 # Config
 ## Example
 ```json
