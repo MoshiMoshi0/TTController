@@ -4,7 +4,7 @@ using TTController.Common;
 using TTController.Service.Manager;
 using TTController.Service.Trigger;
 
-namespace TTController.Service.Speed
+namespace TTController.Service.Controller.Speed
 {
     public interface ISpeedControllerBase : IDisposable
     {

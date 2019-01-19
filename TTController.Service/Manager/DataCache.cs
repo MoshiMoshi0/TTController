@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Concurrent;
 using OpenHardwareMonitor.Hardware;
 using TTController.Common;
-using TTController.Service.Config;
+using TTController.Service.Config.Data;
 
 namespace TTController.Service.Manager
 {
@@ -58,7 +53,7 @@ namespace TTController.Service.Manager
 
         public void Clear()
         {
-            _portConfigCache.Clear();
+            _portDataCache.Clear();
             _portConfigCache.Clear();
             _temperatureCache.Clear();
         }

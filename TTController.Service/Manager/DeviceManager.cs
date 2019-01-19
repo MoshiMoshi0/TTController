@@ -3,17 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using HidLibrary;
 using TTController.Common;
-using TTController.Service.Config;
+using TTController.Service.Config.Data;
+using TTController.Service.Controller;
+using TTController.Service.Controller.Definition;
 using TTController.Service.Hardware;
-using TTController.Service.Hardware.Controller;
-using TTController.Service.Hardware.Controller.Command;
 using TTController.Service.Utils;
 
 namespace TTController.Service.Manager
 {
     public class DeviceManager : IDataProvider, IDisposable
     {
-        //private readonly List<IControllerDefinition> _definitions;
         private readonly IReadOnlyList<HidDevice> _devices;
         private readonly IReadOnlyList<IControllerProxy> _controllers;
 
@@ -24,7 +23,7 @@ namespace TTController.Service.Manager
             _devices = new List<HidDevice>();
             _controllers = new List<IControllerProxy>();
 
-            var definitions = TypeUtils.FindInAssemblies<IControllerDefinition>()
+            var definitions = typeof(IControllerDefinition).FindInAssemblies()
                 .Select(t => (IControllerDefinition)Activator.CreateInstance(t))
                 .ToList();
             

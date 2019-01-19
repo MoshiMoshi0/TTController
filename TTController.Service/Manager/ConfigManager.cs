@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using TTController.Service.Config;
 using TTController.Service.Config.Converter;
+using TTController.Service.Config.Data;
 using TTController.Service.Utils;
 
 namespace TTController.Service.Manager

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using TTController.Service.Speed;
+using TTController.Service.Controller.Speed;
 
 namespace TTController.Service.Manager
 {

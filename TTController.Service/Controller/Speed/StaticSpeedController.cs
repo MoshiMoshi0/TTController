@@ -3,7 +3,7 @@ using System.Linq;
 using TTController.Common;
 using TTController.Service.Manager;
 
-namespace TTController.Service.Speed.Controller
+namespace TTController.Service.Controller.Speed
 {
     public class StaticSpeedControllerConfig : SpeedControllerConfigBase
     {

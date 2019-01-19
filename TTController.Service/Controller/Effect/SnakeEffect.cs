@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using TTController.Common;
-using TTController.Service.Config;
 using TTController.Service.Manager;
 
-namespace TTController.Service.Rgb.Effect
+namespace TTController.Service.Controller.Effect
 {
     public class SnakeEffectConfig : EffectConfigBase
     {

@@ -54,7 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Config\ConfigData.cs" />
+    <Compile Include="Config\Data\ConfigData.cs" />
     <Compile Include="Config\ContractResolver.cs" />
     <Compile Include="Config\Converter\CurvePointConverter.cs" />
     <Compile Include="Config\Converter\IdentifierConverter.cs" />
@@ -64,26 +64,25 @@
     <Compile Include="Config\Converter\EffectDataConverter.cs" />
     <Compile Include="Config\Converter\SpeedControllerDataConverter.cs" />
     <Compile Include="Config\Converter\TriggerConverter.cs" />
-    <Compile Include="Config\EffectData.cs" />
-    <Compile Include="Config\PortConfigData.cs" />
-    <Compile Include="Config\ProfileData.cs" />
-    <Compile Include="Config\SpeedControllerData.cs" />
-    <Compile Include="Config\StateChangeProfileData.cs" />
+    <Compile Include="Config\Data\EffectData.cs" />
+    <Compile Include="Config\Data\PortConfigData.cs" />
+    <Compile Include="Config\Data\ProfileData.cs" />
+    <Compile Include="Config\Data\SpeedControllerData.cs" />
+    <Compile Include="Config\Data\ComputerStateProfileData.cs" />
     <Compile Include="Manager\DataCache.cs" />
-    <Compile Include="Rgb\Effect\DefaultEffect.cs" />
-    <Compile Include="Rgb\Effect\TemperatureEffect.cs" />
+    <Compile Include="Controller\Effect\DefaultEffect.cs" />
+    <Compile Include="Controller\Effect\TemperatureEffect.cs" />
     <Compile Include="Trigger\LogicTrigger.cs" />
     <Compile Include="Trigger\PulseTrigger.cs" />
-    <Compile Include="Utils\TypeUtils.cs" />
     <Compile Include="Utils\Extensions.cs" />
-    <Compile Include="Hardware\Controller\Command\ControllerCommandFactory.cs" />
-    <Compile Include="Hardware\Controller\Command\ControllerProxy.cs" />
-    <Compile Include="Hardware\Controller\Command\IControllerCommandFactory.cs" />
-    <Compile Include="Hardware\Controller\Command\IControllerProxy.cs" />
-    <Compile Include="Hardware\Controller\IControllerDefinition.cs" />
-    <Compile Include="Hardware\Controller\RiingControllerDefinition.cs" />
-    <Compile Include="Hardware\Controller\RiingPlusControllerDefinition.cs" />
-    <Compile Include="Hardware\Controller\RiingTrioControllerDefinition.cs" />
+    <Compile Include="Controller\Command\DefaultControllerCommandFactory.cs" />
+    <Compile Include="Controller\ControllerProxy.cs" />
+    <Compile Include="Controller\Command\IControllerCommandFactory.cs" />
+    <Compile Include="Controller\IControllerProxy.cs" />
+    <Compile Include="Controller\Definition\IControllerDefinition.cs" />
+    <Compile Include="Controller\Definition\RiingControllerDefinition.cs" />
+    <Compile Include="Controller\Definition\RiingPlusControllerDefinition.cs" />
+    <Compile Include="Controller\Definition\RiingTrioControllerDefinition.cs" />
     <Compile Include="Hardware\HidDeviceProxy.cs" />
     <Compile Include="Hardware\IHidDeviceProxy.cs" />
     <Compile Include="Hardware\Temperature\ITemperatureProvider.cs" />
@@ -97,15 +96,15 @@
     <Compile Include="Manager\SpeedControllerManager.cs" />
     <Compile Include="Manager\TemperatureManager.cs" />
     <Compile Include="Manager\TimerManager.cs" />
-    <Compile Include="Speed\Controller\PwmSpeedController.cs" />
-    <Compile Include="Speed\Controller\StaticSpeedController.cs" />
-    <Compile Include="Speed\SpeedControllerBase.cs" />
+    <Compile Include="Controller\Speed\PwmSpeedController.cs" />
+    <Compile Include="Controller\Speed\StaticSpeedController.cs" />
+    <Compile Include="Controller\Speed\SpeedControllerBase.cs" />
     <Compile Include="Trigger\AlwaysTrigger.cs" />
     <Compile Include="Trigger\OneTimeTrigger.cs" />
     <Compile Include="Trigger\ProcessTrigger.cs" />
     <Compile Include="Trigger\TriggerBase.cs" />
-    <Compile Include="Rgb\Effect\SnakeEffect.cs" />
-    <Compile Include="Rgb\EffectBase.cs" />
+    <Compile Include="Controller\Effect\SnakeEffect.cs" />
+    <Compile Include="Controller\Effect\EffectBase.cs" />
     <Compile Include="TTInstaller.cs">
       <SubType>Component</SubType>
     </Compile>

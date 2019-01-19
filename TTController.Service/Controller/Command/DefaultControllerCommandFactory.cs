@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using TTController.Common;
 
-namespace TTController.Service.Hardware.Controller.Command
+namespace TTController.Service.Controller.Command
 {
-    public class ControllerCommandFactory : IControllerCommandFactory
+    public class DefaultControllerCommandFactory : IControllerCommandFactory
     {
         public IEnumerable<byte> SetRgbBytes(byte port, byte mode, IEnumerable<LedColor> colors)
         {

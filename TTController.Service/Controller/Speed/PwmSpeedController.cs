@@ -5,7 +5,7 @@ using OpenHardwareMonitor.Hardware;
 using TTController.Common;
 using TTController.Service.Manager;
 
-namespace TTController.Service.Speed.Controller
+namespace TTController.Service.Controller.Speed
 {
     public enum SensorMixFunction
     {

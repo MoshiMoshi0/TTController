@@ -1,23 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using TTController.Common;
-using TTController.Service.Rgb;
+using TTController.Service.Controller.Effect;
 
-namespace TTController.Service.Config
+namespace TTController.Service.Config.Data
 {
-    public enum StateChangeType
+    public enum ComputerStateType
     {
         Boot,
         Shutdown,
         Suspend
     }
 
-    public class StateChangeProfileData
+    public class ComputerStateProfileData
     {
-        public StateChangeType StateChangeType { get; private set; }
+        public ComputerStateType StateType { get; private set; }
         public List<PortIdentifier> Ports { get; private set; } = new List<PortIdentifier>();
         public byte Speed { get; private set; } = 50;
         public EffectType EffectType { get; private set; } = EffectType.Spectrum;

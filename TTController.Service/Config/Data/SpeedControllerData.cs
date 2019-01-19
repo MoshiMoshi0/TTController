@@ -1,7 +1,7 @@
 ﻿using System;
-using TTController.Service.Speed;
+using TTController.Service.Controller.Speed;
 
-namespace TTController.Service.Config
+namespace TTController.Service.Config.Data
 {
     public class SpeedControllerData
     {

@@ -1,7 +1,7 @@
 ﻿using System;
-using TTController.Service.Rgb;
+using TTController.Service.Controller.Effect;
 
-namespace TTController.Service.Config
+namespace TTController.Service.Config.Data
 {
     public class EffectData
     {

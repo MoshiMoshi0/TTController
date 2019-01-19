@@ -1,4 +1,4 @@
-﻿namespace TTController.Service.Config
+﻿namespace TTController.Service.Config.Data
 {
     public class PortConfigData
     {

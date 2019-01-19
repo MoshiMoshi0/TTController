@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using TTController.Common;
 
-namespace TTController.Service.Config
+namespace TTController.Service.Config.Data
 {
     public class ProfileData
     {

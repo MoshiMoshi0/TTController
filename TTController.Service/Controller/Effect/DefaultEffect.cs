@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TTController.Common;
-using TTController.Service.Config;
 using TTController.Service.Manager;
 
-namespace TTController.Service.Rgb.Effect
+namespace TTController.Service.Controller.Effect
 {
     public class DefaultEffectConfig : EffectConfigBase
     {

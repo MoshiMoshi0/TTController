@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using TTController.Common;
+using TTController.Service.Controller.Command;
+using TTController.Service.Controller.Definition;
+using TTController.Service.Hardware;
 
-namespace TTController.Service.Hardware.Controller.Command
+namespace TTController.Service.Controller
 {
     public class ControllerProxy : IControllerProxy
     {
@@ -61,17 +64,13 @@ namespace TTController.Service.Hardware.Controller.Command
             return IsSuccess(result);
         }
 
-        public bool IsValidPort(PortIdentifier port)
-        {
-            return port.ControllerProductId == _device.ProductId &&
-                   port.ControllerVendorId == _device.VendorId &&
-                   port.Id >= 1 && port.Id <= _definition.PortCount;
-        }
+        public bool IsValidPort(PortIdentifier port) =>
+            port.ControllerProductId == _device.ProductId &&
+           port.ControllerVendorId == _device.VendorId &&
+           port.Id >= 1 && port.Id <= _definition.PortCount;
         #endregion
 
-        private bool IsSuccess(IEnumerable<byte> bytes)
-        {
-            return bytes.Any() && bytes.ElementAt(0) == 0xfc;
-        }
+        private bool IsSuccess(IEnumerable<byte> bytes) =>
+            bytes.Any() && bytes.ElementAt(0) == 0xfc;
     }
 }

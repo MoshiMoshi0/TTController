@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using TTController.Common;
-using TTController.Service.Config;
 using TTController.Service.Manager;
 using TTController.Service.Trigger;
 
-namespace TTController.Service.Rgb
+namespace TTController.Service.Controller.Effect
 {
     public enum EffectType
     {

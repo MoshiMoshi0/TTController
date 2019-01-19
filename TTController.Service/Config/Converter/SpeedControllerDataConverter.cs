@@ -2,7 +2,8 @@
 using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using TTController.Service.Speed;
+using TTController.Service.Config.Data;
+using TTController.Service.Controller.Speed;
 using TTController.Service.Utils;
 
 namespace TTController.Service.Config.Converter
@@ -24,10 +25,10 @@ namespace TTController.Service.Config.Converter
         {
             var o = JObject.ReadFrom(reader);
             var speedControllerTypeName = (o.First() as JProperty).Value.ToString();
-            var speedControllerType = TypeUtils.FindInAssemblies<ISpeedControllerBase>()
+            var speedControllerType = typeof(ISpeedControllerBase).FindInAssemblies()
                 .First(t => string.CompareOrdinal(t.Name, speedControllerTypeName) == 0);
 
-            var configType = TypeUtils.FindInAssemblies<SpeedControllerConfigBase>()
+            var configType = typeof(SpeedControllerConfigBase).FindInAssemblies()
                 .First(t => string.CompareOrdinal(t.Name, $"{speedControllerTypeName}Config") == 0);
 
             var json = (o.Last() as JProperty).Value.ToString();

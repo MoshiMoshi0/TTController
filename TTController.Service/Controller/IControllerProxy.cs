@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using TTController.Common;
 
-namespace TTController.Service.Hardware.Controller.Command
+namespace TTController.Service.Controller
 {
     public interface IControllerProxy
     {

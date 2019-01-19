@@ -24,10 +24,10 @@ namespace TTController.Service.Config.Converter
         {
             var o = JObject.ReadFrom(reader).First() as JProperty;
             var triggerTypeName = o.Name;
-            var triggerType = TypeUtils.FindInAssemblies<ITriggerBase>()
+            var triggerType = typeof(ITriggerBase).FindInAssemblies()
                 .First(t => string.CompareOrdinal(t.Name, triggerTypeName) == 0);
             
-            var configType = TypeUtils.FindInAssemblies<TriggerConfigBase>()
+            var configType = typeof(TriggerConfigBase).FindInAssemblies()
                 .First(t => string.CompareOrdinal(t.Name, $"{triggerTypeName}Config") == 0);
 
             var config = (TriggerConfigBase)JsonConvert.DeserializeObject(o.Value.ToString(), configType);

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TTController.Service.Hardware.Controller
+namespace TTController.Service.Controller.Definition
 {
     public interface IControllerDefinition
     {

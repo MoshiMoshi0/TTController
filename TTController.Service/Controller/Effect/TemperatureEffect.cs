@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using OpenHardwareMonitor.Hardware;
 using TTController.Common;
+using TTController.Service.Controller.Speed;
 using TTController.Service.Manager;
-using TTController.Service.Speed.Controller;
 
-namespace TTController.Service.Rgb.Effect
+namespace TTController.Service.Controller.Effect
 {
     public class TemperatureEffectConfig : EffectConfigBase
     {

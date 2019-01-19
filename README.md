@@ -92,8 +92,8 @@ It allows great configurability by using various speed controllers and rgb effec
   "List of profiles"
   "Profiles": ["<Profile>"],
 
-  "List of state change profiles"
-  "StateChangeProfiles": ["<StateChangeProfile>"],
+  "List of computer state profiles"
+  "ComputerStateProfiles": ["<ComputerStateProfile>"],
 
   "List of port configs"
   "The values in this list are optional, if PortConfig for a port is not present"
@@ -252,12 +252,12 @@ It allows great configurability by using various speed controllers and rgb effec
 
 ---
 
-### StateChangeProfile
+### ComputerStateProfile
 ```json
 {
-  "State change type. One of:"
+  "State type. One of:"
   "[Boot, Shutdown, Suspend]" 
-  "StateChangeType": "<string>",
+  "StateType": "<string>",
 
   "List of port identifiers that this profile controls"
   "Ports": ["<PortIdentifier>"],
@@ -281,7 +281,7 @@ It allows great configurability by using various speed controllers and rgb effec
 ##### Examples:
 ```json
 {
-  "StateChangeType": "Boot",
+  "StateType": "Boot",
   "Ports": [
     [9802, 8101, 3],
     [9802, 8101, 2],

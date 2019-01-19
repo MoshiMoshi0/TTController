@@ -2,7 +2,8 @@
 using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using TTController.Service.Rgb;
+using TTController.Service.Config.Data;
+using TTController.Service.Controller.Effect;
 using TTController.Service.Utils;
 
 namespace TTController.Service.Config.Converter
@@ -24,10 +25,10 @@ namespace TTController.Service.Config.Converter
         {
             var o = JObject.ReadFrom(reader);
             var effectTypeName = (o.First() as JProperty).Value.ToString();
-            var effectType = TypeUtils.FindInAssemblies<IEffectBase>()
+            var effectType = typeof(IEffectBase).FindInAssemblies()
                 .First(t => string.CompareOrdinal(t.Name, effectTypeName) == 0);
 
-            var configType = TypeUtils.FindInAssemblies<EffectConfigBase>()
+            var configType = typeof(EffectConfigBase).FindInAssemblies()
                 .First(t => string.CompareOrdinal(t.Name, $"{effectTypeName}Config") == 0);
 
             var json = (o.Last() as JProperty).Value.ToString();

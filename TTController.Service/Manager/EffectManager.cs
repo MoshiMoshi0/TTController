@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using TTController.Service.Rgb;
+using TTController.Service.Controller.Effect;
 
 namespace TTController.Service.Manager
 {

@@ -2,10 +2,10 @@ using System;
 using System.Configuration;
 using System.Linq;
 using System.ServiceProcess;
-using TTController.Service.Config;
+using TTController.Service.Config.Data;
+using TTController.Service.Controller.Speed;
 using TTController.Service.Hardware.Temperature;
 using TTController.Service.Manager;
-using TTController.Service.Speed.Controller;
 using TTController.Service.Utils;
 
 namespace TTController.Service
@@ -39,7 +39,7 @@ namespace TTController.Service
             _configManager.LoadOrCreateConfig();
             _configManager.Visit(_cache);
 
-            var alpha = Math.Exp(- _configManager.CurrentConfig.TemperatureTimerInterval / (double)_configManager.CurrentConfig.DeviceSpeedTimerInterval);
+            var alpha = Math.Exp(-_configManager.CurrentConfig.TemperatureTimerInterval / (double)_configManager.CurrentConfig.DeviceSpeedTimerInterval);
             var providerFactory = new MovingAverageTemperatureProviderFactory(alpha);
             _temperatureManager = new TemperatureManager(providerFactory);
 
@@ -61,7 +61,7 @@ namespace TTController.Service
                         _temperatureManager.EnableSensor(sensor);
             }
 
-            ApplyStateChangeProfiles(StateChangeType.Boot);
+            ApplyStateChangeProfiles(ComputerStateType.Boot);
 
             _timerManager = new TimerManager();
             _timerManager.RegisterTimer(_configManager.CurrentConfig.TemperatureTimerInterval, () =>
@@ -110,8 +110,7 @@ namespace TTController.Service
                                 var controller = _deviceManager.GetController(port);
                                 if (controller == null)
                                     continue;
-
-                                Console.WriteLine($"{port} {speed}");
+                                
                                 controller.SetSpeed(port.Id, speed);
                             }
                         }
@@ -183,19 +182,19 @@ namespace TTController.Service
 
         protected override void OnStop()
         {
-            Dispose(StateChangeType.Shutdown);
+            Dispose(ComputerStateType.Shutdown);
             base.OnStop();
         }
 
         protected override void OnShutdown()
         {
-            Dispose(StateChangeType.Shutdown);
+            Dispose(ComputerStateType.Shutdown);
             base.OnShutdown();
         }
 
         protected void OnSuspend()
         {
-            Dispose(StateChangeType.Suspend);
+            Dispose(ComputerStateType.Suspend);
             base.OnStop();
         }
 
@@ -225,7 +224,7 @@ namespace TTController.Service
             return base.OnPowerEvent(powerStatus);
         }
 
-        public void Dispose(StateChangeType state)
+        public void Dispose(ComputerStateType state)
         {
             if (IsDisposed)
                 return;
@@ -245,9 +244,9 @@ namespace TTController.Service
             IsDisposed = true;
         }
 
-        private void ApplyStateChangeProfiles(StateChangeType state)
+        private void ApplyStateChangeProfiles(ComputerStateType state)
         {
-            if (state == StateChangeType.Boot)
+            if (state == ComputerStateType.Boot)
             {
                 var configManager = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
                 var configCollection = configManager.AppSettings.Settings;
@@ -263,7 +262,7 @@ namespace TTController.Service
 
             lock (_deviceManager)
             {
-                foreach (var profile in _configManager.CurrentConfig.StateChangeProfiles.Where(p => p.StateChangeType == state))
+                foreach (var profile in _configManager.CurrentConfig.ComputerStateProfiles.Where(p => p.StateType == state))
                 {
                     foreach (var port in profile.Ports)
                     {
@@ -279,7 +278,7 @@ namespace TTController.Service
 
                         controller.SetRgb(port.Id, mode, profile.EffectColors);
 
-                        if(state == StateChangeType.Boot)
+                        if(state == ComputerStateType.Boot)
                             controller.SaveProfile();
                     }
                 }
