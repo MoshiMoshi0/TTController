@@ -54,6 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config\Converter\EffectDataConverter.cs" />
     <Compile Include="Config\Data\ConfigData.cs" />
     <Compile Include="Config\ContractResolver.cs" />
     <Compile Include="Config\Converter\CurvePointConverter.cs" />
@@ -61,19 +62,12 @@
     <Compile Include="Config\Converter\LedColorConverter.cs" />
     <Compile Include="Config\Converter\ObjectToArrayConverter.cs" />
     <Compile Include="Config\Converter\PortIdentifierConverter.cs" />
-    <Compile Include="Config\Converter\EffectDataConverter.cs" />
     <Compile Include="Config\Converter\SpeedControllerDataConverter.cs" />
     <Compile Include="Config\Converter\TriggerConverter.cs" />
     <Compile Include="Config\Data\EffectData.cs" />
-    <Compile Include="Config\Data\PortConfigData.cs" />
     <Compile Include="Config\Data\ProfileData.cs" />
     <Compile Include="Config\Data\SpeedControllerData.cs" />
     <Compile Include="Config\Data\ComputerStateProfileData.cs" />
-    <Compile Include="Manager\DataCache.cs" />
-    <Compile Include="Controller\Effect\DefaultEffect.cs" />
-    <Compile Include="Controller\Effect\TemperatureEffect.cs" />
-    <Compile Include="Trigger\LogicTrigger.cs" />
-    <Compile Include="Trigger\PulseTrigger.cs" />
     <Compile Include="Utils\Extensions.cs" />
     <Compile Include="Controller\Command\DefaultControllerCommandFactory.cs" />
     <Compile Include="Controller\ControllerProxy.cs" />
@@ -96,15 +90,6 @@
     <Compile Include="Manager\SpeedControllerManager.cs" />
     <Compile Include="Manager\TemperatureManager.cs" />
     <Compile Include="Manager\TimerManager.cs" />
-    <Compile Include="Controller\Speed\PwmSpeedController.cs" />
-    <Compile Include="Controller\Speed\StaticSpeedController.cs" />
-    <Compile Include="Controller\Speed\SpeedControllerBase.cs" />
-    <Compile Include="Trigger\AlwaysTrigger.cs" />
-    <Compile Include="Trigger\OneTimeTrigger.cs" />
-    <Compile Include="Trigger\ProcessTrigger.cs" />
-    <Compile Include="Trigger\TriggerBase.cs" />
-    <Compile Include="Controller\Effect\SnakeEffect.cs" />
-    <Compile Include="Controller\Effect\EffectBase.cs" />
     <Compile Include="TTInstaller.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -131,6 +116,14 @@
     <ProjectReference Include="..\TTController.Common\TTController.Common.csproj">
       <Project>{c1e69ff7-20f6-425c-b8ba-9a1116a35e52}</Project>
       <Name>TTController.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TTController.Effects\TTController.Effects.csproj">
+      <Project>{741d3910-6a1d-496b-b2d7-caec5b8005bc}</Project>
+      <Name>TTController.Effects</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TTController.SpeedControllers\TTController.SpeedControllers.csproj">
+      <Project>{e0d7d25b-f524-4f5f-88f1-4ef69743b773}</Project>
+      <Name>TTController.SpeedControllers</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

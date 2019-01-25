@@ -3,17 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenHardwareMonitor.Hardware;
 using TTController.Common;
-using TTController.Service.Manager;
 
-namespace TTController.Service.Controller.Speed
+namespace TTController.SpeedControllers
 {
-    public enum SensorMixFunction
-    {
-        Minimum,
-        Maximum,
-        Average
-    };
-
     public class PwmSpeedControllerConfig : SpeedControllerConfigBase
     {
         public List<CurvePoint> CurvePoints { get; set; }
@@ -25,6 +17,8 @@ namespace TTController.Service.Controller.Speed
 
     public class PwmSpeedController : SpeedControllerBase<PwmSpeedControllerConfig>
     {
+        public override IEnumerable<Identifier> UsedSensors => Config.Sensors;
+
         public PwmSpeedController(PwmSpeedControllerConfig config) : base(config) {}
 
         public override IDictionary<PortIdentifier, byte> GenerateSpeeds(List<PortIdentifier> ports, ICacheProvider cache)

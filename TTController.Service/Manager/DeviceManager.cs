@@ -62,7 +62,7 @@ namespace TTController.Service.Manager
         {
             foreach (var controller in _controllers)
                 foreach (var port in controller.Ports)
-                    collector.StorePortConfig(port, PortConfigData.Default);
+                    collector.StorePortConfig(port, PortConfig.Default);
         }
     }
 }

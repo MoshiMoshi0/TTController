@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenHardwareMonitor.Hardware;
+using TTController.Common;
 using TTController.Service.Hardware.Temperature;
 using TTController.Service.Utils;
 
@@ -74,12 +75,24 @@ namespace TTController.Service.Manager
             _providerMap.Add(identifier, _providerFactory.Create(sensor));
         }
 
+        public void EnableSensors(IEnumerable<Identifier> identifiers)
+        {
+            foreach (var identifier in identifiers)
+                EnableSensor(identifier);
+        }
+
         public void DisableSensor(Identifier identifier)
         {
             if (!_providerMap.ContainsKey(identifier))
                 return;
 
             _providerMap.Remove(identifier);
+        }
+
+        public void DisableSensors(IEnumerable<Identifier> identifiers)
+        {
+            foreach (var identifier in identifiers)
+                DisableSensor(identifier);
         }
 
         public void Visit(ICacheCollector collector)

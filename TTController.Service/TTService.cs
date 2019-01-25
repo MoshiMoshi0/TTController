@@ -1,9 +1,11 @@
 using System;
 using System.Configuration;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.ServiceProcess;
+using TTController.Common;
 using TTController.Service.Config.Data;
-using TTController.Service.Controller.Speed;
 using TTController.Service.Hardware.Temperature;
 using TTController.Service.Manager;
 using TTController.Service.Utils;
@@ -34,6 +36,11 @@ namespace TTController.Service
 
         public bool Initialize()
         {
+            var assemblies = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.dll", SearchOption.AllDirectories)
+                .Where(f => AppDomain.CurrentDomain.GetAssemblies().All(a => a.Location != f))
+                .TrySelect(Assembly.LoadFile, ex => { })
+                .ToList();
+
             _cache = new DataCache();
             _configManager = new ConfigManager("config.json");
             _configManager.LoadOrCreateConfig();
@@ -56,9 +63,8 @@ namespace TTController.Service
                 foreach (var speedController in profile.SpeedControllers)
                     _speedControllerManager.CreateSpeedController(profile.Guid, speedController.Type, speedController.Config);
 
-                foreach (var pwmSpeedController in _speedControllerManager.GetSpeedControllers(profile.Guid).OfType<PwmSpeedController>())
-                    foreach (var sensor in pwmSpeedController.Config.Sensors)
-                        _temperatureManager.EnableSensor(sensor);
+                _temperatureManager.EnableSensors(_speedControllerManager.GetSpeedControllers(profile.Guid).SelectMany(c => c.UsedSensors));
+                _temperatureManager.EnableSensors(_effectManager.GetEffects(profile.Guid).SelectMany(e => e.UsedSensors));
             }
 
             ApplyStateChangeProfiles(ComputerStateType.Boot);

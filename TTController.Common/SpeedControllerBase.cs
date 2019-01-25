@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using TTController.Common;
-using TTController.Service.Manager;
-using TTController.Service.Trigger;
+using System.Linq;
+using OpenHardwareMonitor.Hardware;
+using TTController.Common.Trigger;
 
-namespace TTController.Service.Controller.Speed
+namespace TTController.Common
 {
     public interface ISpeedControllerBase : IDisposable
     {
         bool Enabled { get; }
+        IEnumerable<Identifier> UsedSensors { get; }
         IDictionary<PortIdentifier, byte> GenerateSpeeds(List<PortIdentifier> ports, ICacheProvider cache);
     }
 
@@ -21,6 +22,7 @@ namespace TTController.Service.Controller.Speed
     {
         public T Config { get; }
         public virtual bool Enabled => Config.Trigger?.Value() ?? false;
+        public virtual IEnumerable<Identifier> UsedSensors => Enumerable.Empty<Identifier>();
 
         protected SpeedControllerBase(T config)
         {
