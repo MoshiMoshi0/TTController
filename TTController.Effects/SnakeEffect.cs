@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using TTController.Common;
-using TTController.Service.Manager;
 
-namespace TTController.Service.Controller.Effect
+namespace TTController.Effects
 {
     public class SnakeEffectConfig : EffectConfigBase
     {

@@ -1,4 +1,4 @@
-﻿namespace TTController.Service.Trigger
+﻿namespace TTController.Common.Trigger
 {
     public class AlwaysTriggerConfig : TriggerConfigBase { }
 

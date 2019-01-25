@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using TTController.Common;
-using TTController.Service.Controller.Effect;
 
 namespace TTController.Service.Config.Data
 {

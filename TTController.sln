@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Common", "TTCo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HidLibrary", "HidLibrary\src\HidLibrary\HidLibrary.csproj", "{9E8F1D50-74EA-4C60-BD5C-AB2C5B53BC66}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Effects", "TTController.Effects\TTController.Effects.csproj", "{741D3910-6A1D-496B-B2D7-CAEC5B8005BC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.SpeedControllers", "TTController.SpeedControllers\TTController.SpeedControllers.csproj", "{E0D7D25B-F524-4F5F-88F1-4EF69743B773}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{9E8F1D50-74EA-4C60-BD5C-AB2C5B53BC66}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E8F1D50-74EA-4C60-BD5C-AB2C5B53BC66}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9E8F1D50-74EA-4C60-BD5C-AB2C5B53BC66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{741D3910-6A1D-496B-B2D7-CAEC5B8005BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{741D3910-6A1D-496B-B2D7-CAEC5B8005BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{741D3910-6A1D-496B-B2D7-CAEC5B8005BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{741D3910-6A1D-496B-B2D7-CAEC5B8005BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0D7D25B-F524-4F5F-88F1-4EF69743B773}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0D7D25B-F524-4F5F-88F1-4EF69743B773}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0D7D25B-F524-4F5F-88F1-4EF69743B773}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0D7D25B-F524-4F5F-88F1-4EF69743B773}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

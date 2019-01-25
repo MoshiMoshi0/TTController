@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using TTController.Common;
-using TTController.Service.Manager;
 
-namespace TTController.Service.Controller.Speed
+namespace TTController.SpeedControllers
 {
     public class StaticSpeedControllerConfig : SpeedControllerConfigBase
     {

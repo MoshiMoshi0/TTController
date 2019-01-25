@@ -1,5 +1,5 @@
 ﻿using System;
-using TTController.Service.Controller.Effect;
+using TTController.Common;
 
 namespace TTController.Service.Config.Data
 {
