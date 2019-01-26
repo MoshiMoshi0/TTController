@@ -12,7 +12,7 @@ namespace TTController.Service.Config.Data
 
     public class ComputerStateProfileData
     {
-        public ComputerStateType StateType { get; private set; }
+        public ComputerStateType StateType { get; private set; } = ComputerStateType.Shutdown;
         public List<PortIdentifier> Ports { get; private set; } = new List<PortIdentifier>();
         public byte Speed { get; private set; } = 50;
         public EffectType EffectType { get; private set; } = EffectType.Spectrum;

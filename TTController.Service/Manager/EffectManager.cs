@@ -13,10 +13,8 @@ namespace TTController.Service.Manager
             _effectsGuidMap = new Dictionary<Guid, List<IEffectBase>>();
         }
 
-        public void CreateEffect(Guid guid, Type type, EffectConfigBase config)
+        public void Add(Guid guid, IEffectBase effect)
         {
-            var effect = (IEffectBase) Activator.CreateInstance(type, new object[]{config});
-
             if(!_effectsGuidMap.ContainsKey(guid))
                 _effectsGuidMap.Add(guid, new List<IEffectBase>());
             _effectsGuidMap[guid].Add(effect);

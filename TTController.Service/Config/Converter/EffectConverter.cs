@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -8,20 +9,25 @@ using TTController.Service.Utils;
 
 namespace TTController.Service.Config.Converter
 {
-    public class EffectDataConverter : JsonConverter<EffectData>
+    public class EffectConverter : JsonConverter<IEffectBase>
     {
-        public override void WriteJson(JsonWriter writer, EffectData value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, IEffectBase value, JsonSerializer serializer)
         {
+            var effectType = value.GetType();
+            var effectName = effectType.Name;
+            var effectConfig = effectType.GetProperty("Config").GetValue(value, null);
+
             var o = new JObject
             {
-                {"Type", JToken.FromObject(value.Type.Name)},
-                {"Config", JToken.FromObject(value.Config)}
+                {"Type", JToken.FromObject(effectName)},
+                {"Config", JToken.FromObject(effectConfig ?? new object())}
             };
+
             o.WriteTo(writer);
         }
 
-        public override EffectData ReadJson(JsonReader reader, Type objectType, EffectData existingValue,
-            bool hasExistingValue, JsonSerializer serializer)
+        public override IEffectBase ReadJson(JsonReader reader, Type objectType, IEffectBase existingValue, bool hasExistingValue,
+            JsonSerializer serializer)
         {
             var o = JObject.ReadFrom(reader);
             var effectTypeName = (o.First() as JProperty).Value.ToString();
@@ -33,7 +39,7 @@ namespace TTController.Service.Config.Converter
 
             var json = (o.Last() as JProperty).Value.ToString();
             var config = (EffectConfigBase) JsonConvert.DeserializeObject(json, configType);
-            return new EffectData(effectType, config);
+            return (IEffectBase)Activator.CreateInstance(effectType, new object[] {config});
         }
     }
 }

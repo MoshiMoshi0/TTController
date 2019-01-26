@@ -58,10 +58,10 @@ namespace TTController.Service
             foreach (var profile in _configManager.CurrentConfig.Profiles)
             {
                 foreach (var effect in profile.Effects)
-                    _effectManager.CreateEffect(profile.Guid, effect.Type, effect.Config);
+                    _effectManager.Add(profile.Guid, effect);
 
                 foreach (var speedController in profile.SpeedControllers)
-                    _speedControllerManager.CreateSpeedController(profile.Guid, speedController.Type, speedController.Config);
+                    _speedControllerManager.Add(profile.Guid, speedController);
 
                 _temperatureManager.EnableSensors(_speedControllerManager.GetSpeedControllers(profile.Guid).SelectMany(c => c.UsedSensors));
                 _temperatureManager.EnableSensors(_effectManager.GetEffects(profile.Guid).SelectMany(e => e.UsedSensors));

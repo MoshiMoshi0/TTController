@@ -13,10 +13,8 @@ namespace TTController.Service.Manager
             _speedControllerGuidMap = new Dictionary<Guid, List<ISpeedControllerBase>>();
         }
 
-        public void CreateSpeedController(Guid guid, Type type, SpeedControllerConfigBase config)
+        public void Add(Guid guid, ISpeedControllerBase speedController)
         {
-            var speedController = (ISpeedControllerBase)Activator.CreateInstance(type, new object[] { config });
-
             if (!_speedControllerGuidMap.ContainsKey(guid))
                 _speedControllerGuidMap.Add(guid, new List<ISpeedControllerBase>());
             _speedControllerGuidMap[guid].Add(speedController);

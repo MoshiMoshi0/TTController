@@ -32,12 +32,12 @@ namespace TTController.Service.Manager
                 };
 
                 settings.Converters.Add(new StringEnumConverter());
-                settings.Converters.Add(new EffectDataConverter());
-                settings.Converters.Add(new SpeedControllerDataConverter());
+                settings.Converters.Add(new EffectConverter());
+                settings.Converters.Add(new SpeedControllerConverter());
+                settings.Converters.Add(new TriggerConverter());
                 settings.Converters.Add(new PortIdentifierConverter());
                 settings.Converters.Add(new CurvePointConverter());
                 settings.Converters.Add(new LedColorConverter());
-                settings.Converters.Add(new TriggerConverter());
                 settings.Converters.Add(new IdentifierConverter());
                 settings.Converters.Add(new IdentifierDictionaryConverter<int>());
 

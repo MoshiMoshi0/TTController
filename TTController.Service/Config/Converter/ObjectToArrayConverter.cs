@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using TTController.Common;
 
 namespace TTController.Service.Config.Converter
 {
@@ -25,5 +26,23 @@ namespace TTController.Service.Config.Converter
 
         protected virtual IEnumerable<PropertyInfo> FilterProperties(IEnumerable<PropertyInfo> properties) => properties;
         protected abstract object[] CreateConstructorArgs(JArray array);
+    }
+
+    public class PortIdentifierConverter : ObjectToArrayConverter<PortIdentifier>
+    {
+        protected override object[] CreateConstructorArgs(JArray array) =>
+            new object[] { array[0].Value<int>(), array[1].Value<int>(), array[2].Value<byte>() };
+    }
+
+    class LedColorConverter : ObjectToArrayConverter<LedColor>
+    {
+        protected override object[] CreateConstructorArgs(JArray array) =>
+            new object[] { array[0].Value<byte>(), array[1].Value<byte>(), array[2].Value<byte>() };
+    }
+
+    public class CurvePointConverter : ObjectToArrayConverter<CurvePoint>
+    {
+        protected override object[] CreateConstructorArgs(JArray array) =>
+            new object[] { array[0].Value<int>(), array[1].Value<int>() };
     }
 }

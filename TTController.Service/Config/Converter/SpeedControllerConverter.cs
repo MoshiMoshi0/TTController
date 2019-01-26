@@ -8,19 +8,24 @@ using TTController.Service.Utils;
 
 namespace TTController.Service.Config.Converter
 {
-    public class SpeedControllerDataConverter : JsonConverter<SpeedControllerData>
+    public class SpeedControllerConverter : JsonConverter<ISpeedControllerBase>
     {
-        public override void WriteJson(JsonWriter writer, SpeedControllerData value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, ISpeedControllerBase value, JsonSerializer serializer)
         {
+            var speedControllerType = value.GetType();
+            var speedControllerName = speedControllerType.Name;
+            var speedControllerConfig = speedControllerType.GetProperty("Config").GetValue(value, null);
+
             var o = new JObject
             {
-                {"Type", JToken.FromObject(value.Type.Name)},
-                {"Config", JToken.FromObject(value.Config)}
+                {"Type", JToken.FromObject(speedControllerName)},
+                {"Config", JToken.FromObject(speedControllerConfig ?? new object())}
             };
+
             o.WriteTo(writer);
         }
 
-        public override SpeedControllerData ReadJson(JsonReader reader, Type objectType, SpeedControllerData existingValue,
+        public override ISpeedControllerBase ReadJson(JsonReader reader, Type objectType, ISpeedControllerBase existingValue,
             bool hasExistingValue, JsonSerializer serializer)
         {
             var o = JObject.ReadFrom(reader);
@@ -32,8 +37,8 @@ namespace TTController.Service.Config.Converter
                 .First(t => string.CompareOrdinal(t.Name, $"{speedControllerTypeName}Config") == 0);
 
             var json = (o.Last() as JProperty).Value.ToString();
-            var config = (SpeedControllerConfigBase) JsonConvert.DeserializeObject(json, configType);
-            return new SpeedControllerData(speedControllerType, config);
+            var config = (SpeedControllerConfigBase)JsonConvert.DeserializeObject(json, configType);
+            return (ISpeedControllerBase)Activator.CreateInstance(speedControllerType, new object[] { config });
         }
     }
 }
