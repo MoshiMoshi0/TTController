@@ -20,12 +20,12 @@ namespace TTController.Service.Manager
             _effectsGuidMap[guid].Add(effect);
         }
 
-        public List<IEffectBase> GetEffects(Guid guid)
+        public IReadOnlyList<IEffectBase> GetEffects(Guid guid)
         {
             if (!_effectsGuidMap.ContainsKey(guid))
                 return null;
 
-            return _effectsGuidMap[guid];
+            return _effectsGuidMap[guid].AsReadOnly();
         }
 
         public void Dispose()

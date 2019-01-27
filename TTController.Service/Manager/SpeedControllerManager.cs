@@ -20,12 +20,12 @@ namespace TTController.Service.Manager
             _speedControllerGuidMap[guid].Add(speedController);
         }
 
-        public List<ISpeedControllerBase> GetSpeedControllers(Guid guid)
+        public IReadOnlyList<ISpeedControllerBase> GetSpeedControllers(Guid guid)
         {
             if (!_speedControllerGuidMap.ContainsKey(guid))
                 return null;
 
-            return _speedControllerGuidMap[guid];
+            return _speedControllerGuidMap[guid].AsReadOnly();
         }
 
         public void Dispose()

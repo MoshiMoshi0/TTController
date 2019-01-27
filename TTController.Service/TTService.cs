@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
@@ -78,47 +79,43 @@ namespace TTController.Service
             });
             _timerManager.RegisterTimer(_configManager.CurrentConfig.DeviceSpeedTimerInterval, () =>
             {
-                lock (_deviceManager)
-                {
-                    var isCriticalTemperature = _configManager.CurrentConfig.CriticalTemperature.Any(pair =>
-                        _cache.GetTemperature(pair.Key) >= pair.Value);
 
-                    foreach (var profile in _configManager.CurrentConfig.Profiles)
+                var isCriticalTemperature = _configManager.CurrentConfig.CriticalTemperature.Any(pair =>
+                    _cache.GetTemperature(pair.Key) >= pair.Value);
+
+                foreach (var profile in _configManager.CurrentConfig.Profiles)
+                {
+                    foreach (var port in profile.Ports)
                     {
-                        foreach (var port in profile.Ports)
+                        var controller = _deviceManager.GetController(port);
+                        var data = controller?.GetPortData(port.Id);
+                        _cache.StorePortData(port, data);
+                    }
+
+                    IDictionary<PortIdentifier, byte> speedMap;
+                    if (isCriticalTemperature)
+                    {
+                        speedMap = profile.Ports.ToDictionary(p => p, p => (byte) 100);
+                    }
+                    else
+                    {
+                        var speedControllers = _speedControllerManager.GetSpeedControllers(profile.Guid);
+                        var speedController = speedControllers?.FirstOrDefault(c => c.Enabled);
+                        if (speedController == null)
+                            continue;
+
+                        speedMap = speedController.GenerateSpeeds(profile.Ports, _cache.GetProxy());
+                    }
+
+                    lock (_deviceManager)
+                    {
+                        foreach (var (port, speed) in speedMap)
                         {
                             var controller = _deviceManager.GetController(port);
-                            var data = controller?.GetPortData(port.Id);
-                            _cache.StorePortData(port, data);
-                        }
-
-                        if (isCriticalTemperature)
-                        {
-                            foreach (var port in profile.Ports)
-                            {
-                                var controller = _deviceManager.GetController(port);
-                                if (controller == null)
-                                    continue;
-
-                                controller.SetSpeed(port.Id, 100);
-                            }
-                        }
-                        else
-                        {
-                            var speedControllers = _speedControllerManager.GetSpeedControllers(profile.Guid);
-                            var speedController = speedControllers.FirstOrDefault(c => c.Enabled);
-                            if (speedController == null)
+                            if (controller == null)
                                 continue;
 
-                            var speedMap = speedController.GenerateSpeeds(profile.Ports, _cache.GetProxy());
-                            foreach (var (port, speed) in speedMap)
-                            {
-                                var controller = _deviceManager.GetController(port);
-                                if (controller == null)
-                                    continue;
-                                
-                                controller.SetSpeed(port.Id, speed);
-                            }
+                            controller.SetSpeed(port.Id, speed);
                         }
                     }
                 }
@@ -127,35 +124,36 @@ namespace TTController.Service
             });
             _timerManager.RegisterTimer(_configManager.CurrentConfig.DeviceRgbTimerInterval, () =>
             {
-                lock (_deviceManager)
+
+                foreach (var profile in _configManager.CurrentConfig.Profiles)
                 {
-                    foreach (var profile in _configManager.CurrentConfig.Profiles)
+                    var effects = _effectManager.GetEffects(profile.Guid);
+                    var effect = effects?.FirstOrDefault(e => e.Enabled);
+                    if (effect == null)
+                        continue;
+
+                    var colorMap = effect.GenerateColors(profile.Ports, _cache.GetProxy());
+                    if (!effect.HandlesLedTransformation)
                     {
-                        var effects = _effectManager.GetEffects(profile.Guid);
-                        var effect = effects.FirstOrDefault(e => e.Enabled);
-                        if (effect == null)
-                            continue;
-
-                        var colorMap = effect.GenerateColors(profile.Ports, _cache.GetProxy());
-                        if (!effect.HandlesLedTransformation)
+                        foreach (var port in profile.Ports)
                         {
-                            foreach (var port in profile.Ports)
+                            var config = _cache.GetPortConfig(port);
+                            if (config.LedRotation > 0 || config.LedReverse)
                             {
-                                var config = _cache.GetPortConfig(port);
-                                if (config.LedRotation > 0 || config.LedReverse)
-                                {
-                                    var colors = colorMap[port];
+                                var colors = colorMap[port];
 
-                                    if (config.LedRotation > 0)
-                                        colors = colors.Skip(config.LedRotation).Concat(colors.Take(config.LedRotation)).ToList();
-                                    if (config.LedReverse)
-                                        colors.Reverse();
+                                if (config.LedRotation > 0)
+                                    colors = colors.Skip(config.LedRotation).Concat(colors.Take(config.LedRotation)).ToList();
+                                if (config.LedReverse)
+                                    colors.Reverse();
 
-                                    colorMap[port] = colors;
-                                }
+                                colorMap[port] = colors;
                             }
                         }
+                    }
 
+                    lock (_deviceManager)
+                    {
                         foreach (var (port, colors) in colorMap)
                         {
                             var controller = _deviceManager.GetController(port);
