@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("TTController.Effects")]
+[assembly: AssemblyTitle("TTController.Plugin.StaticSpeedController")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("TTController.Effects")]
+[assembly: AssemblyProduct("TTController.Plugin.StaticSpeedController")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("741d3910-6a1d-496b-b2d7-caec5b8005bc")]
+[assembly: Guid("af042821-0045-469e-91a2-e558649e140f")]
 
 // Version information for an assembly consists of the following four values:
 //

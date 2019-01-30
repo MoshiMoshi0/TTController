@@ -40,7 +40,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -100,25 +100,37 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\HidLibrary\src\HidLibrary\HidLibrary.csproj">
+    <ProjectReference Include="..\..\Plugins\Effects\TTController.Plugin.DefaultEffect\TTController.Plugin.DefaultEffect.csproj">
+      <Project>{371d0801-022d-4ff8-b26b-62477b51ec8c}</Project>
+      <Name>TTController.Plugin.DefaultEffect</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Plugins\Effects\TTController.Plugin.SnakeEffect\TTController.Plugin.SnakeEffect.csproj">
+      <Project>{823639d2-4ec8-4541-ba26-ad93576ff79b}</Project>
+      <Name>TTController.Plugin.SnakeEffect</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Plugins\Effects\TTController.Plugin.TemperatureEffect\TTController.Plugin.TemperatureEffect.csproj">
+      <Project>{1c0448c2-4357-4734-87b3-bf4808f879b8}</Project>
+      <Name>TTController.Plugin.TemperatureEffect</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Plugins\SpeedControllers\TTController.Plugin.PwmSpeedController\TTController.Plugin.PwmSpeedController.csproj">
+      <Project>{aa931d28-c5f0-46b6-a049-6dbc5da8eb66}</Project>
+      <Name>TTController.Plugin.PwmSpeedController</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Plugins\SpeedControllers\TTController.Plugin.StaticSpeedController\TTController.Plugin.StaticSpeedController.csproj">
+      <Project>{af042821-0045-469e-91a2-e558649e140f}</Project>
+      <Name>TTController.Plugin.StaticSpeedController</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ThirdParty\HidLibrary\src\HidLibrary\HidLibrary.csproj">
       <Project>{9e8f1d50-74ea-4c60-bd5c-ab2c5b53bc66}</Project>
       <Name>HidLibrary</Name>
     </ProjectReference>
-    <ProjectReference Include="..\LibreHardwareMonitor\OpenHardwareMonitorLib.csproj">
+    <ProjectReference Include="..\..\ThirdParty\LibreHardwareMonitor\OpenHardwareMonitorLib.csproj">
       <Project>{bbc31437-ded6-4f85-b634-c4f03ad3d8b2}</Project>
       <Name>OpenHardwareMonitorLib</Name>
     </ProjectReference>
     <ProjectReference Include="..\TTController.Common\TTController.Common.csproj">
       <Project>{c1e69ff7-20f6-425c-b8ba-9a1116a35e52}</Project>
       <Name>TTController.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TTController.Effects\TTController.Effects.csproj">
-      <Project>{741d3910-6a1d-496b-b2d7-caec5b8005bc}</Project>
-      <Name>TTController.Effects</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TTController.SpeedControllers\TTController.SpeedControllers.csproj">
-      <Project>{e0d7d25b-f524-4f5f-88f1-4ef69743b773}</Project>
-      <Name>TTController.SpeedControllers</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
