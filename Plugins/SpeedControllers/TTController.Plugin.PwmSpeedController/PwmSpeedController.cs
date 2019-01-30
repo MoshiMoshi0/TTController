@@ -50,28 +50,22 @@ namespace TTController.SpeedControllers
                 break;
             }
 
-            var result = new Dictionary<PortIdentifier, byte>();
-            foreach (var port in ports)
+            var currentSpeed = cache.GetPortData(ports.First()).Speed;
+            var targetSpeed = currentSpeed;
+            var speedDiff = curveTargetSpeed - currentSpeed;
+
+            if (Math.Abs(speedDiff) >= Config.MinimumChange || curveTargetSpeed >= 100 || curveTargetSpeed <= 20)
             {
-                var currentSpeed = cache.GetPortData(port).Speed;
-                var targetSpeed = currentSpeed;
-                var speedDiff = curveTargetSpeed - currentSpeed;
+                targetSpeed = (byte)(currentSpeed +
+                                     Math.Sign(speedDiff) * Math.Min(Config.MaximumChange, Math.Abs(speedDiff)));
 
-                if (Math.Abs(speedDiff) >= Config.MinimumChange || curveTargetSpeed >= 100 || curveTargetSpeed <= 20)
-                {
-                    targetSpeed = (byte) (currentSpeed +
-                                          Math.Sign(speedDiff) * Math.Min(Config.MaximumChange, Math.Abs(speedDiff)));
-
-                    if (targetSpeed < 20)
-                        targetSpeed = curveTargetSpeed == 0 ? (byte)0 : (byte)20;
-                    else if (targetSpeed > 100)
-                        targetSpeed = 100;
-                }
-
-                result.Add(port, targetSpeed);
+                if (targetSpeed < 20)
+                    targetSpeed = curveTargetSpeed == 0 ? (byte)0 : (byte)20;
+                else if (targetSpeed > 100)
+                    targetSpeed = 100;
             }
 
-            return result;
+            return ports.ToDictionary(p => p, p => targetSpeed);
         }
     }
 }
