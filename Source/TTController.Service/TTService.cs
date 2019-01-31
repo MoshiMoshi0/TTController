@@ -85,11 +85,14 @@ namespace TTController.Service
 
                 foreach (var profile in _configManager.CurrentConfig.Profiles)
                 {
-                    foreach (var port in profile.Ports)
+                    lock (_deviceManager)
                     {
-                        var controller = _deviceManager.GetController(port);
-                        var data = controller?.GetPortData(port.Id);
-                        _cache.StorePortData(port, data);
+                        foreach (var port in profile.Ports)
+                        {
+                            var controller = _deviceManager.GetController(port);
+                            var data = controller?.GetPortData(port.Id);
+                            _cache.StorePortData(port, data);
+                        }
                     }
 
                     IDictionary<PortIdentifier, byte> speedMap;
