@@ -40,11 +40,31 @@ namespace TTController.Service
 
         private static void ManageService()
         {
-            var installed = ServiceController.GetServices().Any(s => s.ServiceName.Equals(TTInstaller.ServiceName));
-            if (installed)
-                UninstallService();
+            Console.WriteLine("\n-----------------\n");
+
+            var service = ServiceController.GetServices().FirstOrDefault(s => s.ServiceName.Equals(TTInstaller.ServiceName));
+            if (service != null)
+            {
+                var running = service.Status == ServiceControllerStatus.Running;
+                switch (AskChoice($"[1]\t{(running ? "Stop" : "Start")}" +
+                                 "\n[2]\tUninstall" +
+                                 "\n", '1', '2'))
+                {
+                    case '1':
+                        if(running)
+                            service.Stop();
+                        else
+                            service.Start();
+                        break;
+                    case '2':
+                        UninstallService();
+                        break;
+                }
+            }
             else
+            {
                 InstallService();
+            }
         }
 
         private static void ShowInfo()
