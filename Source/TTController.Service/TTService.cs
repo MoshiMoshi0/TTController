@@ -68,7 +68,7 @@ namespace TTController.Service
                 _temperatureManager.EnableSensors(_effectManager.GetEffects(profile.Guid).SelectMany(e => e.UsedSensors));
             }
 
-            ApplyStateChangeProfiles(ComputerStateType.Boot);
+            ApplyComputerStateProfile(ComputerStateType.Boot);
 
             _timerManager = new TimerManager();
             _timerManager.RegisterTimer(_configManager.CurrentConfig.TemperatureTimerInterval, () =>
@@ -238,7 +238,7 @@ namespace TTController.Service
             
             _timerManager.Dispose();
 
-            ApplyStateChangeProfiles(state);
+            ApplyComputerStateProfile(state);
 
             _temperatureManager.Dispose();
             _deviceManager.Dispose();
@@ -251,7 +251,7 @@ namespace TTController.Service
             IsDisposed = true;
         }
 
-        private void ApplyStateChangeProfiles(ComputerStateType state)
+        private void ApplyComputerStateProfile(ComputerStateType state)
         {
             if (state == ComputerStateType.Boot)
             {
