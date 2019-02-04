@@ -110,6 +110,9 @@ namespace TTController.Service
                         speedMap = speedController.GenerateSpeeds(profile.Ports, _cache.GetProxy());
                     }
 
+                    if (speedMap == null)
+                        continue;
+
                     lock (_deviceManager)
                     {
                         foreach (var (port, speed) in speedMap)
@@ -154,6 +157,9 @@ namespace TTController.Service
                             }
                         }
                     }
+
+                    if (colorMap == null)
+                        continue;
 
                     lock (_deviceManager)
                     {
