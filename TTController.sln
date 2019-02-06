@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.SnakeEf
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.TemperatureEffect", "Plugins\Effects\TTController.Plugin.TemperatureEffect\TTController.Plugin.TemperatureEffect.csproj", "{1C0448C2-4357-4734-87B3-BF4808F879B8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.SoundEffect", "Plugins\Effects\TTController.Plugin.SoundEffect\TTController.Plugin.SoundEffect.csproj", "{44D6DB37-3870-46C8-8835-AE2B19344D16}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,10 @@ Global
 		{1C0448C2-4357-4734-87B3-BF4808F879B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C0448C2-4357-4734-87B3-BF4808F879B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C0448C2-4357-4734-87B3-BF4808F879B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44D6DB37-3870-46C8-8835-AE2B19344D16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44D6DB37-3870-46C8-8835-AE2B19344D16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44D6DB37-3870-46C8-8835-AE2B19344D16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44D6DB37-3870-46C8-8835-AE2B19344D16}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -85,6 +91,7 @@ Global
 		{371D0801-022D-4FF8-B26B-62477B51EC8C} = {521264D1-73FB-44B3-8243-CB3C95AFB179}
 		{823639D2-4EC8-4541-BA26-AD93576FF79B} = {521264D1-73FB-44B3-8243-CB3C95AFB179}
 		{1C0448C2-4357-4734-87B3-BF4808F879B8} = {521264D1-73FB-44B3-8243-CB3C95AFB179}
+		{44D6DB37-3870-46C8-8835-AE2B19344D16} = {521264D1-73FB-44B3-8243-CB3C95AFB179}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9B8A6C39-77D8-476B-B89B-C39D2AF3D3B9}

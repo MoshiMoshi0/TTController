@@ -108,6 +108,10 @@
       <Project>{823639d2-4ec8-4541-ba26-ad93576ff79b}</Project>
       <Name>TTController.Plugin.SnakeEffect</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Plugins\Effects\TTController.Plugin.SoundEffect\TTController.Plugin.SoundEffect.csproj">
+      <Project>{44d6db37-3870-46c8-8835-ae2b19344d16}</Project>
+      <Name>TTController.Plugin.SoundEffect</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Plugins\Effects\TTController.Plugin.TemperatureEffect\TTController.Plugin.TemperatureEffect.csproj">
       <Project>{1c0448c2-4357-4734-87b3-bf4808f879b8}</Project>
       <Name>TTController.Plugin.TemperatureEffect</Name>

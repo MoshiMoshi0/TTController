@@ -26,6 +26,12 @@ namespace TTController.Common
         Extreme = 0x00
     }
 
+    public enum ColorGenerationMethod
+    {
+        PerPort,
+        SpanPorts
+    }
+
     public enum SensorMixFunction
     {
         Minimum,
