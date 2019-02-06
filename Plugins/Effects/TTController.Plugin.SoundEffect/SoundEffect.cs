@@ -16,7 +16,8 @@ namespace TTController.Plugin.SoundEffect
         public bool UseAverage { get; private set; } = true;
         public int MinimumFrequency { get; private set; } = 100;
         public int MaximumFrequency { get; private set; } = 10000;
-        public ScalingStrategy ScalingStrategy { get; private set; } = ScalingStrategy.Linear;
+        public ScalingStrategy ScalingStrategy { get; private set; } = ScalingStrategy.Sqrt;
+        public double ScalingFactor { get; private set; } = 2;
         public ColorGenerationMethod ColorGenerationMethod { get; private set; } = ColorGenerationMethod.SpanPorts;
         public LedColor FromColor { get; private set; }
         public LedColor ToColor { get; private set; }
@@ -57,6 +58,7 @@ namespace TTController.Plugin.SoundEffect
                 MinimumFrequency = Config.MinimumFrequency,
                 MaximumFrequency = Config.MaximumFrequency,
                 ScalingStrategy = Config.ScalingStrategy,
+                ScalingFactor = Config.ScalingFactor,
                 IsXLogScale = false,
                 SpectrumResolution = (int) _fftSize
             };

@@ -11,19 +11,17 @@ namespace TTController.Plugin.SoundEffect
 {
     public abstract class SpectrumBase
     {
-        protected const int ScaleFactorLinear = 1;
-        protected const int ScaleFactorSqr = 1;
-        protected const double MinDbValue = -90;
-        protected const double MaxDbValue = 0;
-        protected const double DbScale = (MaxDbValue - MinDbValue);
-
         private int _fftSize;
         private int _maxFftIndex;
         private int _maximumFrequencyIndex;
         private int _minimumFrequencyIndex;
         private int[] _spectrumIndexMax;
 
+        public int MinDbValue { get; set; } = -90;
+        public int MaxDbValue { get; set; } = 0;
+        public int DbScale => MaxDbValue - MinDbValue;
         public int SpectrumResolution { get; set; }
+        public double ScalingFactor { get; set; } = 2.0;
         public int MaximumFrequency { get; set; } = 20000;
         public int MinimumFrequency { get; set; } = 20;
         public ISpectrumProvider SpectrumProvider { get; set; }
@@ -83,13 +81,13 @@ namespace TTController.Plugin.SoundEffect
                 switch (ScalingStrategy)
                 {
                     case ScalingStrategy.Decibel:
-                        value0 = (((20 * Math.Log10(fftBuffer[i])) - MinDbValue) / DbScale) * actualMaxValue;
+                        value0 = ((20 * Math.Log10(fftBuffer[i]) - MinDbValue) / DbScale) * actualMaxValue;
                         break;
                     case ScalingStrategy.Linear:
-                        value0 = (fftBuffer[i] * ScaleFactorLinear) * actualMaxValue;
+                        value0 = fftBuffer[i] * ScalingFactor * actualMaxValue;
                         break;
                     case ScalingStrategy.Sqrt:
-                        value0 = ((Math.Sqrt(fftBuffer[i])) * ScaleFactorSqr) * actualMaxValue;
+                        value0 = Math.Sqrt(fftBuffer[i]) * ScalingFactor * actualMaxValue;
                         break;
                 }
 
