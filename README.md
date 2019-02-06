@@ -78,6 +78,7 @@ It allows great configurability by using various speed controllers and rgb effec
 * DefaultEffect
 * SnakeEffect
 * TemperatureEffect
+* SoundEffect
 
 ### Triggers
 * AlwaysTrigger
