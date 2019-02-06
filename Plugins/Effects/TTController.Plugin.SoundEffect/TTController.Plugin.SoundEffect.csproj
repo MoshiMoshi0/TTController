@@ -49,7 +49,7 @@
     <Compile Include="SpectrumBase.cs" />
     <Compile Include="SpectrumProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SoundEffectBase.cs" />
+    <Compile Include="SoundEffect.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Source\TTController.Common\TTController.Common.csproj">
