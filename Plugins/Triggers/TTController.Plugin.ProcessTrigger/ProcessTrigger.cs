@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using TTController.Common.Trigger;
 
-namespace TTController.Common.Trigger
+namespace TTController.Plugin.ProcessTrigger
 {
     public class ProcessTriggerConfig : TriggerConfigBase
     {

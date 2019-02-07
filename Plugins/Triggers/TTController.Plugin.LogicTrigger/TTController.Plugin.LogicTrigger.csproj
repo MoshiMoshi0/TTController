@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C1E69FF7-20F6-425C-B8BA-9A1116A35E52}</ProjectGuid>
+    <ProjectGuid>{727AA206-8FAA-42A0-8E1A-63464A2E24A9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TTController.Common</RootNamespace>
-    <AssemblyName>TTController.Common</AssemblyName>
+    <RootNamespace>TTController.Plugin.LogicTrigger</RootNamespace>
+    <AssemblyName>TTController.Plugin.LogicTrigger</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -41,22 +41,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CurvePoint.cs" />
-    <Compile Include="DataCache.cs" />
-    <Compile Include="EffectBase.cs" />
-    <Compile Include="Enums.cs" />
-    <Compile Include="LedColor.cs" />
-    <Compile Include="PortConfig.cs" />
-    <Compile Include="PortData.cs" />
-    <Compile Include="PortIdentifier.cs" />
+    <Compile Include="LogicTrigger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SpeedControllerBase.cs" />
-    <Compile Include="TriggerBase.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\ThirdParty\LibreHardwareMonitor\OpenHardwareMonitorLib.csproj">
-      <Project>{bbc31437-ded6-4f85-b634-c4f03ad3d8b2}</Project>
-      <Name>OpenHardwareMonitorLib</Name>
+    <ProjectReference Include="..\..\..\Source\TTController.Common\TTController.Common.csproj">
+      <Project>{C1E69FF7-20F6-425C-B8BA-9A1116A35E52}</Project>
+      <Name>TTController.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

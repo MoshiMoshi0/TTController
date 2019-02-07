@@ -1,6 +1,7 @@
 ﻿using System;
+using TTController.Common.Trigger;
 
-namespace TTController.Common.Trigger
+namespace TTController.Plugin.PulseTrigger
 {
     public class PulseTriggerConfig : TriggerConfigBase
     {

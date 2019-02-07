@@ -1,4 +1,6 @@
-﻿namespace TTController.Common.Trigger
+﻿using TTController.Common.Trigger;
+
+namespace TTController.Plugin.AlwaysTrigger
 {
     public class AlwaysTriggerConfig : TriggerConfigBase { }
 

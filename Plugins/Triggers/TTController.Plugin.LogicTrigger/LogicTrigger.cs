@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using TTController.Common.Trigger;
 
-namespace TTController.Common.Trigger
+namespace TTController.Plugin.LogicTrigger
 {
     public enum LogicOperation
     {

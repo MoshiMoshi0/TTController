@@ -1,4 +1,6 @@
-﻿namespace TTController.Common.Trigger
+﻿using TTController.Common.Trigger;
+
+namespace TTController.Plugin.OneTimeTrigger
 {
     public class OneTimeTriggerConfig : TriggerConfigBase { }
 
