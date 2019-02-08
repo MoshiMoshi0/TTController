@@ -100,50 +100,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Plugins\Effects\TTController.Plugin.DefaultEffect\TTController.Plugin.DefaultEffect.csproj">
-      <Project>{371d0801-022d-4ff8-b26b-62477b51ec8c}</Project>
-      <Name>TTController.Plugin.DefaultEffect</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Plugins\Effects\TTController.Plugin.SnakeEffect\TTController.Plugin.SnakeEffect.csproj">
-      <Project>{823639d2-4ec8-4541-ba26-ad93576ff79b}</Project>
-      <Name>TTController.Plugin.SnakeEffect</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Plugins\Effects\TTController.Plugin.SoundEffect\TTController.Plugin.SoundEffect.csproj">
-      <Project>{44d6db37-3870-46c8-8835-ae2b19344d16}</Project>
-      <Name>TTController.Plugin.SoundEffect</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Plugins\Effects\TTController.Plugin.TemperatureEffect\TTController.Plugin.TemperatureEffect.csproj">
-      <Project>{1c0448c2-4357-4734-87b3-bf4808f879b8}</Project>
-      <Name>TTController.Plugin.TemperatureEffect</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Plugins\SpeedControllers\TTController.Plugin.PwmSpeedController\TTController.Plugin.PwmSpeedController.csproj">
-      <Project>{aa931d28-c5f0-46b6-a049-6dbc5da8eb66}</Project>
-      <Name>TTController.Plugin.PwmSpeedController</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Plugins\SpeedControllers\TTController.Plugin.StaticSpeedController\TTController.Plugin.StaticSpeedController.csproj">
-      <Project>{af042821-0045-469e-91a2-e558649e140f}</Project>
-      <Name>TTController.Plugin.StaticSpeedController</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Plugins\Triggers\TTController.Plugin.AlwaysTrigger\TTController.Plugin.AlwaysTrigger.csproj">
-      <Project>{18de060b-89d0-4c57-9265-a232bc876c1e}</Project>
-      <Name>TTController.Plugin.AlwaysTrigger</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Plugins\Triggers\TTController.Plugin.LogicTrigger\TTController.Plugin.LogicTrigger.csproj">
-      <Project>{727aa206-8faa-42a0-8e1a-63464a2e24a9}</Project>
-      <Name>TTController.Plugin.LogicTrigger</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Plugins\Triggers\TTController.Plugin.OneTimeTrigger\TTController.Plugin.OneTimeTrigger.csproj">
-      <Project>{faec09cc-e2a6-4dc8-93c8-d1dd9cfadb2c}</Project>
-      <Name>TTController.Plugin.OneTimeTrigger</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Plugins\Triggers\TTController.Plugin.ProcessTrigger\TTController.Plugin.ProcessTrigger.csproj">
-      <Project>{c617233c-518d-4647-838d-f7b8981ddce3}</Project>
-      <Name>TTController.Plugin.ProcessTrigger</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Plugins\Triggers\TTController.Plugin.PulseTrigger\TTController.Plugin.PulseTrigger.csproj">
-      <Project>{cb3c2841-00f6-47e2-b8ef-2e70729cbd78}</Project>
-      <Name>TTController.Plugin.PulseTrigger</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\ThirdParty\HidLibrary\src\HidLibrary\HidLibrary.csproj">
       <Project>{9e8f1d50-74ea-4c60-bd5c-ab2c5b53bc66}</Project>
       <Name>HidLibrary</Name>
@@ -159,4 +115,21 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <PluginProjects Include="$(MSBuildProjectDirectory)\..\..\Plugins\**\TTController.Plugin.*.csproj" Visible="False"/>
+    <PluginDlls Include="$(MSBuildProjectDirectory)\..\..\Plugins\**\Bin\$(Configuration)\*.dll" 
+                Exclude="**\TTController.Common.dll;**\OpenHardwareMonitorLib.dll;**\HidLibrary.dll" Visible="False"/>
+  </ItemGroup>
+  <Target Name="BuildPlugins" AfterTargets="Build">    
+    <MSBuild Projects="@(PluginProjects)" ContinueOnError="false" Properties="Configuration=$(Configuration)">
+      <Output ItemName="OutputFiles" TaskParameter="TargetOutputs"/>
+    </MSBuild>
+  </Target>
+  <Target Name="CopyPlugins" AfterTargets="BuildPlugins">   
+    <Copy SourceFiles="@(PluginDlls)" 
+          DestinationFiles="@(PluginDlls->'$(TargetDir)Plugins\$([System.String]::Copy('%(RecursiveDir)').Replace('\bin\$(Configuration)', ''))\%(Filename)%(Extension)')"/>
+  </Target>
+  <Target Name="CleanPlugins" AfterTargets="Clean">   
+    <RemoveDir Directories="$(TargetDir)Plugins" />  
+  </Target>
 </Project>
