@@ -37,10 +37,13 @@ namespace TTController.Service
 
         public bool Initialize()
         {
-            var assemblies = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.dll", SearchOption.AllDirectories)
+            var pluginAssemblies = Directory.GetFiles($@"{AppDomain.CurrentDomain.BaseDirectory}\Plugins", "*.dll", SearchOption.AllDirectories)
                 .Where(f => AppDomain.CurrentDomain.GetAssemblies().All(a => a.Location != f))
                 .TrySelect(Assembly.LoadFile, ex => { })
                 .ToList();
+
+            AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>
+                pluginAssemblies.FirstOrDefault(a => string.CompareOrdinal(a.FullName, args.Name) == 0);
 
             _cache = new DataCache();
             _configManager = new ConfigManager("config.json");
