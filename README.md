@@ -1,7 +1,13 @@
-# About
-TTController is a service that can control usb connected Thermaltake devices.
+This is home to TTController, a windows service for controlling various Thermaltake RGB Plus devices. 
 
-It allows great configurability by using various speed controllers and rgb effects.
+It allows you to fully customize them by using **speed controllers**, which control the speed, and  **effects**, which control the led color. Each can be enabled or disabled dynamically by using various **triggers**.
+
+The soruce code also provides an easy way to write your own **speed controller**, **effect** or **trigger**.
+
+---
+<a href="https://github.com/devcompl/TTController/releases/latest">
+<img alt="undefined" src="https://img.shields.io/github/tag-date/devcompl/ttcontroller.svg?colorB=blue&label=release&style=flat"></a>
+<br/><br/>
 
 # Device support
 | Device                      | Support            | Confirmed          | Notes
