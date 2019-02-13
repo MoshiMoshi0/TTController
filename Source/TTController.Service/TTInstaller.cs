@@ -13,7 +13,7 @@ namespace TTController.Service
         public static readonly string ServiceName = "TTController";
         public static readonly string DisplayName = "Thermaltake Controller";
         public static readonly string Description = "This service is used to control Thermaltake devices";
-        public static ServiceAccount Account = ServiceAccount.LocalSystem;
+        public static readonly ServiceAccount Account = ServiceAccount.LocalSystem;
 
         public TTInstaller()
         {

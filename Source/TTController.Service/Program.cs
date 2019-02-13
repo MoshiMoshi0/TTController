@@ -16,7 +16,7 @@ namespace TTController.Service
             {
                 switch (AskChoice(  "[1]\tManage Service" + 
                                   "\n[2]\tRun in console" +
-                                  "\n[3]\tDump info" + 
+                                  "\n[3]\tShow hardware info" + 
                                   "\n", '1', '2', '3'))
                 {
                     case '1':
@@ -57,13 +57,16 @@ namespace TTController.Service
                             service.Start();
                         break;
                     case '2':
-                        UninstallService();
+                        ManagedInstallerClass.InstallHelper(new[] { "/u", "/LogFile=", "/LogToConsole=true", Assembly.GetExecutingAssembly().Location });
                         break;
                 }
             }
             else
             {
-                InstallService();
+                if (AskChoice("Service not found. Install? ", 'y', 'n') == 'y')
+                {
+                    ManagedInstallerClass.InstallHelper(new[] { "/LogFile=", "/LogToConsole=true", Assembly.GetExecutingAssembly().Location });
+                }
             }
         }
 
@@ -109,23 +112,6 @@ namespace TTController.Service
                                           $"\t");
                 }
             }
-        }
-
-        private static void InstallService()
-        {
-            if (AskChoice("Service not found. Install? ", 'y', 'n') == 'y')
-            {
-                if (AskChoice("Install as custom user? ", 'y', 'n') == 'y')
-                    TTInstaller.Account = ServiceAccount.User;
-
-                ManagedInstallerClass.InstallHelper(new[] { "/LogFile=", "/LogToConsole=true", Assembly.GetExecutingAssembly().Location });
-            }
-        }
-
-        private static void UninstallService()
-        {
-            if (AskChoice("Service already installed. Uninstall? ", 'y', 'n') == 'y')
-                ManagedInstallerClass.InstallHelper(new[] { "/u", "/LogFile=", "/LogToConsole=true", Assembly.GetExecutingAssembly().Location });
         }
 
         private static char AskChoice(string message, params char[] choices)
