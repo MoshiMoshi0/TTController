@@ -66,6 +66,8 @@ namespace TTController.Service
                 if (AskChoice("Service not found. Install? ", 'y', 'n') == 'y')
                 {
                     ManagedInstallerClass.InstallHelper(new[] { "/LogFile=", "/LogToConsole=true", Assembly.GetExecutingAssembly().Location });
+                    service = new ServiceController(TTInstaller.ServiceName);
+                    service.Start();
                 }
             }
         }

@@ -46,9 +46,6 @@ namespace TTController.Service
                     service.InvokeMethod("Change", paramList);
                 }
             }
-
-            using (var sc = new ServiceController(ServiceName))
-                sc.Start();
         }
 
         protected override void OnBeforeUninstall(IDictionary savedState)
