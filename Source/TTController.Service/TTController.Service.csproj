@@ -116,18 +116,19 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <PluginProjects Include="$(MSBuildProjectDirectory)\..\..\Plugins\**\TTController.Plugin.*.csproj" Visible="False"/>
-    <PluginDlls Include="$(MSBuildProjectDirectory)\..\..\Plugins\**\Bin\$(Configuration)\*.dll" 
-                Exclude="**\TTController.Common.dll;**\OpenHardwareMonitorLib.dll;**\HidLibrary.dll" Visible="False"/>
+    <PluginProjects Include="$(MSBuildProjectDirectory)\..\..\Plugins\**\TTController.Plugin.*.csproj" Visible="False" />
   </ItemGroup>
-  <Target Name="BuildPlugins" AfterTargets="Build">    
-    <MSBuild Projects="@(PluginProjects)" ContinueOnError="false" Properties="Configuration=$(Configuration)">
-      <Output ItemName="OutputFiles" TaskParameter="TargetOutputs"/>
-    </MSBuild>
+  <Target Name="BuildPlugins" AfterTargets="Build;Rebuild">    
+    <MSBuild Projects="@(PluginProjects)" ContinueOnError="false" Properties="Configuration=$(Configuration)" />
   </Target>
-  <Target Name="CopyPlugins" AfterTargets="BuildPlugins">   
+  <Target Name="CopyPlugins" AfterTargets="BuildPlugins">
+    <ItemGroup>
+      <PluginDlls Include="$(MSBuildProjectDirectory)\..\..\Plugins\**\Bin\$(Configuration)\*.dll" 
+                  Exclude="**\TTController.Common.dll;**\OpenHardwareMonitorLib.dll;**\HidLibrary.dll" Visible="True" />
+    </ItemGroup>
+    <MakeDir Directories="$(TargetDir)Plugins" />   
     <Copy SourceFiles="@(PluginDlls)" 
-          DestinationFiles="@(PluginDlls->'$(TargetDir)Plugins\$([System.String]::Copy('%(RecursiveDir)').Replace('\bin\$(Configuration)', ''))\%(Filename)%(Extension)')"/>
+          DestinationFiles="@(PluginDlls->'$(TargetDir)Plugins\$([System.String]::Copy('%(RecursiveDir)').Replace('\bin\$(Configuration)\', ''))\%(Filename)%(Extension)')" />
   </Target>
   <Target Name="CleanPlugins" AfterTargets="Clean">   
     <RemoveDir Directories="$(TargetDir)Plugins" />  
