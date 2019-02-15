@@ -43,31 +43,56 @@ namespace TTController.Service
             Console.WriteLine("\n-----------------\n");
 
             var service = ServiceController.GetServices().FirstOrDefault(s => s.ServiceName.Equals(TTInstaller.ServiceName));
+            void Start()
+            {
+                service.Start();
+                service.WaitForStatus(ServiceControllerStatus.Running);
+            }
+            void Stop()
+            {
+                service.Stop();
+                service.WaitForStatus(ServiceControllerStatus.Stopped);
+            }
+            ServiceController Install()
+            {
+                ManagedInstallerClass.InstallHelper(new[]
+                    {"/LogFile=", "/LogToConsole=true", Assembly.GetExecutingAssembly().Location});
+                return new ServiceController(TTInstaller.ServiceName);
+            }
+            void Uninstall()
+            {
+                Stop();
+                ManagedInstallerClass.InstallHelper(new[]
+                    {"/u", "/LogFile=", "/LogToConsole=true", Assembly.GetExecutingAssembly().Location});
+            }
+            void Restart() { Stop(); Start(); }
+
             if (service != null)
             {
-                var running = service.Status == ServiceControllerStatus.Running;
-                switch (AskChoice($"[1]\t{(running ? "Stop" : "Start")}" +
-                                 "\n[2]\tUninstall" +
-                                 "\n", '1', '2'))
+                if (service.Status == ServiceControllerStatus.Running)
                 {
-                    case '1':
-                        if(running)
-                            service.Stop();
-                        else
-                            service.Start();
-                        break;
-                    case '2':
-                        ManagedInstallerClass.InstallHelper(new[] { "/u", "/LogFile=", "/LogToConsole=true", Assembly.GetExecutingAssembly().Location });
-                        break;
+                    switch (AskChoice("[1]\tStop\n[2]\tRestart\n[3]\tUninstall\n", '1', '2', '3'))
+                    {
+                        case '1': Stop(); break;
+                        case '2': Restart(); break;
+                        case '3': Uninstall(); break;
+                    }
+                }
+                else
+                {
+                    switch (AskChoice("[1]\tStart\n[2]\tUninstall\n", '1', '2'))
+                    {
+                        case '1': Start(); break;
+                        case '2': Uninstall(); break;
+                    }
                 }
             }
             else
             {
                 if (AskChoice("Service not found. Install? ", 'y', 'n') == 'y')
                 {
-                    ManagedInstallerClass.InstallHelper(new[] { "/LogFile=", "/LogToConsole=true", Assembly.GetExecutingAssembly().Location });
-                    service = new ServiceController(TTInstaller.ServiceName);
-                    service.Start();
+                    service = Install();
+                    Start();
                 }
             }
         }
