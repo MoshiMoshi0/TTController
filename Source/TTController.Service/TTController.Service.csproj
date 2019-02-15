@@ -130,7 +130,8 @@
     <Copy SourceFiles="@(PluginDlls)" 
           DestinationFiles="@(PluginDlls->'$(TargetDir)Plugins\$([System.String]::Copy('%(RecursiveDir)').Replace('\bin\$(Configuration)\', ''))\%(Filename)%(Extension)')" />
   </Target>
-  <Target Name="CleanPlugins" AfterTargets="Clean">   
+  <Target Name="CleanPlugins" AfterTargets="Clean">
+    <MSBuild Projects="@(PluginProjects)" Targets="Clean" Properties="Configuration=$(Configuration)" />
     <RemoveDir Directories="$(TargetDir)Plugins" />  
   </Target>
 </Project>
