@@ -4,7 +4,7 @@ using System.Linq;
 using OpenHardwareMonitor.Hardware;
 using TTController.Common;
 
-namespace TTController.SpeedControllers
+namespace TTController.Plugin.PwmSpeedController
 {
     public class PwmSpeedControllerConfig : SpeedControllerConfigBase
     {

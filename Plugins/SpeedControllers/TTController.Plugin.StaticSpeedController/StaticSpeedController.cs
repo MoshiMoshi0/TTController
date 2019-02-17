@@ -2,7 +2,7 @@
 using System.Linq;
 using TTController.Common;
 
-namespace TTController.SpeedControllers
+namespace TTController.Plugin.StaticSpeedController
 {
     public class StaticSpeedControllerConfig : SpeedControllerConfigBase
     {

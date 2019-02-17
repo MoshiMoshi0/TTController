@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TTController.Common.Trigger
+namespace TTController.Common
 {
     public interface ITriggerBase : IDisposable
     {

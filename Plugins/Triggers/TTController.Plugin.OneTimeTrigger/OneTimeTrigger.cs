@@ -1,4 +1,4 @@
-﻿using TTController.Common.Trigger;
+﻿using TTController.Common;
 
 namespace TTController.Plugin.OneTimeTrigger
 {

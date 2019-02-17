@@ -2,7 +2,7 @@
 using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using TTController.Common.Trigger;
+using TTController.Common;
 using TTController.Service.Utils;
 
 namespace TTController.Service.Config.Converter

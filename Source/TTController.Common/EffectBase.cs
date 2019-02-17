@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenHardwareMonitor.Hardware;
-using TTController.Common.Trigger;
 
 namespace TTController.Common
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
-using TTController.Common.Trigger;
+using TTController.Common;
 
 namespace TTController.Plugin.ProcessTrigger
 {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using TTController.Common.Trigger;
+using TTController.Common;
 
 namespace TTController.Plugin.LogicTrigger
 {

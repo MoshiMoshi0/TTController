@@ -3,7 +3,7 @@ using System.Linq;
 using OpenHardwareMonitor.Hardware;
 using TTController.Common;
 
-namespace TTController.Effects
+namespace TTController.Plugin.TemperatureEffect
 {
     public class TemperatureEffectConfig : EffectConfigBase
     {

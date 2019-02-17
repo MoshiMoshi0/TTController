@@ -2,7 +2,7 @@
 using System.Linq;
 using TTController.Common;
 
-namespace TTController.Effects
+namespace TTController.Plugin.SnakeEffect
 {
     public class SnakeEffectConfig : EffectConfigBase
     {
