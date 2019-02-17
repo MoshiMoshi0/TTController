@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2019
@@ -42,6 +42,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.OneTimeTrigger", "Plugins\Triggers\TTController.Plugin.OneTimeTrigger\TTController.Plugin.OneTimeTrigger.csproj", "{FAEC09CC-E2A6-4DC8-93C8-D1DD9CFADB2C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.PulseTrigger", "Plugins\Triggers\TTController.Plugin.PulseTrigger\TTController.Plugin.PulseTrigger.csproj", "{CB3C2841-00F6-47E2-B8EF-2E70729CBD78}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{5046DC2B-BC51-4119-83FD-CF4BBE7F8C2E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -114,7 +116,9 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{742F8CC7-E38A-4263-AECF-E7230AC909AB} = {5046DC2B-BC51-4119-83FD-CF4BBE7F8C2E}
 		{BBC31437-DED6-4F85-B634-C4F03AD3D8B2} = {87837F9D-CC3C-4C37-B7C6-F74B33BE7D69}
+		{C1E69FF7-20F6-425C-B8BA-9A1116A35E52} = {5046DC2B-BC51-4119-83FD-CF4BBE7F8C2E}
 		{9E8F1D50-74EA-4C60-BD5C-AB2C5B53BC66} = {87837F9D-CC3C-4C37-B7C6-F74B33BE7D69}
 		{521264D1-73FB-44B3-8243-CB3C95AFB179} = {A3A67BA6-9598-40EC-A5B5-9526A0592772}
 		{1C64E62C-0758-423A-B436-275C2DCAC3F6} = {A3A67BA6-9598-40EC-A5B5-9526A0592772}
