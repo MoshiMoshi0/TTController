@@ -9,6 +9,35 @@ The soruce code also provides an easy way to write your own **speed controller**
 <img alt="undefined" src="https://img.shields.io/github/tag-date/devcompl/ttcontroller.svg?colorB=blue&label=release&style=flat"></a>
 <br/><br/>
 
+# Quick start
+
+* Unpack latest release to a desired directory
+* Run **TTController.Service.exe**
+* Select **Manage Service** from command line menu and install the service
+
+The service will start automatically and will create a default empty config. See **Configure** section on how to configure it.
+
+### Configure
+
+* If the service is running
+  * Stop the service using either **Manage Service** menu, **services.msc** or **net stop** 
+* Edit the **config.json** file located in the same directory as **TTController.Service.exe**
+* Start the service using either **Manage Service** menu, **services.msc** or **net start** 
+
+### Uninstallation
+
+* Run **TTController.Service.exe**
+* Select **Manage Service** from command line menu and uninstall the service
+* Remove the folder containing service files
+
+### Update
+
+* If the service is running
+  * Stop the service using either **Manage Service** menu, **services.msc** or **net stop** 
+* Remove all files but leave the **config.json** file
+* Unpack newest release to the same directory
+* Start the service using either **Manage Service** menu, **services.msc** or **net start** 
+
 # Device support
 | Device                      | Support            | Confirmed          | Notes
 |-----------------------------|--------------------|--------------------|-------------------------------------------
