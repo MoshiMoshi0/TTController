@@ -22,7 +22,9 @@ The service will start automatically and will create a default empty config. See
 * If the service is running
   * Stop the service using either **Manage Service** menu, **services.msc** or **net stop** 
 * Edit the **config.json** file located in the same directory as **TTController.Service.exe**
-* Start the service using either **Manage Service** menu, **services.msc** or **net start** 
+* Start the service using either **Manage Service** menu, **services.msc** or **net start**
+
+You can use **Show hardware info** option from the commandline menu to determine what controllers are detected and find out your port and temperature sensor identifiers to be used in **config.json**.
 
 ### Uninstallation
 
