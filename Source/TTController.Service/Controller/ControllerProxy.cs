@@ -41,12 +41,6 @@ namespace TTController.Service.Controller
             return IsSuccess(result);
         }
 
-        public bool SetPwm(byte port, int rpm)
-        {
-            var result = _device.WriteReadBytes(_commandFactory.SetPwmBytes(port, rpm));
-            return IsSuccess(result);
-        }
-
         public PortData GetPortData(byte port)
         {
             var result = _device.WriteReadBytes(_commandFactory.GetPortDataBytes(port)).ToList();

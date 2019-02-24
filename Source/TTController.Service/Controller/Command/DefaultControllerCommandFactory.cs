@@ -22,9 +22,6 @@ namespace TTController.Service.Controller.Command
         public IEnumerable<byte> SetSpeedBytes(byte port, byte speed) => 
             new List<byte> { 0x32, 0x51, port, 0x01, speed};
 
-        public IEnumerable<byte> SetPwmBytes(byte port, int rpm) => 
-            new List<byte> { 0x32, 0x51, port, 0x02, (byte)((rpm >> 8) & 0xff), (byte)(rpm & 0xff) };
-
         public IEnumerable<byte> GetPortDataBytes(byte port) => 
             new List<byte> { 0x33, 0x51, port };
 
