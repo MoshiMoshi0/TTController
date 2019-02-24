@@ -18,6 +18,9 @@ namespace TTController.Service.Hardware
 
         public bool WriteBytes(IEnumerable<byte> bytes)
         {
+            if (!bytes.Any())
+                return false;
+
             lock (_device)
             {
                 return _device.Write(bytes.Prepend((byte)0).ToArray());
