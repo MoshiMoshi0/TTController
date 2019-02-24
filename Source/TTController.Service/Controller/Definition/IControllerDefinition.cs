@@ -8,7 +8,7 @@ namespace TTController.Service.Controller.Definition
         string Name { get; }
         int VendorId { get; }
         IEnumerable<int> ProductIds { get; }
-        Type CommandFactoryType { get; }
         int PortCount { get; }
+        Type ControllerProxyType { get; }
     }
 }

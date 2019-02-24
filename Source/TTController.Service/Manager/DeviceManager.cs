@@ -6,6 +6,7 @@ using TTController.Common;
 using TTController.Service.Config.Data;
 using TTController.Service.Controller;
 using TTController.Service.Controller.Definition;
+using TTController.Service.Controller.Proxy;
 using TTController.Service.Hardware;
 using TTController.Service.Utils;
 
@@ -34,7 +35,7 @@ namespace TTController.Service.Manager
                 var detectedDevices = HidDevices.Enumerate(definition.VendorId, definition.ProductIds.ToArray());
                 foreach (var device in detectedDevices)
                 {
-                    var controller = new ControllerProxy(new HidDeviceProxy(device), definition);
+                    var controller = (IControllerProxy) Activator.CreateInstance(definition.ControllerProxyType, new HidDeviceProxy(device), definition);
                     if(!controller.Init())
                         continue;
 
