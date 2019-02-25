@@ -12,7 +12,7 @@ namespace TTController.Service.Config.Converter
     {
         public override void WriteJson(JsonWriter writer, T value, JsonSerializer serializer)
         {
-            var properties = FilterProperties(value.GetType().GetProperties());
+            var properties = FilterProperties(value);
             var array = new JArray(properties.Select(p => p.GetValue(value)));
             writer.WriteRawValue(JsonConvert.SerializeObject(array, Formatting.None));
         }
@@ -24,14 +24,24 @@ namespace TTController.Service.Config.Converter
             return (T) Activator.CreateInstance(typeof(T), CreateConstructorArgs(array));
         }
 
-        protected virtual IEnumerable<PropertyInfo> FilterProperties(IEnumerable<PropertyInfo> properties) => properties;
+        protected virtual IEnumerable<PropertyInfo> FilterProperties(T value) => value.GetType().GetProperties();
         protected abstract object[] CreateConstructorArgs(JArray array);
     }
 
     public class PortIdentifierConverter : ObjectToArrayConverter<PortIdentifier>
     {
         protected override object[] CreateConstructorArgs(JArray array) =>
-            new object[] { array[0].Value<int>(), array[1].Value<int>(), array[2].Value<byte>() };
+            new object[] { array[0].Value<int>(), array[1].Value<int>(), array.Count == 2 ? (byte)0 : array[2].Value<byte>() };
+
+        protected override IEnumerable<PropertyInfo> FilterProperties(PortIdentifier value)
+        {
+            foreach (var property in value.GetType().GetProperties())
+            {
+                if (string.CompareOrdinal(property.Name, nameof(PortIdentifier.Id)) != 0 ||
+                    (byte)property.GetValue(value) > 0)
+                    yield return property;
+            }
+        }
     }
 
     class LedColorConverter : ObjectToArrayConverter<LedColor>
