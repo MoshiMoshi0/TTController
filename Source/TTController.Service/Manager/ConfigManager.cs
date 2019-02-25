@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.IO;
 using Newtonsoft.Json;
@@ -26,6 +26,7 @@ namespace TTController.Service.Manager
                 var settings = new JsonSerializerSettings()
                 {
                     NullValueHandling = NullValueHandling.Ignore,
+                    DefaultValueHandling = DefaultValueHandling.Ignore,
                     Formatting = Formatting.Indented,
                     Culture = CultureInfo.InvariantCulture,
                     ContractResolver = new ContractResolver()
