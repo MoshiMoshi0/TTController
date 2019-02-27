@@ -46,8 +46,8 @@ The soruce code also provides an easy way to write your own **speed controller**
 | Device                      | Support            | Confirmed          | Notes
 |-----------------------------|--------------------|--------------------|-------------------------------------------
 | Riing Plus 12/14/20         | :heavy_check_mark: | :heavy_check_mark: |
-| Pure Plus 12/14             | :heavy_check_mark: | :heavy_check_mark:                |
-| Floe Riing RGB 240/280/360  | :heavy_check_mark: | :x:                |
+| Pure Plus 12/14             | :heavy_check_mark: | :heavy_check_mark: |
+| Floe Riing RGB 240/280/360  | :heavy_check_mark: | :heavy_check_mark: |
 | WaterRam RGB                | :heavy_check_mark: | :x:                |
 | Pacific PR22-D5 Plus        | :heavy_check_mark: | :x:                |
 | Pacific CL360/RL360         | :heavy_check_mark: | :x:                |
@@ -56,13 +56,7 @@ The soruce code also provides an easy way to write your own **speed controller**
 | Pacific Lumi/Rad/R1/Fitting | :heavy_check_mark: | :x:                |
 | Pacific W5/W6               | :heavy_minus_sign: | :x:                | temperature sensor unsupported
 | Riing Trio 12/14            | :heavy_minus_sign: | :x:                | unknown RGB, speed supported
-| Toughpower iRGB PLUS        | :x:                | :heavy_check_mark: |
-| TT Premium X1               | :x:                | :heavy_check_mark: |
-| Nemesis/Iris                | :x:                | :heavy_check_mark: |
-
-:heavy_check_mark: = fully supported
-:heavy_minus_sign: = partial support
-:x: = not supported
+| Toughpower iRGB PLUS        | :x:                | :heavy_minus_sign: | not implemented
 
 # Config
 ## Example
