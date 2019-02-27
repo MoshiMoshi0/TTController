@@ -117,7 +117,7 @@ namespace TTController.Service
                                           $"\n\t\tSpeed: {data.Speed}%" +
                                           $"\n\t\tRPM: {data.Rpm} RPM" +
                                           $"\n\t\tUnknown: {data.Unknown}" +
-                                          $"\n\tIdentifier: [{port.ControllerVendorId}, {port.ControllerProductId}, {port.Id}]" +
+                                          $"\n\tIdentifier: {port}" +
                                           $"\n");
                     }
                 }

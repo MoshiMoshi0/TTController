@@ -33,6 +33,7 @@
             return hashCode;
         }
 
-        public override string ToString() => $"[{Id}, 0x{ControllerVendorId:x}, 0x{ControllerProductId:x}]";
+        public override string ToString() => Id > 0 ? $"[{ControllerVendorId}, {ControllerProductId}, {Id}]" :
+                                                      $"[{ControllerVendorId}, {ControllerProductId}]";
     }
 }
