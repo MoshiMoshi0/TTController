@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,19 +9,43 @@ namespace TTController.Common
 {
     public class PortData
     {
-        public byte Id { get; }
-        public byte Unknown { get; }
-        public byte Speed { get; }
-        public int Rpm { get; }
+        public byte? PortId { get; set; }
+        public byte? Speed { get; set; }
+        public int? Rpm { get; set; }
+        public float? Temperature { get; set; }
 
-        public PortData(byte id, byte unknown, byte speed, int rpm)
+        private readonly IDictionary<string, object> _additionalData;
+
+        public object this[string key]
         {
-            Id = id;
-            Unknown = unknown;
-            Speed = speed;
-            Rpm = rpm;
+            get => _additionalData.TryGetValue(key, out var value) ? value : null;
+            set => _additionalData[key] = value;
         }
 
-        public override string ToString() => $"[{Id}, 0x{Unknown:x}, {Speed}%, {Rpm} RPM]";
+        public PortData()
+        {
+            _additionalData = new Dictionary<string, object>();
+        }
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+
+            sb.Append("[");
+            sb.Append(string.Join(", ", GetType().GetProperties()
+                .Where(p => Nullable.GetUnderlyingType(p.PropertyType) != null)
+                .Where(p => p.GetValue(this) != null)
+                .Select(p => $"{p.Name}: {p.GetValue(this).ToString()}")));
+
+            if (_additionalData.Count > 0)
+            {
+                sb.Append(", ");
+                sb.Append(string.Join(", ", _additionalData.Select(x => x.Key + ": " + x.Value)));
+            }
+
+            sb.Append("]");
+
+            return sb.ToString();
+        }
     }
 }

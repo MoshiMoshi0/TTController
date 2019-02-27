@@ -113,10 +113,7 @@ namespace TTController.Service
                     {
                         var data = controller.GetPortData(port.Id);
                         Console.WriteLine($"\tId: {port.Id}" +
-                                          $"\n\tStats:" +
-                                          $"\n\t\tSpeed: {data.Speed}%" +
-                                          $"\n\t\tRPM: {data.Rpm} RPM" +
-                                          $"\n\t\tUnknown: {data.Unknown}" +
+                                          $"\n\tData: {data}" +
                                           $"\n\tIdentifier: {port}" +
                                           $"\n");
                     }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using TTController.Common;
 using TTController.Service.Controller.Definition;
 using TTController.Service.Hardware;
@@ -38,11 +39,15 @@ namespace TTController.Service.Controller.Proxy
         {
             var result = Device.WriteReadBytes(new List<byte> { 0x33, 0x51, port }).ToList();
 
-            var id = result[0];
-            var unknown = result[1];
-            var speed = result[2];
-            var rpm = (result[4] << 8) + result[3];
-            return new PortData(id, unknown, speed, rpm);
+            var data = new PortData
+            {
+                PortId = result[0],
+                Speed = result[2],
+                Rpm = (result[4] << 8) + result[3],
+                ["Unknown"] = result[1]
+            };
+
+            return data;
         }
 
         public override void SaveProfile()
