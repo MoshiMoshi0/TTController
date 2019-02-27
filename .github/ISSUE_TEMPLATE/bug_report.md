@@ -13,5 +13,5 @@ A clear and concise description of what the bug is.
 **Expected behavior**
 A clear and concise description of what you expected to happen.
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+**Additional content**
+If applicable, add any content that can help explain your problem.
