@@ -2,16 +2,18 @@
 name: Configuration help
 about: Ask for help with configuration
 title: ''
-labels: question
+labels: configuration
 assignees: ''
 
 ---
 
 **Describe your desired configuration**
-A clear and concise description of what your desired effect and/or speed controller configuration is. Make sure you include a description of your device and controller setup.
+A clear and concise description of what your desired effect and/or speed controller configuration is. Make sure you include how many controllers you have and what devices are connected to each controller.
 
 **Hardware info**
-Attach output of **"Show hardware info"** option from the command line menu.
+```
+Attach the output of **"Show hardware info"** option from the command line menu here. Make sure the official software is not running at the same time.
+```
 
 **Current configuration**
 ```json
