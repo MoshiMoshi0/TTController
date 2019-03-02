@@ -16,6 +16,9 @@ namespace TTController.Service.Manager
 
         public void RegisterTimer(int interval, Func<bool> callback)
         {
+            if (interval <= 0)
+                return;
+
             var timer = new Timer(interval)
             {
                 UseThreadSpinWait = false
