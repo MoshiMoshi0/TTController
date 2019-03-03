@@ -57,10 +57,5 @@ namespace TTController.Service.Utils
             key = kvp.Key;
             value = kvp.Value;
         }
-
-        public static bool HasSpeed(this EffectType effectType)
-        {
-            return effectType != EffectType.ByLed && effectType != EffectType.Full;
-        }
     }
 }
