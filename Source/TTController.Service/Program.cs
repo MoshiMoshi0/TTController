@@ -1,35 +1,43 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration.Install;
 using System.Linq;
 using System.Reflection;
 using System.ServiceProcess;
 using OpenHardwareMonitor.Hardware;
 using TTController.Service.Manager;
+using TTController.Service.Utils;
 
 namespace TTController.Service
 {
     static class Program
     {
+        private static ServiceController Service => ServiceController.GetServices()
+            .FirstOrDefault(s => s.ServiceName.Equals(TTInstaller.ServiceName));
+
         static void Main(string[] args)
         {
             if (Environment.UserInteractive)
             {
-                switch (AskChoice(  "[1]\tManage Service" + 
-                                  "\n[2]\tRun in console" +
-                                  "\n[3]\tShow hardware info" + 
-                                  "\n", '1', '2', '3'))
+                var menu = new MenuPage("Main Menu");
+                menu.Add("Manage Service", ManageService, () => true);
+                menu.Add("Run in console", () => {
+                    new TTService().Initialize();
+                    Console.ReadKey();
+                    return false;
+                }, () => Service?.Status != ServiceControllerStatus.Running);
+                menu.Add("Show hardware info", () => {
+                    ShowInfo();
+                    return false;
+                }, () => Service?.Status != ServiceControllerStatus.Running);
+                menu.Add("Exit", () => true, () => true, '0');
+
+                while (true)
                 {
-                    case '1':
-                        ManageService();
-                        break;
-                    case '2':
-                        new TTService().Initialize();
-                        Console.ReadKey();
-                        break;
-                    case '3':
-                        ShowInfo();
-                        Console.ReadKey();
-                        break;
+                    Console.Clear();
+                    var selected = menu.Show();
+                    if (selected.Callback())
+                        return;
                 }
             }
             else
@@ -38,67 +46,62 @@ namespace TTController.Service
             }
         }
 
-        private static void ManageService()
+        private static bool ManageService()
         {
-            Console.WriteLine("\n-----------------\n");
+            void StopService()
+            {
+                Service?.Stop();
+                Service?.WaitForStatus(ServiceControllerStatus.Stopped);
+            }
 
-            var service = ServiceController.GetServices().FirstOrDefault(s => s.ServiceName.Equals(TTInstaller.ServiceName));
-            void Start()
+            void StartService()
             {
-                service.Start();
-                service.WaitForStatus(ServiceControllerStatus.Running);
+                Service?.Start();
+                Service?.WaitForStatus(ServiceControllerStatus.Running);
             }
-            void Stop()
+
+            var menu = new MenuPage("Main Menu > Manage Service");
+            menu.Add("Start", () =>
             {
-                service.Stop();
-                service.WaitForStatus(ServiceControllerStatus.Stopped);
-            }
-            ServiceController Install()
+                StartService();
+                return false;
+            }, () => Service?.Status != ServiceControllerStatus.Running);
+            menu.Add("Stop", () =>
             {
-                ManagedInstallerClass.InstallHelper(new[]
-                    {"/LogFile=", "/LogToConsole=true", Assembly.GetExecutingAssembly().Location});
-                return new ServiceController(TTInstaller.ServiceName);
-            }
-            void Uninstall()
-            {
-                Stop();
+                StopService();
+                return false;
+            }, () => Service?.Status == ServiceControllerStatus.Running);
+            menu.Add("Restart", () => {
+                StopService();
+                StartService();
+                return false;
+            }, () => Service?.Status == ServiceControllerStatus.Running);
+            menu.Add("Uninstall", () => {
+                if(Service?.Status != ServiceControllerStatus.Stopped)
+                    StopService();
                 ManagedInstallerClass.InstallHelper(new[]
                     {"/u", "/LogFile=", "/LogToConsole=true", Assembly.GetExecutingAssembly().Location});
-            }
-            void Restart() { Stop(); Start(); }
-
-            if (service != null)
+                return false;
+            }, () => Service != null);
+            menu.Add("Install", () => {
+                ManagedInstallerClass.InstallHelper(new[]
+                    {"/LogFile=", "/LogToConsole=true", Assembly.GetExecutingAssembly().Location});
+                return false;
+            }, () => Service == null);
+            menu.Add("Back", () => true, () => true, '0');
+            
+            while (true)
             {
-                if (service.Status == ServiceControllerStatus.Running)
-                {
-                    switch (AskChoice("[1]\tStop\n[2]\tRestart\n[3]\tUninstall\n", '1', '2', '3'))
-                    {
-                        case '1': Stop(); break;
-                        case '2': Restart(); break;
-                        case '3': Uninstall(); break;
-                    }
-                }
-                else
-                {
-                    switch (AskChoice("[1]\tStart\n[2]\tUninstall\n", '1', '2'))
-                    {
-                        case '1': Start(); break;
-                        case '2': Uninstall(); break;
-                    }
-                }
-            }
-            else
-            {
-                if (AskChoice("Service not found. Install? ", 'y', 'n') == 'y')
-                {
-                    service = Install();
-                    Start();
-                }
+                Console.Clear();
+                var selected = menu.Show();
+                if (selected.Callback())
+                    return false;
             }
         }
 
         private static void ShowInfo()
         {
+            Console.Clear();
             Console.WriteLine("Controllers");
             Console.WriteLine("-------------------------------");
             using (var deviceManager = new DeviceManager())
@@ -136,23 +139,83 @@ namespace TTController.Service
                                           $"\t");
                 }
             }
+            Console.WriteLine("-------------------------------");
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey(true);
         }
 
-        private static char AskChoice(string message, params char[] choices)
+        #region Menu
+        private class MenuOption
         {
-            while (true)
+            public MenuOption(string description, Func<bool> callback, Func<bool> enabled, char key = Char.MaxValue)
             {
-                Console.Write($"{message}[{string.Join(", ", choices)}]: ");
-                var keyInfo = Console.ReadKey(true);
+                Description = description;
+                Callback = callback;
+                Enabled = enabled;
+                Key = key;
+            }
 
-                if (choices.Contains(keyInfo.KeyChar))
+            public string Description { get; }
+            public Func<bool> Callback { get; }
+            public Func<bool> Enabled { get; }
+            public char Key { get; }
+        }
+
+        private class MenuPage
+        {
+            private readonly IList<MenuOption> _options;
+            private readonly string _header;
+
+            public void Add(string description, Func<bool> callback, Func<bool> enabled, char key = Char.MaxValue) =>
+                _options.Add(new MenuOption(description, callback, enabled, key));
+
+            public MenuPage(string header = null)
+            {
+                _header = header;
+                _options = new List<MenuOption>();
+            }
+
+            public MenuOption Show()
+            {
+                if (_header != null)
                 {
-                    Console.WriteLine($"{keyInfo.KeyChar}");
-                    return keyInfo.KeyChar;
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine(_header);
+                    Console.WriteLine("================================");
                 }
 
+                var index = 1;
+                var format = "[{0}] {1}";
+                var optionMap = _options
+                    .Where(o => o.Enabled())
+                    .ToDictionary(o => o.Key == char.MaxValue ? (char)(index++ + '0') : o.Key, o => o);
+
+                Console.ForegroundColor = ConsoleColor.Gray;
+                foreach (var (key, option) in optionMap)
+                    Console.WriteLine(format, key, option.Description);
                 Console.WriteLine();
+
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.WriteLine("Disabled options:");
+                foreach (var option in _options.Where(o => !o.Enabled()))
+                    Console.WriteLine(format, 'x', option.Description);
+                Console.WriteLine();
+
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write($"[{string.Join(", ", optionMap.Keys)}]: ");
+                
+                while (true)
+                {
+                    var keyInfo = Console.ReadKey(true);
+
+                    if (optionMap.Keys.Contains(keyInfo.KeyChar))
+                    {
+                        Console.ResetColor();
+                        return optionMap[keyInfo.KeyChar];
+                    }
+                }
             }
         }
+        #endregion
     }
 }
