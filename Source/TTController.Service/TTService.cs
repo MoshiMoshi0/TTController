@@ -191,7 +191,7 @@ namespace TTController.Service
 
                 return true;
             });
-            if(Environment.UserInteractive) _timerManager.RegisterTimer(5000, () =>
+            if(Environment.UserInteractive) _timerManager.RegisterTimer(_configManager.CurrentConfig.LoggingTimerInterval, () =>
             {
                 foreach (var profile in _configManager.CurrentConfig.Profiles)
                 {
