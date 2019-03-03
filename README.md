@@ -317,6 +317,8 @@ The soruce code also provides an easy way to write your own **speed controller**
 }
 ```
 
+> If you want to update or add a profile with **Boot** type you first need to remove `<add key="boot-profile-saved" value="" />` line from `TTController.Service.exe.Config` file and restart the service.
+
 ##### Examples:
 ```json
 {
