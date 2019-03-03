@@ -14,9 +14,9 @@ namespace TTController.Service.Config.Data
     {
         public ComputerStateType StateType { get; private set; } = ComputerStateType.Shutdown;
         public List<PortIdentifier> Ports { get; private set; } = new List<PortIdentifier>();
-        public byte Speed { get; private set; } = 50;
-        public EffectType EffectType { get; private set; } = EffectType.Spectrum;
-        public EffectSpeed EffectSpeed { get; private set; } = EffectSpeed.Normal;
+        public byte? Speed { get; private set; }
+        public EffectType? EffectType { get; private set; }
+        public EffectSpeed? EffectSpeed { get; private set; }
         public List<LedColor> EffectColors { get; private set; } = new List<LedColor>();
     }
 }
