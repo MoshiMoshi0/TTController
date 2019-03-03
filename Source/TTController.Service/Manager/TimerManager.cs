@@ -1,16 +1,20 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
+using NLog;
 
 namespace TTController.Service.Manager
 {
     public class TimerManager : IDisposable
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private readonly List<Timer> _timers;
 
         public TimerManager()
         {
+            Logger.Info("Creating Timer Manager...");
             _timers = new List<Timer>();
         }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using HidLibrary;
+using NLog;
 using TTController.Common;
 using TTController.Service.Config.Data;
 using TTController.Service.Controller;
@@ -14,6 +15,8 @@ namespace TTController.Service.Manager
 {
     public class DeviceManager : IDataProvider, IDisposable
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private readonly IReadOnlyList<HidDevice> _devices;
         private readonly IReadOnlyList<IControllerProxy> _controllers;
 
@@ -21,6 +24,7 @@ namespace TTController.Service.Manager
 
         public DeviceManager()
         {
+            Logger.Info("Creating Device Manager...");
             _devices = new List<HidDevice>();
             _controllers = new List<IControllerProxy>();
 
@@ -38,6 +42,8 @@ namespace TTController.Service.Manager
                     var controller = (IControllerProxy) Activator.CreateInstance(definition.ControllerProxyType, new HidDeviceProxy(device), definition);
                     if(!controller.Init())
                         continue;
+
+                    Logger.Info("Detected controller: {0} [{1}, {2}]", definition.Name, device.Attributes.VendorHexId, device.Attributes.ProductHexId);
 
                     devices.Add(device);
                     controllers.Add(controller);

@@ -3,6 +3,7 @@ using System.Globalization;
 using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using NLog;
 using TTController.Common;
 using TTController.Service.Config;
 using TTController.Service.Config.Converter;
@@ -13,6 +14,8 @@ namespace TTController.Service.Manager
 {
     public class ConfigManager : IDataProvider, IDisposable
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private readonly string _filename;
         
         public ConfigData CurrentConfig { private set; get; }
@@ -48,17 +51,21 @@ namespace TTController.Service.Manager
 
         public void SaveConfig()
         {
+            Logger.Info("Saving conifg...");
             using (var writer = new StreamWriter(GetConfigAbsolutePath(), false))
             {
                 writer.Write(JsonConvert.SerializeObject(CurrentConfig));
             }
+            Logger.Info("Saving done...");
         }
 
         public ConfigData LoadOrCreateConfig()
         {
+            Logger.Info("Loading config...");
             var path = GetConfigAbsolutePath();
             if (!File.Exists(path))
             {
+                Logger.Warn("Config does not exist! Creating default conifg...");
                 CurrentConfig = ConfigData.CreateDefault();
                 SaveConfig();
             }
@@ -72,6 +79,7 @@ namespace TTController.Service.Manager
                 }
             }
 
+            Logger.Info("Loading done...");
             return CurrentConfig;
         }
 

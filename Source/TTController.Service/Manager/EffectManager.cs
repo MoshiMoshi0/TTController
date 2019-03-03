@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using NLog;
 using TTController.Common;
 
 namespace TTController.Service.Manager
 {
     public class EffectManager : IDisposable
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private readonly Dictionary<Guid, List<IEffectBase>> _effectsGuidMap;
 
         public EffectManager()
         {
+            Logger.Info("Creating Effect Manager...");
             _effectsGuidMap = new Dictionary<Guid, List<IEffectBase>>();
         }
 
@@ -18,6 +22,8 @@ namespace TTController.Service.Manager
             if(!_effectsGuidMap.ContainsKey(guid))
                 _effectsGuidMap.Add(guid, new List<IEffectBase>());
             _effectsGuidMap[guid].Add(effect);
+
+            Logger.Info("Adding effect: {0} [{1}]", effect.GetType().Name, guid);
         }
 
         public IReadOnlyList<IEffectBase> GetEffects(Guid guid)

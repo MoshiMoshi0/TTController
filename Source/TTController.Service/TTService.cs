@@ -5,6 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.ServiceProcess;
+using NLog;
+using NLog.Config;
+using NLog.Targets;
 using TTController.Common;
 using TTController.Service.Config.Data;
 using TTController.Service.Hardware.Temperature;
@@ -15,6 +18,8 @@ namespace TTController.Service
 {
     class TTService : ServiceBase
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private DeviceManager _deviceManager;
         private ConfigManager _configManager;
         private TemperatureManager _temperatureManager;
@@ -37,6 +42,11 @@ namespace TTController.Service
 
         public bool Initialize()
         {
+            var logConfig = new LoggingConfiguration();
+            logConfig.AddTarget(new ConsoleTarget("console") { DetectConsoleAvailable = true });
+            logConfig.AddRuleForAllLevels("console");
+            LogManager.Configuration = logConfig;
+
             var pluginAssemblies = Directory.GetFiles($@"{AppDomain.CurrentDomain.BaseDirectory}\Plugins", "*.dll", SearchOption.AllDirectories)
                 .Where(f => AppDomain.CurrentDomain.GetAssemblies().All(a => a.Location != f))
                 .TrySelect(Assembly.LoadFile, ex => { })
@@ -44,6 +54,9 @@ namespace TTController.Service
 
             AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>
                 pluginAssemblies.FirstOrDefault(a => string.CompareOrdinal(a.FullName, args.Name) == 0);
+
+            foreach (var assembly in pluginAssemblies)
+                Logger.Info("Loading plugin assembly: {0}", assembly.FullName);
 
             _cache = new DataCache();
             _configManager = new ConfigManager("config.json");
@@ -59,6 +72,7 @@ namespace TTController.Service
             _deviceManager = new DeviceManager();
             _deviceManager.Visit(_cache);
 
+            Logger.Info("Applying config...");
             foreach (var profile in _configManager.CurrentConfig.Profiles)
             {
                 foreach (var effect in profile.Effects)
@@ -82,7 +96,6 @@ namespace TTController.Service
             });
             _timerManager.RegisterTimer(_configManager.CurrentConfig.DeviceSpeedTimerInterval, () =>
             {
-
                 var isCriticalTemperature = _configManager.CurrentConfig.CriticalTemperature.Any(pair =>
                     _cache.GetTemperature(pair.Key) >= pair.Value);
 
@@ -133,7 +146,6 @@ namespace TTController.Service
             });
             _timerManager.RegisterTimer(_configManager.CurrentConfig.DeviceRgbTimerInterval, () =>
             {
-
                 foreach (var profile in _configManager.CurrentConfig.Profiles)
                 {
                     var effects = _effectManager.GetEffects(profile.Guid);
@@ -174,6 +186,33 @@ namespace TTController.Service
 
                             controller.SetRgb(port.Id, effect.EffectByte, colors);
                         }
+                    }
+                }
+
+                return true;
+            });
+            if(Environment.UserInteractive) _timerManager.RegisterTimer(5000, () =>
+            {
+                foreach (var profile in _configManager.CurrentConfig.Profiles)
+                {
+                    foreach (var port in profile.Ports)
+                    {
+                        var data = _cache.GetPortData(port);
+                        if(data == null)
+                            continue;
+                        
+                        Logger.Info("Port {0} data: {1}", port, data);
+                    }
+                }
+                
+                lock (_temperatureManager)
+                {
+                    foreach (var sensor in _temperatureManager.Sensors)
+                    {
+                        var value = _temperatureManager.GetSensorValue(sensor.Identifier);
+                        if(float.IsNaN(value))
+                            continue;
+                        Logger.Info("Sensor \"{0}\" value: {1}", sensor.Identifier, value);
                     }
                 }
 

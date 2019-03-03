@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NLog;
 using OpenHardwareMonitor.Hardware;
 using TTController.Common;
 using TTController.Service.Hardware.Temperature;
@@ -10,6 +11,8 @@ namespace TTController.Service.Manager
 {
     public class TemperatureManager : IDataProvider, IDisposable
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private readonly Computer _computer;
         private readonly List<ISensor> _sensors;
         private readonly Dictionary<Identifier, ITemperatureProvider> _providerMap;
@@ -19,6 +22,8 @@ namespace TTController.Service.Manager
 
         public TemperatureManager(ITemperatureProviderFactory providerFactory)
         {
+            Logger.Info("Creating Temperature Manager...");
+
             _providerFactory = providerFactory;
 
             _sensors = new List<ISensor>();
@@ -38,6 +43,8 @@ namespace TTController.Service.Manager
                     _sensors.Add(sensor);
                 sensor.ValuesTimeWindow = TimeSpan.Zero;
             }));
+            
+            _sensors.ForEach(s => Logger.Info("Detected sensor: {0}", s.Identifier));
         }
 
         public void Update()
@@ -72,6 +79,7 @@ namespace TTController.Service.Manager
             if (sensor == null)
                 return;
 
+            Logger.Info("Enabling sensor: {0}", sensor.Identifier);
             _providerMap.Add(identifier, _providerFactory.Create(sensor));
         }
 
@@ -86,6 +94,7 @@ namespace TTController.Service.Manager
             if (!_providerMap.ContainsKey(identifier))
                 return;
 
+            Logger.Info("Disabling sensor: {0}", identifier);
             _providerMap.Remove(identifier);
         }
 
