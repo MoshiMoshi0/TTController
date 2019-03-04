@@ -151,7 +151,10 @@ The soruce code also provides an easy way to write your own **speed controller**
   "DeviceSpeedTimerInterval": "<int>",
 
   "Miliseconds between rgb updates"
-  "DeviceRgbTimerInterval": "<int>"
+  "DeviceRgbTimerInterval": "<int>",
+
+  "Miliseconds between log update when running in console mode"
+  "LoggingTimerInterval": "<int>"
 }
 ```
 
