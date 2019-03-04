@@ -22,9 +22,10 @@ namespace TTController.Service
                 var menu = new MenuPage("Main Menu");
                 menu.Add("Manage Service", ManageService, () => true);
                 menu.Add("Run in console", () => {
+                    Console.Clear();
                     new TTService().Initialize();
                     Console.ReadKey();
-                    return false;
+                    return true;
                 }, () => Service?.Status != ServiceControllerStatus.Running);
                 menu.Add("Show hardware info", () => {
                     ShowInfo();
@@ -198,7 +199,7 @@ namespace TTController.Service
                 Console.ForegroundColor = ConsoleColor.DarkGray;
                 Console.WriteLine("Disabled options:");
                 foreach (var option in _options.Where(o => !o.Enabled()))
-                    Console.WriteLine(format, 'x', option.Description);
+                    Console.WriteLine(format, ' ', option.Description);
                 Console.WriteLine();
 
                 Console.ForegroundColor = ConsoleColor.Yellow;
@@ -208,7 +209,7 @@ namespace TTController.Service
                 {
                     var keyInfo = Console.ReadKey(true);
 
-                    if (optionMap.Keys.Contains(keyInfo.KeyChar))
+                    if (optionMap.ContainsKey(keyInfo.KeyChar))
                     {
                         Console.ResetColor();
                         return optionMap[keyInfo.KeyChar];
