@@ -1,6 +1,7 @@
 using System;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using NLog;
@@ -35,14 +36,16 @@ namespace TTController.Service.Manager
                     ContractResolver = new ContractResolver()
                 };
 
+                var converters = typeof(JsonConverter).FindInAssemblies()
+                    .Where(t => t.Namespace?.StartsWith("TTController") ?? false)
+                    .Where(t => !t.IsGenericType)
+                    .Select(t => (JsonConverter) Activator.CreateInstance(t));
+
                 settings.Converters.Add(new StringEnumConverter());
-                settings.Converters.Add(new EffectConverter());
-                settings.Converters.Add(new SpeedControllerConverter());
-                settings.Converters.Add(new TriggerConverter());
-                settings.Converters.Add(new PortIdentifierConverter());
-                settings.Converters.Add(new CurvePointConverter());
-                settings.Converters.Add(new LedColorConverter());
-                settings.Converters.Add(new IdentifierConverter());
+
+                foreach (var converter in converters)
+                    settings.Converters.Add(converter);
+
                 settings.Converters.Add(new IdentifierDictionaryConverter<int>());
 
                 return settings;
