@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -20,8 +20,8 @@ namespace TTController.Service.Config.Converter
         public override T ReadJson(JsonReader reader, Type objectType, T existingValue, bool hasExistingValue,
             JsonSerializer serializer)
         {
-            JArray array = JArray.Load(reader);
-            return (T) Activator.CreateInstance(typeof(T), CreateConstructorArgs(array));
+            var array = JArray.Load(reader);
+            return (T)Activator.CreateInstance(typeof(T), CreateConstructorArgs(array));
         }
 
         protected virtual IEnumerable<PropertyInfo> FilterProperties(T value) => value.GetType().GetProperties();
@@ -48,11 +48,5 @@ namespace TTController.Service.Config.Converter
     {
         protected override object[] CreateConstructorArgs(JArray array) =>
             new object[] { array[0].Value<byte>(), array[1].Value<byte>(), array[2].Value<byte>() };
-    }
-
-    public class CurvePointConverter : ObjectToArrayConverter<CurvePoint>
-    {
-        protected override object[] CreateConstructorArgs(JArray array) =>
-            new object[] { array[0].Value<int>(), array[1].Value<int>() };
     }
 }

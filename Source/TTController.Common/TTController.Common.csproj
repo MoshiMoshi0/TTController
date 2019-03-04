@@ -41,7 +41,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CurvePoint.cs" />
     <Compile Include="DataCache.cs" />
     <Compile Include="EffectBase.cs" />
     <Compile Include="Enums.cs" />
