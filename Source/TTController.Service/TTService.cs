@@ -169,6 +169,8 @@ namespace TTController.Service
                             colors = colors.Skip(config.LedRotation).Concat(colors.Take(config.LedRotation)).ToList();
                         if (config.LedReverse)
                             colors.Reverse();
+                        if (config.LedCount < colors.Count)
+                            colors.RemoveRange(config.LedCount, colors.Count - config.LedCount);
 
                         colorMap[port] = colors;
                     }
