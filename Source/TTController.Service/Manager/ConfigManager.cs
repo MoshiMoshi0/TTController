@@ -38,7 +38,7 @@ namespace TTController.Service.Manager
 
                 var converters = typeof(JsonConverter).FindInAssemblies()
                     .Where(t => t.Namespace?.StartsWith("TTController") ?? false)
-                    .Where(t => !t.IsGenericType)
+                    .Where(t => !t.IsGenericType && !t.IsAbstract)
                     .Select(t => (JsonConverter) Activator.CreateInstance(t));
 
                 settings.Converters.Add(new StringEnumConverter());
