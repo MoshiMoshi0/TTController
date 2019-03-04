@@ -8,7 +8,6 @@ namespace TTController.Common
     public interface IEffectBase : IDisposable
     {
         bool Enabled { get; }
-        bool HandlesLedTransformation { get; }
         byte EffectByte { get; }
         IEnumerable<Identifier> UsedSensors { get; }
         IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache);
@@ -23,7 +22,6 @@ namespace TTController.Common
     {
         public T Config { get; }
         public virtual bool Enabled => Config.Trigger?.Value() ?? false;
-        public virtual bool HandlesLedTransformation => false;
         public virtual IEnumerable<Identifier> UsedSensors => Enumerable.Empty<Identifier>();
 
         protected EffectBase(T config)
@@ -35,6 +33,5 @@ namespace TTController.Common
 
         public abstract byte EffectByte { get; } 
         public abstract IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache);
-
     }
 }
