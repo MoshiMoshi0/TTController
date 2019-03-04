@@ -61,7 +61,6 @@ namespace TTController.Service
             _cache = new DataCache();
             _configManager = new ConfigManager("config.json");
             _configManager.LoadOrCreateConfig();
-            _configManager.Visit(_cache);
 
             var alpha = Math.Exp(-_configManager.CurrentConfig.TemperatureTimerInterval / (double)_configManager.CurrentConfig.DeviceSpeedTimerInterval);
             var providerFactory = new MovingAverageTemperatureProviderFactory(alpha);
@@ -73,6 +72,7 @@ namespace TTController.Service
             _deviceManager.Visit(_cache);
 
             Logger.Info("Applying config...");
+            _configManager.Visit(_cache);
             foreach (var profile in _configManager.CurrentConfig.Profiles)
             {
                 foreach (var effect in profile.Effects)
