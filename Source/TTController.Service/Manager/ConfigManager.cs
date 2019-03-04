@@ -54,7 +54,7 @@ namespace TTController.Service.Manager
 
         public void SaveConfig()
         {
-            Logger.Info("Saving conifg...");
+            Logger.Info("Saving config...");
             using (var writer = new StreamWriter(GetConfigAbsolutePath(), false))
             {
                 writer.Write(JsonConvert.SerializeObject(CurrentConfig));
@@ -68,7 +68,7 @@ namespace TTController.Service.Manager
             var path = GetConfigAbsolutePath();
             if (!File.Exists(path))
             {
-                Logger.Warn("Config does not exist! Creating default conifg...");
+                Logger.Warn("Config does not exist! Creating default config...");
                 CurrentConfig = ConfigData.CreateDefault();
                 SaveConfig();
             }
