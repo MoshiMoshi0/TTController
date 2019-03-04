@@ -46,8 +46,6 @@ namespace TTController.Service.Manager
                 foreach (var converter in converters)
                     settings.Converters.Add(converter);
 
-                settings.Converters.Add(new IdentifierDictionaryConverter<int>());
-
                 return settings;
             };
         }

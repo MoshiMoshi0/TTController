@@ -61,6 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config\Converter\AbstractDictionaryConverter.cs" />
     <Compile Include="Config\Converter\EffectConverter.cs" />
     <Compile Include="Config\Data\ConfigData.cs" />
     <Compile Include="Config\ContractResolver.cs" />

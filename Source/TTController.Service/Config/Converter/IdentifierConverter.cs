@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using OpenHardwareMonitor.Hardware;
-using TTController.Service.Utils;
 
 namespace TTController.Service.Config.Converter
 {
@@ -22,25 +20,18 @@ namespace TTController.Service.Config.Converter
         }
     }
 
-    public class IdentifierDictionaryConverter<TValue> : JsonConverter<IDictionary<Identifier, TValue>>
+    public class IdentifierToIntDictionaryConverter : AbstractDictionaryConverter<Identifier, int>
     {
-        public override void WriteJson(JsonWriter writer, IDictionary<Identifier, TValue> value, JsonSerializer serializer)
-        {
-            var o = new JObject();
-            foreach (var (sensor, v) in value)
-                o.Add(sensor.ToString(), JToken.FromObject(v));
-            o.WriteTo(writer);
-        }
+        protected override Identifier ReadKey(JProperty property) =>
+            new Identifier(property.Name.Split(new[] {'/'}, StringSplitOptions.RemoveEmptyEntries));
 
-        public override IDictionary<Identifier, TValue> ReadJson(JsonReader reader, Type objectType, IDictionary<Identifier, TValue> existingValue, bool hasExistingValue,
-            JsonSerializer serializer)
-        {
-            var o = JObject.Load(reader);
-            var result = new Dictionary<Identifier, TValue>();
-            foreach (var prop in o.Properties())
-                result.Add(new Identifier(prop.Name.Split(new[] {'/'}, StringSplitOptions.RemoveEmptyEntries)),
-                    prop.Value.ToObject<TValue>());
-            return result;
-        }
+        protected override int ReadValue(JProperty property) =>
+            property.Value.ToObject<int>();
+
+        protected override string WriteKey(Identifier key) =>
+            key.ToString();
+
+        protected override JToken WriteValue(int value) =>
+            JToken.FromObject(value);
     }
 }
