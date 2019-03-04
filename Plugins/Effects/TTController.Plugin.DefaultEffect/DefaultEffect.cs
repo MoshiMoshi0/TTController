@@ -19,7 +19,7 @@ namespace TTController.Plugin.DefaultEffect
         
         public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
         {
-            return ports.ToDictionary(p => p, p => Config.Colors);
+            return ports.ToDictionary(p => p, p => Config.Colors.ToList());
         }
     }
 }
