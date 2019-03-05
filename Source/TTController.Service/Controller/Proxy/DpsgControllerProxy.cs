@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using TTController.Common;
 using TTController.Service.Controller.Definition;
 using TTController.Service.Hardware;
@@ -78,8 +79,16 @@ namespace TTController.Service.Controller.Proxy
 
         public override bool Init()
         {
-            var result = Device.WriteReadBytes(new List<byte> { 0xfe, 0x31 });
-            return IsSuccess(result);
+            var result = Device.WriteReadBytes(new List<byte> { 0xfe, 0x31 }).ToArray();
+            if (result.Length == 0)
+                return false;
+
+            try
+            {
+                var model = Encoding.ASCII.GetString(result, 0, result.Length);
+                return !string.IsNullOrEmpty(model);
+            }
+            catch { return false; }
         }
 
         public override bool IsValidPort(PortIdentifier port) =>
