@@ -65,7 +65,7 @@ namespace TTController.Service.Manager
                 device.Dispose();
         }
 
-        public void Visit(ICacheCollector collector)
+        public void Accept(ICacheCollector collector)
         {
             foreach (var controller in _controllers)
                 foreach (var port in controller.Ports)

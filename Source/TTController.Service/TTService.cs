@@ -69,10 +69,10 @@ namespace TTController.Service
             _effectManager = new EffectManager();
             _speedControllerManager = new SpeedControllerManager();
             _deviceManager = new DeviceManager();
-            _deviceManager.Visit(_cache);
+            _deviceManager.Accept(_cache.AsWriteOnly());
 
             Logger.Info("Applying config...");
-            _configManager.Visit(_cache);
+            _configManager.Accept(_cache.AsWriteOnly());
             foreach (var profile in _configManager.CurrentConfig.Profiles)
             {
                 foreach (var effect in profile.Effects)
@@ -91,7 +91,7 @@ namespace TTController.Service
             _timerManager.RegisterTimer(_configManager.CurrentConfig.TemperatureTimerInterval, () =>
             {
                 _temperatureManager.Update();
-                _temperatureManager.Visit(_cache);
+                _temperatureManager.Accept(_cache.AsWriteOnly());
                 return true;
             });
             _timerManager.RegisterTimer(_configManager.CurrentConfig.DeviceSpeedTimerInterval, () =>
@@ -123,7 +123,7 @@ namespace TTController.Service
                         if (speedController == null)
                             continue;
 
-                        speedMap = speedController.GenerateSpeeds(profile.Ports, _cache.GetProxy());
+                        speedMap = speedController.GenerateSpeeds(profile.Ports, _cache.AsReadOnly());
                     }
 
                     if (speedMap == null)
@@ -153,7 +153,7 @@ namespace TTController.Service
                     if (effect == null)
                         continue;
 
-                    var colorMap = effect.GenerateColors(profile.Ports, _cache.GetProxy());
+                    var colorMap = effect.GenerateColors(profile.Ports, _cache.AsReadOnly());
                     if (colorMap == null)
                         continue;
 

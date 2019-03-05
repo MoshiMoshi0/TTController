@@ -91,7 +91,7 @@ namespace TTController.Service.Manager
             return Path.Combine(directory, _filename);
         }
 
-        public void Visit(ICacheCollector collector)
+        public void Accept(ICacheCollector collector)
         {
             foreach (var (port, config) in CurrentConfig.PortConfig)
                 collector.StorePortConfig(port, config);

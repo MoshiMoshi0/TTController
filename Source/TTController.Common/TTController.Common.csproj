@@ -41,7 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataCache.cs" />
+    <Compile Include="ICacheProvider.cs" />
     <Compile Include="EffectBase.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="LedColor.cs" />

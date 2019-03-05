@@ -104,7 +104,7 @@ namespace TTController.Service.Manager
                 DisableSensor(identifier);
         }
 
-        public void Visit(ICacheCollector collector)
+        public void Accept(ICacheCollector collector)
         {
             foreach (var (sensor, provider) in _providerMap)
                 collector.StoreTemperature(sensor, provider.Value());
