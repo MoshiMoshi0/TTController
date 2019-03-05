@@ -81,8 +81,8 @@ namespace TTController.Service
                 foreach (var speedController in profile.SpeedControllers)
                     _speedControllerManager.Add(profile.Guid, speedController);
 
-                _temperatureManager.EnableSensors(_speedControllerManager.GetSpeedControllers(profile.Guid).SelectMany(c => c.UsedSensors));
-                _temperatureManager.EnableSensors(_effectManager.GetEffects(profile.Guid).SelectMany(e => e.UsedSensors));
+                _temperatureManager.EnableSensors(_speedControllerManager.GetSpeedControllers(profile.Guid)?.SelectMany(c => c.UsedSensors));
+                _temperatureManager.EnableSensors(_effectManager.GetEffects(profile.Guid)?.SelectMany(e => e.UsedSensors));
             }
 
             ApplyComputerStateProfile(ComputerStateType.Boot);

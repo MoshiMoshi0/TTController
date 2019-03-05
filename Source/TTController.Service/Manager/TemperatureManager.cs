@@ -85,6 +85,9 @@ namespace TTController.Service.Manager
 
         public void EnableSensors(IEnumerable<Identifier> identifiers)
         {
+            if (identifiers == null)
+                return;
+
             foreach (var identifier in identifiers)
                 EnableSensor(identifier);
         }
@@ -100,6 +103,9 @@ namespace TTController.Service.Manager
 
         public void DisableSensors(IEnumerable<Identifier> identifiers)
         {
+            if (identifiers == null)
+                return;
+
             foreach (var identifier in identifiers)
                 DisableSensor(identifier);
         }
