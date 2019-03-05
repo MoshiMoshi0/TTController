@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.ServiceProcess;
 using OpenHardwareMonitor.Hardware;
+using TTController.Service.Config.Data;
 using TTController.Service.Manager;
 using TTController.Service.Utils;
 
@@ -23,9 +24,13 @@ namespace TTController.Service
                 menu.Add("Manage Service", ManageService, () => true);
                 menu.Add("Run in console", () => {
                     Console.Clear();
-                    new TTService().Initialize();
-                    Console.ReadKey();
-                    return true;
+                    var service = new TTService();
+                    service.Initialize();
+                    Console.ReadKey(true);
+                    service.Dispose(ComputerStateType.Shutdown);
+                    Console.WriteLine("Press any key to return to the menu...");
+                    Console.ReadKey(true);
+                    return false;
                 }, () => Service?.Status != ServiceControllerStatus.Running);
                 menu.Add("Show hardware info", () => {
                     ShowInfo();
