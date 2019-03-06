@@ -50,6 +50,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.FullCol
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.ByLedColorEffect", "Plugins\Effects\TTController.Plugin.ByLedColorEffect\TTController.Plugin.ByLedColorEffect.csproj", "{17B4553B-99EF-49E8-8270-3153B9B12E57}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.PulseEffect", "Plugins\Effects\TTController.Plugin.PulseEffect\TTController.Plugin.PulseEffect.csproj", "{46BDD270-577F-43EF-94FA-B738A0020E37}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -128,6 +130,10 @@ Global
 		{17B4553B-99EF-49E8-8270-3153B9B12E57}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17B4553B-99EF-49E8-8270-3153B9B12E57}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17B4553B-99EF-49E8-8270-3153B9B12E57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46BDD270-577F-43EF-94FA-B738A0020E37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46BDD270-577F-43EF-94FA-B738A0020E37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46BDD270-577F-43EF-94FA-B738A0020E37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46BDD270-577F-43EF-94FA-B738A0020E37}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -154,6 +160,7 @@ Global
 		{ACCAAA07-233C-48BC-B55C-BA31620AE371} = {521264D1-73FB-44B3-8243-CB3C95AFB179}
 		{D485F979-4D51-47DA-A52B-0CA51716D16F} = {521264D1-73FB-44B3-8243-CB3C95AFB179}
 		{17B4553B-99EF-49E8-8270-3153B9B12E57} = {521264D1-73FB-44B3-8243-CB3C95AFB179}
+		{46BDD270-577F-43EF-94FA-B738A0020E37} = {521264D1-73FB-44B3-8243-CB3C95AFB179}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9B8A6C39-77D8-476B-B89B-C39D2AF3D3B9}
