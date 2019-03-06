@@ -163,6 +163,9 @@ namespace TTController.Service
                         if (config == null)
                             continue;
 
+                        if(!colorMap.ContainsKey(port))
+                            continue;
+
                         var colors = colorMap[port];
 
                         if (config.LedRotation > 0)
