@@ -46,6 +46,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{5046DC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.WaveEffect", "Plugins\Effects\TTController.Plugin.WaveEffect\TTController.Plugin.WaveEffect.csproj", "{ACCAAA07-233C-48BC-B55C-BA31620AE371}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.FullColorEffect", "Plugins\Effects\TTController.Plugin.FullColorEffect\TTController.Plugin.FullColorEffect.csproj", "{D485F979-4D51-47DA-A52B-0CA51716D16F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -116,6 +118,10 @@ Global
 		{ACCAAA07-233C-48BC-B55C-BA31620AE371}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ACCAAA07-233C-48BC-B55C-BA31620AE371}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ACCAAA07-233C-48BC-B55C-BA31620AE371}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D485F979-4D51-47DA-A52B-0CA51716D16F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D485F979-4D51-47DA-A52B-0CA51716D16F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D485F979-4D51-47DA-A52B-0CA51716D16F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D485F979-4D51-47DA-A52B-0CA51716D16F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -140,6 +146,7 @@ Global
 		{FAEC09CC-E2A6-4DC8-93C8-D1DD9CFADB2C} = {B69E5A42-8845-4081-92DD-95D2D10D7B3E}
 		{CB3C2841-00F6-47E2-B8EF-2E70729CBD78} = {B69E5A42-8845-4081-92DD-95D2D10D7B3E}
 		{ACCAAA07-233C-48BC-B55C-BA31620AE371} = {521264D1-73FB-44B3-8243-CB3C95AFB179}
+		{D485F979-4D51-47DA-A52B-0CA51716D16F} = {521264D1-73FB-44B3-8243-CB3C95AFB179}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9B8A6C39-77D8-476B-B89B-C39D2AF3D3B9}
