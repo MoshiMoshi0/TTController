@@ -58,6 +58,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.RippleE
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.SpectrumEffect", "Plugins\Effects\TTController.Plugin.SpectrumEffect\TTController.Plugin.SpectrumEffect.csproj", "{70EBFDDF-8791-441F-BFC3-AB6E94F9ABDD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.FlowEffect", "Plugins\Effects\TTController.Plugin.FlowEffect\TTController.Plugin.FlowEffect.csproj", "{FD3E1660-41D2-450A-BC75-751AF1056A3A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -152,6 +154,10 @@ Global
 		{70EBFDDF-8791-441F-BFC3-AB6E94F9ABDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{70EBFDDF-8791-441F-BFC3-AB6E94F9ABDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{70EBFDDF-8791-441F-BFC3-AB6E94F9ABDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD3E1660-41D2-450A-BC75-751AF1056A3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD3E1660-41D2-450A-BC75-751AF1056A3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD3E1660-41D2-450A-BC75-751AF1056A3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD3E1660-41D2-450A-BC75-751AF1056A3A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -182,6 +188,7 @@ Global
 		{CEF4BBE4-A710-4160-B673-B0FCD3B1CCAE} = {521264D1-73FB-44B3-8243-CB3C95AFB179}
 		{1366E1E4-6763-4AFB-A43F-FE6213A879D5} = {521264D1-73FB-44B3-8243-CB3C95AFB179}
 		{70EBFDDF-8791-441F-BFC3-AB6E94F9ABDD} = {521264D1-73FB-44B3-8243-CB3C95AFB179}
+		{FD3E1660-41D2-450A-BC75-751AF1056A3A} = {521264D1-73FB-44B3-8243-CB3C95AFB179}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9B8A6C39-77D8-476B-B89B-C39D2AF3D3B9}
