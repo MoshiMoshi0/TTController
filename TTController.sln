@@ -22,8 +22,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.StaticS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.PwmSpeedController", "Plugins\SpeedControllers\TTController.Plugin.PwmSpeedController\TTController.Plugin.PwmSpeedController.csproj", "{AA931D28-C5F0-46B6-A049-6DBC5DA8EB66}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.DefaultEffect", "Plugins\Effects\TTController.Plugin.DefaultEffect\TTController.Plugin.DefaultEffect.csproj", "{371D0801-022D-4FF8-B26B-62477B51EC8C}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.SnakeEffect", "Plugins\Effects\TTController.Plugin.SnakeEffect\TTController.Plugin.SnakeEffect.csproj", "{823639D2-4EC8-4541-BA26-AD93576FF79B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.TemperatureEffect", "Plugins\Effects\TTController.Plugin.TemperatureEffect\TTController.Plugin.TemperatureEffect.csproj", "{1C0448C2-4357-4734-87B3-BF4808F879B8}"
@@ -51,6 +49,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.ByLedColorEffect", "Plugins\Effects\TTController.Plugin.ByLedColorEffect\TTController.Plugin.ByLedColorEffect.csproj", "{17B4553B-99EF-49E8-8270-3153B9B12E57}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.PulseEffect", "Plugins\Effects\TTController.Plugin.PulseEffect\TTController.Plugin.PulseEffect.csproj", "{46BDD270-577F-43EF-94FA-B738A0020E37}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.RawEffect", "Plugins\Effects\TTController.Plugin.RawEffect\TTController.Plugin.RawEffect.csproj", "{0A09C256-D963-4C6E-A5A7-600479BD80A1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -82,10 +82,6 @@ Global
 		{AA931D28-C5F0-46B6-A049-6DBC5DA8EB66}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA931D28-C5F0-46B6-A049-6DBC5DA8EB66}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA931D28-C5F0-46B6-A049-6DBC5DA8EB66}.Release|Any CPU.Build.0 = Release|Any CPU
-		{371D0801-022D-4FF8-B26B-62477B51EC8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{371D0801-022D-4FF8-B26B-62477B51EC8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{371D0801-022D-4FF8-B26B-62477B51EC8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{371D0801-022D-4FF8-B26B-62477B51EC8C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{823639D2-4EC8-4541-BA26-AD93576FF79B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{823639D2-4EC8-4541-BA26-AD93576FF79B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{823639D2-4EC8-4541-BA26-AD93576FF79B}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -134,6 +130,10 @@ Global
 		{46BDD270-577F-43EF-94FA-B738A0020E37}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{46BDD270-577F-43EF-94FA-B738A0020E37}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{46BDD270-577F-43EF-94FA-B738A0020E37}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A09C256-D963-4C6E-A5A7-600479BD80A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A09C256-D963-4C6E-A5A7-600479BD80A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A09C256-D963-4C6E-A5A7-600479BD80A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A09C256-D963-4C6E-A5A7-600479BD80A1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -147,7 +147,6 @@ Global
 		{1C64E62C-0758-423A-B436-275C2DCAC3F6} = {A3A67BA6-9598-40EC-A5B5-9526A0592772}
 		{AF042821-0045-469E-91A2-E558649E140F} = {1C64E62C-0758-423A-B436-275C2DCAC3F6}
 		{AA931D28-C5F0-46B6-A049-6DBC5DA8EB66} = {1C64E62C-0758-423A-B436-275C2DCAC3F6}
-		{371D0801-022D-4FF8-B26B-62477B51EC8C} = {521264D1-73FB-44B3-8243-CB3C95AFB179}
 		{823639D2-4EC8-4541-BA26-AD93576FF79B} = {521264D1-73FB-44B3-8243-CB3C95AFB179}
 		{1C0448C2-4357-4734-87B3-BF4808F879B8} = {521264D1-73FB-44B3-8243-CB3C95AFB179}
 		{44D6DB37-3870-46C8-8835-AE2B19344D16} = {521264D1-73FB-44B3-8243-CB3C95AFB179}
@@ -161,6 +160,7 @@ Global
 		{D485F979-4D51-47DA-A52B-0CA51716D16F} = {521264D1-73FB-44B3-8243-CB3C95AFB179}
 		{17B4553B-99EF-49E8-8270-3153B9B12E57} = {521264D1-73FB-44B3-8243-CB3C95AFB179}
 		{46BDD270-577F-43EF-94FA-B738A0020E37} = {521264D1-73FB-44B3-8243-CB3C95AFB179}
+		{0A09C256-D963-4C6E-A5A7-600479BD80A1} = {521264D1-73FB-44B3-8243-CB3C95AFB179}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9B8A6C39-77D8-476B-B89B-C39D2AF3D3B9}
