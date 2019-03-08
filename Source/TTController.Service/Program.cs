@@ -4,6 +4,7 @@ using System.Configuration.Install;
 using System.Linq;
 using System.Reflection;
 using System.ServiceProcess;
+using NLog;
 using OpenHardwareMonitor.Hardware;
 using TTController.Service.Config.Data;
 using TTController.Service.Manager;
@@ -107,6 +108,7 @@ namespace TTController.Service
 
         private static void ShowInfo()
         {
+            LogManager.Configuration = null;
             Console.Clear();
             Console.WriteLine("Controllers");
             Console.WriteLine("-------------------------------");
