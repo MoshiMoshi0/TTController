@@ -7,8 +7,10 @@ namespace TTController.Service.Hardware
         int VendorId { get; }
         int ProductId { get; }
 
+        bool WriteBytes(params byte[] bytes);
         bool WriteBytes(IEnumerable<byte> bytes);
-        IEnumerable<byte> ReadBytes();
-        IEnumerable<byte> WriteReadBytes(IEnumerable<byte> bytes);
+        byte[] ReadBytes();
+        byte[] WriteReadBytes(params byte[] bytes);
+        byte[] WriteReadBytes(IEnumerable<byte> bytes);
     }
 }

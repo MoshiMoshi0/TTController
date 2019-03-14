@@ -34,7 +34,7 @@ namespace TTController.Service.Controller.Proxy
             }
 
             var result = Device.WriteReadBytes(bytes);
-            return IsSuccess(result);
+            return result[3] == 0xfc;
         }
 
         public override bool SetSpeed(byte port, byte speed)
@@ -42,8 +42,8 @@ namespace TTController.Service.Controller.Proxy
             if (port != 0)
                 return false;
 
-            var result = Device.WriteReadBytes(new List<byte> { 0x30, 0x41, 0x04, speed });
-            return IsSuccess(result);
+            var result = Device.WriteReadBytes(0x30, 0x41, 0x04, speed);
+            return result[3] == 0xfc;
         }
 
         public override PortData GetPortData(byte port)
@@ -79,8 +79,8 @@ namespace TTController.Service.Controller.Proxy
 
         public override bool Init()
         {
-            var result = Device.WriteReadBytes(new List<byte> { 0xfe, 0x31 }).ToArray();
-            if (result.Length == 0)
+            var result = Device.WriteReadBytes(0xfe, 0x31);
+            if (result == null || result.Length == 0)
                 return false;
 
             try
@@ -95,8 +95,5 @@ namespace TTController.Service.Controller.Proxy
             port.ControllerProductId == Device.ProductId &&
            port.ControllerVendorId == Device.VendorId &&
            port.Id == 0;
-
-        private bool IsSuccess(IEnumerable<byte> bytes) =>
-            bytes.Any() && bytes.ElementAt(0) == 0xfc;
     }
 }

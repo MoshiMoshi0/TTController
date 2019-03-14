@@ -26,25 +26,25 @@ namespace TTController.Service.Controller.Proxy
             }
             
             var result = Device.WriteReadBytes(bytes);
-            return IsSuccess(result);
+            return result[3] == 0xfc;
         }
 
         public override bool SetSpeed(byte port, byte speed)
         {
-            var result = Device.WriteReadBytes(new List<byte> { 0x32, 0x51, port, 0x01, speed });
-            return IsSuccess(result);
+            var result = Device.WriteReadBytes(0x32, 0x51, port, 0x01, speed);
+            return result[3] == 0xfc;
         }
 
         public override PortData GetPortData(byte port)
         {
-            var result = Device.WriteReadBytes(new List<byte> { 0x33, 0x51, port }).ToList();
+            var result = Device.WriteReadBytes(0x33, 0x51, port);
 
             var data = new PortData
             {
-                PortId = result[0],
-                Speed = result[2],
-                Rpm = (result[4] << 8) + result[3],
-                ["Unknown"] = result[1]
+                PortId = result[3],
+                Speed = result[5],
+                Rpm = (result[7] << 8) + result[6],
+                ["Unknown"] = result[4]
             };
 
             return data;
@@ -52,21 +52,18 @@ namespace TTController.Service.Controller.Proxy
 
         public override void SaveProfile()
         {
-            var result = Device.WriteReadBytes(new List<byte> { 0x32, 0x53 });
+            var result = Device.WriteReadBytes(0x32, 0x53);
         }
 
         public override bool Init()
         {
-            var result = Device.WriteReadBytes(new List<byte> { 0xfe, 0x33 });
-            return IsSuccess(result);
+            var result = Device.WriteReadBytes(0xfe, 0x33);
+            return result != null && result.Length >= 3 && result[3] == 0xfc;
         }
 
         public override bool IsValidPort(PortIdentifier port) =>
             port.ControllerProductId == Device.ProductId &&
            port.ControllerVendorId == Device.VendorId &&
            port.Id >= 1 && port.Id <= Definition.PortCount;
-
-        private bool IsSuccess(IEnumerable<byte> bytes) =>
-            bytes.Any() && bytes.ElementAt(0) == 0xfc;
     }
 }
