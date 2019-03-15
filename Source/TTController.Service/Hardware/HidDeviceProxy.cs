@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using HidLibrary;
@@ -23,7 +23,7 @@ namespace TTController.Service.Hardware
                 return false;
             
             var data = new byte[_device.Capabilities.OutputReportByteLength];
-            Array.Copy(bytes, 0, data, 1, Math.Min(bytes.Length, _device.Capabilities.OutputReportByteLength));
+            Array.Copy(bytes, 0, data, 1, Math.Min(bytes.Length, _device.Capabilities.OutputReportByteLength - 1));
             return _device.Write(data);
         }
 
