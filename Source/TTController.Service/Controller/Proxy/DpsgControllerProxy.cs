@@ -50,8 +50,8 @@ namespace TTController.Service.Controller.Proxy
         {
             if (port != 0)
                 return null;
-
-            // 0x31, 0x33 // WATTS
+            
+            // 0x31, 0x33 // VIN
             // 0x31, 0x34 // VVOut12
             // 0x31, 0x35 // VVout5
             // 0x31, 0x36 // VVOut33
@@ -60,13 +60,23 @@ namespace TTController.Service.Controller.Proxy
             // 0x31, 0x39 // VIOut33
             // 0x31, 0x3a // Temp
             // 0x31, 0x3b // FanSpeed
+            // WATTS = VVOut33 * VIOut33
+            // EFF = (int)((VVOut12 * VIOut12 + VVOut5 * VIOut5 + VVOut33 * VIOut33) / 10.0)
+
+            byte[] GetData(byte b) => Device.WriteReadBytes(0x31, b).Take(2).ToArray();
+            string GetDataAsString(byte b) => $"{string.Join("", GetData(b).Select(x => x.ToString("X2")))}";
 
             var data = new PortData()
             {
-                PortId = 0,
-                Temperature = 0,
-                Rpm = 0,
-                ["WATTS"] = 0
+                ["VIN"] = GetDataAsString(0x33),
+                ["VVOut12"] = GetDataAsString(0x34),
+                ["VVout5"] = GetDataAsString(0x35),
+                ["VVOut33"] = GetDataAsString(0x36),
+                ["VIOut12"] = GetDataAsString(0x37),
+                ["VIOut5"] = GetDataAsString(0x38),
+                ["VIOut33"] = GetDataAsString(0x39), 
+                ["Temp"] = GetDataAsString(0x3a),
+                ["FanSpeed"] = GetDataAsString(0x3b)
             };
 
             return data;
