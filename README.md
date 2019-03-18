@@ -75,7 +75,7 @@ The soruce code also provides an easy way to write your own **speed controller**
           "Config": {
             "Speed": 50,
             "Trigger": {
-              "AlwaysTrigger": {}
+              "Type": "AlwaysTrigger"
             }
           }
         }
@@ -90,7 +90,7 @@ The soruce code also provides an easy way to write your own **speed controller**
               [255, 0, 0]
             ],
             "Trigger": {
-              "OneTimeTrigger": {}
+              "Type": "OneTimeTrigger"
             }
           }
         }
@@ -230,7 +230,7 @@ The soruce code also provides an easy way to write your own **speed controller**
   "Config": {
     "Speed": 50,
     "Trigger": {
-      "AlwaysTrigger": {}
+      "Type": "AlwaysTrigger"
     }
   }
 }
@@ -261,7 +261,7 @@ The soruce code also provides an easy way to write your own **speed controller**
       [255, 0, 0]
     ],
     "Trigger": {
-      "OneTimeTrigger": {}
+      "Type": "OneTimeTrigger"
     }
   }
 }
@@ -272,21 +272,24 @@ The soruce code also provides an easy way to write your own **speed controller**
 ### Trigger
 ```json
 {
-  "Property where key is trigger class name and value is trigger config"
-  "Config depends on trigger type"
-  "<type>": {}
+  "The class name of the trigger"
+  "Type": "<string>", 
+
+  "Config json for this trigger, depends on trigger type"
+  "Config": {}
 }
 ```
 
 ##### Examples:
 ```json
 {
-  "AlwaysTrigger": {}
+  "Type": "AlwaysTrigger"
 }
 ```
 ```json
 {
-  "ProcessTrigger": {
+  "Type": "ProcessTrigger",
+  "Config": {
     "Processes": ["cmd"]
   }
 }

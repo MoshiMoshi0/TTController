@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config\Converter\AbstractDictionaryConverter.cs" />
+    <Compile Include="Config\Converter\AbstractPluginConverter.cs" />
     <Compile Include="Config\Converter\EffectConverter.cs" />
     <Compile Include="Config\Converter\IdentifierConverter.cs" />
     <Compile Include="Config\Converter\LedColorConverter.cs" />
