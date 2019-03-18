@@ -58,7 +58,36 @@ The soruce code also provides an easy way to write your own **speed controller**
 | Riing Trio 12/14            | :heavy_minus_sign: | :x:                | unknown RGB, speed supported
 | Toughpower iRGB PLUS        | :x:                | :heavy_minus_sign: | not implemented
 
+# Plugins
+### Speed Controllers:
+* StaticSpeedController
+* PwmSpeedController
+
+### Effects:
+* BlinkEffect
+* ByLedColorEffect
+* FlowEffect
+* FullColorEffect
+* PulseEffect
+* SpectrumEffect
+* RippleEffect
+* WaveEffect
+* SnakeEffect
+* TemperatureEffect
+* SoundEffect
+* RawEffect
+
+### Triggers
+* AlwaysTrigger
+* OneTimeTrigger
+* ProcessTrigger
+* PulseTrigger
+* LogicTrigger
+
 # Config
+
+> ## The documentation is still WIP, if you have problems with configuration please make a new [issue](https://github.com/devcompl/TTController/issues/new/choose).
+
 ## Example
 ```json
 {
@@ -108,23 +137,6 @@ The soruce code also provides an easy way to write your own **speed controller**
 ```
 
 ## Documentation
-### Speed Controllers:
-* StaticSpeedController
-* PwmSpeedController
-
-### Effects:
-* DefaultEffect
-* SnakeEffect
-* TemperatureEffect
-* SoundEffect
-
-### Triggers
-* AlwaysTrigger
-* OneTimeTrigger
-* ProcessTrigger
-* PulseTrigger
-* LogicTrigger
-
 ### Root
 ```json
 {
