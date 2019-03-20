@@ -111,13 +111,13 @@ The soruce code also provides an easy way to write your own **speed controller**
       ],
       "Effects": [
         {
-          "Type": "DefaultEffect",
+          "Type": "RippleEffect",
           "Config": {
-            "Type": "Ripple",
-            "Speed": "Normal",
-            "Colors": [
+            "Length": 4,
+            "Color": [
               [255, 0, 0]
             ],
+            "TickInterval": 2,
             "Trigger": {
               "Type": "OneTimeTrigger"
             }
@@ -265,13 +265,13 @@ The soruce code also provides an easy way to write your own **speed controller**
 ##### Examples:
 ```json
 {
-  "Type": "DefaultEffect",
+  "Type": "RippleEffect",
   "Config": {
-    "Type": "Ripple",
-    "Speed": "Normal",
-    "Colors": [
+    "Length": 4,
+    "Color": [
       [255, 0, 0]
     ],
+    "TickInterval": 2,
     "Trigger": {
       "Type": "OneTimeTrigger"
     }
