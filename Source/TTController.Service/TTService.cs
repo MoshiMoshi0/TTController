@@ -332,7 +332,7 @@ namespace TTController.Service
                         if (profile.EffectByte.HasValue)
                             controller.SetRgb(port.Id, profile.EffectByte.Value, profile.EffectColors);
 
-                        if(state == ComputerStateType.Boot)
+                        if(state == ComputerStateType.Boot && (profile.Speed.HasValue || profile.EffectByte.HasValue))
                             controller.SaveProfile();
                     }
                 }
