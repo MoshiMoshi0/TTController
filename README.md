@@ -320,15 +320,13 @@ The soruce code also provides an easy way to write your own **speed controller**
   "Ports": ["<PortIdentifier>"],
 
   "Speed from 0% to 100%"
+  "If not set the speed is not changed" 
   "Speed": "<int>",
 
-  "Rgb effect type. One of:"
-  "[Flow, Spectrum, Ripple, Blink, Pulse, Wave, ByLed, Full]"
-  "EffectType": "<string>",
-
-  "Rgb effect speed. One of:"
-  "[Slow, Normal, Fast, Extreme]"
-  "EffectSpeed": "Normal",
+  "Effect byte to be sent to the controller"
+  "Depends on the controller type"
+  "If not set the rgb effect is not changed" 
+  "EffectByte": "<int>",
 
   "List of LedColor that the effect should use."
   "EffectColors": ["<LedColor>"]

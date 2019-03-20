@@ -329,15 +329,8 @@ namespace TTController.Service
 
                         if(profile.Speed.HasValue)
                             controller.SetSpeed(port.Id, profile.Speed.Value);
-
-                        if (profile.EffectType.HasValue)
-                        {
-                            var mode = (byte) profile.EffectType.Value;
-                            if (profile.EffectSpeed.HasValue)
-                                mode += (byte) profile.EffectSpeed.Value;
-
-                            controller.SetRgb(port.Id, mode, profile.EffectColors);
-                        }
+                        if (profile.EffectByte.HasValue)
+                            controller.SetRgb(port.Id, profile.EffectByte.Value, profile.EffectColors);
 
                         if(state == ComputerStateType.Boot)
                             controller.SaveProfile();
