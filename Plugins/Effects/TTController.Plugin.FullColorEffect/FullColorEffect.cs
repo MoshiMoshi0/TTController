@@ -13,21 +13,11 @@ namespace TTController.Plugin.FullColorEffect
     {
         public FullColorEffect(FullColorEffectConfig config) : base(config) { }
 
-        public override string EffectType => "ByLed";
+        public override string EffectType => "Full";
 
         public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
         {
-            var result = new Dictionary<PortIdentifier, List<LedColor>>();
-            foreach (var port in ports)
-            {
-                var config = cache.GetPortConfig(port);
-                if (config == null)
-                    continue;
-
-                result.Add(port, Enumerable.Range(0, config.LedCount).Select(x => Config.Color).ToList());
-            }
-
-            return result;
+            return ports.ToDictionary(p => p, p => new List<LedColor>(){ Config.Color });
         }
     }
 }
