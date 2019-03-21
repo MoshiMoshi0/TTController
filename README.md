@@ -323,10 +323,9 @@ The soruce code also provides an easy way to write your own **speed controller**
   "If not set the speed is not changed" 
   "Speed": "<int>",
 
-  "Effect byte to be sent to the controller"
-  "Depends on the controller type"
+  "Effect type, depends on the controller type"
   "If not set the rgb effect is not changed" 
-  "EffectByte": "<int>",
+  "EffectType": "<string>",
 
   "List of LedColor that the effect should use."
   "EffectColors": ["<LedColor>"]
@@ -345,8 +344,7 @@ The soruce code also provides an easy way to write your own **speed controller**
     [9802, 8101, 1]
   ],
   "Speed": 35,
-  "EffectType": "Full",
-  "EffectSpeed": "Normal",
+  "EffectByte": 25,
   "EffectColors": [
     [0, 255, 0]
   ]
