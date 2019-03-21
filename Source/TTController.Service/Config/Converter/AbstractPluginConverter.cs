@@ -16,7 +16,7 @@ namespace TTController.Service.Config.Converter
             var o = JToken.ReadFrom(reader);
 
             var typeProperty = (o.First() as JProperty);
-            var configProperty = (o.Last() as JProperty);
+            var configProperty = (typeProperty.Next as JProperty);
 
             var pluginTypeName = typeProperty.Value.ToString();
             var configTypeName = $"{pluginTypeName}Config";
@@ -27,9 +27,9 @@ namespace TTController.Service.Config.Converter
             var configType = typeof(TConfig).FindInAssemblies()
                 .First(t => string.CompareOrdinal(t.Name, configTypeName) == 0);
 
-            var json = configProperty.Value.ToString();
-            var config = (TConfig)JsonConvert.DeserializeObject(json, configType);
-            return (TPlugin)Activator.CreateInstance(pluginType, config);
+            var configJson = configProperty != null ? configProperty.Value.ToString() : "{}";
+            var config = (TConfig) JsonConvert.DeserializeObject(configJson, configType);
+            return (TPlugin) Activator.CreateInstance(pluginType, config);
         }
 
         public override void WriteJson(JsonWriter writer, TPlugin value, JsonSerializer serializer)
