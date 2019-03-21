@@ -1,4 +1,6 @@
-﻿namespace TTController.Common
+﻿using System;
+
+namespace TTController.Common
 {
     public struct LedColor
     {
@@ -14,5 +16,47 @@
         }
         
         public override string ToString() => $"[{R}, {G}, {B}]";
+
+        public static (double, double, double) ToHsv(LedColor color)
+        {
+            var max = Math.Max(color.R, Math.Max(color.G, color.B));
+            var min = Math.Min(color.R, Math.Min(color.G, color.B));
+
+            var delta = (double)(max - min);
+
+            var hue = 0d;
+            if(color.R == max) hue = (color.G - color.B) / delta;
+            else if (color.G == max) hue = 2d + (color.B - color.R) / delta;
+            else if (color.B == max) hue = 4d + (color.R - color.G) / delta;
+
+            hue *= 60;
+            if (hue < 0.0) hue = hue + 360;
+
+            var saturation = (max == 0) ? 0 : 1d - (1d * min / max);
+            var value = max / 255d;
+            return (hue, saturation, value);
+        }
+
+        public static LedColor FromHsv(double hue, double saturation, double value)
+        {
+            var hi = Convert.ToInt32(Math.Floor(hue / 60)) % 6;
+            var f = hue / 60 - Math.Floor(hue / 60);
+
+            value = value * 255;
+            var v = Convert.ToByte(value);
+            var p = Convert.ToByte(value * (1 - saturation));
+            var q = Convert.ToByte(value * (1 - f * saturation));
+            var t = Convert.ToByte(value * (1 - (1 - f) * saturation));
+
+            switch (hi)
+            {
+                case 0: return new LedColor(v, t, p);
+                case 1: return new LedColor(q, v, p);
+                case 2: return new LedColor(p, v, t);
+                case 3: return new LedColor(p, q, v);
+                case 4: return new LedColor(t, p, v);
+                default: return new LedColor(v, p, q);
+            }
+        }
     }
 }

@@ -4,8 +4,6 @@ using System.Linq;
 using HidLibrary;
 using NLog;
 using TTController.Common;
-using TTController.Service.Config.Data;
-using TTController.Service.Controller;
 using TTController.Service.Controller.Definition;
 using TTController.Service.Controller.Proxy;
 using TTController.Service.Hardware;

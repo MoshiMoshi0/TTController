@@ -58,7 +58,36 @@ The soruce code also provides an easy way to write your own **speed controller**
 | Riing Trio 12/14            | :heavy_minus_sign: | :x:                | unknown RGB, speed supported
 | Toughpower iRGB PLUS        | :x:                | :heavy_minus_sign: | not implemented
 
+# Plugins
+### Speed Controllers:
+* StaticSpeedController
+* PwmSpeedController
+
+### Effects:
+* BlinkEffect
+* ByLedColorEffect
+* FlowEffect
+* FullColorEffect
+* PulseEffect
+* SpectrumEffect
+* RippleEffect
+* WaveEffect
+* SnakeEffect
+* TemperatureEffect
+* SoundEffect
+* RawEffect
+
+### Triggers
+* AlwaysTrigger
+* OneTimeTrigger
+* ProcessTrigger
+* PulseTrigger
+* LogicTrigger
+
 # Config
+
+> ## The documentation is still WIP, if you have problems with configuration please make a new [issue](https://github.com/devcompl/TTController/issues/new/choose).
+
 ## Example
 ```json
 {
@@ -75,22 +104,22 @@ The soruce code also provides an easy way to write your own **speed controller**
           "Config": {
             "Speed": 50,
             "Trigger": {
-              "AlwaysTrigger": {}
+              "Type": "AlwaysTrigger"
             }
           }
         }
       ],
       "Effects": [
         {
-          "Type": "DefaultEffect",
+          "Type": "RippleEffect",
           "Config": {
-            "Type": "Ripple",
-            "Speed": "Normal",
-            "Colors": [
+            "Length": 4,
+            "Color": [
               [255, 0, 0]
             ],
+            "TickInterval": 2,
             "Trigger": {
-              "OneTimeTrigger": {}
+              "Type": "OneTimeTrigger"
             }
           }
         }
@@ -108,23 +137,6 @@ The soruce code also provides an easy way to write your own **speed controller**
 ```
 
 ## Documentation
-### Speed Controllers:
-* StaticSpeedController
-* PwmSpeedController
-
-### Effects:
-* DefaultEffect
-* SnakeEffect
-* TemperatureEffect
-* SoundEffect
-
-### Triggers
-* AlwaysTrigger
-* OneTimeTrigger
-* ProcessTrigger
-* PulseTrigger
-* LogicTrigger
-
 ### Root
 ```json
 {
@@ -230,7 +242,7 @@ The soruce code also provides an easy way to write your own **speed controller**
   "Config": {
     "Speed": 50,
     "Trigger": {
-      "AlwaysTrigger": {}
+      "Type": "AlwaysTrigger"
     }
   }
 }
@@ -253,15 +265,15 @@ The soruce code also provides an easy way to write your own **speed controller**
 ##### Examples:
 ```json
 {
-  "Type": "DefaultEffect",
+  "Type": "RippleEffect",
   "Config": {
-    "Type": "Ripple",
-    "Speed": "Normal",
-    "Colors": [
+    "Length": 4,
+    "Color": [
       [255, 0, 0]
     ],
+    "TickInterval": 2,
     "Trigger": {
-      "OneTimeTrigger": {}
+      "Type": "OneTimeTrigger"
     }
   }
 }
@@ -272,21 +284,24 @@ The soruce code also provides an easy way to write your own **speed controller**
 ### Trigger
 ```json
 {
-  "Property where key is trigger class name and value is trigger config"
-  "Config depends on trigger type"
-  "<type>": {}
+  "The class name of the trigger"
+  "Type": "<string>", 
+
+  "Config json for this trigger, depends on trigger type"
+  "Config": {}
 }
 ```
 
 ##### Examples:
 ```json
 {
-  "AlwaysTrigger": {}
+  "Type": "AlwaysTrigger"
 }
 ```
 ```json
 {
-  "ProcessTrigger": {
+  "Type": "ProcessTrigger",
+  "Config": {
     "Processes": ["cmd"]
   }
 }
@@ -305,15 +320,12 @@ The soruce code also provides an easy way to write your own **speed controller**
   "Ports": ["<PortIdentifier>"],
 
   "Speed from 0% to 100%"
+  "If not set the speed is not changed" 
   "Speed": "<int>",
 
-  "Rgb effect type. One of:"
-  "[Flow, Spectrum, Ripple, Blink, Pulse, Wave, ByLed, Full]"
+  "Effect type, depends on the controller type"
+  "If not set the rgb effect is not changed" 
   "EffectType": "<string>",
-
-  "Rgb effect speed. One of:"
-  "[Slow, Normal, Fast, Extreme]"
-  "EffectSpeed": "Normal",
 
   "List of LedColor that the effect should use."
   "EffectColors": ["<LedColor>"]
@@ -332,8 +344,7 @@ The soruce code also provides an easy way to write your own **speed controller**
     [9802, 8101, 1]
   ],
   "Speed": 35,
-  "EffectType": "Full",
-  "EffectSpeed": "Normal",
+  "EffectByte": 25,
   "EffectColors": [
     [0, 255, 0]
   ]

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using HidLibrary;
 
@@ -16,34 +17,36 @@ namespace TTController.Service.Hardware
             _device = device;
         }
 
-        public bool WriteBytes(IEnumerable<byte> bytes)
+        public bool WriteBytes(params byte[] bytes)
         {
             if (!bytes.Any())
                 return false;
-
-            lock (_device)
-            {
-                return _device.Write(bytes.Prepend((byte)0).ToArray());
-            }
+            
+            var data = new byte[_device.Capabilities.OutputReportByteLength];
+            Array.Copy(bytes, 0, data, 1, Math.Min(bytes.Length, _device.Capabilities.OutputReportByteLength - 1));
+            return _device.Write(data);
         }
 
-        public IEnumerable<byte> ReadBytes()
+        public bool WriteBytes(IEnumerable<byte> bytes) =>
+            WriteBytes(bytes.ToArray());
+
+        public byte[] ReadBytes()
         {
-            lock (_device)
-            {
-                var data = _device.Read();
-                if (data.Status != HidDeviceData.ReadStatus.Success)
-                    return Enumerable.Empty<byte>();
-
-                return data.Data.Skip(3);
-            }
+            var data = _device.Read();
+            if (data.Status != HidDeviceData.ReadStatus.Success)
+                return null;
+            
+            return data.Data;
         }
 
-        public IEnumerable<byte> WriteReadBytes(IEnumerable<byte> bytes)
+        public byte[] WriteReadBytes(params byte[] bytes)
         {
             if (!WriteBytes(bytes))
-                return Enumerable.Empty<byte>();
+                return null;
             return ReadBytes();
         }
+
+        public byte[] WriteReadBytes(IEnumerable<byte> bytes) =>
+            WriteReadBytes(bytes.ToArray());
     }
 }

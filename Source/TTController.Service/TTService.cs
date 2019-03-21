@@ -163,6 +163,9 @@ namespace TTController.Service
                         if (config == null)
                             continue;
 
+                        if(!colorMap.ContainsKey(port))
+                            continue;
+
                         var colors = colorMap[port];
 
                         if (config.LedRotation > 0)
@@ -180,10 +183,11 @@ namespace TTController.Service
                         foreach (var (port, colors) in colorMap)
                         {
                             var controller = _deviceManager.GetController(port);
-                            if (controller == null)
+                            var effectByte = controller?.GetEffectByte(effect.EffectType);
+                            if (effectByte == null)
                                 continue;
 
-                            controller.SetRgb(port.Id, effect.EffectByte, colors);
+                            controller.SetRgb(port.Id, effectByte.Value, colors);
                         }
                     }
                 }
@@ -327,16 +331,11 @@ namespace TTController.Service
                         if(profile.Speed.HasValue)
                             controller.SetSpeed(port.Id, profile.Speed.Value);
 
-                        if (profile.EffectType.HasValue)
-                        {
-                            var mode = (byte) profile.EffectType.Value;
-                            if (profile.EffectSpeed.HasValue)
-                                mode += (byte) profile.EffectSpeed.Value;
+                        var effectByte = controller.GetEffectByte(profile.EffectType);
+                        if (effectByte.HasValue)
+                            controller.SetRgb(port.Id, effectByte.Value, profile.EffectColors);
 
-                            controller.SetRgb(port.Id, mode, profile.EffectColors);
-                        }
-
-                        if(state == ComputerStateType.Boot)
+                        if(state == ComputerStateType.Boot && (profile.Speed.HasValue || effectByte.HasValue))
                             controller.SaveProfile();
                     }
                 }

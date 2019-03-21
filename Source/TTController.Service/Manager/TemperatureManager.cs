@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using NLog;
 using OpenHardwareMonitor.Hardware;
-using TTController.Common;
 using TTController.Service.Hardware.Temperature;
 using TTController.Service.Utils;
 

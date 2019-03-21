@@ -8,7 +8,7 @@ namespace TTController.Common
     public interface IEffectBase : IDisposable
     {
         bool Enabled { get; }
-        byte EffectByte { get; }
+        string EffectType { get; }
         IEnumerable<Identifier> UsedSensors { get; }
         IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache);
     }
@@ -31,7 +31,7 @@ namespace TTController.Common
 
         public virtual void Dispose() { }
 
-        public abstract byte EffectByte { get; } 
+        public abstract string EffectType { get; } 
         public abstract IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache);
     }
 }

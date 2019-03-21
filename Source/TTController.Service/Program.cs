@@ -4,6 +4,7 @@ using System.Configuration.Install;
 using System.Linq;
 using System.Reflection;
 using System.ServiceProcess;
+using NLog;
 using OpenHardwareMonitor.Hardware;
 using TTController.Service.Config.Data;
 using TTController.Service.Manager;
@@ -107,6 +108,7 @@ namespace TTController.Service
 
         private static void ShowInfo()
         {
+            LogManager.Configuration = null;
             Console.Clear();
             Console.WriteLine("Controllers");
             Console.WriteLine("-------------------------------");
@@ -116,8 +118,8 @@ namespace TTController.Service
                 {
                     Console.WriteLine($"Name: {controller.Name}" +
                                       $"\nVendorId: {controller.VendorId}" +
-                                      $"\nProductId: {controller.ProductId}" +
-                                      $"\nPorts:");
+                                      $"\nProductId: {controller.ProductId}");
+                    Console.WriteLine($"Ports:");
                     foreach (var port in controller.Ports)
                     {
                         var data = controller.GetPortData(port.Id);
@@ -126,6 +128,10 @@ namespace TTController.Service
                                           $"\n\tIdentifier: {port}" +
                                           $"\n");
                     }
+
+                    Console.WriteLine($"Available effect types:");
+                    Console.WriteLine($"{string.Join(", ", controller.EffectTypes)}");
+                    Console.WriteLine();
                 }
             }
 
