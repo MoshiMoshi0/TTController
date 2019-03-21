@@ -9,8 +9,17 @@ namespace TTController.Service.Controller.Proxy
 {
     public class DpsgControllerProxy : AbstractControllerProxy
     {
+        private readonly IReadOnlyDictionary<string, byte> _availableEffects;
+
         public DpsgControllerProxy(IHidDeviceProxy device, IControllerDefinition definition)
-            : base(device, definition) { }
+            : base(device, definition)
+        {
+            _availableEffects = new Dictionary<string, byte>()
+            {
+                ["ByLed"] = 0x18,
+                ["Full"] = 0x19
+            };
+        }
 
         public override IEnumerable<PortIdentifier> Ports
         {
@@ -19,6 +28,8 @@ namespace TTController.Service.Controller.Proxy
                 yield return new PortIdentifier(Device.VendorId, Device.ProductId, 0);
             }
         }
+
+        public override IEnumerable<string> EffectTypes => _availableEffects.Keys;
 
         public override bool SetRgb(byte port, byte mode, IEnumerable<LedColor> colors)
         {
@@ -80,6 +91,11 @@ namespace TTController.Service.Controller.Proxy
             };
 
             return data;
+        }
+
+        public override byte? GetEffectByte(string effectType)
+        {
+            return _availableEffects.TryGetValue(effectType, out var value) ? value : (byte?)null;
         }
 
         public override void SaveProfile()

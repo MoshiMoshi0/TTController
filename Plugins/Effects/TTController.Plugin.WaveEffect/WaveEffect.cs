@@ -24,7 +24,7 @@ namespace TTController.Plugin.WaveEffect
             _colors = new LinkedList<LedColor>(Config.Colors);
         }
 
-        public override byte EffectByte => (byte)EffectType.ByLed;
+        public override string EffectType => "ByLed";
 
         public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
         {

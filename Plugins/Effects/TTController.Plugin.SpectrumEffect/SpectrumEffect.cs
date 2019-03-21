@@ -23,7 +23,7 @@ namespace TTController.Plugin.SpectrumEffect
             _hue = 0;
         }
 
-        public override byte EffectByte => (byte) EffectType.Full;
+        public override string EffectType => "Full";
 
         public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
         {

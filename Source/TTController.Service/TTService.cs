@@ -183,10 +183,11 @@ namespace TTController.Service
                         foreach (var (port, colors) in colorMap)
                         {
                             var controller = _deviceManager.GetController(port);
-                            if (controller == null)
+                            var effectByte = controller?.GetEffectByte(effect.EffectType);
+                            if (effectByte == null)
                                 continue;
 
-                            controller.SetRgb(port.Id, effect.EffectByte, colors);
+                            controller.SetRgb(port.Id, effectByte.Value, colors);
                         }
                     }
                 }

@@ -9,13 +9,13 @@ namespace TTController.Plugin.RawEffect
 {
     public class RawEffectConfig : EffectConfigBase
     {
-        public byte EffectByte { get; set; }
+        public string EffectType { get; set; }
         public List<LedColor> Colors { get; set; }
     }
 
     public class RawEffect : EffectBase<RawEffectConfig>
     {
-        public override byte EffectByte => Config.EffectByte;
+        public override string EffectType => Config.EffectType;
 
         public RawEffect(RawEffectConfig config) : base(config) { }
 
