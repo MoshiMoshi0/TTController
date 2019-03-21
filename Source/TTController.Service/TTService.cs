@@ -330,10 +330,12 @@ namespace TTController.Service
 
                         if(profile.Speed.HasValue)
                             controller.SetSpeed(port.Id, profile.Speed.Value);
-                        if (profile.EffectByte.HasValue)
-                            controller.SetRgb(port.Id, profile.EffectByte.Value, profile.EffectColors);
 
-                        if(state == ComputerStateType.Boot && (profile.Speed.HasValue || profile.EffectByte.HasValue))
+                        var effectByte = controller.GetEffectByte(profile.EffectType);
+                        if (effectByte.HasValue)
+                            controller.SetRgb(port.Id, effectByte.Value, profile.EffectColors);
+
+                        if(state == ComputerStateType.Boot && (profile.Speed.HasValue || effectByte.HasValue))
                             controller.SaveProfile();
                     }
                 }
