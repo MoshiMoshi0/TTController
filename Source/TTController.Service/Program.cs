@@ -118,8 +118,8 @@ namespace TTController.Service
                 {
                     Console.WriteLine($"Name: {controller.Name}" +
                                       $"\nVendorId: {controller.VendorId}" +
-                                      $"\nProductId: {controller.ProductId}" +
-                                      $"\nPorts:");
+                                      $"\nProductId: {controller.ProductId}");
+                    Console.WriteLine($"Ports:");
                     foreach (var port in controller.Ports)
                     {
                         var data = controller.GetPortData(port.Id);
@@ -128,6 +128,10 @@ namespace TTController.Service
                                           $"\n\tIdentifier: {port}" +
                                           $"\n");
                     }
+
+                    Console.WriteLine($"Available effect types:");
+                    Console.WriteLine($"{string.Join(", ", controller.EffectTypes)}");
+                    Console.WriteLine();
                 }
             }
 

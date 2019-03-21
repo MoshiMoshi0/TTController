@@ -13,7 +13,7 @@ namespace TTController.Plugin.FullColorEffect
     {
         public FullColorEffect(FullColorEffectConfig config) : base(config) { }
 
-        public override byte EffectByte => (byte)EffectType.ByLed;
+        public override string EffectType => "ByLed";
 
         public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
         {

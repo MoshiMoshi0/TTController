@@ -19,7 +19,7 @@ namespace TTController.Plugin.TemperatureEffect
     {
         private float _r, _g, _b;
 
-        public override byte EffectByte => (byte) EffectType.Full;
+        public override string EffectType => "Full";
         public override IEnumerable<Identifier> UsedSensors => Config.Sensors;
 
         public TemperatureEffect(TemperatureEffectConfig config) : base(config)
