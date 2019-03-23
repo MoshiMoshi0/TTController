@@ -72,13 +72,8 @@ namespace TTController.Plugin.SoundEffect
             return _spectrum.GenerateColors(Config.ColorGenerationMethod, ports, cache, _fftBuffer);
         }
 
-        public LedColor GenerateColor(double fftValue)
-        {
-            var rr = Config.FromColor.R * (1 - fftValue) + Config.ToColor.R * fftValue;
-            var gg = Config.FromColor.G * (1 - fftValue) + Config.ToColor.G * fftValue;
-            var bb = Config.FromColor.B * (1 - fftValue) + Config.ToColor.B * fftValue;
-            return new LedColor((byte)rr, (byte)gg, (byte)bb);
-        }
+        public LedColor GenerateColor(double fftValue) =>
+            LedColor.Lerp(fftValue, Config.FromColor, Config.ToColor);
 
         public override void Dispose()
         {

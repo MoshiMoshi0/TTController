@@ -17,7 +17,7 @@ namespace TTController.Plugin.TemperatureEffect
 
     public class TemperatureEffect : EffectBase<TemperatureEffectConfig>
     {
-        private float _r, _g, _b;
+        private double _r, _g, _b;
 
         public override string EffectType => "Full";
         public override IEnumerable<Identifier> UsedSensors => Config.Sensors;
@@ -55,10 +55,8 @@ namespace TTController.Plugin.TemperatureEffect
             {
                 var t = (temperature - Config.StartTemperature) /
                         (Config.EndTemperature - Config.StartTemperature);
-
-                var rr = Config.StartColor.R * (1 - t) + Config.EndColor.R * t;
-                var gg = Config.StartColor.G * (1 - t) + Config.EndColor.G * t;
-                var bb = Config.StartColor.B * (1 - t) + Config.EndColor.B * t;
+                
+                var (rr, gg, bb) = LedColor.LerpDeconstruct(t, Config.StartColor, Config.EndColor);
 
                 t = 0.05f;
                 _r = _r * (1 - t) + rr * t;
