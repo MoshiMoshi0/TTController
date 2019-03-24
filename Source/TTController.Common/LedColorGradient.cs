@@ -36,7 +36,7 @@ namespace TTController.Common
                     return (start.Color.R, start.Color.G, start.Color.B);
 
                 end = _points[i];
-            } while (!(location > start.Location && location < end.Location));
+            } while (!(location >= start.Location && location <= end.Location));
 
             var correctedLocation = (location - start.Location) / (end.Location - start.Location);
             return LedColor.LerpDeconstruct(correctedLocation, start.Color, end.Color);
