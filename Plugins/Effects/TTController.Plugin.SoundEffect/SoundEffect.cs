@@ -15,8 +15,7 @@ namespace TTController.Plugin.SoundEffect
         public ScalingStrategy ScalingStrategy { get; private set; } = ScalingStrategy.Sqrt;
         public double ScalingFactor { get; private set; } = 2;
         public ColorGenerationMethod ColorGenerationMethod { get; private set; } = ColorGenerationMethod.SpanPorts;
-        public LedColor FromColor { get; private set; }
-        public LedColor ToColor { get; private set; }
+        public LedColorGradient ColorGradient { get; private set; }
     }
 
     public class SoundEffect : EffectBase<SoundEffectConfig>
@@ -73,7 +72,7 @@ namespace TTController.Plugin.SoundEffect
         }
 
         public LedColor GenerateColor(double fftValue) =>
-            LedColor.Lerp(fftValue, Config.FromColor, Config.ToColor);
+            Config.ColorGradient.GetColor(fftValue);
 
         public override void Dispose()
         {
