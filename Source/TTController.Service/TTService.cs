@@ -99,139 +99,10 @@ namespace TTController.Service
             ApplyComputerStateProfile(ComputerStateType.Boot);
 
             _timerManager = new TimerManager();
-            _timerManager.RegisterTimer(_configManager.CurrentConfig.TemperatureTimerInterval, () =>
-            {
-                _temperatureManager.Update();
-                _temperatureManager.Accept(_cache.AsWriteOnly());
-                return true;
-            });
-            _timerManager.RegisterTimer(_configManager.CurrentConfig.DeviceSpeedTimerInterval, () =>
-            {
-                var isCriticalTemperature = _configManager.CurrentConfig.CriticalTemperature.Any(pair =>
-                    _cache.GetTemperature(pair.Key) >= pair.Value);
-
-                foreach (var profile in _configManager.CurrentConfig.Profiles)
-                {
-                    lock (_deviceManager)
-                    {
-                        foreach (var port in profile.Ports)
-                        {
-                            var controller = _deviceManager.GetController(port);
-                            var data = controller?.GetPortData(port.Id);
-                            _cache.StorePortData(port, data);
-                        }
-                    }
-
-                    IDictionary<PortIdentifier, byte> speedMap;
-                    if (isCriticalTemperature)
-                    {
-                        speedMap = profile.Ports.ToDictionary(p => p, p => (byte) 100);
-                    }
-                    else
-                    {
-                        var speedControllers = _speedControllerManager.GetSpeedControllers(profile.Guid);
-                        var speedController = speedControllers?.FirstOrDefault(c => c.Enabled);
-                        if (speedController == null)
-                            continue;
-
-                        speedMap = speedController.GenerateSpeeds(profile.Ports, _cache.AsReadOnly());
-                    }
-
-                    if (speedMap == null)
-                        continue;
-
-                    lock (_deviceManager)
-                    {
-                        foreach (var (port, speed) in speedMap)
-                        {
-                            var controller = _deviceManager.GetController(port);
-                            if (controller == null)
-                                continue;
-
-                            controller.SetSpeed(port.Id, speed);
-                        }
-                    }
-                }
-
-                return true;
-            });
-            _timerManager.RegisterTimer(_configManager.CurrentConfig.DeviceRgbTimerInterval, () =>
-            {
-                foreach (var profile in _configManager.CurrentConfig.Profiles)
-                {
-                    var effects = _effectManager.GetEffects(profile.Guid);
-                    var effect = effects?.FirstOrDefault(e => e.Enabled);
-                    if (effect == null)
-                        continue;
-
-                    var colorMap = effect.GenerateColors(profile.Ports, _cache.AsReadOnly());
-                    if (colorMap == null)
-                        continue;
-
-                    foreach (var port in profile.Ports)
-                    {
-                        var config = _cache.GetPortConfig(port);
-                        if (config == null)
-                            continue;
-
-                        if(!colorMap.ContainsKey(port))
-                            continue;
-
-                        var colors = colorMap[port];
-
-                        if (config.LedRotation > 0)
-                            colors = colors.Skip(config.LedRotation).Concat(colors.Take(config.LedRotation)).ToList();
-                        if (config.LedReverse)
-                            colors.Reverse();
-                        if (config.LedCount < colors.Count)
-                            colors.RemoveRange(config.LedCount, colors.Count - config.LedCount);
-
-                        colorMap[port] = colors;
-                    }
-
-                    lock (_deviceManager)
-                    {
-                        foreach (var (port, colors) in colorMap)
-                        {
-                            var controller = _deviceManager.GetController(port);
-                            var effectByte = controller?.GetEffectByte(effect.EffectType);
-                            if (effectByte == null)
-                                continue;
-
-                            controller.SetRgb(port.Id, effectByte.Value, colors);
-                        }
-                    }
-                }
-
-                return true;
-            });
-            if(Environment.UserInteractive) _timerManager.RegisterTimer(_configManager.CurrentConfig.LoggingTimerInterval, () =>
-            {
-                foreach (var profile in _configManager.CurrentConfig.Profiles)
-                {
-                    foreach (var port in profile.Ports)
-                    {
-                        var data = _cache.GetPortData(port);
-                        if(data == null)
-                            continue;
-                        
-                        Logger.Info("Port {0} data: {1}", port, data);
-                    }
-                }
-                
-                lock (_temperatureManager)
-                {
-                    foreach (var sensor in _sensorManager.TemperatureSensors)
-                    {
-                        var value = _temperatureManager.GetSensorValue(sensor.Identifier);
-                        if(float.IsNaN(value))
-                            continue;
-                        Logger.Info("Sensor \"{0}\" value: {1}", sensor.Identifier, value);
-                    }
-                }
-
-                return true;
-            });
+            _timerManager.RegisterTimer(_configManager.CurrentConfig.TemperatureTimerInterval, TemperatureTimerCallback);
+            _timerManager.RegisterTimer(_configManager.CurrentConfig.DeviceSpeedTimerInterval, DeviceSpeedTimerCallback);
+            _timerManager.RegisterTimer(_configManager.CurrentConfig.DeviceRgbTimerInterval, DeviceRgbTimerCallback);
+            if(Environment.UserInteractive) _timerManager.RegisterTimer(_configManager.CurrentConfig.LoggingTimerInterval, LoggingTimerCallback);
 
             _timerManager.Start();
 
@@ -356,5 +227,144 @@ namespace TTController.Service
                 }
             }
         }
+
+        #region Timer Callbacks
+        private bool TemperatureTimerCallback()
+        {
+            _temperatureManager.Update();
+            _temperatureManager.Accept(_cache.AsWriteOnly());
+            return true;
+        }
+
+        private bool DeviceSpeedTimerCallback()
+        {
+            var isCriticalTemperature = _configManager.CurrentConfig.CriticalTemperature.Any(pair =>
+                _cache.GetTemperature(pair.Key) >= pair.Value);
+
+            foreach (var profile in _configManager.CurrentConfig.Profiles)
+            {
+                lock (_deviceManager)
+                {
+                    foreach (var port in profile.Ports)
+                    {
+                        var controller = _deviceManager.GetController(port);
+                        var data = controller?.GetPortData(port.Id);
+                        _cache.StorePortData(port, data);
+                    }
+                }
+
+                IDictionary<PortIdentifier, byte> speedMap;
+                if (isCriticalTemperature)
+                {
+                    speedMap = profile.Ports.ToDictionary(p => p, p => (byte)100);
+                }
+                else
+                {
+                    var speedControllers = _speedControllerManager.GetSpeedControllers(profile.Guid);
+                    var speedController = speedControllers?.FirstOrDefault(c => c.Enabled);
+                    if (speedController == null)
+                        continue;
+
+                    speedMap = speedController.GenerateSpeeds(profile.Ports, _cache.AsReadOnly());
+                }
+
+                if (speedMap == null)
+                    continue;
+
+                lock (_deviceManager)
+                {
+                    foreach (var (port, speed) in speedMap)
+                    {
+                        var controller = _deviceManager.GetController(port);
+                        if (controller == null)
+                            continue;
+
+                        controller.SetSpeed(port.Id, speed);
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        public bool DeviceRgbTimerCallback()
+        {
+            foreach (var profile in _configManager.CurrentConfig.Profiles)
+            {
+                var effects = _effectManager.GetEffects(profile.Guid);
+                var effect = effects?.FirstOrDefault(e => e.Enabled);
+                if (effect == null)
+                    continue;
+
+                var colorMap = effect.GenerateColors(profile.Ports, _cache.AsReadOnly());
+                if (colorMap == null)
+                    continue;
+
+                foreach (var port in profile.Ports)
+                {
+                    var config = _cache.GetPortConfig(port);
+                    if (config == null)
+                        continue;
+
+                    if (!colorMap.ContainsKey(port))
+                        continue;
+
+                    var colors = colorMap[port];
+
+                    if (config.LedRotation > 0)
+                        colors = colors.Skip(config.LedRotation).Concat(colors.Take(config.LedRotation)).ToList();
+                    if (config.LedReverse)
+                        colors.Reverse();
+                    if (config.LedCount < colors.Count)
+                        colors.RemoveRange(config.LedCount, colors.Count - config.LedCount);
+
+                    colorMap[port] = colors;
+                }
+
+                lock (_deviceManager)
+                {
+                    foreach (var (port, colors) in colorMap)
+                    {
+                        var controller = _deviceManager.GetController(port);
+                        var effectByte = controller?.GetEffectByte(effect.EffectType);
+                        if (effectByte == null)
+                            continue;
+
+                        controller.SetRgb(port.Id, effectByte.Value, colors);
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        public bool LoggingTimerCallback()
+        {
+            foreach (var profile in _configManager.CurrentConfig.Profiles)
+            {
+                foreach (var port in profile.Ports)
+                {
+                    var data = _cache.GetPortData(port);
+                    if (data == null)
+                        continue;
+
+                    Logger.Info("Port {0} data: {1}", port, data);
+                }
+            }
+
+            lock (_temperatureManager)
+            {
+                foreach (var sensor in _sensorManager.TemperatureSensors)
+                {
+                    var value = _temperatureManager.GetSensorValue(sensor.Identifier);
+                    if (float.IsNaN(value))
+                        continue;
+                    Logger.Info("Sensor \"{0}\" value: {1}", sensor.Identifier, value);
+                }
+            }
+
+            return true;
+        }
+        #endregion
     }
 }
