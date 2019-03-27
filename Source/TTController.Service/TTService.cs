@@ -7,6 +7,7 @@ using System.Reflection;
 using System.ServiceProcess;
 using NLog;
 using NLog.Config;
+using NLog.Layouts;
 using NLog.Targets;
 using TTController.Common;
 using TTController.Service.Config.Data;
@@ -44,10 +45,16 @@ namespace TTController.Service
         public bool Initialize()
         {
             var logConfig = new LoggingConfiguration();
-            logConfig.AddTarget(new ConsoleTarget("console") { DetectConsoleAvailable = true });
+            logConfig.AddTarget(new ConsoleTarget("console")
+            {
+                DetectConsoleAvailable = true,
+                Layout = Layout.FromString("${time}: ${message}")
+            });
             logConfig.AddRuleForAllLevels("console");
             LogManager.Configuration = logConfig;
 
+            Logger.Info($"{new string('=', 64)}");
+            Logger.Info("Initializing...");
             var pluginAssemblies = Directory.GetFiles($@"{AppDomain.CurrentDomain.BaseDirectory}\Plugins", "*.dll", SearchOption.AllDirectories)
                 .Where(f => AppDomain.CurrentDomain.GetAssemblies().All(a => a.Location != f))
                 .TrySelect(Assembly.LoadFile, ex => { })
@@ -56,8 +63,9 @@ namespace TTController.Service
             AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>
                 pluginAssemblies.FirstOrDefault(a => string.CompareOrdinal(a.FullName, args.Name) == 0);
 
+            Logger.Info("Loading plugins...");
             foreach (var assembly in pluginAssemblies)
-                Logger.Info("Loading plugin assembly: {0}", assembly.FullName);
+                Logger.Info("Loading assembly: {0} [{1}]", assembly.GetName().Name, assembly.GetName().Version);
 
             _cache = new DataCache();
             _configManager = new ConfigManager("config.json");
@@ -226,6 +234,9 @@ namespace TTController.Service
             });
 
             _timerManager.Start();
+
+            Logger.Info("Initializing done!");
+            Logger.Info($"{new string('=', 64)}");
             return true;
         }
 
