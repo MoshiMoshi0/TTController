@@ -1,11 +1,10 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Configuration.Install;
 using System.Linq;
 using System.Reflection;
 using System.ServiceProcess;
 using NLog;
-using OpenHardwareMonitor.Hardware;
 using TTController.Service.Config.Data;
 using TTController.Service.Manager;
 using TTController.Service.Utils;
@@ -143,18 +142,18 @@ namespace TTController.Service
 
             Console.WriteLine("Sensors");
             Console.WriteLine("-------------------------------");
-            using (var temperatureManager = new TemperatureManager(null))
+            using (var sensorManager = new SensorManager())
             {
-                foreach (var hardware in temperatureManager.Sensors.Select(s => s.Hardware).Distinct())
-                {
+                foreach (var hardware in sensorManager.TemperatureSensors.Select(s => s.Hardware).Distinct())
                     hardware.Update();
-
-                    Console.WriteLine($"{hardware.Name}:");
-                    foreach (var sensor in hardware.Sensors.Where(s => s.SensorType == SensorType.Temperature))
-                        Console.WriteLine($"\t{sensor.Identifier}:" +
-                                          $"\n\t\tName: {sensor.Name}" + 
-                                          $"\n\t\tValue: {sensor.Value ?? float.NaN}" +
-                                          $"\t");
+                
+                foreach (var sensor in sensorManager.TemperatureSensors)
+                {
+                    Console.WriteLine($"{sensor.Hardware.Name}:");
+                    Console.WriteLine($"\t{sensor.Identifier}:" +
+                                      $"\n\t\tName: {sensor.Name}" + 
+                                      $"\n\t\tValue: {sensor.Value ?? float.NaN}" +
+                                      $"\t");
                 }
             }
             Console.WriteLine("-------------------------------");

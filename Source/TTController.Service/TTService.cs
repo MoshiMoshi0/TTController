@@ -22,6 +22,7 @@ namespace TTController.Service
 
         private DeviceManager _deviceManager;
         private ConfigManager _configManager;
+        private SensorManager _sensorManager;
         private TemperatureManager _temperatureManager;
         private TimerManager _timerManager;
         private EffectManager _effectManager;
@@ -62,9 +63,11 @@ namespace TTController.Service
             _configManager = new ConfigManager("config.json");
             _configManager.LoadOrCreateConfig();
 
+            _sensorManager = new SensorManager();
+
             var alpha = Math.Exp(-_configManager.CurrentConfig.TemperatureTimerInterval / (double)_configManager.CurrentConfig.DeviceSpeedTimerInterval);
             var providerFactory = new MovingAverageTemperatureProviderFactory(alpha);
-            _temperatureManager = new TemperatureManager(providerFactory);
+            _temperatureManager = new TemperatureManager(_sensorManager.TemperatureSensors.ToList(), providerFactory);
 
             _effectManager = new EffectManager();
             _speedControllerManager = new SpeedControllerManager();
@@ -210,7 +213,7 @@ namespace TTController.Service
                 
                 lock (_temperatureManager)
                 {
-                    foreach (var sensor in _temperatureManager.Sensors)
+                    foreach (var sensor in _sensorManager.TemperatureSensors)
                     {
                         var value = _temperatureManager.GetSensorValue(sensor.Identifier);
                         if(float.IsNaN(value))
@@ -292,6 +295,7 @@ namespace TTController.Service
             ApplyComputerStateProfile(state);
 
             _temperatureManager.Dispose();
+            _sensorManager.Dispose();
             _deviceManager.Dispose();
             _effectManager.Dispose();
             _speedControllerManager.Dispose();
