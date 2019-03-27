@@ -57,12 +57,14 @@ namespace TTController.Service
         {
             void StopService()
             {
+                Console.WriteLine("Stopping the service...");
                 Service?.Stop();
                 Service?.WaitForStatus(ServiceControllerStatus.Stopped);
             }
 
             void StartService()
             {
+                Console.WriteLine("Starting the service...");
                 Service?.Start();
                 Service?.WaitForStatus(ServiceControllerStatus.Running);
             }
@@ -72,27 +74,31 @@ namespace TTController.Service
             {
                 StartService();
                 return false;
-            }, () => Service?.Status != ServiceControllerStatus.Running);
+            }, () => Service != null && Service.Status != ServiceControllerStatus.Running);
             menu.Add("Stop", () =>
             {
                 StopService();
                 return false;
-            }, () => Service?.Status == ServiceControllerStatus.Running);
+            }, () => Service != null && Service.Status == ServiceControllerStatus.Running);
             menu.Add("Restart", () => {
                 StopService();
                 StartService();
                 return false;
-            }, () => Service?.Status == ServiceControllerStatus.Running);
+            }, () => Service != null && Service.Status == ServiceControllerStatus.Running);
             menu.Add("Uninstall", () => {
                 if(Service?.Status != ServiceControllerStatus.Stopped)
                     StopService();
                 ManagedInstallerClass.InstallHelper(new[]
                     {"/u", "/LogFile=", "/LogToConsole=true", Assembly.GetExecutingAssembly().Location});
+                Console.WriteLine("Press any key to return to the menu...");
+                Console.ReadKey(true);
                 return false;
             }, () => Service != null);
             menu.Add("Install", () => {
                 ManagedInstallerClass.InstallHelper(new[]
                     {"/LogFile=", "/LogToConsole=true", Assembly.GetExecutingAssembly().Location});
+                Console.WriteLine("Press any key to return to the menu...");
+                Console.ReadKey(true);
                 return false;
             }, () => Service == null);
             menu.Add("Back", () => true, () => true, '0');
@@ -223,6 +229,7 @@ namespace TTController.Service
                     if (optionMap.ContainsKey(keyInfo.KeyChar))
                     {
                         Console.ResetColor();
+                        Console.WriteLine(keyInfo.KeyChar);
                         return optionMap[keyInfo.KeyChar];
                     }
                 }
