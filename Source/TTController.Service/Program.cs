@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Configuration.Install;
 using System.Linq;
@@ -32,11 +32,11 @@ namespace TTController.Service
                     Console.WriteLine("Press any key to return to the menu...");
                     Console.ReadKey(true);
                     return false;
-                }, () => Service?.Status != ServiceControllerStatus.Running);
+                }, () => Service != null && Service.Status != ServiceControllerStatus.Running);
                 menu.Add("Show hardware info", () => {
                     ShowInfo();
                     return false;
-                }, () => Service?.Status != ServiceControllerStatus.Running);
+                }, () => Service != null && Service.Status != ServiceControllerStatus.Running);
                 menu.Add("Exit", () => true, () => true, '0');
 
                 while (true)
