@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using OpenHardwareMonitor.Hardware;
 
@@ -15,7 +16,7 @@ namespace TTController.Common
 
     public abstract class EffectConfigBase
     {
-        public ITriggerBase Trigger { get; set; }
+        [DefaultValue(null)] public ITriggerBase Trigger { get; private set; } = null;
     }
 
     public abstract class EffectBase<T> : IEffectBase where T : EffectConfigBase

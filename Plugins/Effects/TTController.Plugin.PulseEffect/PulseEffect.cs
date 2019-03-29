@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using TTController.Common;
 
@@ -6,8 +7,8 @@ namespace TTController.Plugin.PulseEffect
 {
     public class PulseEffectConfig : EffectConfigBase
     {
-        public List<LedColor> Colors { get; set; }
-        public double BrightnessStep { get; set; }
+        public List<LedColor> Colors { get; private set; } = new List<LedColor>();
+        [DefaultValue(0.025)] public double BrightnessStep { get; private set; } = 0.025;
     }
 
     public class PulseEffect : EffectBase<PulseEffectConfig>

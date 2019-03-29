@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using TTController.Common;
 
@@ -7,9 +8,9 @@ namespace TTController.Plugin.BlinkEffect
 {
     public class BlinkEffectConfig : EffectConfigBase
     {
-        public int On { get; set; } = 1000;
-        public int Off { get; set; } = 1000;
-        public List<LedColor> Colors { get; set; }
+        [DefaultValue(1000)] public int On { get; private set; } = 1000;
+        [DefaultValue(1000)] public int Off { get; private set; } = 1000;
+        public List<LedColor> Colors { get; private set; } = new List<LedColor>();
     }
 
     public class BlinkEffect : EffectBase<BlinkEffectConfig>

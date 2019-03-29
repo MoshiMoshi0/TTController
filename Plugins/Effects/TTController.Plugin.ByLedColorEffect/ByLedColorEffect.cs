@@ -6,7 +6,7 @@ namespace TTController.Plugin.ByLedColorEffect
 {
     public class ByLedColorEffectConfig : EffectConfigBase
     {
-        public List<LedColor> Colors { get; set; }
+        public List<LedColor> Colors { get; private set; } = new List<LedColor>();
     }
 
     public class ByLedColorEffect : EffectBase<ByLedColorEffectConfig>

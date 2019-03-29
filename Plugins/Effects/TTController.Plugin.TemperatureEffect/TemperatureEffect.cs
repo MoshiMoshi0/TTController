@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using OpenHardwareMonitor.Hardware;
 using TTController.Common;
@@ -7,9 +8,9 @@ namespace TTController.Plugin.TemperatureEffect
 {
     public class TemperatureEffectConfig : EffectConfigBase
     {
-        public List<Identifier> Sensors { get; set; }
-        public SensorMixFunction SensorMixFunction { get; set; } = SensorMixFunction.Maximum;
-        public LedColorGradient ColorGradient { get; set; }
+        public List<Identifier> Sensors { get; private set; } = new List<Identifier>();
+        [DefaultValue(SensorMixFunction.Maximum)] public SensorMixFunction SensorMixFunction { get; private set; } = SensorMixFunction.Maximum;
+        public LedColorGradient ColorGradient { get; private set; } = new LedColorGradient();
     }
 
     public class TemperatureEffect : EffectBase<TemperatureEffectConfig>

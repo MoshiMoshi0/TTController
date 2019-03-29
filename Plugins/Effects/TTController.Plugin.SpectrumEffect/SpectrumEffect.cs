@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using TTController.Common;
 
@@ -6,14 +7,14 @@ namespace TTController.Plugin.SpectrumEffect
 {
     public class SpectrumEffectConfig : EffectConfigBase
     {
-        public float Saturation { get; set; }
-        public float Brightness { get; set; }
-        public float HueStep { get; set; }
+        [DefaultValue(1.0)] public double Saturation { get; private set; } = 1.0;
+        [DefaultValue(1.0)] public double Brightness { get; private set; } = 1.0;
+        [DefaultValue(1.0)] public double HueStep { get; private set; } = 1.0;
     }
 
     public class SpectrumEffect : EffectBase<SpectrumEffectConfig>
     {
-        private float _hue;
+        private double _hue;
         
         public SpectrumEffect(SpectrumEffectConfig config) : base(config)
         {

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using TTController.Common;
 
@@ -12,9 +13,9 @@ namespace TTController.Plugin.LogicTrigger
 
     public class LogicTriggerConfig : TriggerConfigBase
     {
-        public LogicOperation Operation { get; set; }
-        public bool Negate { get; set; } = false;
-        public List<ITriggerBase> Triggers { get; set; }
+        [DefaultValue(LogicOperation.And)] public LogicOperation Operation { get; private set; } = LogicOperation.And;
+        [DefaultValue(false)] public bool Negate { get; private set; } = false;
+        public List<ITriggerBase> Triggers { get; private set; } = new List<ITriggerBase>();
     }
 
     public class LogicTrigger : TriggerBase<LogicTriggerConfig>

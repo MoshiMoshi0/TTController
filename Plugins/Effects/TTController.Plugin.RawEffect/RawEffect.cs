@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using TTController.Common;
 
@@ -6,8 +7,8 @@ namespace TTController.Plugin.RawEffect
 {
     public class RawEffectConfig : EffectConfigBase
     {
-        public string EffectType { get; set; }
-        public List<LedColor> Colors { get; set; }
+        [DefaultValue(null)] public string EffectType { get; set; } = null;
+        public List<LedColor> Colors { get; private set; } = new List<LedColor>();
     }
 
     public class RawEffect : EffectBase<RawEffectConfig>

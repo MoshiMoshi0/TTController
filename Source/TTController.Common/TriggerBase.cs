@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace TTController.Common
 {
@@ -9,12 +10,11 @@ namespace TTController.Common
 
     public abstract class TriggerConfigBase
     {
-        protected TriggerConfigBase() { }
     }
 
     public abstract class TriggerBase<T> : ITriggerBase where T : TriggerConfigBase
     {
-        public T Config { set; get; }
+        public T Config { get; }
 
         protected TriggerBase(T config)
         {
