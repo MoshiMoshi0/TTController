@@ -14,6 +14,11 @@ namespace TTController.Common
         public LedColorGradientPoint Start => _points.First();
         public LedColorGradientPoint End => _points.Last();
 
+        public LedColorGradient()
+        {
+            _points = new List<LedColorGradientPoint>();
+        }
+
         public LedColorGradient(IEnumerable<LedColorGradientPoint> points)
         {
             _points = points.OrderBy(p => p.Location).ToList();
@@ -27,6 +32,9 @@ namespace TTController.Common
 
         public (double, double, double) ColorAtDeconstruct(double location)
         {
+            if(_points.Count == 0)
+                return (0, 0, 0);
+
             var i = 0;
             LedColorGradientPoint start, end;
             do
