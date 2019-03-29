@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using OpenHardwareMonitor.Hardware;
 
@@ -14,7 +15,7 @@ namespace TTController.Common
 
     public abstract class SpeedControllerConfigBase
     {
-        public ITriggerBase Trigger { get; set; }
+        [DefaultValue(null)] public ITriggerBase Trigger { get; private set; } = null;
     }
 
     public abstract class SpeedControllerBase<T> : ISpeedControllerBase where T : SpeedControllerConfigBase

@@ -1,4 +1,5 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using TTController.Common;
 
@@ -6,9 +7,10 @@ namespace TTController.Plugin.SnakeEffect
 {
     public class SnakeEffectConfig : EffectConfigBase
     {
-        public int Length { get; set; }
-        public LedColor SnakeColor { get; set; }
-        public LedColor BackgroundColor { get; set; }
+        [DefaultValue(5)] public int Length { get; private set; } = 5;
+        [DefaultValue(2)] public int TickCount { get; private set; } = 2;
+        public LedColor SnakeColor { get; private set; } = new LedColor(0, 0, 0);
+        public LedColor BackgroundColor { get; private set; } = new LedColor(0, 0, 0);
     }
 
     public class SnakeEffect : EffectBase<SnakeEffectConfig>

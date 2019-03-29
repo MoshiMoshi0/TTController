@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using OpenHardwareMonitor.Hardware;
 using TTController.Common;
 
@@ -11,10 +12,10 @@ namespace TTController.Service.Config.Data
         public IDictionary<PortIdentifier, PortConfig> PortConfig { get; private set; } = new Dictionary<PortIdentifier, PortConfig>();
         public IDictionary<Identifier, int> CriticalTemperature { get; private set; } = new Dictionary<Identifier, int>();
 
-        public int TemperatureTimerInterval { get; private set; } = 250;
-        public int DeviceSpeedTimerInterval { get; private set; } = 2500;
-        public int DeviceRgbTimerInterval { get; private set; } = (int) (1000.0 / 30.0);
-        public int LoggingTimerInterval { get; private set; } = 5000;
+        [DefaultValue(250)] public int TemperatureTimerInterval { get; private set; } = 250;
+        [DefaultValue(2500)] public int DeviceSpeedTimerInterval { get; private set; } = 2500;
+        [DefaultValue(32)] public int DeviceRgbTimerInterval { get; private set; } = 32;
+        [DefaultValue(5000)] public int LoggingTimerInterval { get; private set; } = 5000;
 
         public static ConfigData CreateDefault()
         {

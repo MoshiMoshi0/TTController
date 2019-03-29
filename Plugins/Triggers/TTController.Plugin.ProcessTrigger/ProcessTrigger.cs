@@ -1,13 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using TTController.Common;
+using TTController.Plugin.ProcessTrigger;
 
 namespace TTController.Plugin.ProcessTrigger
 {
     public class ProcessTriggerConfig : TriggerConfigBase
     {
-        public string[] Processes { get; set; }
+        public List<string> Processes { get; private set; } = new List<string>();
     }
 
     public class ProcessTrigger : TriggerBase<ProcessTriggerConfig>
