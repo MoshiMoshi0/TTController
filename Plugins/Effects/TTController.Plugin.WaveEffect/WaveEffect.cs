@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using TTController.Common;
 
@@ -6,8 +7,8 @@ namespace TTController.Plugin.WaveEffect
 {
     public class WaveEffectConfig : EffectConfigBase
     {
-        public List<LedColor> Colors { get; set; }
-        public int TickInterval { get; set; }
+        public List<LedColor> Colors { get; private set; } = new List<LedColor>();
+        [DefaultValue(3)] public int TickInterval { get; private set; } = 3;
     }
 
     public class WaveEffect : EffectBase<WaveEffectConfig>

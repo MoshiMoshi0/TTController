@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using System.ServiceProcess;
 using NLog;
-using OpenHardwareMonitor.Hardware;
 using TTController.Service.Config.Data;
 using TTController.Service.Manager;
 using TTController.Service.Utils;
@@ -32,11 +31,11 @@ namespace TTController.Service
                     Console.WriteLine("Press any key to return to the menu...");
                     Console.ReadKey(true);
                     return false;
-                }, () => Service?.Status != ServiceControllerStatus.Running);
+                }, () => Service != null && Service.Status != ServiceControllerStatus.Running);
                 menu.Add("Show hardware info", () => {
                     ShowInfo();
                     return false;
-                }, () => Service?.Status != ServiceControllerStatus.Running);
+                }, () => Service != null && Service.Status != ServiceControllerStatus.Running);
                 menu.Add("Exit", () => true, () => true, '0');
 
                 while (true)
@@ -57,12 +56,14 @@ namespace TTController.Service
         {
             void StopService()
             {
+                Console.WriteLine("Stopping the service...");
                 Service?.Stop();
                 Service?.WaitForStatus(ServiceControllerStatus.Stopped);
             }
 
             void StartService()
             {
+                Console.WriteLine("Starting the service...");
                 Service?.Start();
                 Service?.WaitForStatus(ServiceControllerStatus.Running);
             }
@@ -72,27 +73,31 @@ namespace TTController.Service
             {
                 StartService();
                 return false;
-            }, () => Service?.Status != ServiceControllerStatus.Running);
+            }, () => Service != null && Service.Status != ServiceControllerStatus.Running);
             menu.Add("Stop", () =>
             {
                 StopService();
                 return false;
-            }, () => Service?.Status == ServiceControllerStatus.Running);
+            }, () => Service != null && Service.Status == ServiceControllerStatus.Running);
             menu.Add("Restart", () => {
                 StopService();
                 StartService();
                 return false;
-            }, () => Service?.Status == ServiceControllerStatus.Running);
+            }, () => Service != null && Service.Status == ServiceControllerStatus.Running);
             menu.Add("Uninstall", () => {
                 if(Service?.Status != ServiceControllerStatus.Stopped)
                     StopService();
                 ManagedInstallerClass.InstallHelper(new[]
                     {"/u", "/LogFile=", "/LogToConsole=true", Assembly.GetExecutingAssembly().Location});
+                Console.WriteLine("Press any key to return to the menu...");
+                Console.ReadKey(true);
                 return false;
             }, () => Service != null);
             menu.Add("Install", () => {
                 ManagedInstallerClass.InstallHelper(new[]
                     {"/LogFile=", "/LogToConsole=true", Assembly.GetExecutingAssembly().Location});
+                Console.WriteLine("Press any key to return to the menu...");
+                Console.ReadKey(true);
                 return false;
             }, () => Service == null);
             menu.Add("Back", () => true, () => true, '0');
@@ -137,18 +142,18 @@ namespace TTController.Service
 
             Console.WriteLine("Sensors");
             Console.WriteLine("-------------------------------");
-            using (var temperatureManager = new TemperatureManager(null))
+            using (var sensorManager = new SensorManager())
             {
-                foreach (var hardware in temperatureManager.Sensors.Select(s => s.Hardware).Distinct())
-                {
+                foreach (var hardware in sensorManager.TemperatureSensors.Select(s => s.Hardware).Distinct())
                     hardware.Update();
-
-                    Console.WriteLine($"{hardware.Name}:");
-                    foreach (var sensor in hardware.Sensors.Where(s => s.SensorType == SensorType.Temperature))
-                        Console.WriteLine($"\t{sensor.Identifier}:" +
-                                          $"\n\t\tName: {sensor.Name}" + 
-                                          $"\n\t\tValue: {sensor.Value ?? float.NaN}" +
-                                          $"\t");
+                
+                foreach (var sensor in sensorManager.TemperatureSensors)
+                {
+                    Console.WriteLine($"{sensor.Hardware.Name}:");
+                    Console.WriteLine($"\t{sensor.Identifier}:" +
+                                      $"\n\t\tName: {sensor.Name}" + 
+                                      $"\n\t\tValue: {sensor.Value ?? float.NaN}" +
+                                      $"\t");
                 }
             }
             Console.WriteLine("-------------------------------");
@@ -159,27 +164,27 @@ namespace TTController.Service
         #region Menu
         private class MenuOption
         {
-            public MenuOption(string description, Func<bool> callback, Func<bool> enabled, char key = Char.MaxValue)
+            public MenuOption(string description, Func<bool> callback, Func<bool> enabled, char? keyOverride = null)
             {
                 Description = description;
                 Callback = callback;
                 Enabled = enabled;
-                Key = key;
+                KeyOverride = keyOverride;
             }
 
             public string Description { get; }
             public Func<bool> Callback { get; }
             public Func<bool> Enabled { get; }
-            public char Key { get; }
+            public char? KeyOverride { get; }
         }
 
         private class MenuPage
         {
-            private readonly IList<MenuOption> _options;
+            private readonly List<MenuOption> _options;
             private readonly string _header;
 
-            public void Add(string description, Func<bool> callback, Func<bool> enabled, char key = Char.MaxValue) =>
-                _options.Add(new MenuOption(description, callback, enabled, key));
+            public void Add(string description, Func<bool> callback, Func<bool> enabled, char? keyOverride = null) =>
+                _options.Add(new MenuOption(description, callback, enabled, keyOverride));
 
             public MenuPage(string header = null)
             {
@@ -196,34 +201,30 @@ namespace TTController.Service
                     Console.WriteLine("================================");
                 }
 
-                var index = 1;
-                var format = "[{0}] {1}";
-                var optionMap = _options
-                    .Where(o => o.Enabled())
-                    .ToDictionary(o => o.Key == char.MaxValue ? (char)(index++ + '0') : o.Key, o => o);
+                var index = 0;
+                var optionMap = new Dictionary<char, MenuOption>();
+                foreach (var option in _options)
+                {
+                    var key = option.KeyOverride ?? (char) (index++ + (index > 9 ? 'a' : '1'));
+                    optionMap.Add(key, option);
 
-                Console.ForegroundColor = ConsoleColor.Gray;
-                foreach (var (key, option) in optionMap)
-                    Console.WriteLine(format, key, option.Description);
-                Console.WriteLine();
+                    Console.ForegroundColor = option.Enabled() ? ConsoleColor.Gray : ConsoleColor.DarkGray;
+                    Console.WriteLine("[{0}] {1}", key, option.Description);
+                }
 
-                Console.ForegroundColor = ConsoleColor.DarkGray;
-                Console.WriteLine("Disabled options:");
-                foreach (var option in _options.Where(o => !o.Enabled()))
-                    Console.WriteLine(format, ' ', option.Description);
                 Console.WriteLine();
 
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.Write($"[{string.Join(", ", optionMap.Keys)}]: ");
+                Console.Write($"[{string.Join(", ", optionMap.Where(kv => kv.Value.Enabled()).Select(kv => kv.Key))}]: ");
                 
                 while (true)
                 {
-                    var keyInfo = Console.ReadKey(true);
-
-                    if (optionMap.ContainsKey(keyInfo.KeyChar))
+                    var c = Console.ReadKey(true).KeyChar;
+                    if (optionMap.ContainsKey(c) && optionMap[c].Enabled())
                     {
                         Console.ResetColor();
-                        return optionMap[keyInfo.KeyChar];
+                        Console.WriteLine(c);
+                        return optionMap[c];
                     }
                 }
             }

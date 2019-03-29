@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using OpenHardwareMonitor.Hardware;
 using TTController.Common;
@@ -8,11 +9,11 @@ namespace TTController.Plugin.PwmSpeedController
 {
     public class PwmSpeedControllerConfig : SpeedControllerConfigBase
     {
-        public List<CurvePoint> CurvePoints { get; set; }
-        public List<Identifier> Sensors { get; set; }
-        public SensorMixFunction SensorMixFunction { get; set; } = SensorMixFunction.Maximum;
-        public int MinimumChange { get; set; } = 4;
-        public int MaximumChange { get; set; } = 8;
+        public List<CurvePoint> CurvePoints { get; private set; } = new List<CurvePoint>();
+        public List<Identifier> Sensors { get; private set; } = new List<Identifier>();
+        [DefaultValue(SensorMixFunction.Maximum)] public SensorMixFunction SensorMixFunction { get; private set; } = SensorMixFunction.Maximum;
+        [DefaultValue(4)] public int MinimumChange { get; private set; } = 4;
+        [DefaultValue(8)] public int MaximumChange { get; private set; } = 8;
     }
 
     public class PwmSpeedController : SpeedControllerBase<PwmSpeedControllerConfig>

@@ -17,6 +17,27 @@ namespace TTController.Common
         
         public override string ToString() => $"[{R}, {G}, {B}]";
 
+        public void Deconstruct(out object r, out object g, out object b)
+        {
+            r = R;
+            g = G;
+            b = B;
+        }
+
+        public static LedColor Lerp(double t, LedColor from, LedColor to)
+        {
+            var (r, g, b) = LerpDeconstruct(t, from, to);
+            return new LedColor((byte)r, (byte)g, (byte)b);
+        }
+
+        public static (double, double, double) LerpDeconstruct(double t, LedColor from, LedColor to)
+        {
+            var r = from.R * (1 - t) + to.R * t;
+            var g = from.G * (1 - t) + to.G * t;
+            var b = from.B * (1 - t) + to.B * t;
+            return (r, g, b);       
+        }
+
         public static (double, double, double) ToHsv(LedColor color)
         {
             var max = Math.Max(color.R, Math.Max(color.G, color.B));

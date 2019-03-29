@@ -45,6 +45,7 @@
     <Compile Include="EffectBase.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="LedColor.cs" />
+    <Compile Include="LedColorGradient.cs" />
     <Compile Include="PortConfig.cs" />
     <Compile Include="PortData.cs" />
     <Compile Include="PortIdentifier.cs" />

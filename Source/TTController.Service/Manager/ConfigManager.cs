@@ -21,6 +21,7 @@ namespace TTController.Service.Manager
 
         public ConfigManager(string filename)
         {
+            Logger.Info("Creating Config Manager...");
             _filename = filename;
 
             JsonConvert.DefaultSettings = () =>

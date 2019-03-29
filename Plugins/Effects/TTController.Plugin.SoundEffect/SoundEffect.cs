@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using CSCore;
 using CSCore.DSP;
 using CSCore.SoundIn;
@@ -9,14 +10,13 @@ namespace TTController.Plugin.SoundEffect
 {
     public class SoundEffectConfig : EffectConfigBase
     {
-        public bool UseAverage { get; private set; } = true;
-        public int MinimumFrequency { get; private set; } = 100;
-        public int MaximumFrequency { get; private set; } = 10000;
-        public ScalingStrategy ScalingStrategy { get; private set; } = ScalingStrategy.Sqrt;
-        public double ScalingFactor { get; private set; } = 2;
-        public ColorGenerationMethod ColorGenerationMethod { get; private set; } = ColorGenerationMethod.SpanPorts;
-        public LedColor FromColor { get; private set; }
-        public LedColor ToColor { get; private set; }
+        [DefaultValue(true)] public bool UseAverage { get; private set; } = true;
+        [DefaultValue(100)] public int MinimumFrequency { get; private set; } = 100;
+        [DefaultValue(10000)] public int MaximumFrequency { get; private set; } = 10000;
+        [DefaultValue(ScalingStrategy.Sqrt)] public ScalingStrategy ScalingStrategy { get; private set; } = ScalingStrategy.Sqrt;
+        [DefaultValue(2.0)] public double ScalingFactor { get; private set; } = 2.0;
+        [DefaultValue(ColorGenerationMethod.SpanPorts)] public ColorGenerationMethod ColorGenerationMethod { get; private set; } = ColorGenerationMethod.SpanPorts;
+        public LedColorGradient ColorGradient { get; private set; } = new LedColorGradient();
     }
 
     public class SoundEffect : EffectBase<SoundEffectConfig>
@@ -72,13 +72,8 @@ namespace TTController.Plugin.SoundEffect
             return _spectrum.GenerateColors(Config.ColorGenerationMethod, ports, cache, _fftBuffer);
         }
 
-        public LedColor GenerateColor(double fftValue)
-        {
-            var rr = Config.FromColor.R * (1 - fftValue) + Config.ToColor.R * fftValue;
-            var gg = Config.FromColor.G * (1 - fftValue) + Config.ToColor.G * fftValue;
-            var bb = Config.FromColor.B * (1 - fftValue) + Config.ToColor.B * fftValue;
-            return new LedColor((byte)rr, (byte)gg, (byte)bb);
-        }
+        public LedColor GenerateColor(double fftValue) =>
+            Config.ColorGradient.GetColor(fftValue);
 
         public override void Dispose()
         {

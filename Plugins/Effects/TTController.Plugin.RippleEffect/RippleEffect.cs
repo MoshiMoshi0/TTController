@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using TTController.Common;
 
@@ -6,9 +7,9 @@ namespace TTController.Plugin.RippleEffect
 {
     public class RippleEffectConfig : EffectConfigBase
     {
-        public LedColor Color { get; set; }
-        public int Length { get; set; }
-        public int TickInterval { get; set; }
+        public LedColor Color { get; private set; } = new LedColor(0, 0, 0);
+        [DefaultValue(5)] public int Length { get; private set; } = 5;
+        [DefaultValue(3)] public int TickInterval { get; private set; } = 3;
     }
 
     public class RippleEffect : EffectBase<RippleEffectConfig>

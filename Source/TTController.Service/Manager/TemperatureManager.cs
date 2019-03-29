@@ -11,52 +11,33 @@ namespace TTController.Service.Manager
     public class TemperatureManager : IDataProvider, IDisposable
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
-        private readonly Computer _computer;
-        private readonly List<ISensor> _sensors;
-        private readonly Dictionary<Identifier, ITemperatureProvider> _providerMap;
+        
         private readonly ITemperatureProviderFactory _providerFactory;
+        private readonly Dictionary<Identifier, ITemperatureProvider> _providerMap;
+        private readonly HashSet<IHardware> _hardware;
+        private readonly List<ISensor> _sensors;
 
-        public IReadOnlyList<ISensor> Sensors => _sensors.AsReadOnly();
-
-        public TemperatureManager(ITemperatureProviderFactory providerFactory)
+        public TemperatureManager(List<ISensor> sensors, ITemperatureProviderFactory providerFactory)
         {
+            if(sensors.Any(s => s.SensorType != SensorType.Temperature))
+                throw new ArgumentException($"{nameof(sensors)} list can only contain temperature sensors");
+
             Logger.Info("Creating Temperature Manager...");
 
+            _sensors = sensors;
             _providerFactory = providerFactory;
 
-            _sensors = new List<ISensor>();
             _providerMap = new Dictionary<Identifier, ITemperatureProvider>();
+            _hardware = new HashSet<IHardware>();
             
-            _computer = new Computer()
-            {
-                CPUEnabled = true,
-                GPUEnabled = true,
-                HDDEnabled = true
-            };
-
-            _computer.Open();
-            _computer.Accept(new SensorVisitor(sensor =>
-            {
-                if (sensor.SensorType == SensorType.Temperature)
-                    _sensors.Add(sensor);
-                sensor.ValuesTimeWindow = TimeSpan.Zero;
-            }));
-            
-            _sensors.ForEach(s => Logger.Info("Detected sensor: {0}", s.Identifier));
+            _sensors.ForEach(s => Logger.Info("Valid sensor identifier: {0}", s.Identifier));
         }
 
         public void Update()
         {
-            //TODO: should we cache this in Enable/Disable sensor?
-            var hardwareList = _providerMap
-                .Select(kv => _sensors.FirstOrDefault(s => s.Identifier == kv.Key)?.Hardware)
-                .Where(h => h != null)
-                .Distinct();
-
-            foreach (var hardware in hardwareList)
+            foreach (var hardware in _hardware)
                 hardware.Update();
-
+            
             foreach (var provider in _providerMap.Values)
                 provider.Update();
         }
@@ -80,6 +61,7 @@ namespace TTController.Service.Manager
 
             Logger.Info("Enabling sensor: {0}", sensor.Identifier);
             _providerMap.Add(identifier, _providerFactory.Create(sensor));
+            _hardware.Add(sensor.Hardware);
         }
 
         public void EnableSensors(IEnumerable<Identifier> identifiers)
@@ -98,6 +80,11 @@ namespace TTController.Service.Manager
 
             Logger.Info("Disabling sensor: {0}", identifier);
             _providerMap.Remove(identifier);
+
+            var sensor = _sensors.FirstOrDefault(s => s.Identifier == identifier);
+            if (sensor != null)
+                if (!_sensors.Where(s => s != sensor).Any(s => s.Hardware.Equals(sensor.Hardware)))
+                    _hardware.Remove(sensor.Hardware);
         }
 
         public void DisableSensors(IEnumerable<Identifier> identifiers)
@@ -115,9 +102,6 @@ namespace TTController.Service.Manager
                 collector.StoreTemperature(sensor, provider.Value());
         }
 
-        public void Dispose()
-        {
-            _computer?.Close();
-        }
+        public void Dispose(){}
     }
 }

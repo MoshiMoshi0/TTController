@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using TTController.Common;
 
@@ -7,17 +8,17 @@ namespace TTController.Plugin.FlowEffect
 {
     public class FlowEffectConfig : EffectConfigBase
     {
-        public float FillStep { get; set; }
-        public float HueStep { get; set; }
-        public float Saturation { get; set; }
-        public float Brightness { get; set; }
+        [DefaultValue(0.05)] public double FillStep { get; private set; } = 0.05;
+        [DefaultValue(30)] public double HueStep { get; private set; } = 30;
+        [DefaultValue(1.0)] public double Saturation { get; private set; } = 1.0;
+        [DefaultValue(1.0)] public double Brightness { get; private set; } = 1.0;
     }
 
     public class FlowEffect : EffectBase<FlowEffectConfig>
     {
-        private float _currentHue;
-        private float _lastHue;
-        private float _fill;
+        private double _currentHue;
+        private double _lastHue;
+        private double _fill;
 
 
         public FlowEffect(FlowEffectConfig config) : base(config)

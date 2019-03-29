@@ -84,6 +84,8 @@ namespace TTController.Service.Controller.Proxy
 
         public override byte? GetEffectByte(string effectType)
         {
+            if (effectType == null)
+                return null;
             return _availableEffects.TryGetValue(effectType, out var value) ? value : (byte?) null;
         }
 

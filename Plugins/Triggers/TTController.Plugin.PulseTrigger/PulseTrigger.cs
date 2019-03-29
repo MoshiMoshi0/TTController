@@ -1,12 +1,13 @@
 ﻿using System;
+using System.ComponentModel;
 using TTController.Common;
 
 namespace TTController.Plugin.PulseTrigger
 {
     public class PulseTriggerConfig : TriggerConfigBase
     {
-        public int On { get; set; } = 1000;
-        public int Off { get; set; } = 1000;
+        [DefaultValue(1000)] public int On { get; private set; } = 1000;
+        [DefaultValue(1000)] public int Off { get; private set; } = 1000;
     }
 
     public class PulseTrigger : TriggerBase<PulseTriggerConfig>
