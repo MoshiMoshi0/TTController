@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using TTController.Common;
 
@@ -14,10 +14,12 @@ namespace TTController.Plugin.SnakeEffect
     public class SnakeEffect : EffectBase<SnakeEffectConfig>
     {
         private int _head;
+        private int _tick;
 
         public SnakeEffect(SnakeEffectConfig config) : base(config)
         {
             _head = 0;
+            _tick = 0;
         }
 
         public override string EffectType => "ByLed";
@@ -25,6 +27,10 @@ namespace TTController.Plugin.SnakeEffect
         public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
         {
             int Wrap(int a, int b) => (a % b + b) % b;
+
+            if (_tick++ < Config.TickCount)
+                return null;
+            _tick = 0;
 
             var ledCount = ports.Select(p => cache.GetPortConfig(p).LedCount).Sum();
             var colors = Enumerable.Range(0, ledCount).Select(x => Config.BackgroundColor).ToList(); 
