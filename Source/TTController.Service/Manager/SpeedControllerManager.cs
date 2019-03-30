@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NLog;
 using TTController.Common;
 
@@ -36,9 +37,12 @@ namespace TTController.Service.Manager
 
         public void Dispose()
         {
+            Logger.Info("Disposing SpeedControllerManager...");
+            var count = _speedControllerGuidMap.Values.Sum(l => l.Count);
             foreach (var controllers in _speedControllerGuidMap.Values)
                 foreach (var controller in controllers)
                     controller.Dispose();
+            Logger.Info("Disposed speed controllers: {0}", count);
         }
     }
 }

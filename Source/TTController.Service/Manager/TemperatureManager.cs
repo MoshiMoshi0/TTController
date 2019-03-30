@@ -102,6 +102,9 @@ namespace TTController.Service.Manager
                 collector.StoreTemperature(sensor, provider.Value());
         }
 
-        public void Dispose(){}
+        public void Dispose()
+        {
+            Logger.Info("Disposing TemperatureManager...");
+        }
     }
 }

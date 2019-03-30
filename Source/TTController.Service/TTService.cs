@@ -162,21 +162,28 @@ namespace TTController.Service
         {
             if (IsDisposed)
                 return;
-            
-            _timerManager.Dispose();
 
-            ApplyComputerStateProfile(state);
+            Logger.Info($"{new string('=', 64)}");
+            Logger.Info("Disposing...");
 
-            _temperatureManager.Dispose();
-            _sensorManager.Dispose();
-            _deviceManager.Dispose();
-            _effectManager.Dispose();
-            _speedControllerManager.Dispose();
-            _configManager.Dispose();
-            _cache.Clear();
+            _timerManager?.Dispose();
+
+            if(_deviceManager != null)
+                ApplyComputerStateProfile(state);
+
+            _temperatureManager?.Dispose();
+            _sensorManager?.Dispose();
+            _deviceManager?.Dispose();
+            _effectManager?.Dispose();
+            _speedControllerManager?.Dispose();
+            _configManager?.Dispose();
+            _cache?.Clear();
 
             Dispose();
             IsDisposed = true;
+
+            Logger.Info("Disposing done!");
+            Logger.Info($"{new string('=', 64)}");
         }
 
         private void ApplyComputerStateProfile(ComputerStateType state)
@@ -195,6 +202,7 @@ namespace TTController.Service
                 ConfigurationManager.RefreshSection(configManager.AppSettings.SectionInformation.Name);
             }
 
+            Logger.Info("Applying computer state profile: {0}", state);
             lock (_deviceManager)
             {
                 foreach (var profile in _configManager.CurrentConfig.ComputerStateProfiles.Where(p => p.StateType == state))

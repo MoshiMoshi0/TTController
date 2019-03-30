@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NLog;
 using TTController.Common;
 
@@ -36,9 +37,12 @@ namespace TTController.Service.Manager
 
         public void Dispose()
         {
+            Logger.Info("Disposing EffectManager...");
+            var count = _effectsGuidMap.Values.Sum(l => l.Count);
             foreach (var effects in _effectsGuidMap.Values)
                 foreach (var effect in effects)
                     effect.Dispose();
+            Logger.Info("Disposed effects: {0}", count);
         }
     }
 }

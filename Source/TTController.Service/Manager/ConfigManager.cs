@@ -96,6 +96,9 @@ namespace TTController.Service.Manager
                 collector.StorePortConfig(port, config);
         }
 
-        public void Dispose() { }
+        public void Dispose()
+        {
+            Logger.Info("Disposing ConfigManager...");
+        }
     }
 }

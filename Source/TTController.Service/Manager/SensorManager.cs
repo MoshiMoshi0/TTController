@@ -43,6 +43,7 @@ namespace TTController.Service.Manager
 
         public void Dispose()
         {
+            Logger.Info("Disposing SensorManager...");
             _computer?.Close();
         }
     }

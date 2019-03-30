@@ -42,12 +42,15 @@ namespace TTController.Service.Manager
 
         public void Start()
         {
+            Logger.Info("Starting {0} timers...", _timers.Count);
             foreach (var timer in _timers)
                 timer.Start();
         }
         
         public void Dispose()
         {
+            Logger.Info("Disposing TimerManager...");
+            Logger.Info("Stopping {0} timers...", _timers.Count);
             foreach (var timer in _timers)
                 timer.Stop();
         }

@@ -59,8 +59,11 @@ namespace TTController.Service.Manager
 
         public void Dispose()
         {
+            Logger.Info("Disposing DeviceManager...");
+            var count = _devices.Count;
             foreach (var device in _devices)
                 device.Dispose();
+            Logger.Info("Disposed devices: {0}", count);
         }
 
         public void Accept(ICacheCollector collector)
