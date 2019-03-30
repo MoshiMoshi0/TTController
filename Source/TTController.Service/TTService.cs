@@ -94,7 +94,8 @@ namespace TTController.Service
             _timerManager.RegisterTimer(_configManager.CurrentConfig.TemperatureTimerInterval, TemperatureTimerCallback);
             _timerManager.RegisterTimer(_configManager.CurrentConfig.DeviceSpeedTimerInterval, DeviceSpeedTimerCallback);
             _timerManager.RegisterTimer(_configManager.CurrentConfig.DeviceRgbTimerInterval, DeviceRgbTimerCallback);
-            if(Environment.UserInteractive) _timerManager.RegisterTimer(_configManager.CurrentConfig.LoggingTimerInterval, LoggingTimerCallback);
+            if(LogManager.Configuration.LoggingRules.Any(r => r.IsLoggingEnabledForLevel(LogLevel.Debug)))
+                _timerManager.RegisterTimer(_configManager.CurrentConfig.LoggingTimerInterval, LoggingTimerCallback);
 
             _timerManager.Start();
 
@@ -348,7 +349,7 @@ namespace TTController.Service
                     if (data == null)
                         continue;
 
-                    Logger.Info("Port {0} data: {1}", port, data);
+                    Logger.Trace("Port {0} data: {1}", port, data);
                 }
             }
 
@@ -359,7 +360,7 @@ namespace TTController.Service
                     var value = _temperatureManager.GetSensorValue(sensor.Identifier);
                     if (float.IsNaN(value))
                         continue;
-                    Logger.Info("Sensor \"{0}\" value: {1}", sensor.Identifier, value);
+                    Logger.Trace("Sensor \"{0}\" value: {1}", sensor.Identifier, value);
                 }
             }
 
