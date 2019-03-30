@@ -44,15 +44,6 @@ namespace TTController.Service
 
         public bool Initialize()
         {
-            var logConfig = new LoggingConfiguration();
-            logConfig.AddTarget(new ConsoleTarget("console")
-            {
-                DetectConsoleAvailable = true,
-                Layout = Layout.FromString("${time}: ${message}")
-            });
-            logConfig.AddRuleForAllLevels("console");
-            LogManager.Configuration = logConfig;
-
             Logger.Info($"{new string('=', 64)}");
             Logger.Info("Initializing...");
             var pluginAssemblies = Directory.GetFiles($@"{AppDomain.CurrentDomain.BaseDirectory}\Plugins", "*.dll", SearchOption.AllDirectories)

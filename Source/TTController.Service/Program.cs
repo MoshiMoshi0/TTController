@@ -113,7 +113,8 @@ namespace TTController.Service
 
         private static void ShowInfo()
         {
-            LogManager.Configuration = null;
+            LogManager.DisableLogging();
+
             Console.Clear();
             Console.WriteLine("Controllers");
             Console.WriteLine("-------------------------------");
@@ -159,6 +160,8 @@ namespace TTController.Service
             Console.WriteLine("-------------------------------");
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey(true);
+
+            LogManager.EnableLogging();
         }
 
         #region Menu
