@@ -58,10 +58,11 @@ namespace TTController.Service
             foreach (var assembly in pluginAssemblies)
                 Logger.Info("Loading assembly: {0} [{1}]", assembly.GetName().Name, assembly.GetName().Version);
 
-            _cache = new DataCache();
             _configManager = new ConfigManager("config.json");
-            _configManager.LoadOrCreateConfig();
+            if (!_configManager.LoadOrCreateConfig())
+                return false;
 
+            _cache = new DataCache();
             _sensorManager = new SensorManager();
 
             var alpha = Math.Exp(-_configManager.CurrentConfig.TemperatureTimerInterval / (double)_configManager.CurrentConfig.DeviceSpeedTimerInterval);
