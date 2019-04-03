@@ -38,6 +38,9 @@
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
+  <PropertyGroup>
+    <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -128,12 +131,11 @@
       <Name>TTController.Common</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <PluginProjects Include="$(MSBuildProjectDirectory)\..\..\Plugins\**\TTController.Plugin.*.csproj" Visible="False" />
   </ItemGroup>
-  <Target Name="BuildPlugins" AfterTargets="Build;Rebuild">
+  <Target Name="BuildPlugins" AfterTargets="BeforeBuild">
     <MSBuild Projects="@(PluginProjects)" ContinueOnError="false" Properties="Configuration=$(Configuration)" />
   </Target>
   <Target Name="CopyPlugins" AfterTargets="BuildPlugins">
