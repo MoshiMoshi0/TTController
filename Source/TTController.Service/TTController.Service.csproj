@@ -71,7 +71,7 @@
     <Compile Include="Config\Converter\LedColorConverter.cs" />
     <Compile Include="Config\Converter\LedColorGradientConverter.cs" />
     <Compile Include="Config\Converter\LedColorGradientPointConverter.cs" />
-    <Compile Include="Config\Converter\ObjectToArrayConverter.cs" />
+    <Compile Include="Config\Converter\AbstractObjectToArrayConverter.cs" />
     <Compile Include="Config\Converter\PortIdentifierConverter.cs" />
     <Compile Include="Config\Converter\SpeedControllerConverter.cs" />
     <Compile Include="Config\Converter\TriggerConverter.cs" />

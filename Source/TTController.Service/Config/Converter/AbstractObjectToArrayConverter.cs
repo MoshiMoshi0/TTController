@@ -7,7 +7,7 @@ using Newtonsoft.Json.Linq;
 
 namespace TTController.Service.Config.Converter
 {
-    public abstract class ObjectToArrayConverter<T> : JsonConverter<T>
+    public abstract class AbstractObjectToArrayConverter<T> : JsonConverter<T>
     {
         public override void WriteJson(JsonWriter writer, T value, JsonSerializer serializer)
         {
