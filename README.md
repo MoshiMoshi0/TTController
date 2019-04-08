@@ -83,6 +83,7 @@ The soruce code also provides an easy way to write your own **speed controller**
 * ProcessTrigger
 * PulseTrigger
 * LogicTrigger
+* TemperatureTrigger
 
 # Config
 
