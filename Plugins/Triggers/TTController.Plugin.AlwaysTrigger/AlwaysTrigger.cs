@@ -8,7 +8,7 @@ namespace TTController.Plugin.AlwaysTrigger
     {
         public AlwaysTrigger(AlwaysTriggerConfig config) : base(config) { }
 
-        public override bool Value() => true;
+        public override bool Value(ICacheProvider cache) => true;
 
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using OpenHardwareMonitor.Hardware;
 using TTController.Common;
 
 namespace TTController.Plugin.LogicTrigger
@@ -20,15 +21,16 @@ namespace TTController.Plugin.LogicTrigger
 
     public class LogicTrigger : TriggerBase<LogicTriggerConfig>
     {
-        public LogicTrigger(LogicTriggerConfig config) : base(config) { }
+        public LogicTrigger(LogicTriggerConfig config) : 
+            base(config, config.Triggers.SelectMany(t => t.UsedSensors).Distinct()) { }
 
-        public override bool Value()
+        public override bool Value(ICacheProvider cache)
         {
             var result = false;
             if(Config.Operation == LogicOperation.And)
-                result = Config.Triggers.All(t => t.Value());
+                result = Config.Triggers.All(t => t.Value(cache));
             else if(Config.Operation == LogicOperation.Or)
-                result = Config.Triggers.Any(t => t.Value());
+                result = Config.Triggers.Any(t => t.Value(cache));
 
             if (Config.Negate)
                 result = !result;

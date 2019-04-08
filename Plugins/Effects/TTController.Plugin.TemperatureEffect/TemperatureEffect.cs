@@ -19,9 +19,8 @@ namespace TTController.Plugin.TemperatureEffect
         private readonly float _minTemperature, _maxTemperature;
 
         public override string EffectType => "Full";
-        public override IEnumerable<Identifier> UsedSensors => Config.Sensors;
 
-        public TemperatureEffect(TemperatureEffectConfig config) : base(config)
+        public TemperatureEffect(TemperatureEffectConfig config) : base(config, config.Sensors)
         {
             _r = config.ColorGradient.Start.Color.R;
             _g = config.ColorGradient.Start.Color.G;

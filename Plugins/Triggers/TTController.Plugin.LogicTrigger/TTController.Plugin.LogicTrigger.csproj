@@ -49,6 +49,10 @@
       <Project>{C1E69FF7-20F6-425C-B8BA-9A1116A35E52}</Project>
       <Name>TTController.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\ThirdParty\LibreHardwareMonitor\OpenHardwareMonitorLib.csproj">
+      <Project>{BBC31437-DED6-4F85-B634-C4F03AD3D8B2}</Project>
+      <Name>OpenHardwareMonitorLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

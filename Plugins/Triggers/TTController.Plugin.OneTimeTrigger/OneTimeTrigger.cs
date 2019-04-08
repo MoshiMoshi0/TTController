@@ -13,7 +13,7 @@ namespace TTController.Plugin.OneTimeTrigger
             _triggered = false;
         }
 
-        public override bool Value()
+        public override bool Value(ICacheProvider cache)
         {
             if (_triggered)
                 return false;

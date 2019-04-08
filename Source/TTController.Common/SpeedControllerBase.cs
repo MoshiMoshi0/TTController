@@ -8,7 +8,7 @@ namespace TTController.Common
 {
     public interface ISpeedControllerBase : IDisposable
     {
-        bool Enabled { get; }
+        bool IsEnabled(ICacheProvider cache);
         IEnumerable<Identifier> UsedSensors { get; }
         IDictionary<PortIdentifier, byte> GenerateSpeeds(List<PortIdentifier> ports, ICacheProvider cache);
     }
@@ -20,15 +20,19 @@ namespace TTController.Common
 
     public abstract class SpeedControllerBase<T> : ISpeedControllerBase where T : SpeedControllerConfigBase
     {
-        public T Config { get; }
-        public virtual bool Enabled => Config.Trigger?.Value() ?? false;
-        public virtual IEnumerable<Identifier> UsedSensors => Enumerable.Empty<Identifier>();
+        protected T Config { get; }
+        public IEnumerable<Identifier> UsedSensors { get; private set; }
 
-        protected SpeedControllerBase(T config)
+        protected SpeedControllerBase(T config) : this(config, Enumerable.Empty<Identifier>()) { }
+        protected SpeedControllerBase(T config, IEnumerable<Identifier> usedSensors)
         {
             Config = config;
+            UsedSensors = usedSensors
+                .Union(config?.Trigger?.UsedSensors ?? Enumerable.Empty<Identifier>())
+                .ToList();
         }
 
+        public virtual bool IsEnabled(ICacheProvider cache) => Config.Trigger?.Value(cache) ?? false;
         public virtual void Dispose() { }
 
         public abstract IDictionary<PortIdentifier, byte> GenerateSpeeds(List<PortIdentifier> ports, ICacheProvider cache);

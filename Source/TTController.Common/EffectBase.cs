@@ -8,7 +8,7 @@ namespace TTController.Common
 {
     public interface IEffectBase : IDisposable
     {
-        bool Enabled { get; }
+        bool IsEnabled(ICacheProvider cache);
         string EffectType { get; }
         IEnumerable<Identifier> UsedSensors { get; }
         IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache);
@@ -21,18 +21,23 @@ namespace TTController.Common
 
     public abstract class EffectBase<T> : IEffectBase where T : EffectConfigBase
     {
-        public T Config { get; }
-        public virtual bool Enabled => Config.Trigger?.Value() ?? false;
-        public virtual IEnumerable<Identifier> UsedSensors => Enumerable.Empty<Identifier>();
+        protected T Config { get; }
+        public IEnumerable<Identifier> UsedSensors { get; private set; }
 
-        protected EffectBase(T config)
+        protected EffectBase(T config) : this(config, Enumerable.Empty<Identifier>()) { }
+        protected EffectBase(T config, IEnumerable<Identifier> usedSensors)
         {
             Config = config;
+            UsedSensors = usedSensors
+                .Union(config?.Trigger?.UsedSensors ?? Enumerable.Empty<Identifier>())
+                .ToList();
         }
 
+        public virtual bool IsEnabled(ICacheProvider cache) => Config.Trigger?.Value(cache) ?? false;
         public virtual void Dispose() { }
 
-        public abstract string EffectType { get; } 
+        public abstract string EffectType { get; }
         public abstract IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache);
+
     }
 }

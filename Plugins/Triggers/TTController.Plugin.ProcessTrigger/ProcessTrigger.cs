@@ -22,7 +22,7 @@ namespace TTController.Plugin.ProcessTrigger
             _ticks = Environment.TickCount;
         }
 
-        public override bool Value()
+        public override bool Value(ICacheProvider cache)
         {
             if (Environment.TickCount - _ticks > 2500)
             {
