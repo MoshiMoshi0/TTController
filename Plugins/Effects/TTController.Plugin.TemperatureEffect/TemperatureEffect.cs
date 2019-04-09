@@ -56,14 +56,14 @@ namespace TTController.Plugin.TemperatureEffect
             {
                 var (rr, gg, bb) = Config.ColorGradient.ColorAtDeconstruct(temperature);
 
-                var t = 0.05f;
+                const float t = 0.05f;
                 _r = _r * (1 - t) + rr * t;
                 _g = _g * (1 - t) + gg * t;
                 _b = _b * (1 - t) + bb * t;
             }
 
             var color = new LedColor((byte) _r, (byte) _g, (byte) _b);
-            return ports.ToDictionary(p => p, p => new List<LedColor>{ color });
+            return ports.ToDictionary(p => p, _ => new List<LedColor>{ color });
         }
     }
 }

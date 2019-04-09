@@ -15,7 +15,7 @@ namespace TTController.Plugin.ByLedColorEffect
 
         public override string EffectType => "ByLed";
 
-        public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache) => 
-            ports.ToDictionary(p => p, p => Config.Colors.ToList());
+        public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache) =>
+            ports.ToDictionary(p => p, _ => Config.Colors.ToList());
     }
 }

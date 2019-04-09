@@ -32,7 +32,7 @@ namespace TTController.Service.Manager
             {
                 if (!(sender is Timer _this))
                     return;
-                
+
                 if (!callback())
                     _this.Stop();
             };
@@ -195,7 +195,7 @@ namespace TTController.Service.Manager
             public void Stop(bool joinThread = true)
             {
                 _isRunning = false;
-                
+
                 // Even if _thread.Join may take time it is guaranteed that 
                 // Elapsed event is never called overlapped with different threads
                 if (joinThread && Thread.CurrentThread != _thread)
@@ -236,7 +236,6 @@ namespace TTController.Service.Manager
                             return;
                     }
 
-
                     double delay = elapsed - nextTrigger;
                     Elapsed?.Invoke(this, new TimerElapsedEventArgs(delay));
 
@@ -259,7 +258,7 @@ namespace TTController.Service.Manager
                 return stopwatch.ElapsedTicks * TickLength;
             }
         }
-        
+
         public class TimerElapsedEventArgs : EventArgs
         {
             /// <summary>/// Real timer delay in [ms]/// </summary>

@@ -20,6 +20,7 @@ namespace TTController.Common
         public IEnumerable<Identifier> UsedSensors { get; private set; }
 
         protected TriggerBase(T config) : this(config, Enumerable.Empty<Identifier>()) { }
+
         protected TriggerBase(T config, IEnumerable<Identifier> usedSensors)
         {
             Config = config;
@@ -33,6 +34,7 @@ namespace TTController.Common
         }
 
         public abstract bool Value(ICacheProvider cache);
+
         protected virtual void Dispose(bool disposing)
         {
             Config = null;

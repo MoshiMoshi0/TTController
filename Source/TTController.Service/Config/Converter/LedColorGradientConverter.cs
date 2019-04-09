@@ -10,7 +10,7 @@ using TTController.Common;
 
 namespace TTController.Service.Config.Converter
 {
-    class LedColorGradientConverter : JsonConverter<LedColorGradient>
+    public class LedColorGradientConverter : JsonConverter<LedColorGradient>
     {
         public override void WriteJson(JsonWriter writer, LedColorGradient value, JsonSerializer serializer) =>
             writer.WriteRawValue(JsonConvert.SerializeObject(value.Points));

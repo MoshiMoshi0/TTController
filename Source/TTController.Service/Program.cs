@@ -11,12 +11,12 @@ using TTController.Service.Utils;
 
 namespace TTController.Service
 {
-    static class Program
+    internal static class Program
     {
         private static ServiceController Service => ServiceController.GetServices()
             .FirstOrDefault(s => s.ServiceName.Equals(TTInstaller.ServiceName));
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             if (Environment.UserInteractive)
             {
@@ -78,12 +78,12 @@ namespace TTController.Service
             {
                 StopService();
                 return false;
-            }, () => Service != null && Service.Status == ServiceControllerStatus.Running);
+            }, () => Service?.Status == ServiceControllerStatus.Running);
             menu.Add("Restart", () => {
                 StopService();
                 StartService();
                 return false;
-            }, () => Service != null && Service.Status == ServiceControllerStatus.Running);
+            }, () => Service?.Status == ServiceControllerStatus.Running);
             menu.Add("Uninstall", () => {
                 if(Service?.Status != ServiceControllerStatus.Stopped)
                     StopService();
@@ -101,7 +101,7 @@ namespace TTController.Service
                 return false;
             }, () => Service == null);
             menu.Add("Back", () => true, () => true, '0');
-            
+
             while (true)
             {
                 Console.Clear();
@@ -147,12 +147,12 @@ namespace TTController.Service
             {
                 foreach (var hardware in sensorManager.TemperatureSensors.Select(s => s.Hardware).Distinct())
                     hardware.Update();
-                
+
                 foreach (var sensor in sensorManager.TemperatureSensors)
                 {
                     Console.WriteLine($"{sensor.Hardware.Name}:");
                     Console.WriteLine($"\t{sensor.Identifier}:" +
-                                      $"\n\t\tName: {sensor.Name}" + 
+                                      $"\n\t\tName: {sensor.Name}" +
                                       $"\n\t\tValue: {sensor.Value ?? float.NaN}" +
                                       $"\t");
                 }
@@ -219,7 +219,7 @@ namespace TTController.Service
 
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.Write($"[{string.Join(", ", optionMap.Where(kv => kv.Value.Enabled()).Select(kv => kv.Key))}]: ");
-                
+
                 while (true)
                 {
                     var c = Console.ReadKey(true).KeyChar;

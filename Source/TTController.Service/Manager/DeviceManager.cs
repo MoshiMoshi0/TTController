@@ -29,7 +29,7 @@ namespace TTController.Service.Manager
             var definitions = typeof(IControllerDefinition).FindInAssemblies()
                 .Select(t => (IControllerDefinition)Activator.CreateInstance(t))
                 .ToList();
-            
+
             var devices = new List<HidDevice>();
             var controllers = new List<IControllerProxy>();
             foreach (var definition in definitions)
@@ -51,7 +51,7 @@ namespace TTController.Service.Manager
             _devices = devices;
             _controllers = controllers;
         }
-        
+
         public IControllerProxy GetController(PortIdentifier port)
         {
             return _controllers.FirstOrDefault(c => c.IsValidPort(port));

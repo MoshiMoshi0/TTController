@@ -10,6 +10,7 @@ namespace TTController.Service.Controller.Proxy
     public class DefaultControllerProxy : AbstractControllerProxy
     {
         private readonly IReadOnlyDictionary<string, byte> _availableEffects;
+
         public DefaultControllerProxy(IHidDeviceProxy device, IControllerDefinition definition)
             : base(device, definition)
         {
@@ -41,7 +42,7 @@ namespace TTController.Service.Controller.Proxy
 
             _availableEffects = result;
         }
-        
+
         public override IEnumerable<PortIdentifier> Ports => Enumerable.Range(1, Definition.PortCount)
             .Select(x => new PortIdentifier(Device.VendorId, Device.ProductId, (byte) x));
 
@@ -56,7 +57,7 @@ namespace TTController.Service.Controller.Proxy
                 bytes.Add(color.R);
                 bytes.Add(color.B);
             }
-            
+
             var result = Device.WriteReadBytes(bytes);
             return result[3] == 0xfc;
         }
@@ -101,8 +102,9 @@ namespace TTController.Service.Controller.Proxy
         }
 
         public override bool IsValidPort(PortIdentifier port) =>
-            port.ControllerProductId == Device.ProductId &&
-           port.ControllerVendorId == Device.VendorId &&
-           port.Id >= 1 && port.Id <= Definition.PortCount;
+            port.ControllerProductId == Device.ProductId
+            && port.ControllerVendorId == Device.VendorId
+            && port.Id >= 1
+            && port.Id <= Definition.PortCount;
     }
 }

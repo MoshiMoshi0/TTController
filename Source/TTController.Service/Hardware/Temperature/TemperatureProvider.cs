@@ -6,7 +6,7 @@ namespace TTController.Service.Hardware.Temperature
     {
         protected float? CurrentValue { set; get; }
         protected ISensor Sensor { get; }
-        
+
         public TemperatureProvider(ISensor sensor)
         {
             Sensor = sensor;
@@ -14,6 +14,6 @@ namespace TTController.Service.Hardware.Temperature
 
         public virtual void Update() => CurrentValue = Sensor.Value;
         public virtual float Value() => ValueOrDefault(float.NaN);
-        public virtual float ValueOrDefault(float defaultValue) => CurrentValue.GetValueOrDefault(defaultValue);
+        public virtual float ValueOrDefault(float defaultValue) => CurrentValue ?? defaultValue;
     }
 }

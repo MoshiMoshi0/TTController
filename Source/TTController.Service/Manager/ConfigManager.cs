@@ -16,7 +16,7 @@ namespace TTController.Service.Manager
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly string _filename;
-        
+
         public ConfigData CurrentConfig { private set; get; }
 
         public ConfigManager(string filename)
@@ -110,7 +110,6 @@ namespace TTController.Service.Manager
             Logger.Info("Loading done...");
             return true;
         }
-
 
         private string GetConfigAbsolutePath()
         {

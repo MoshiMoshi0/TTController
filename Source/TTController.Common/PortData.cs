@@ -33,7 +33,7 @@ namespace TTController.Common
             sb.Append(string.Join(", ", GetType().GetProperties()
                 .Where(p => Nullable.GetUnderlyingType(p.PropertyType) != null)
                 .Where(p => p.GetValue(this) != null)
-                .Select(p => $"{p.Name}: {p.GetValue(this).ToString()}")));
+                .Select(p => $"{p.Name}: {p.GetValue(this)}")));
 
             if (_additionalData.Count > 0)
             {

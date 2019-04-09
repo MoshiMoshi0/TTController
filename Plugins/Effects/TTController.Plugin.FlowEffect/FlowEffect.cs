@@ -20,7 +20,6 @@ namespace TTController.Plugin.FlowEffect
         private double _lastHue;
         private double _fill;
 
-
         public FlowEffect(FlowEffectConfig config) : base(config)
         {
             _lastHue = 0;
@@ -38,7 +37,7 @@ namespace TTController.Plugin.FlowEffect
                 _lastHue = _currentHue;
                 _currentHue = (_currentHue + Config.HueStep) % 360;
             }
-            
+
             var result = new Dictionary<PortIdentifier, List<LedColor>>();
             foreach (var port in ports)
             {
@@ -49,7 +48,7 @@ namespace TTController.Plugin.FlowEffect
                 var lastColor = LedColor.FromHsv(_lastHue, Config.Saturation, Config.Brightness);
                 var currentColor = LedColor.FromHsv(_currentHue, Config.Saturation, Config.Brightness);
 
-                var colors = Enumerable.Range(0, config.LedCount).Select(x => lastColor).ToList();
+                var colors = Enumerable.Range(0, config.LedCount).Select(_ => lastColor).ToList();
                 for (var i = 0; i < (int) Math.Round(config.LedCount * _fill); i++)
                 {
                     colors[i] = currentColor;

@@ -33,7 +33,7 @@ namespace TTController.Plugin.WaveEffect
                 _colors.RemoveLast();
             }
 
-            return ports.ToDictionary(p => p, p => _colors.ToList());
+            return ports.ToDictionary(p => p, _ => _colors.ToList());
         }
     }
 }

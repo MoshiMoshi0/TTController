@@ -13,11 +13,12 @@
             Id = id;
         }
 
-        public static bool operator ==(PortIdentifier a, PortIdentifier b) { 
-            return a.ControllerVendorId == b.ControllerVendorId &&
-                   a.ControllerProductId == b.ControllerProductId &&
-                   a.Id == b.Id;
+        public static bool operator ==(PortIdentifier a, PortIdentifier b) {
+            return a.ControllerVendorId == b.ControllerVendorId
+                   && a.ControllerProductId == b.ControllerProductId
+                   && a.Id == b.Id;
             }
+
         public static bool operator !=(PortIdentifier a, PortIdentifier b) => !(a == b);
 
         public override bool Equals(object obj)
@@ -25,9 +26,9 @@
             if (!(obj is PortIdentifier identifier))
                 return false;
 
-            return ControllerVendorId == identifier.ControllerVendorId &&
-                   ControllerProductId == identifier.ControllerProductId &&
-                   Id == identifier.Id;
+            return ControllerVendorId == identifier.ControllerVendorId
+                   && ControllerProductId == identifier.ControllerProductId
+                   && Id == identifier.Id;
         }
 
         public override int GetHashCode()

@@ -24,6 +24,7 @@ namespace TTController.Common
         public IEnumerable<Identifier> UsedSensors { get; private set; }
 
         protected SpeedControllerBase(T config) : this(config, Enumerable.Empty<Identifier>()) { }
+
         protected SpeedControllerBase(T config, IEnumerable<Identifier> usedSensors)
         {
             Config = config;
@@ -39,6 +40,7 @@ namespace TTController.Common
         }
 
         public virtual bool IsEnabled(ICacheProvider cache) => Config.Trigger?.Value(cache) ?? false;
+
         protected virtual void Dispose(bool disposing)
         {
             Config = null;

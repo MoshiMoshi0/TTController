@@ -14,11 +14,9 @@ namespace TTController.Service.Config.Converter
         {
             foreach (var property in value.GetType().GetProperties())
             {
-                if (string.CompareOrdinal(property.Name, nameof(PortIdentifier.Id)) != 0 ||
-                    (byte)property.GetValue(value) > 0)
+                if (string.CompareOrdinal(property.Name, nameof(PortIdentifier.Id)) != 0 || (byte)property.GetValue(value) > 0)
                     yield return property;
             }
         }
     }
-
 }

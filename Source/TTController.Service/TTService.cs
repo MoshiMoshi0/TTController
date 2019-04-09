@@ -17,7 +17,7 @@ using TTController.Service.Utils;
 
 namespace TTController.Service
 {
-    class TTService : ServiceBase
+    internal class TTService : ServiceBase
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -48,11 +48,11 @@ namespace TTController.Service
             Logger.Info("Initializing...");
             var pluginAssemblies = Directory.GetFiles($@"{AppDomain.CurrentDomain.BaseDirectory}\Plugins", "*.dll", SearchOption.AllDirectories)
                 .Where(f => AppDomain.CurrentDomain.GetAssemblies().All(a => a.Location != f))
-                .TrySelect(Assembly.LoadFile, ex => { })
+                .TrySelect(Assembly.LoadFile, _ => { })
                 .ToList();
 
-            AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>
-                pluginAssemblies.FirstOrDefault(a => string.CompareOrdinal(a.FullName, args.Name) == 0);
+            AppDomain.CurrentDomain.AssemblyResolve += (_, args) =>
+                pluginAssemblies.Find(a => string.CompareOrdinal(a.FullName, args.Name) == 0);
 
             Logger.Info("Loading plugins...");
             foreach (var assembly in pluginAssemblies)
@@ -195,10 +195,10 @@ namespace TTController.Service
                 var configManager = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
                 var configCollection = configManager.AppSettings.Settings;
 
-                var key = "boot-profile-saved";
+                const string key = "boot-profile-saved";
                 if (configCollection[key] != null)
                     return;
-                
+
                 configCollection.Add(key, "");
                 configManager.Save(ConfigurationSaveMode.Modified);
                 ConfigurationManager.RefreshSection(configManager.AppSettings.SectionInformation.Name);
@@ -257,7 +257,7 @@ namespace TTController.Service
                 IDictionary<PortIdentifier, byte> speedMap;
                 if (isCriticalTemperature)
                 {
-                    speedMap = profile.Ports.ToDictionary(p => p, p => (byte)100);
+                    speedMap = profile.Ports.ToDictionary(p => p, _ => (byte)100);
                 }
                 else
                 {

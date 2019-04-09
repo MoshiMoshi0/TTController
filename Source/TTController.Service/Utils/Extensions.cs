@@ -6,7 +6,7 @@ namespace TTController.Service.Utils
 {
     public static class Extensions
     {
-        public static TValue GetValueOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue = default(TValue))
+        public static TValue GetValueOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue = default)
         {
             if (dictionary == null) { throw new ArgumentNullException(nameof(dictionary)); }
             if (key == null) { throw new ArgumentNullException(nameof(key)); }
@@ -27,13 +27,13 @@ namespace TTController.Service.Utils
         }
 
         public static IEnumerable<TResult> TrySelect<TSource, TResult>(
-            this IEnumerable<TSource> enumerable, 
-            Func<TSource, TResult> selector, 
+            this IEnumerable<TSource> enumerable,
+            Func<TSource, TResult> selector,
             Action<Exception> exceptionAction)
         {
             foreach (var item in enumerable)
             {
-                TResult result = default(TResult);
+                TResult result = default;
                 bool success = false;
                 try
                 {
@@ -45,7 +45,7 @@ namespace TTController.Service.Utils
                     exceptionAction(ex);
                 }
                 if (success)
-                {  
+                {
                     yield return result;
                 }
             }

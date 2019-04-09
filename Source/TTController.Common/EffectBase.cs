@@ -25,6 +25,7 @@ namespace TTController.Common
         public IEnumerable<Identifier> UsedSensors { get; private set; }
 
         protected EffectBase(T config) : this(config, Enumerable.Empty<Identifier>()) { }
+
         protected EffectBase(T config, IEnumerable<Identifier> usedSensors)
         {
             Config = config;
@@ -40,6 +41,7 @@ namespace TTController.Common
         }
 
         public virtual bool IsEnabled(ICacheProvider cache) => Config.Trigger?.Value(cache) ?? false;
+
         protected virtual void Dispose(bool disposing)
         {
             Config = null;
@@ -48,6 +50,5 @@ namespace TTController.Common
 
         public abstract string EffectType { get; }
         public abstract IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache);
-
     }
 }

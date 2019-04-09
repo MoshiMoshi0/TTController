@@ -56,8 +56,7 @@ namespace TTController.Plugin.PwmSpeedController
 
             if (Math.Abs(speedDiff) >= Config.MinimumChange || curveTargetSpeed >= 100 || curveTargetSpeed <= 20)
             {
-                targetSpeed = (byte) (currentSpeed +
-                                      Math.Sign(speedDiff) * Math.Min(Config.MaximumChange, Math.Abs(speedDiff)));
+                targetSpeed = (byte) (currentSpeed + Math.Sign(speedDiff) * Math.Min(Config.MaximumChange, Math.Abs(speedDiff)));
 
                 if (targetSpeed < 20)
                     targetSpeed = curveTargetSpeed == 0 ? (byte) 0 : (byte) 20;
@@ -65,7 +64,7 @@ namespace TTController.Plugin.PwmSpeedController
                     targetSpeed = 100;
             }
 
-            return ports.ToDictionary(p => p, p => targetSpeed);
+            return ports.ToDictionary(p => p, _ => targetSpeed);
         }
     }
 }

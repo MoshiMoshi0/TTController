@@ -15,7 +15,7 @@ namespace TTController.Plugin.SpectrumEffect
     public class SpectrumEffect : EffectBase<SpectrumEffectConfig>
     {
         private double _hue;
-        
+
         public SpectrumEffect(SpectrumEffectConfig config) : base(config)
         {
             _hue = 0;
@@ -27,7 +27,7 @@ namespace TTController.Plugin.SpectrumEffect
         {
             _hue = (_hue + Config.HueStep) % 360;
             var color = LedColor.FromHsv(_hue, Config.Saturation, Config.Brightness);
-            return ports.ToDictionary(p => p, p => new List<LedColor>() {color});
+            return ports.ToDictionary(p => p, _ => new List<LedColor>() {color});
         }
     }
 }

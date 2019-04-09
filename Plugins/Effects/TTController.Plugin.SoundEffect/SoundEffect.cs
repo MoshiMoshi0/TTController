@@ -34,12 +34,12 @@ namespace TTController.Plugin.SoundEffect
             var soundInSource = new SoundInSource(_soundIn);
             var sampleSource = soundInSource.ToSampleSource();
 
-            var fftSize = FftSize.Fft1024;
+            const FftSize fftSize = FftSize.Fft1024;
             _fftBuffer = new float[(int)fftSize];
             _spectrumProvider = new SpectrumProvider(sampleSource.WaveFormat.Channels, sampleSource.WaveFormat.SampleRate, fftSize);
 
             var notificationSource = new DataNotificationSource(sampleSource);
-            notificationSource.DataRead += (s, e) => { _spectrumProvider.Add(e.Data, e.Data.Length); };
+            notificationSource.DataRead += (s, e) => _spectrumProvider.Add(e.Data, e.Data.Length);
 
             var waveSource = notificationSource.ToWaveSource(16);
             var buffer = new byte[waveSource.WaveFormat.BytesPerSecond / 2];
@@ -63,11 +63,12 @@ namespace TTController.Plugin.SoundEffect
         }
 
         public override string EffectType => "ByLed";
+
         public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
         {
             if (!_spectrumProvider.GetFftData(_fftBuffer, this))
                 return null;
-            
+
             return _spectrum.GenerateColors(Config.ColorGenerationMethod, ports, cache, _fftBuffer);
         }
 
