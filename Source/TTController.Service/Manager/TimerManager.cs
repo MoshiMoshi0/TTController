@@ -6,7 +6,7 @@ using NLog;
 
 namespace TTController.Service.Manager
 {
-    public class TimerManager : IDisposable
+    public sealed class TimerManager : IDisposable
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -46,8 +46,14 @@ namespace TTController.Service.Manager
             foreach (var timer in _timers)
                 timer.Start();
         }
-        
+
         public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private void Dispose(bool disposing)
         {
             Logger.Info("Disposing TimerManager...");
             Logger.Info("Stopping {0} timers...", _timers.Count);
@@ -82,7 +88,7 @@ namespace TTController.Service.Manager
             /// <summary>
             /// True if the system/operating system supports HighResolution timer
             /// </summary>
-            public static bool IsHighResolution = Stopwatch.IsHighResolution;
+            public static readonly bool IsHighResolution = Stopwatch.IsHighResolution;
 
             /// <summary>
             /// Invoked when the timer is elapsed

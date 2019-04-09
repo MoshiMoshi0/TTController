@@ -37,7 +37,7 @@ namespace TTController.Plugin.PwmSpeedController
                 var current = i == Config.CurvePoints.Count
                     ? new CurvePoint(100, Config.CurvePoints[i - 1].Speed)
                     : Config.CurvePoints[i];
-                if (!(temperature < current.Temperature))
+                if (temperature >= current.Temperature)
                     continue;
 
                 var last = i == 0 ? new CurvePoint(0, current.Speed) : Config.CurvePoints[i - 1];

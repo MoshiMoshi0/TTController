@@ -11,7 +11,7 @@ using TTController.Service.Utils;
 
 namespace TTController.Service.Manager
 {
-    public class ConfigManager : IDataProvider, IDisposable
+    public sealed class ConfigManager : IDataProvider, IDisposable
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -126,7 +126,14 @@ namespace TTController.Service.Manager
 
         public void Dispose()
         {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private void Dispose(bool disposing)
+        {
             Logger.Info("Disposing ConfigManager...");
+            CurrentConfig = null;
         }
     }
 }

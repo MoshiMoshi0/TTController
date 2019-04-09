@@ -118,19 +118,19 @@ namespace TTController.Service
 
         protected override void OnStop()
         {
-            Dispose(ComputerStateType.Shutdown);
+            Finalize();
             base.OnStop();
         }
 
         protected override void OnShutdown()
         {
-            Dispose(ComputerStateType.Shutdown);
+            Finalize();
             base.OnShutdown();
         }
 
         protected void OnSuspend()
         {
-            Dispose(ComputerStateType.Suspend);
+            Finalize(ComputerStateType.Suspend);
             base.OnStop();
         }
 
@@ -160,13 +160,13 @@ namespace TTController.Service
             return base.OnPowerEvent(powerStatus);
         }
 
-        public void Dispose(ComputerStateType state)
+        public void Finalize(ComputerStateType state = ComputerStateType.Shutdown)
         {
             if (IsDisposed)
                 return;
 
             Logger.Info($"{new string('=', 64)}");
-            Logger.Info("Disposing...");
+            Logger.Info("Finalizing...");
 
             _timerManager?.Dispose();
 

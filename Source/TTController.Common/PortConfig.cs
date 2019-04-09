@@ -7,6 +7,6 @@
         public int LedRotation { get; private set; } = 0;
         public bool LedReverse { get; private set; } = false;
         
-        public static PortConfig Default = new PortConfig();
+        public static readonly PortConfig Default = new PortConfig();
     }
 }

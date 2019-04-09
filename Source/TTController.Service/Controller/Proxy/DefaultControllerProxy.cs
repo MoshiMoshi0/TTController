@@ -91,7 +91,7 @@ namespace TTController.Service.Controller.Proxy
 
         public override void SaveProfile()
         {
-            var result = Device.WriteReadBytes(0x32, 0x53);
+            Device.WriteReadBytes(0x32, 0x53);
         }
 
         public override bool Init()

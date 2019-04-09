@@ -102,7 +102,6 @@ namespace TTController.Service.Controller.Proxy
 
         public override void SaveProfile()
         {
-            return;
         }
 
         public override bool Init()

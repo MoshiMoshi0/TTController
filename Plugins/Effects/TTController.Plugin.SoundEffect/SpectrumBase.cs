@@ -101,7 +101,7 @@ namespace TTController.Plugin.SoundEffect
                     if (UseAverage && spectrumPointIndex > 0)
                         value = (lastValue + value) / 2.0;
 
-                    dataPoints.Add(new SpectrumPointData { SpectrumPointIndex = spectrumPointIndex, Value = value });
+                    dataPoints.Add(new SpectrumPointData(spectrumPointIndex, value));
 
                     lastValue = value;
                     value = 0.0;
@@ -115,8 +115,14 @@ namespace TTController.Plugin.SoundEffect
         
         protected struct SpectrumPointData
         {
-            public int SpectrumPointIndex;
-            public double Value;
+            public int SpectrumPointIndex { get; private set; }
+            public double Value { get; private set; }
+
+            public SpectrumPointData(int spectrumPointIndex, double value)
+            {
+                SpectrumPointIndex = spectrumPointIndex;
+                Value = value;
+            }
         }
     }
 

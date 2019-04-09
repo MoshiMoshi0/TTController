@@ -27,7 +27,7 @@ namespace TTController.Service
                     var service = new TTService();
                     service.Initialize();
                     Console.ReadKey(true);
-                    service.Dispose(ComputerStateType.Shutdown);
+                    service.Finalize(ComputerStateType.Shutdown);
                     Console.WriteLine("Press any key to return to the menu...");
                     Console.ReadKey(true);
                     return false;

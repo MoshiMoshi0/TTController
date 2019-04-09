@@ -8,7 +8,7 @@ using TTController.Service.Utils;
 
 namespace TTController.Service.Manager
 {
-    public class TemperatureManager : IDataProvider, IDisposable
+    public sealed class TemperatureManager : IDataProvider, IDisposable
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         
@@ -82,9 +82,8 @@ namespace TTController.Service.Manager
             _providerMap.Remove(identifier);
 
             var sensor = _sensors.FirstOrDefault(s => s.Identifier == identifier);
-            if (sensor != null)
-                if (!_sensors.Where(s => s != sensor).Any(s => s.Hardware.Equals(sensor.Hardware)))
-                    _hardware.Remove(sensor.Hardware);
+            if (sensor != null && !_sensors.Where(s => s != sensor).Any(s => s.Hardware.Equals(sensor.Hardware)))
+                _hardware.Remove(sensor.Hardware);
         }
 
         public void DisableSensors(IEnumerable<Identifier> identifiers)
@@ -103,6 +102,12 @@ namespace TTController.Service.Manager
         }
 
         public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private void Dispose(bool disposing)
         {
             Logger.Info("Disposing TemperatureManager...");
         }
