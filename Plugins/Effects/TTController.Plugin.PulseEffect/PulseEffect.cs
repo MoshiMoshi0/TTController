@@ -51,7 +51,7 @@ namespace TTController.Plugin.PulseEffect
                 colors.Add(LedColor.FromHsv(h, s, _maxBrightness[i] * _t));
             }
 
-            return ports.ToDictionary(p => p, p => colors.ToList());
+            return ports.ToDictionary(p => p, _ => colors.ToList());
         }
     }
 }

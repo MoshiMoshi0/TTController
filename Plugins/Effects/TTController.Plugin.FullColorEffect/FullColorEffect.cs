@@ -17,7 +17,7 @@ namespace TTController.Plugin.FullColorEffect
 
         public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
         {
-            return ports.ToDictionary(p => p, p => new List<LedColor>(){ Config.Color });
+            return ports.ToDictionary(p => p, _ => new List<LedColor>(){ Config.Color });
         }
     }
 }

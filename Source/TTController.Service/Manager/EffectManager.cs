@@ -6,7 +6,7 @@ using TTController.Common;
 
 namespace TTController.Service.Manager
 {
-    public class EffectManager : IDisposable
+    public sealed class EffectManager : IDisposable
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -36,6 +36,12 @@ namespace TTController.Service.Manager
         }
 
         public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private void Dispose(bool disposing)
         {
             Logger.Info("Disposing EffectManager...");
             var count = _effectsGuidMap.Values.Sum(l => l.Count);

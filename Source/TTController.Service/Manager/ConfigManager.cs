@@ -11,12 +11,12 @@ using TTController.Service.Utils;
 
 namespace TTController.Service.Manager
 {
-    public class ConfigManager : IDataProvider, IDisposable
+    public sealed class ConfigManager : IDataProvider, IDisposable
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly string _filename;
-        
+
         public ConfigData CurrentConfig { private set; get; }
 
         public ConfigManager(string filename)
@@ -111,7 +111,6 @@ namespace TTController.Service.Manager
             return true;
         }
 
-
         private string GetConfigAbsolutePath()
         {
             var directory = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
@@ -126,7 +125,14 @@ namespace TTController.Service.Manager
 
         public void Dispose()
         {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private void Dispose(bool disposing)
+        {
             Logger.Info("Disposing ConfigManager...");
+            CurrentConfig = null;
         }
     }
 }

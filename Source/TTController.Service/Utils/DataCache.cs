@@ -49,7 +49,7 @@ namespace TTController.Service.Utils
 
         public PortConfig GetPortConfig(PortIdentifier port) => _portConfigCache.TryGetValue(port, out var config) ? config : null;
         public void StorePortConfig(PortIdentifier port, PortConfig config) => _portConfigCache[port] = config;
-        
+
         public void Clear()
         {
             _portDataCache.Clear();

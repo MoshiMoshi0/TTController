@@ -35,7 +35,7 @@ namespace TTController.Plugin.SnakeEffect
             _tick = 0;
 
             var ledCount = ports.Select(p => cache.GetPortConfig(p).LedCount).Sum();
-            var colors = Enumerable.Range(0, ledCount).Select(x => Config.BackgroundColor).ToList(); 
+            var colors = Enumerable.Range(0, ledCount).Select(_ => Config.BackgroundColor).ToList();
             for (var i = 0; i < Config.Length; i++)
                 colors[Wrap(_head - i, ledCount)] = Config.SnakeColor;
 

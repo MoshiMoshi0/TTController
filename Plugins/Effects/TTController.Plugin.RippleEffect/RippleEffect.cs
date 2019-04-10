@@ -31,7 +31,7 @@ namespace TTController.Plugin.RippleEffect
             if (_tick++ >= Config.TickInterval)
             {
                 _tick = 0;
-                _rotation = (_rotation + 1);
+                _rotation++;
             }
 
             var result = new Dictionary<PortIdentifier, List<LedColor>>();
@@ -40,9 +40,9 @@ namespace TTController.Plugin.RippleEffect
                 var config = cache.GetPortConfig(port);
                 if (config == null)
                     continue;
-                
+
                 var off = new LedColor(0, 0, 0);
-                var colors = Enumerable.Range(0, config.LedCount).Select(x => off).ToList();
+                var colors = Enumerable.Range(0, config.LedCount).Select(_ => off).ToList();
                 var (hue, saturation, value) = LedColor.ToHsv(Config.Color);
                 var length = Config.Length == 0 ? config.LedCount : Config.Length;
 

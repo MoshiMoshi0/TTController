@@ -21,7 +21,6 @@ namespace TTController.Plugin.SoundEffect
 
     public class SoundEffect : EffectBase<SoundEffectConfig>
     {
-        private readonly FftSize _fftSize;
         private readonly float[] _fftBuffer;
         private readonly SpectrumProvider _spectrumProvider;
         private readonly WasapiLoopbackCapture _soundIn;
@@ -35,12 +34,12 @@ namespace TTController.Plugin.SoundEffect
             var soundInSource = new SoundInSource(_soundIn);
             var sampleSource = soundInSource.ToSampleSource();
 
-            _fftSize = FftSize.Fft1024;
-            _fftBuffer = new float[(int)_fftSize];
-            _spectrumProvider = new SpectrumProvider(sampleSource.WaveFormat.Channels, sampleSource.WaveFormat.SampleRate, _fftSize);
+            const FftSize fftSize = FftSize.Fft1024;
+            _fftBuffer = new float[(int)fftSize];
+            _spectrumProvider = new SpectrumProvider(sampleSource.WaveFormat.Channels, sampleSource.WaveFormat.SampleRate, fftSize);
 
             var notificationSource = new DataNotificationSource(sampleSource);
-            notificationSource.DataRead += (s, e) => { _spectrumProvider.Add(e.Data, e.Data.Length); };
+            notificationSource.DataRead += (s, e) => _spectrumProvider.Add(e.Data, e.Data.Length);
 
             var waveSource = notificationSource.ToWaveSource(16);
             var buffer = new byte[waveSource.WaveFormat.BytesPerSecond / 2];
@@ -48,7 +47,7 @@ namespace TTController.Plugin.SoundEffect
 
             _spectrum = new LedSpectrum(GenerateColor)
             {
-                FftSize = _fftSize,
+                FftSize = fftSize,
                 SpectrumProvider = _spectrumProvider,
                 UseAverage = Config.UseAverage,
                 MinimumFrequency = Config.MinimumFrequency,
@@ -56,7 +55,7 @@ namespace TTController.Plugin.SoundEffect
                 ScalingStrategy = Config.ScalingStrategy,
                 ScalingFactor = Config.ScalingFactor,
                 IsXLogScale = false,
-                SpectrumResolution = (int) _fftSize
+                SpectrumResolution = (int) fftSize
             };
 
             _spectrum.UpdateFrequencyMapping();
@@ -64,21 +63,22 @@ namespace TTController.Plugin.SoundEffect
         }
 
         public override string EffectType => "ByLed";
+
         public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
         {
             if (!_spectrumProvider.GetFftData(_fftBuffer, this))
                 return null;
-            
+
             return _spectrum.GenerateColors(Config.ColorGenerationMethod, ports, cache, _fftBuffer);
         }
 
         public LedColor GenerateColor(double fftValue) =>
             Config.ColorGradient.GetColor(fftValue);
 
-        public override void Dispose()
+        protected override void Dispose(bool disposing)
         {
             _soundIn.Dispose();
-            base.Dispose();
+            base.Dispose(disposing);
         }
     }
 }

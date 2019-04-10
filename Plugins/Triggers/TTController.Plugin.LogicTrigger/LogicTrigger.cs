@@ -21,7 +21,7 @@ namespace TTController.Plugin.LogicTrigger
 
     public class LogicTrigger : TriggerBase<LogicTriggerConfig>
     {
-        public LogicTrigger(LogicTriggerConfig config) : 
+        public LogicTrigger(LogicTriggerConfig config) :
             base(config, config.Triggers.SelectMany(t => t.UsedSensors).Distinct()) { }
 
         public override bool Value(ICacheProvider cache)

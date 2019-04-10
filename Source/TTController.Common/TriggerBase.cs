@@ -16,17 +16,29 @@ namespace TTController.Common
 
     public abstract class TriggerBase<T> : ITriggerBase where T : TriggerConfigBase
     {
-        public T Config { get; }
+        public T Config { get; private set; }
         public IEnumerable<Identifier> UsedSensors { get; private set; }
 
         protected TriggerBase(T config) : this(config, Enumerable.Empty<Identifier>()) { }
+
         protected TriggerBase(T config, IEnumerable<Identifier> usedSensors)
         {
             Config = config;
             UsedSensors = usedSensors;
         }
 
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
         public abstract bool Value(ICacheProvider cache);
-        public virtual void Dispose() { }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            Config = null;
+            UsedSensors = null;
+        }
     }
 }

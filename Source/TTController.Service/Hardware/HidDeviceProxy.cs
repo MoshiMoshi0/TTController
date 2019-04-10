@@ -19,9 +19,9 @@ namespace TTController.Service.Hardware
 
         public bool WriteBytes(params byte[] bytes)
         {
-            if (!bytes.Any())
+            if (bytes.Length == 0)
                 return false;
-            
+
             var data = new byte[_device.Capabilities.OutputReportByteLength];
             Array.Copy(bytes, 0, data, 1, Math.Min(bytes.Length, _device.Capabilities.OutputReportByteLength - 1));
             return _device.Write(data);
@@ -35,7 +35,7 @@ namespace TTController.Service.Hardware
             var data = _device.Read();
             if (data.Status != HidDeviceData.ReadStatus.Success)
                 return null;
-            
+
             return data.Data;
         }
 

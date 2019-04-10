@@ -8,10 +8,10 @@ using TTController.Service.Utils;
 
 namespace TTController.Service.Manager
 {
-    public class TemperatureManager : IDataProvider, IDisposable
+    public sealed class TemperatureManager : IDataProvider, IDisposable
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        
+
         private readonly ITemperatureProviderFactory _providerFactory;
         private readonly Dictionary<Identifier, ITemperatureProvider> _providerMap;
         private readonly HashSet<IHardware> _hardware;
@@ -29,7 +29,7 @@ namespace TTController.Service.Manager
 
             _providerMap = new Dictionary<Identifier, ITemperatureProvider>();
             _hardware = new HashSet<IHardware>();
-            
+
             _sensors.ForEach(s => Logger.Info("Valid sensor identifier: {0}", s.Identifier));
         }
 
@@ -37,7 +37,7 @@ namespace TTController.Service.Manager
         {
             foreach (var hardware in _hardware)
                 hardware.Update();
-            
+
             foreach (var provider in _providerMap.Values)
                 provider.Update();
         }
@@ -55,7 +55,7 @@ namespace TTController.Service.Manager
             if (_providerMap.ContainsKey(identifier))
                 return;
 
-            var sensor = _sensors.FirstOrDefault(s => s.Identifier == identifier);
+            var sensor = _sensors.Find(s => s.Identifier == identifier);
             if (sensor == null)
                 return;
 
@@ -81,10 +81,9 @@ namespace TTController.Service.Manager
             Logger.Info("Disabling sensor: {0}", identifier);
             _providerMap.Remove(identifier);
 
-            var sensor = _sensors.FirstOrDefault(s => s.Identifier == identifier);
-            if (sensor != null)
-                if (!_sensors.Where(s => s != sensor).Any(s => s.Hardware.Equals(sensor.Hardware)))
-                    _hardware.Remove(sensor.Hardware);
+            var sensor = _sensors.Find(s => s.Identifier == identifier);
+            if (sensor != null && !_sensors.Any(s => s != sensor && s.Hardware.Equals(sensor.Hardware)))
+                _hardware.Remove(sensor.Hardware);
         }
 
         public void DisableSensors(IEnumerable<Identifier> identifiers)
@@ -103,6 +102,12 @@ namespace TTController.Service.Manager
         }
 
         public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private void Dispose(bool disposing)
         {
             Logger.Info("Disposing TemperatureManager...");
         }

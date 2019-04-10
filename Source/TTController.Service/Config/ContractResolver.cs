@@ -11,10 +11,10 @@ namespace TTController.Service.Config
     {
         protected override JsonContract CreateContract(Type objectType)
         {
-            if (objectType.GetInterfaces().Any(i => 
-                i.IsGenericType 
-                 && i.GetGenericTypeDefinition() == typeof(IDictionary<,>) 
-                 && i.GetGenericArguments()[0] != typeof(string)
+            if (objectType.GetInterfaces().Any(i =>
+                i.IsGenericType
+                && i.GetGenericTypeDefinition() == typeof(IDictionary<,>)
+                && i.GetGenericArguments()[0] != typeof(string)
                 ))
             {
                 return base.CreateArrayContract(objectType);
