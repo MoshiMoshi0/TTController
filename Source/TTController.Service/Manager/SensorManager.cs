@@ -8,7 +8,7 @@ using OpenHardwareMonitor.Hardware;
 
 namespace TTController.Service.Manager
 {
-    public class SensorManager : IDisposable
+    public sealed class SensorManager : IDisposable
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -43,6 +43,13 @@ namespace TTController.Service.Manager
 
         public void Dispose()
         {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            Logger.Info("Disposing SensorManager...");
             _computer?.Close();
         }
     }

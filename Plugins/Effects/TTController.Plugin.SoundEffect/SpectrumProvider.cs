@@ -26,13 +26,13 @@ namespace TTController.Plugin.SoundEffect
             return (int)((frequency / f) * ((int)FftSize / 2));
         }
 
-        public bool GetFftData(float[] fftResultBuffer, object context)
+        public bool GetFftData(float[] fftBuffer, object context)
         {
             if (_contexts.Contains(context))
                 return false;
 
             _contexts.Add(context);
-            GetFftData(fftResultBuffer);
+            GetFftData(fftBuffer);
             return true;
         }
 

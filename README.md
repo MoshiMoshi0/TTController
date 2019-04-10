@@ -83,6 +83,7 @@ The soruce code also provides an easy way to write your own **speed controller**
 * ProcessTrigger
 * PulseTrigger
 * LogicTrigger
+* TemperatureTrigger
 
 # Config
 
@@ -114,9 +115,7 @@ The soruce code also provides an easy way to write your own **speed controller**
           "Type": "RippleEffect",
           "Config": {
             "Length": 4,
-            "Color": [
-              [255, 0, 0]
-            ],
+            "Color": [255, 0, 0],
             "TickInterval": 2,
             "Trigger": {
               "Type": "OneTimeTrigger"
@@ -268,9 +267,7 @@ The soruce code also provides an easy way to write your own **speed controller**
   "Type": "RippleEffect",
   "Config": {
     "Length": 4,
-    "Color": [
-      [255, 0, 0]
-    ],
+    "Color": [255, 0, 0],
     "TickInterval": 2,
     "Trigger": {
       "Type": "OneTimeTrigger"

@@ -11,12 +11,12 @@ using TTController.Service.Utils;
 
 namespace TTController.Service.Manager
 {
-    public class ConfigManager : IDataProvider, IDisposable
+    public sealed class ConfigManager : IDataProvider, IDisposable
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly string _filename;
-        
+
         public ConfigData CurrentConfig { private set; get; }
 
         public ConfigManager(string filename)
@@ -34,6 +34,11 @@ namespace TTController.Service.Manager
                     Culture = CultureInfo.InvariantCulture,
                     ContractResolver = new ContractResolver()
                 };
+                settings.Error += (sender, args) =>
+                {
+                    if(args.CurrentObject == args.ErrorContext.OriginalObject)
+                        Logger.Fatal(args.ErrorContext.Error.Message);
+                };
 
                 var converters = typeof(JsonConverter).FindInAssemblies()
                     .Where(t => t.Namespace?.StartsWith("TTController") ?? false)
@@ -49,17 +54,30 @@ namespace TTController.Service.Manager
             };
         }
 
-        public void SaveConfig()
+        public bool SaveConfig()
         {
             Logger.Info("Saving config...");
             using (var writer = new StreamWriter(GetConfigAbsolutePath(), false))
             {
-                writer.Write(JsonConvert.SerializeObject(CurrentConfig));
+                try
+                {
+                    writer.Write(JsonConvert.SerializeObject(CurrentConfig));
+                }
+                catch (Exception e)
+                {
+                    if (!(e is JsonWriterException))
+                        Logger.Fatal(e);
+
+                    Logger.Fatal("Failed to save the config file!");
+                    return false;
+                }
             }
+
             Logger.Info("Saving done...");
+            return true;
         }
 
-        public ConfigData LoadOrCreateConfig()
+        public bool LoadOrCreateConfig()
         {
             Logger.Info("Loading config...");
             var path = GetConfigAbsolutePath();
@@ -71,18 +89,27 @@ namespace TTController.Service.Manager
             }
             else
             {
-                using (var reader = new StreamReader(path))
+                try
                 {
-                    CurrentConfig =
-                        JsonConvert.DeserializeObject<ConfigData>(reader.ReadToEnd()) ??
-                        ConfigData.CreateDefault();
+                    using (var reader = new StreamReader(path))
+                        CurrentConfig = JsonConvert.DeserializeObject<ConfigData>(reader.ReadToEnd());
+                }
+                catch (Exception e)
+                {
+                    if (!(e is JsonReaderException))
+                        Logger.Fatal(e);
+                }
+
+                if (CurrentConfig == null)
+                {
+                    Logger.Fatal("Failed to load the config file!");
+                    return false;
                 }
             }
 
             Logger.Info("Loading done...");
-            return CurrentConfig;
+            return true;
         }
-
 
         private string GetConfigAbsolutePath()
         {
@@ -96,6 +123,16 @@ namespace TTController.Service.Manager
                 collector.StorePortConfig(port, config);
         }
 
-        public void Dispose() { }
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            Logger.Info("Disposing ConfigManager...");
+            CurrentConfig = null;
+        }
     }
 }

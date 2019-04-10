@@ -18,9 +18,7 @@ namespace TTController.Plugin.PwmSpeedController
 
     public class PwmSpeedController : SpeedControllerBase<PwmSpeedControllerConfig>
     {
-        public override IEnumerable<Identifier> UsedSensors => Config.Sensors;
-
-        public PwmSpeedController(PwmSpeedControllerConfig config) : base(config) {}
+        public PwmSpeedController(PwmSpeedControllerConfig config) : base(config, config.Sensors) { }
 
         public override IDictionary<PortIdentifier, byte> GenerateSpeeds(List<PortIdentifier> ports, ICacheProvider cache)
         {
@@ -39,7 +37,7 @@ namespace TTController.Plugin.PwmSpeedController
                 var current = i == Config.CurvePoints.Count
                     ? new CurvePoint(100, Config.CurvePoints[i - 1].Speed)
                     : Config.CurvePoints[i];
-                if (!(temperature < current.Temperature))
+                if (temperature >= current.Temperature)
                     continue;
 
                 var last = i == 0 ? new CurvePoint(0, current.Speed) : Config.CurvePoints[i - 1];
@@ -58,8 +56,7 @@ namespace TTController.Plugin.PwmSpeedController
 
             if (Math.Abs(speedDiff) >= Config.MinimumChange || curveTargetSpeed >= 100 || curveTargetSpeed <= 20)
             {
-                targetSpeed = (byte) (currentSpeed +
-                                      Math.Sign(speedDiff) * Math.Min(Config.MaximumChange, Math.Abs(speedDiff)));
+                targetSpeed = (byte) (currentSpeed + Math.Sign(speedDiff) * Math.Min(Config.MaximumChange, Math.Abs(speedDiff)));
 
                 if (targetSpeed < 20)
                     targetSpeed = curveTargetSpeed == 0 ? (byte) 0 : (byte) 20;
@@ -67,7 +64,7 @@ namespace TTController.Plugin.PwmSpeedController
                     targetSpeed = 100;
             }
 
-            return ports.ToDictionary(p => p, p => targetSpeed);
+            return ports.ToDictionary(p => p, _ => targetSpeed);
         }
     }
 }

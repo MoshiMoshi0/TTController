@@ -19,7 +19,7 @@ namespace TTController.Plugin.RawEffect
 
         public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
         {
-            return ports.ToDictionary(p => p, p => Config.Colors.ToList());
+            return ports.ToDictionary(p => p, _ => Config.Colors.ToList());
         }
     }
 }

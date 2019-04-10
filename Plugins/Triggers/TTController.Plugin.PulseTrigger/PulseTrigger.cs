@@ -20,7 +20,7 @@ namespace TTController.Plugin.PulseTrigger
             _ticks = Environment.TickCount;
         }
 
-        public override bool Value()
+        public override bool Value(ICacheProvider cache)
         {
             var current = Environment.TickCount;
             var diff = current - _ticks;

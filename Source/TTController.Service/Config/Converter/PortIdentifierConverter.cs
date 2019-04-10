@@ -5,7 +5,7 @@ using TTController.Common;
 
 namespace TTController.Service.Config.Converter
 {
-    public class PortIdentifierConverter : ObjectToArrayConverter<PortIdentifier>
+    public class PortIdentifierConverter : AbstractObjectToArrayConverter<PortIdentifier>
     {
         protected override object[] CreateConstructorArgs(JArray array) =>
             new object[] { array[0].Value<int>(), array[1].Value<int>(), array.Count == 2 ? (byte)0 : array[2].Value<byte>() };
@@ -14,11 +14,9 @@ namespace TTController.Service.Config.Converter
         {
             foreach (var property in value.GetType().GetProperties())
             {
-                if (string.CompareOrdinal(property.Name, nameof(PortIdentifier.Id)) != 0 ||
-                    (byte)property.GetValue(value) > 0)
+                if (string.CompareOrdinal(property.Name, nameof(PortIdentifier.Id)) != 0 || (byte)property.GetValue(value) > 0)
                     yield return property;
             }
         }
     }
-
 }

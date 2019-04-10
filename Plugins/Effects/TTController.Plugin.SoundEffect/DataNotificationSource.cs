@@ -17,7 +17,7 @@ namespace TTController.Plugin.SoundEffect
         }
     }
 
-    public class DataReadEventArgs
+    public class DataReadEventArgs : EventArgs
     {
         public float[] Data { get; }
 

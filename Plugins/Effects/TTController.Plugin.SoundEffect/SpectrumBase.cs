@@ -36,7 +36,7 @@ namespace TTController.Plugin.SoundEffect
         }
 
         protected SpectrumBase() { }
-        
+
         public virtual void UpdateFrequencyMapping()
         {
             _maximumFrequencyIndex = Math.Min(SpectrumProvider.GetFftBandIndex(MaximumFrequency) + 1, _maxFftIndex);
@@ -50,12 +50,16 @@ namespace TTController.Plugin.SoundEffect
             for (var i = 1; i < actualResolution; i++)
             {
                 if (!IsXLogScale)
+                {
                     _spectrumIndexMax[i - 1] = _minimumFrequencyIndex + (int)(i * linearIndexBucketSize);
+                }
                 else
+                {
                     _spectrumIndexMax[i - 1] =
-                        (int)((Math.Log(actualResolution, actualResolution) - 
-                               Math.Log(actualResolution + 1 - i, actualResolution + 1))
-                              * indexCount + _minimumFrequencyIndex);
+                        (int)((Math.Log(actualResolution, actualResolution)
+                               - Math.Log(actualResolution + 1 - i, actualResolution + 1))
+                               * indexCount + _minimumFrequencyIndex);
+                }
             }
 
             if (actualResolution > 0)
@@ -101,7 +105,7 @@ namespace TTController.Plugin.SoundEffect
                     if (UseAverage && spectrumPointIndex > 0)
                         value = (lastValue + value) / 2.0;
 
-                    dataPoints.Add(new SpectrumPointData { SpectrumPointIndex = spectrumPointIndex, Value = value });
+                    dataPoints.Add(new SpectrumPointData(spectrumPointIndex, value));
 
                     lastValue = value;
                     value = 0.0;
@@ -112,11 +116,17 @@ namespace TTController.Plugin.SoundEffect
 
             return dataPoints;
         }
-        
+
         protected struct SpectrumPointData
         {
-            public int SpectrumPointIndex;
-            public double Value;
+            public int SpectrumPointIndex { get; private set; }
+            public double Value { get; private set; }
+
+            public SpectrumPointData(int spectrumPointIndex, double value)
+            {
+                SpectrumPointIndex = spectrumPointIndex;
+                Value = value;
+            }
         }
     }
 

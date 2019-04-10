@@ -61,7 +61,7 @@ namespace TTController.Service.Controller.Proxy
         {
             if (port != 0)
                 return null;
-            
+
             // 0x31, 0x33 // VIN
             // 0x31, 0x34 // VVOut12
             // 0x31, 0x35 // VVout5
@@ -75,7 +75,7 @@ namespace TTController.Service.Controller.Proxy
             // EFF = (int)((VVOut12 * VIOut12 + VVOut5 * VIOut5 + VVOut33 * VIOut33) / 10.0)
 
             byte[] GetData(byte b) => Device.WriteReadBytes(0x31, b).Take(2).ToArray();
-            string GetDataAsString(byte b) => $"{string.Join("", GetData(b).Select(x => x.ToString("X2")))}";
+            string GetDataAsString(byte b) => $"{string.Concat(GetData(b).Select(x => x.ToString("X2")))}";
 
             var data = new PortData()
             {
@@ -85,7 +85,7 @@ namespace TTController.Service.Controller.Proxy
                 ["VVOut33"] = GetDataAsString(0x36),
                 ["VIOut12"] = GetDataAsString(0x37),
                 ["VIOut5"] = GetDataAsString(0x38),
-                ["VIOut33"] = GetDataAsString(0x39), 
+                ["VIOut33"] = GetDataAsString(0x39),
                 ["Temp"] = GetDataAsString(0x3a),
                 ["FanSpeed"] = GetDataAsString(0x3b)
             };
@@ -102,7 +102,6 @@ namespace TTController.Service.Controller.Proxy
 
         public override void SaveProfile()
         {
-            return;
         }
 
         public override bool Init()
@@ -120,8 +119,8 @@ namespace TTController.Service.Controller.Proxy
         }
 
         public override bool IsValidPort(PortIdentifier port) =>
-            port.ControllerProductId == Device.ProductId &&
-           port.ControllerVendorId == Device.VendorId &&
-           port.Id == 0;
+            port.ControllerProductId == Device.ProductId
+            && port.ControllerVendorId == Device.VendorId
+            && port.Id == 0;
     }
 }

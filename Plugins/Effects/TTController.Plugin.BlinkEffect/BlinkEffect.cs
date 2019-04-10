@@ -32,7 +32,7 @@ namespace TTController.Plugin.BlinkEffect
                 _ticks = current;
                 _state = !_state;
             }
-            
+
             var result = new Dictionary<PortIdentifier, List<LedColor>>();
             foreach (var port in ports)
             {
@@ -47,7 +47,7 @@ namespace TTController.Plugin.BlinkEffect
                 else
                 {
                     var offColor = new LedColor(0, 0, 0);
-                    result.Add(port, Enumerable.Range(0, config.LedCount).Select(x => offColor).ToList());
+                    result.Add(port, Enumerable.Range(0, config.LedCount).Select(_ => offColor).ToList());
                 }
             }
 

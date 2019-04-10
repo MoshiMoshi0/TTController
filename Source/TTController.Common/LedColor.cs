@@ -14,7 +14,7 @@ namespace TTController.Common
             G = g;
             B = b;
         }
-        
+
         public override string ToString() => $"[{R}, {G}, {B}]";
 
         public void Deconstruct(out object r, out object g, out object b)
@@ -35,7 +35,7 @@ namespace TTController.Common
             var r = from.R * (1 - t) + to.R * t;
             var g = from.G * (1 - t) + to.G * t;
             var b = from.B * (1 - t) + to.B * t;
-            return (r, g, b);       
+            return (r, g, b);
         }
 
         public static (double, double, double) ToHsv(LedColor color)
@@ -51,7 +51,7 @@ namespace TTController.Common
             else if (color.B == max) hue = 4d + (color.R - color.G) / delta;
 
             hue *= 60;
-            if (hue < 0.0) hue = hue + 360;
+            if (hue < 0.0) hue += 360;
 
             var saturation = (max == 0) ? 0 : 1d - (1d * min / max);
             var value = max / 255d;
@@ -63,7 +63,7 @@ namespace TTController.Common
             var hi = Convert.ToInt32(Math.Floor(hue / 60)) % 6;
             var f = hue / 60 - Math.Floor(hue / 60);
 
-            value = value * 255;
+            value *= 255;
             var v = Convert.ToByte(value);
             var p = Convert.ToByte(value * (1 - saturation));
             var q = Convert.ToByte(value * (1 - f * saturation));

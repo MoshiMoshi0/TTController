@@ -17,7 +17,7 @@ using TTController.Service.Utils;
 
 namespace TTController.Service
 {
-    class TTService : ServiceBase
+    internal class TTService : ServiceBase
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -44,33 +44,25 @@ namespace TTController.Service
 
         public bool Initialize()
         {
-            var logConfig = new LoggingConfiguration();
-            logConfig.AddTarget(new ConsoleTarget("console")
-            {
-                DetectConsoleAvailable = true,
-                Layout = Layout.FromString("${time}: ${message}")
-            });
-            logConfig.AddRuleForAllLevels("console");
-            LogManager.Configuration = logConfig;
-
             Logger.Info($"{new string('=', 64)}");
             Logger.Info("Initializing...");
             var pluginAssemblies = Directory.GetFiles($@"{AppDomain.CurrentDomain.BaseDirectory}\Plugins", "*.dll", SearchOption.AllDirectories)
                 .Where(f => AppDomain.CurrentDomain.GetAssemblies().All(a => a.Location != f))
-                .TrySelect(Assembly.LoadFile, ex => { })
+                .TrySelect(Assembly.LoadFile, _ => { })
                 .ToList();
 
-            AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>
-                pluginAssemblies.FirstOrDefault(a => string.CompareOrdinal(a.FullName, args.Name) == 0);
+            AppDomain.CurrentDomain.AssemblyResolve += (_, args) =>
+                pluginAssemblies.Find(a => string.CompareOrdinal(a.FullName, args.Name) == 0);
 
             Logger.Info("Loading plugins...");
             foreach (var assembly in pluginAssemblies)
                 Logger.Info("Loading assembly: {0} [{1}]", assembly.GetName().Name, assembly.GetName().Version);
 
-            _cache = new DataCache();
             _configManager = new ConfigManager("config.json");
-            _configManager.LoadOrCreateConfig();
+            if (!_configManager.LoadOrCreateConfig())
+                return false;
 
+            _cache = new DataCache();
             _sensorManager = new SensorManager();
 
             var alpha = Math.Exp(-_configManager.CurrentConfig.TemperatureTimerInterval / (double)_configManager.CurrentConfig.DeviceSpeedTimerInterval);
@@ -102,7 +94,8 @@ namespace TTController.Service
             _timerManager.RegisterTimer(_configManager.CurrentConfig.TemperatureTimerInterval, TemperatureTimerCallback);
             _timerManager.RegisterTimer(_configManager.CurrentConfig.DeviceSpeedTimerInterval, DeviceSpeedTimerCallback);
             _timerManager.RegisterTimer(_configManager.CurrentConfig.DeviceRgbTimerInterval, DeviceRgbTimerCallback);
-            if(Environment.UserInteractive) _timerManager.RegisterTimer(_configManager.CurrentConfig.LoggingTimerInterval, LoggingTimerCallback);
+            if(LogManager.Configuration.LoggingRules.Any(r => r.IsLoggingEnabledForLevel(LogLevel.Debug)))
+                _timerManager.RegisterTimer(_configManager.CurrentConfig.LoggingTimerInterval, LoggingTimerCallback);
 
             _timerManager.Start();
 
@@ -125,19 +118,19 @@ namespace TTController.Service
 
         protected override void OnStop()
         {
-            Dispose(ComputerStateType.Shutdown);
+            Finalize();
             base.OnStop();
         }
 
         protected override void OnShutdown()
         {
-            Dispose(ComputerStateType.Shutdown);
+            Finalize();
             base.OnShutdown();
         }
 
         protected void OnSuspend()
         {
-            Dispose(ComputerStateType.Suspend);
+            Finalize(ComputerStateType.Suspend);
             base.OnStop();
         }
 
@@ -167,25 +160,32 @@ namespace TTController.Service
             return base.OnPowerEvent(powerStatus);
         }
 
-        public void Dispose(ComputerStateType state)
+        public void Finalize(ComputerStateType state = ComputerStateType.Shutdown)
         {
             if (IsDisposed)
                 return;
-            
-            _timerManager.Dispose();
 
-            ApplyComputerStateProfile(state);
+            Logger.Info($"{new string('=', 64)}");
+            Logger.Info("Finalizing...");
 
-            _temperatureManager.Dispose();
-            _sensorManager.Dispose();
-            _deviceManager.Dispose();
-            _effectManager.Dispose();
-            _speedControllerManager.Dispose();
-            _configManager.Dispose();
-            _cache.Clear();
+            _timerManager?.Dispose();
+
+            if(_deviceManager != null)
+                ApplyComputerStateProfile(state);
+
+            _temperatureManager?.Dispose();
+            _sensorManager?.Dispose();
+            _deviceManager?.Dispose();
+            _effectManager?.Dispose();
+            _speedControllerManager?.Dispose();
+            _configManager?.Dispose();
+            _cache?.Clear();
 
             Dispose();
             IsDisposed = true;
+
+            Logger.Info("Disposing done!");
+            Logger.Info($"{new string('=', 64)}");
         }
 
         private void ApplyComputerStateProfile(ComputerStateType state)
@@ -195,15 +195,16 @@ namespace TTController.Service
                 var configManager = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
                 var configCollection = configManager.AppSettings.Settings;
 
-                var key = "boot-profile-saved";
+                const string key = "boot-profile-saved";
                 if (configCollection[key] != null)
                     return;
-                
+
                 configCollection.Add(key, "");
                 configManager.Save(ConfigurationSaveMode.Modified);
                 ConfigurationManager.RefreshSection(configManager.AppSettings.SectionInformation.Name);
             }
 
+            Logger.Info("Applying computer state profile: {0}", state);
             lock (_deviceManager)
             {
                 foreach (var profile in _configManager.CurrentConfig.ComputerStateProfiles.Where(p => p.StateType == state))
@@ -256,12 +257,12 @@ namespace TTController.Service
                 IDictionary<PortIdentifier, byte> speedMap;
                 if (isCriticalTemperature)
                 {
-                    speedMap = profile.Ports.ToDictionary(p => p, p => (byte)100);
+                    speedMap = profile.Ports.ToDictionary(p => p, _ => (byte)100);
                 }
                 else
                 {
                     var speedControllers = _speedControllerManager.GetSpeedControllers(profile.Guid);
-                    var speedController = speedControllers?.FirstOrDefault(c => c.Enabled);
+                    var speedController = speedControllers?.FirstOrDefault(c => c.IsEnabled(_cache));
                     if (speedController == null)
                         continue;
 
@@ -292,7 +293,7 @@ namespace TTController.Service
             foreach (var profile in _configManager.CurrentConfig.Profiles)
             {
                 var effects = _effectManager.GetEffects(profile.Guid);
-                var effect = effects?.FirstOrDefault(e => e.Enabled);
+                var effect = effects?.FirstOrDefault(e => e.IsEnabled(_cache));
                 if (effect == null)
                     continue;
 
@@ -348,7 +349,7 @@ namespace TTController.Service
                     if (data == null)
                         continue;
 
-                    Logger.Info("Port {0} data: {1}", port, data);
+                    Logger.Trace("Port {0} data: {1}", port, data);
                 }
             }
 
@@ -359,7 +360,7 @@ namespace TTController.Service
                     var value = _temperatureManager.GetSensorValue(sensor.Identifier);
                     if (float.IsNaN(value))
                         continue;
-                    Logger.Info("Sensor \"{0}\" value: {1}", sensor.Identifier, value);
+                    Logger.Trace("Sensor \"{0}\" value: {1}", sensor.Identifier, value);
                 }
             }
 
