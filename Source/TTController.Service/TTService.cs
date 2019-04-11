@@ -349,7 +349,7 @@ namespace TTController.Service
                     if (data == null)
                         continue;
 
-                    Logger.Trace("Port {0} data: {1}", port, data);
+                    Logger.Debug("Port {0} data: {1}", port, data);
                 }
             }
 
@@ -360,7 +360,7 @@ namespace TTController.Service
                     var value = _temperatureManager.GetSensorValue(sensor.Identifier);
                     if (float.IsNaN(value))
                         continue;
-                    Logger.Trace("Sensor \"{0}\" value: {1}", sensor.Identifier, value);
+                    Logger.Debug("Sensor \"{0}\" value: {1}", sensor.Identifier, value);
                 }
             }
 
