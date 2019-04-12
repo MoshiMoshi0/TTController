@@ -65,7 +65,16 @@ namespace TTController.Service
             {
                 Console.WriteLine("Starting the service...");
                 Service?.Start();
-                Service?.WaitForStatus(ServiceControllerStatus.Running);
+                try
+                {
+                    Service?.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(15));
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Failed to start the service...");
+                    Console.WriteLine("Press any key to return to the menu...");
+                    Console.ReadKey(true);
+                }
             }
 
             var menu = new MenuPage("Main Menu > Manage Service");
