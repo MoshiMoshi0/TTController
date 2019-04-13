@@ -106,14 +106,20 @@ namespace TTController.Service
 
         protected override void OnStart(string[] args)
         {
-            if (!Initialize())
+            try
             {
+                if (!Initialize())
+                    throw new Exception("Service failed to start!");
+
+                IsDisposed = false;
+            }
+            catch (Exception e)
+            {
+                Logger.Fatal(e);
                 ExitCode = 1;
                 Stop();
-                throw new Exception("Service failed to start!");
+                throw;
             }
-
-            IsDisposed = false;
         }
 
         protected override void OnStop()
