@@ -49,6 +49,8 @@ namespace TTController.Service.Manager
                 foreach (var effect in effects)
                     effect.Dispose();
             Logger.Info("Disposed effects: {0}", count);
+
+            _effectsGuidMap.Clear();
         }
     }
 }

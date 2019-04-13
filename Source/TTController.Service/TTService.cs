@@ -187,6 +187,16 @@ namespace TTController.Service
             _configManager?.Dispose();
             _cache?.Clear();
 
+            _timerManager = null;
+            _deviceManager = null;
+            _temperatureManager = null;
+            _sensorManager = null;
+            _deviceManager = null;
+            _effectManager = null;
+            _speedControllerManager = null;
+            _configManager = null;
+            _cache = null;
+
             Dispose();
             IsDisposed = true;
 
