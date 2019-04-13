@@ -142,6 +142,8 @@ namespace TTController.Service
 
         protected override bool OnPowerEvent(PowerBroadcastStatus powerStatus)
         {
+            Logger.Debug("Power Event: {0}", powerStatus);
+
             switch (powerStatus)
             {
                 case PowerBroadcastStatus.QuerySuspendFailed:
@@ -149,9 +151,11 @@ namespace TTController.Service
                     break;
 
                 case PowerBroadcastStatus.ResumeAutomatic:
+                    OnStart(null);
+                    break;
+
                 case PowerBroadcastStatus.ResumeCritical:
                 case PowerBroadcastStatus.ResumeSuspend:
-                    OnStart(null);
                     break;
 
                 case PowerBroadcastStatus.QuerySuspend:
