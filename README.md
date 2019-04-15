@@ -5,8 +5,8 @@ It allows you to fully customize them by using **speed controllers**, which cont
 The source code also provides an easy way to write your own **speed controller**, **effect** or **trigger**.
 
 ---
-<a href="https://github.com/devcompl/TTController/releases/latest">
-<img alt="undefined" src="https://img.shields.io/github/tag-date/devcompl/ttcontroller.svg?colorB=blue&label=release&style=flat"></a>
+<a href="https://github.com/MoshiMoshi0/TTController/releases/latest">
+<img alt="undefined" src="https://img.shields.io/github/tag-date/MoshiMoshi0/ttcontroller.svg?colorB=blue&label=release&style=flat"></a>
 <br/><br/>
 
 # Quick start
