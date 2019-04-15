@@ -2,7 +2,7 @@ This is home to TTController, a windows service for controlling various Thermalt
 
 It allows you to fully customize them by using **speed controllers**, which control the speed, and  **effects**, which control the led color. Each can be enabled or disabled dynamically by using various **triggers**.
 
-The soruce code also provides an easy way to write your own **speed controller**, **effect** or **trigger**.
+The source code also provides an easy way to write your own **speed controller**, **effect** or **trigger**.
 
 ---
 <a href="https://github.com/devcompl/TTController/releases/latest">
