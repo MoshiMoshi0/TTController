@@ -59,6 +59,8 @@ namespace TTController.Service.Manager
             Logger.Info("Stopping {0} timers...", _timers.Count);
             foreach (var timer in _timers)
                 timer.Stop();
+
+            _timers.Clear();
         }
 
         #region Timer

@@ -106,14 +106,20 @@ namespace TTController.Service
 
         protected override void OnStart(string[] args)
         {
-            if (!Initialize())
+            try
             {
+                if (!Initialize())
+                    throw new Exception("Service failed to start!");
+
+                IsDisposed = false;
+            }
+            catch (Exception e)
+            {
+                Logger.Fatal(e);
                 ExitCode = 1;
                 Stop();
-                throw new Exception("Service failed to start!");
+                throw;
             }
-
-            IsDisposed = false;
         }
 
         protected override void OnStop()
@@ -136,6 +142,8 @@ namespace TTController.Service
 
         protected override bool OnPowerEvent(PowerBroadcastStatus powerStatus)
         {
+            Logger.Debug("Power Event: {0}", powerStatus);
+
             switch (powerStatus)
             {
                 case PowerBroadcastStatus.QuerySuspendFailed:
@@ -143,9 +151,11 @@ namespace TTController.Service
                     break;
 
                 case PowerBroadcastStatus.ResumeAutomatic:
+                    OnStart(null);
+                    break;
+
                 case PowerBroadcastStatus.ResumeCritical:
                 case PowerBroadcastStatus.ResumeSuspend:
-                    OnStart(null);
                     break;
 
                 case PowerBroadcastStatus.QuerySuspend:
@@ -180,6 +190,16 @@ namespace TTController.Service
             _speedControllerManager?.Dispose();
             _configManager?.Dispose();
             _cache?.Clear();
+
+            _timerManager = null;
+            _deviceManager = null;
+            _temperatureManager = null;
+            _sensorManager = null;
+            _deviceManager = null;
+            _effectManager = null;
+            _speedControllerManager = null;
+            _configManager = null;
+            _cache = null;
 
             Dispose();
             IsDisposed = true;
@@ -219,7 +239,7 @@ namespace TTController.Service
                             controller.SetSpeed(port.Id, profile.Speed.Value);
 
                         var effectByte = controller.GetEffectByte(profile.EffectType);
-                        if (effectByte.HasValue)
+                        if (effectByte.HasValue && profile.EffectColors != null)
                             controller.SetRgb(port.Id, effectByte.Value, profile.EffectColors);
 
                         if(state == ComputerStateType.Boot && (profile.Speed.HasValue || effectByte.HasValue))
@@ -326,6 +346,9 @@ namespace TTController.Service
                 {
                     foreach (var (port, colors) in colorMap)
                     {
+                        if (colors == null)
+                            continue;
+
                         var controller = _deviceManager.GetController(port);
                         var effectByte = controller?.GetEffectByte(effect.EffectType);
                         if (effectByte == null)
@@ -349,7 +372,7 @@ namespace TTController.Service
                     if (data == null)
                         continue;
 
-                    Logger.Trace("Port {0} data: {1}", port, data);
+                    Logger.Debug("Port {0} data: {1}", port, data);
                 }
             }
 
@@ -360,7 +383,7 @@ namespace TTController.Service
                     var value = _temperatureManager.GetSensorValue(sensor.Identifier);
                     if (float.IsNaN(value))
                         continue;
-                    Logger.Trace("Sensor \"{0}\" value: {1}", sensor.Identifier, value);
+                    Logger.Debug("Sensor \"{0}\" value: {1}", sensor.Identifier, value);
                 }
             }
 

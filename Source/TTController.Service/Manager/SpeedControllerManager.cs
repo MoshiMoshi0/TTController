@@ -49,6 +49,8 @@ namespace TTController.Service.Manager
                 foreach (var controller in controllers)
                     controller.Dispose();
             Logger.Info("Disposed speed controllers: {0}", count);
+
+            _speedControllerGuidMap.Clear();
         }
     }
 }

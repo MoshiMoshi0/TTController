@@ -2,11 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using HidLibrary;
+using NLog;
 
 namespace TTController.Service.Hardware
 {
     public class HidDeviceProxy : IHidDeviceProxy
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private readonly HidDevice _device;
 
         public int VendorId => _device.Attributes.VendorId;
@@ -24,6 +27,9 @@ namespace TTController.Service.Hardware
 
             var data = new byte[_device.Capabilities.OutputReportByteLength];
             Array.Copy(bytes, 0, data, 1, Math.Min(bytes.Length, _device.Capabilities.OutputReportByteLength - 1));
+
+            Logger.Trace("W[{vid}, {pid}] {data}", _device.Attributes.VendorId, _device.Attributes.ProductId, data);
+
             return _device.Write(data);
         }
 
@@ -35,6 +41,8 @@ namespace TTController.Service.Hardware
             var data = _device.Read();
             if (data.Status != HidDeviceData.ReadStatus.Success)
                 return null;
+
+            Logger.Trace("R[{vid}, {pid}] {data}", _device.Attributes.VendorId, _device.Attributes.ProductId, data.Data);
 
             return data.Data;
         }

@@ -51,6 +51,8 @@ namespace TTController.Service.Manager
         {
             Logger.Info("Disposing SensorManager...");
             _computer?.Close();
+
+            _sensors.Clear();
         }
     }
 }
