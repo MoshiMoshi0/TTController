@@ -281,7 +281,7 @@ namespace TTController.Service
                 else
                 {
                     var speedControllers = _speedControllerManager.GetSpeedControllers(profile.Guid);
-                    var speedController = speedControllers?.FirstOrDefault(c => c.IsEnabled(_cache));
+                    var speedController = speedControllers?.FirstOrDefault(c => c.IsEnabled(_cache.AsReadOnly()));
                     if (speedController == null)
                         continue;
 
@@ -312,7 +312,7 @@ namespace TTController.Service
             foreach (var profile in _configManager.CurrentConfig.Profiles)
             {
                 var effects = _effectManager.GetEffects(profile.Guid);
-                var effect = effects?.FirstOrDefault(e => e.IsEnabled(_cache));
+                var effect = effects?.FirstOrDefault(e => e.IsEnabled(_cache.AsReadOnly()));
                 if (effect == null)
                     continue;
 
