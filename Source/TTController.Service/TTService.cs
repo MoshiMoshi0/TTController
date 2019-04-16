@@ -212,16 +212,11 @@ namespace TTController.Service
         {
             if (state == ComputerStateType.Boot)
             {
-                var configManager = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-                var configCollection = configManager.AppSettings.Settings;
-
                 const string key = "boot-profile-saved";
-                if (configCollection[key] != null)
+                if (AppSettingsHelper.ReadValue<bool>(key))
                     return;
 
-                configCollection.Add(key, "");
-                configManager.Save(ConfigurationSaveMode.Modified);
-                ConfigurationManager.RefreshSection(configManager.AppSettings.SectionInformation.Name);
+                AppSettingsHelper.WriteValue(key, true);
             }
 
             Logger.Info("Applying computer state profile: {0}", state);
