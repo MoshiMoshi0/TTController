@@ -89,6 +89,8 @@ The source code also provides an easy way to write your own **speed controller**
 
 > ## The documentation is still WIP, if you have problems with configuration please make a new [issue](https://github.com/devcompl/TTController/issues/new/choose).
 
+> The config is by default located in `config.json` file. You can modify this in `TTController.Service.exe.Config` file by changing the value of `config-file` key. 
+
 ## Example
 ```json
 {
@@ -330,7 +332,7 @@ The source code also provides an easy way to write your own **speed controller**
 }
 ```
 
-> If you want to update or add a profile with **Boot** type you first need to remove `<add key="boot-profile-saved" value="" />` line from `TTController.Service.exe.Config` file and restart the service.
+> If you want to update or add a profile with **Boot** type, you first need to remove `<add key="boot-profile-saved" value="true" />` line or change the value to `false` in `TTController.Service.exe.Config` file and restart the service.
 
 ##### Examples:
 ```json
