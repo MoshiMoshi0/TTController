@@ -58,7 +58,11 @@ namespace TTController.Service
             foreach (var assembly in pluginAssemblies)
                 Logger.Info("Loading assembly: {0} [{1}]", assembly.GetName().Name, assembly.GetName().Version);
 
-            _configManager = new ConfigManager("config.json");
+            const string key = "config-file";
+            if (string.IsNullOrEmpty(AppSettingsHelper.ReadValue(key)))
+                AppSettingsHelper.WriteValue(key, "config.json");
+
+            _configManager = new ConfigManager(AppSettingsHelper.ReadValue(key));
             if (!_configManager.LoadOrCreateConfig())
                 return false;
 
