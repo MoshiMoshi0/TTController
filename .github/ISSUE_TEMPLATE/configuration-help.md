@@ -3,7 +3,7 @@ name: Configuration help
 about: Ask for help with configuration
 title: ''
 labels: configuration
-assignees: ''
+assignees: MoshiMoshi0
 
 ---
 
