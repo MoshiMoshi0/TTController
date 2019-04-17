@@ -58,7 +58,11 @@ namespace TTController.Service
             foreach (var assembly in pluginAssemblies)
                 Logger.Info("Loading assembly: {0} [{1}]", assembly.GetName().Name, assembly.GetName().Version);
 
-            _configManager = new ConfigManager("config.json");
+            const string key = "config-file";
+            if (string.IsNullOrEmpty(AppSettingsHelper.ReadValue(key)))
+                AppSettingsHelper.WriteValue(key, "config.json");
+
+            _configManager = new ConfigManager(AppSettingsHelper.ReadValue(key));
             if (!_configManager.LoadOrCreateConfig())
                 return false;
 
@@ -212,16 +216,11 @@ namespace TTController.Service
         {
             if (state == ComputerStateType.Boot)
             {
-                var configManager = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-                var configCollection = configManager.AppSettings.Settings;
-
                 const string key = "boot-profile-saved";
-                if (configCollection[key] != null)
+                if (AppSettingsHelper.ReadValue<bool>(key))
                     return;
 
-                configCollection.Add(key, "");
-                configManager.Save(ConfigurationSaveMode.Modified);
-                ConfigurationManager.RefreshSection(configManager.AppSettings.SectionInformation.Name);
+                AppSettingsHelper.WriteValue(key, true);
             }
 
             Logger.Info("Applying computer state profile: {0}", state);
@@ -282,7 +281,7 @@ namespace TTController.Service
                 else
                 {
                     var speedControllers = _speedControllerManager.GetSpeedControllers(profile.Guid);
-                    var speedController = speedControllers?.FirstOrDefault(c => c.IsEnabled(_cache));
+                    var speedController = speedControllers?.FirstOrDefault(c => c.IsEnabled(_cache.AsReadOnly()));
                     if (speedController == null)
                         continue;
 
@@ -313,7 +312,7 @@ namespace TTController.Service
             foreach (var profile in _configManager.CurrentConfig.Profiles)
             {
                 var effects = _effectManager.GetEffects(profile.Guid);
-                var effect = effects?.FirstOrDefault(e => e.IsEnabled(_cache));
+                var effect = effects?.FirstOrDefault(e => e.IsEnabled(_cache.AsReadOnly()));
                 if (effect == null)
                     continue;
 

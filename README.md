@@ -5,8 +5,8 @@ It allows you to fully customize them by using **speed controllers**, which cont
 The source code also provides an easy way to write your own **speed controller**, **effect** or **trigger**.
 
 ---
-<a href="https://github.com/devcompl/TTController/releases/latest">
-<img alt="undefined" src="https://img.shields.io/github/tag-date/devcompl/ttcontroller.svg?colorB=blue&label=release&style=flat"></a>
+<a href="https://github.com/MoshiMoshi0/TTController/releases/latest">
+<img alt="undefined" src="https://img.shields.io/github/tag-date/MoshiMoshi0/ttcontroller.svg?colorB=blue&label=release&style=flat"></a>
 <br/><br/>
 
 # Quick start
@@ -60,8 +60,9 @@ The source code also provides an easy way to write your own **speed controller**
 
 # Plugins
 ### Speed Controllers:
-* StaticSpeedController
 * PwmSpeedController
+* StaticSpeedController
+* CopySpeedController
 
 ### Effects:
 * BlinkEffect
@@ -88,6 +89,8 @@ The source code also provides an easy way to write your own **speed controller**
 # Config
 
 > ## The documentation is still WIP, if you have problems with configuration please make a new [issue](https://github.com/devcompl/TTController/issues/new/choose).
+
+> The config is by default located in `config.json` file. You can modify this in `TTController.Service.exe.Config` file by changing the value of `config-file` key. 
 
 ## Example
 ```json
@@ -330,7 +333,7 @@ The source code also provides an easy way to write your own **speed controller**
 }
 ```
 
-> If you want to update or add a profile with **Boot** type you first need to remove `<add key="boot-profile-saved" value="" />` line from `TTController.Service.exe.Config` file and restart the service.
+> If you want to update or add a profile with **Boot** type, you first need to remove `<add key="boot-profile-saved" value="true" />` line or change the value to `false` in `TTController.Service.exe.Config` file and restart the service.
 
 ##### Examples:
 ```json

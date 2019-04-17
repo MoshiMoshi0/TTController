@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -81,7 +81,9 @@
     <Compile Include="Config\Data\ComputerStateProfileData.cs" />
     <Compile Include="Controller\Definition\DpsgControllerDefinition.cs" />
     <Compile Include="Controller\Proxy\DpsgControllerProxy.cs" />
+    <Compile Include="Controller\Proxy\RiingTrioControllerProxy.cs" />
     <Compile Include="Manager\SensorManager.cs" />
+    <Compile Include="Utils\AppSettingsHelper.cs" />
     <Compile Include="Utils\DataCache.cs" />
     <Compile Include="Utils\Extensions.cs" />
     <Compile Include="Controller\Proxy\DefaultControllerProxy.cs" />
@@ -147,6 +149,6 @@
   </Target>
   <Target Name="CleanPlugins" AfterTargets="Clean">
     <MSBuild Projects="@(PluginProjects)" Targets="Clean" Properties="Configuration=$(Configuration)" />
-    <RemoveDir Directories="$(TargetDir)Plugins" />
+    <RemoveDir Directories="$(TargetDir)Plugins;$(TargetDir)Logs" />
   </Target>
 </Project>

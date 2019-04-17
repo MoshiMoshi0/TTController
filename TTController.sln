@@ -62,6 +62,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.FlowEff
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.TemperatureTrigger", "Plugins\Triggers\TTController.Plugin.TemperatureTrigger\TTController.Plugin.TemperatureTrigger.csproj", "{AFA76B8C-9411-4796-99E8-58BEE749298E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.CopySpeedController", "Plugins\SpeedControllers\TTController.Plugin.CopySpeedController\TTController.Plugin.CopySpeedController.csproj", "{E07EBB0D-B2BB-4F00-BD67-233B330987A1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -164,6 +166,10 @@ Global
 		{AFA76B8C-9411-4796-99E8-58BEE749298E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AFA76B8C-9411-4796-99E8-58BEE749298E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AFA76B8C-9411-4796-99E8-58BEE749298E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E07EBB0D-B2BB-4F00-BD67-233B330987A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E07EBB0D-B2BB-4F00-BD67-233B330987A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E07EBB0D-B2BB-4F00-BD67-233B330987A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E07EBB0D-B2BB-4F00-BD67-233B330987A1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -196,6 +202,7 @@ Global
 		{70EBFDDF-8791-441F-BFC3-AB6E94F9ABDD} = {521264D1-73FB-44B3-8243-CB3C95AFB179}
 		{FD3E1660-41D2-450A-BC75-751AF1056A3A} = {521264D1-73FB-44B3-8243-CB3C95AFB179}
 		{AFA76B8C-9411-4796-99E8-58BEE749298E} = {B69E5A42-8845-4081-92DD-95D2D10D7B3E}
+		{E07EBB0D-B2BB-4F00-BD67-233B330987A1} = {1C64E62C-0758-423A-B436-275C2DCAC3F6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9B8A6C39-77D8-476B-B89B-C39D2AF3D3B9}
