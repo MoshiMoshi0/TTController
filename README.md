@@ -60,8 +60,9 @@ The source code also provides an easy way to write your own **speed controller**
 
 # Plugins
 ### Speed Controllers:
-* StaticSpeedController
 * PwmSpeedController
+* StaticSpeedController
+* CopySpeedController
 
 ### Effects:
 * BlinkEffect
