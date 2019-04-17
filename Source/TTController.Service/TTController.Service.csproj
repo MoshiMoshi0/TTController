@@ -81,6 +81,7 @@
     <Compile Include="Config\Data\ComputerStateProfileData.cs" />
     <Compile Include="Controller\Definition\DpsgControllerDefinition.cs" />
     <Compile Include="Controller\Proxy\DpsgControllerProxy.cs" />
+    <Compile Include="Controller\Proxy\RiingTrioControllerProxy.cs" />
     <Compile Include="Manager\SensorManager.cs" />
     <Compile Include="Utils\AppSettingsHelper.cs" />
     <Compile Include="Utils\DataCache.cs" />
