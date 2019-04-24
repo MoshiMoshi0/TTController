@@ -135,21 +135,4 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <PluginProjects Include="$(MSBuildProjectDirectory)\..\..\Plugins\**\TTController.Plugin.*.csproj" Visible="False" />
-  </ItemGroup>
-  <Target Name="BuildPlugins" AfterTargets="BeforeBuild">
-    <MSBuild Projects="@(PluginProjects)" ContinueOnError="false" Properties="Configuration=$(Configuration)" />
-  </Target>
-  <Target Name="CopyPlugins" AfterTargets="BuildPlugins">
-    <ItemGroup>
-      <PluginDlls Include="$(MSBuildProjectDirectory)\..\..\Plugins\**\Bin\$(Configuration)\*.dll" Exclude="**\TTController.Common.dll;**\OpenHardwareMonitorLib.dll;**\HidLibrary.dll;**\Newtonsoft.Json.dll" Visible="False" />
-    </ItemGroup>
-    <MakeDir Directories="$(TargetDir)Plugins" />
-    <Copy SourceFiles="@(PluginDlls)" DestinationFiles="@(PluginDlls-&gt;'$(TargetDir)Plugins\$([System.String]::Copy('%(RecursiveDir)').Replace('\bin\$(Configuration)\', ''))\%(Filename)%(Extension)')" />
-  </Target>
-  <Target Name="CleanPlugins" AfterTargets="Clean">
-    <MSBuild Projects="@(PluginProjects)" Targets="Clean" Properties="Configuration=$(Configuration)" />
-    <RemoveDir Directories="$(TargetDir)Plugins;$(TargetDir)Logs" />
-  </Target>
 </Project>

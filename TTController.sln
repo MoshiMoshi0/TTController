@@ -1,3 +1,4 @@
+﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28729.10
@@ -63,6 +64,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.TemperatureTrigger", "Plugins\Triggers\TTController.Plugin.TemperatureTrigger\TTController.Plugin.TemperatureTrigger.csproj", "{AFA76B8C-9411-4796-99E8-58BEE749298E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.CopySpeedController", "Plugins\SpeedControllers\TTController.Plugin.CopySpeedController\TTController.Plugin.CopySpeedController.csproj", "{E07EBB0D-B2BB-4F00-BD67-233B330987A1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Build", "Build\Build.csproj", "{284FB758-3E94-40CC-BE97-E6DEDB8AF1AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -170,6 +173,8 @@ Global
 		{E07EBB0D-B2BB-4F00-BD67-233B330987A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E07EBB0D-B2BB-4F00-BD67-233B330987A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E07EBB0D-B2BB-4F00-BD67-233B330987A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{284FB758-3E94-40CC-BE97-E6DEDB8AF1AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{284FB758-3E94-40CC-BE97-E6DEDB8AF1AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
