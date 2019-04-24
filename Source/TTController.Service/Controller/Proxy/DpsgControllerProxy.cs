@@ -33,9 +33,6 @@ namespace TTController.Service.Controller.Proxy
 
         public override bool SetRgb(byte port, byte mode, IEnumerable<LedColor> colors)
         {
-            if (port != 0)
-                return false;
-
             var bytes = new List<byte> { 0x30, 0x42, mode };
             foreach (var color in colors)
             {
@@ -44,24 +41,14 @@ namespace TTController.Service.Controller.Proxy
                 bytes.Add(color.B);
             }
 
-            var result = Device.WriteReadBytes(bytes);
-            return result[3] == 0xfc;
+            return Device.WriteReadBytes(bytes)?[3] == 0xfc;
         }
 
-        public override bool SetSpeed(byte port, byte speed)
-        {
-            if (port != 0)
-                return false;
-
-            var result = Device.WriteReadBytes(0x30, 0x41, 0x04, speed);
-            return result[3] == 0xfc;
-        }
+        public override bool SetSpeed(byte port, byte speed) =>
+            Device.WriteReadBytes(0x30, 0x41, 0x04, speed)?[3] == 0xfc;
 
         public override PortData GetPortData(byte port)
         {
-            if (port != 0)
-                return null;
-
             // 0x31, 0x33 // VIN
             // 0x31, 0x34 // VVOut12
             // 0x31, 0x35 // VVout5
@@ -107,7 +94,7 @@ namespace TTController.Service.Controller.Proxy
         public override bool Init()
         {
             var result = Device.WriteReadBytes(0xfe, 0x31);
-            if (result == null || result.Length == 0)
+            if (result == null)
                 return false;
 
             try

@@ -33,7 +33,7 @@ namespace TTController.Service.Controller.Proxy
                     bytes.Add(color.B);
                 }
 
-                result &= Device.WriteReadBytes(bytes)[3] == 0xfc;
+                result &= Device.WriteReadBytes(bytes)?[3] == 0xfc;
             }
 
             return result;
