@@ -21,10 +21,11 @@ namespace TTController.Service.Controller.Proxy
                 return base.SetRgb(port, mode, colors);
 
             var result = true;
-            var maxPerChunk = 19;
-            for(byte chunkId = 1; (chunkId - 1) * maxPerChunk < colorCount; chunkId++)
+            const byte maxPerChunk = 19;
+            for (byte chunkId = 1, chunkOffset = 0;
+                chunkOffset < colorCount;
+                chunkId++, chunkOffset += maxPerChunk)
             {
-                var chunkOffset = (chunkId - 1) * maxPerChunk;
                 var bytes = new List<byte> { 0x32, 0x52, port, 0x24, 0x03, chunkId, 0x00 };
                 foreach (var color in colors.Skip(chunkOffset).Take(maxPerChunk))
                 {
