@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using Nuke.Common;
 using Nuke.Common.Execution;
@@ -91,4 +92,26 @@ class Build : NukeBuild
                                              f => fileBlacklist.Contains(Path.GetFileNameWithoutExtension(f.Name)) || !extensionWhitelist.Contains(Path.GetExtension(f.Name)));
                 });
         });
+
+    Target Pack => _ => _
+        .DependsOn(Clean)
+        .DependsOn(Compile)
+        .Executes(() =>
+        {
+            var zipFiles = Directory.EnumerateFiles(ServiceBinPath, "*", SearchOption.AllDirectories)
+                .Where(f => Path.GetFileName(f) != "config.json"
+                         && Path.GetExtension(f) != "InstallState");
+
+            if (Configuration != Configuration.Debug)
+                zipFiles = zipFiles.Where(f => Path.GetExtension(f) != ".pdb");
+
+            ZipFiles(ArtifactsDirectory / $"TTController_{GitVersion.SemVer}.{GitVersion.Sha}.zip", ServiceBinPath, zipFiles);
+        });
+
+    private static void ZipFiles(string outFile, string workingDirectory, IEnumerable<string> files)
+    {
+        using (var zip = ZipFile.Open(outFile, ZipArchiveMode.Create))
+            foreach(var file in files)
+                zip.CreateEntryFromFile(file, Path.GetRelativePath(workingDirectory, file), CompressionLevel.Optimal);
+    }
 }
