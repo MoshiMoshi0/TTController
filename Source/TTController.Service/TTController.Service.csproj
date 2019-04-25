@@ -6,32 +6,18 @@
     <AssemblyTitle>TTController.Service</AssemblyTitle>
     <Product>TTController.Service</Product>
     <Copyright>Copyright ©  2018</Copyright>
-  </PropertyGroup>
-  <PropertyGroup>
     <StartupObject>TTController.Service.Program</StartupObject>
-  </PropertyGroup>
-  <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-  </PropertyGroup>
-  <PropertyGroup>
     <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="System.IO.Compression" Version="4.*" />
-    <PackageReference Include="System.Management" Version="4.*" />
-    <PackageReference Include="Microsoft.CSharp" Version="4.*" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
     <PackageReference Include="NLog" Version="4.5.11" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Configuration.Install" />
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Transactions" />
     <Reference Include="System.ServiceProcess" />
   </ItemGroup>
   <ItemGroup>
