@@ -77,8 +77,9 @@ class Build : NukeBuild
                 .SetInformationalVersion(GitVersion.InformationalVersion)
                 .EnableNoRestore());
 
-            // Copy plugin dlls to service bin path      
-            var dllBlacklist = new [] { "TTController.Common.dll", "OpenHardwareMonitorLib.dll", "HidLibrary.dll", "Newtonsoft.Json.dll" };
+            // Copy plugin files to service bin path      
+            var fileBlacklist = new [] { "TTController.Common", "OpenHardwareMonitorLib", "HidLibrary", "Newtonsoft.Json" };
+            var extensionWhitelist = Configuration == Configuration.Debug ? new[] { ".pdb", ".dll" } : new[] { ".dll" };
             Solution.GetProjects("TTController.Plugin.*")
                 .ForEach(p =>
                 {
@@ -87,7 +88,7 @@ class Build : NukeBuild
                                              DirectoryExistsPolicy.Merge,
                                              FileExistsPolicy.OverwriteIfNewer,
                                              null,
-                                             f => dllBlacklist.Contains(f.Name) || Path.GetExtension(f.Name) != ".dll");
+                                             f => fileBlacklist.Contains(Path.GetFileNameWithoutExtension(f.Name)) || !extensionWhitelist.Contains(Path.GetExtension(f.Name)));
                 });
         });
 }
