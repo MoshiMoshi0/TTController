@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -23,7 +24,7 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 [UnsetVisualStudioEnvironmentVariables]
 class Build : NukeBuild
 {
-    public static int Main() => Execute<Build>(x => x.Compile);
+    public static int Main() => Execute<Build>(x => x.CompileAndRun);
 
     [Parameter("Configuration to build")]
 #if DEBUG
@@ -95,6 +96,17 @@ class Build : NukeBuild
                                              null,
                                              f => fileBlacklist.Contains(Path.GetFileNameWithoutExtension(f.Name)) || !extensionWhitelist.Contains(Path.GetExtension(f.Name)));
                 });
+        });
+
+    Target CompileAndRun => _ => _
+        .DependsOn(Compile)
+        .Executes(() =>
+        {
+            Process.Start(new ProcessStartInfo()
+            {
+                FileName = ServiceBinPath / "TTController.Service.exe",
+                UseShellExecute = true
+            });
         });
 
     Target Pack => _ => _
