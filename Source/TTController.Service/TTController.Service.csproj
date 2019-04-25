@@ -1,155 +1,37 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{742F8CC7-E38A-4263-AECF-E7230AC909AB}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>TTController.Service</RootNamespace>
-    <AssemblyName>TTController.Service</AssemblyName>
-    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <TargetFramework>net471</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <Deterministic>true</Deterministic>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup>
+    <AssemblyTitle>TTController.Service</AssemblyTitle>
+    <Product>TTController.Service</Product>
+    <Copyright>Copyright ©  2018</Copyright>
     <StartupObject>TTController.Service.Program</StartupObject>
-  </PropertyGroup>
-  <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-  </PropertyGroup>
-  <PropertyGroup>
-    <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NLog.4.5.11\lib\net45\NLog.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Configuration" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="NLog" Version="4.5.11" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="System.Configuration.Install" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.IO.Compression" />
-    <Reference Include="System.Management" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Transactions" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
     <Reference Include="System.ServiceProcess" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Config\Converter\AbstractDictionaryConverter.cs" />
-    <Compile Include="Config\Converter\AbstractPluginConverter.cs" />
-    <Compile Include="Config\Converter\EffectConverter.cs" />
-    <Compile Include="Config\Converter\IdentifierConverter.cs" />
-    <Compile Include="Config\Converter\LedColorConverter.cs" />
-    <Compile Include="Config\Converter\LedColorGradientConverter.cs" />
-    <Compile Include="Config\Converter\LedColorGradientPointConverter.cs" />
-    <Compile Include="Config\Converter\AbstractObjectToArrayConverter.cs" />
-    <Compile Include="Config\Converter\PortIdentifierConverter.cs" />
-    <Compile Include="Config\Converter\SpeedControllerConverter.cs" />
-    <Compile Include="Config\Converter\TriggerConverter.cs" />
-    <Compile Include="Config\Data\ConfigData.cs" />
-    <Compile Include="Config\ContractResolver.cs" />
-    <Compile Include="Config\Data\ProfileData.cs" />
-    <Compile Include="Config\Data\ComputerStateProfileData.cs" />
-    <Compile Include="Controller\Definition\DpsgControllerDefinition.cs" />
-    <Compile Include="Controller\Proxy\AbstractControllerProxy.cs" />
-    <Compile Include="Controller\Proxy\DpsgControllerProxy.cs" />
-    <Compile Include="Controller\Proxy\RiingTrioControllerProxy.cs" />
-    <Compile Include="Manager\SensorManager.cs" />
-    <Compile Include="Utils\AppSettingsHelper.cs" />
-    <Compile Include="Utils\DataCache.cs" />
-    <Compile Include="Utils\Extensions.cs" />
-    <Compile Include="Controller\Proxy\DefaultControllerProxy.cs" />
-    <Compile Include="Controller\Proxy\IControllerProxy.cs" />
-    <Compile Include="Controller\Definition\IControllerDefinition.cs" />
-    <Compile Include="Controller\Definition\RiingControllerDefinition.cs" />
-    <Compile Include="Controller\Definition\RiingPlusControllerDefinition.cs" />
-    <Compile Include="Controller\Definition\RiingTrioControllerDefinition.cs" />
-    <Compile Include="Hardware\HidDeviceProxy.cs" />
-    <Compile Include="Hardware\IHidDeviceProxy.cs" />
-    <Compile Include="Hardware\Temperature\ITemperatureProvider.cs" />
-    <Compile Include="Hardware\Temperature\ITemperatureProviderFactory.cs" />
-    <Compile Include="Hardware\Temperature\MovingAverageTemperatureProvider.cs" />
-    <Compile Include="Hardware\Temperature\MovingAverageTemperatureProviderFactory.cs" />
-    <Compile Include="Hardware\Temperature\TemperatureProvider.cs" />
-    <Compile Include="Manager\ConfigManager.cs" />
-    <Compile Include="Manager\DeviceManager.cs" />
-    <Compile Include="Manager\EffectManager.cs" />
-    <Compile Include="Manager\SpeedControllerManager.cs" />
-    <Compile Include="Manager\TemperatureManager.cs" />
-    <Compile Include="Manager\TimerManager.cs" />
-    <Compile Include="TTInstaller.cs">
+    <Compile Update="TTInstaller.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TTService.cs">
+    <Compile Update="TTService.cs">
       <SubType>Component</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="app.manifest" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\ThirdParty\HidLibrary\src\HidLibrary\HidLibrary.csproj">
-      <Project>{9e8f1d50-74ea-4c60-bd5c-ab2c5b53bc66}</Project>
-      <Name>HidLibrary</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\ThirdParty\LibreHardwareMonitor\OpenHardwareMonitorLib.csproj">
-      <Project>{bbc31437-ded6-4f85-b634-c4f03ad3d8b2}</Project>
-      <Name>OpenHardwareMonitorLib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TTController.Common\TTController.Common.csproj">
-      <Project>{c1e69ff7-20f6-425c-b8ba-9a1116a35e52}</Project>
-      <Name>TTController.Common</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\..\ThirdParty\LibreHardwareMonitor\OpenHardwareMonitorLib.csproj" />
+    <ProjectReference Include="..\TTController.Common\TTController.Common.csproj" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <PluginProjects Include="$(MSBuildProjectDirectory)\..\..\Plugins\**\TTController.Plugin.*.csproj" Visible="False" />
-  </ItemGroup>
-  <Target Name="BuildPlugins" AfterTargets="BeforeBuild">
-    <MSBuild Projects="@(PluginProjects)" ContinueOnError="false" Properties="Configuration=$(Configuration)" />
-  </Target>
-  <Target Name="CopyPlugins" AfterTargets="BuildPlugins">
-    <ItemGroup>
-      <PluginDlls Include="$(MSBuildProjectDirectory)\..\..\Plugins\**\Bin\$(Configuration)\*.dll" Exclude="**\TTController.Common.dll;**\OpenHardwareMonitorLib.dll;**\HidLibrary.dll;**\Newtonsoft.Json.dll" Visible="False" />
-    </ItemGroup>
-    <MakeDir Directories="$(TargetDir)Plugins" />
-    <Copy SourceFiles="@(PluginDlls)" DestinationFiles="@(PluginDlls-&gt;'$(TargetDir)Plugins\$([System.String]::Copy('%(RecursiveDir)').Replace('\bin\$(Configuration)\', ''))\%(Filename)%(Extension)')" />
-  </Target>
-  <Target Name="CleanPlugins" AfterTargets="Clean">
-    <MSBuild Projects="@(PluginProjects)" Targets="Clean" Properties="Configuration=$(Configuration)" />
-    <RemoveDir Directories="$(TargetDir)Plugins;$(TargetDir)Logs" />
-  </Target>
 </Project>
