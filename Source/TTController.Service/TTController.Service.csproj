@@ -8,7 +8,6 @@
     <Copyright>Copyright ©  2018</Copyright>
     <StartupObject>TTController.Service.Program</StartupObject>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
   </PropertyGroup>
