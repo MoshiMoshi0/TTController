@@ -46,11 +46,11 @@ The source code also provides an easy way to write your own **speed controller**
 | Device                      | Support            | Confirmed          | Notes
 |-----------------------------|--------------------|--------------------|-------------------------------------------
 | Riing Plus 12/14/20         | :heavy_check_mark: | :heavy_check_mark: |
+| Riing Trio 12/14            | :heavy_check_mark: | :heavy_check_mark: |
 | Pure Plus 12/14             | :heavy_check_mark: | :heavy_check_mark: |
 | Floe Riing RGB 240/280/360  | :heavy_check_mark: | :heavy_check_mark: |
 | Pacific PR22-D5 Plus        | :heavy_check_mark: | :heavy_check_mark: |
 | Pacific W4                  | :heavy_check_mark: | :heavy_check_mark: |
-| Riing Trio 12/14            | :heavy_minus_sign: | :heavy_check_mark: |
 | WaterRam RGB                | :heavy_check_mark: | :x:                |
 | Pacific CL360/RL360         | :heavy_check_mark: | :x:                |
 | Pacific V-GTX/V-RTX         | :heavy_check_mark: | :x:                |
@@ -60,31 +60,31 @@ The source code also provides an easy way to write your own **speed controller**
 
 # Plugins
 ### Speed Controllers:
-* PwmSpeedController
-* StaticSpeedController
-* CopySpeedController
+* [PwmSpeedController](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/SpeedControllers/TTController.Plugin.PwmSpeedController/PwmSpeedController.cs)
+* [StaticSpeedController](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/SpeedControllers/TTController.Plugin.StaticSpeedController/StaticSpeedController.cs)
+* [CopySpeedController](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/SpeedControllers/TTController.Plugin.CopySpeedController/CopySpeedController.cs)
 
 ### Effects:
-* BlinkEffect
-* ByLedColorEffect
-* FlowEffect
-* FullColorEffect
-* PulseEffect
-* SpectrumEffect
-* RippleEffect
-* WaveEffect
-* SnakeEffect
-* TemperatureEffect
-* SoundEffect
-* RawEffect
+* [BlinkEffect](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Effects/TTController.Plugin.BlinkEffect/BlinkEffect.cs)
+* [ByLedColorEffect](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Effects/TTController.Plugin.ByLedColorEffect/ByLedColorEffect.cs)
+* [FlowEffect](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Effects/TTController.Plugin.FlowEffect/FlowEffect.cs)
+* [FullColorEffect](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Effects/TTController.Plugin.FullColorEffect/FullColorEffect.cs)
+* [PulseEffect](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Effects/TTController.Plugin.PulseEffect/PulseEffect.cs)
+* [SpectrumEffect](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Effects/TTController.Plugin.SpectrumEffect/SpectrumEffect.cs)
+* [RippleEffect](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Effects/TTController.Plugin.RippleEffect/RippleEffect.cs)
+* [WaveEffect](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Effects/TTController.Plugin.WaveEffect/WaveEffect.cs)
+* [SnakeEffect](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Effects/TTController.Plugin.SnakeEffect/SnakeEffect.cs)
+* [TemperatureEffect](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Effects/TTController.Plugin.TemperatureEffect/TemperatureEffect.cs)
+* [SoundEffect](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Effects/TTController.Plugin.SoundEffect/SoundEffect.cs)
+* [RawEffect](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Effects/TTController.Plugin.RawEffect/RawEffect.cs)
 
 ### Triggers
-* AlwaysTrigger
-* OneTimeTrigger
-* ProcessTrigger
-* PulseTrigger
-* LogicTrigger
-* TemperatureTrigger
+* [AlwaysTrigger](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Triggers/TTController.Plugin.AlwaysTrigger/AlwaysTrigger.cs)
+* [OneTimeTrigger](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Triggers/TTController.Plugin.OneTimeTrigger/OneTimeTrigger.cs)
+* [ProcessTrigger](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Triggers/TTController.Plugin.ProcessTrigger/ProcessTrigger.cs)
+* [PulseTrigger](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Triggers/TTController.Plugin.PulseTrigger/PulseTrigger.cs)
+* [LogicTrigger](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Triggers/TTController.Plugin.LogicTrigger/LogicTrigger.cs)
+* [TemperatureTrigger](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Triggers/TTController.Plugin.TemperatureTrigger/TemperatureTrigger.cs)
 
 # Config
 
