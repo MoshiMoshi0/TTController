@@ -25,8 +25,12 @@ class Build : NukeBuild
 {
     public static int Main() => Execute<Build>(x => x.Compile);
 
-    [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
-    readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
+    [Parameter("Configuration to build")]
+#if DEBUG
+    readonly Configuration Configuration = Configuration.Debug;
+#elif RELEASE
+    readonly Configuration Configuration = Configuration.Release;
+#endif
 
     [Solution] readonly Solution Solution;
     [GitRepository] readonly GitRepository GitRepository;
