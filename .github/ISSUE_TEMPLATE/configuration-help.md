@@ -1,7 +1,7 @@
 ---
 name: Configuration help
-about: Ask for help with configuration
-title: ''
+about: Ask for help with your configuration
+title: Configuration Help
 labels: configuration
 assignees: MoshiMoshi0
 
@@ -12,10 +12,12 @@ A clear and concise description of what your desired effect and/or speed control
 
 **Hardware info**
 ```
-Attach the output of **"Show hardware info"** option from the command line menu here. Make sure the official software is not running at the same time.
+Replace this text (between ``` characters) with the output of "Show hardware info" option from the command line menu. 
+
+Make sure no official software is not running at the same time.
 ```
 
 **Current configuration**
 ```json
-If applicable, add contents of your current configuration here.
+If applicable, replace this text (between ``` characters) with contents of your current configuration here. 
 ```
