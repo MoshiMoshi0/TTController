@@ -73,9 +73,11 @@ namespace TTController.Service.Manager
         private void Dispose(bool disposing)
         {
             Logger.Info("Disposing DeviceManager...");
+
             var count = _devices.Count;
             foreach (var device in _devices)
                 device.Dispose();
+
             Logger.Info("Disposed devices: {0}", count);
         }
     }

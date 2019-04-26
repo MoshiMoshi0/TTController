@@ -7,7 +7,6 @@ using System.ServiceProcess;
 using NLog;
 using TTController.Service.Config.Data;
 using TTController.Service.Manager;
-using TTController.Service.Utils;
 
 namespace TTController.Service
 {

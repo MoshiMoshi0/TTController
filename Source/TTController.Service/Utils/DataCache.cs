@@ -33,6 +33,7 @@ namespace TTController.Service.Utils
 
             _providerProxy = new CacheProviderProxy(this);
             _collectorProxy = new CacheCollectorProxy(this);
+
             _portDataCache = new ConcurrentDictionary<PortIdentifier, PortData>();
             _portConfigCache = new ConcurrentDictionary<PortIdentifier, PortConfig>();
             _temperatureCache = new ConcurrentDictionary<Identifier, float>();

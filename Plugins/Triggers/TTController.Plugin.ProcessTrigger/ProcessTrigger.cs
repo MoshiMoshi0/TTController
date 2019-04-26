@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using TTController.Common;
-using TTController.Plugin.ProcessTrigger;
 
 namespace TTController.Plugin.ProcessTrigger
 {

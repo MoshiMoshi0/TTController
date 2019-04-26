@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -7,15 +5,12 @@ using System.IO.Compression;
 using System.Linq;
 using Nuke.Common;
 using Nuke.Common.Execution;
-using Nuke.Common.Git;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
-using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.GitVersion;
 using Nuke.Common.Tools.MSBuild;
 using Nuke.Common.Utilities.Collections;
-using static Nuke.Common.EnvironmentInfo;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
@@ -24,7 +19,7 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 [UnsetVisualStudioEnvironmentVariables]
 class Build : NukeBuild
 {
-    public static int Main() => Execute<Build>(x => x.CompileAndRun);
+    public static int Main() => Execute<Build>(x => x.Run);
 
     [Parameter("Configuration to build")]
 #if DEBUG
@@ -34,7 +29,6 @@ class Build : NukeBuild
 #endif
 
     [Solution] readonly Solution Solution;
-    [GitRepository] readonly GitRepository GitRepository;
     [GitVersion] readonly GitVersion GitVersion;
 
     AbsolutePath SourceDirectory => RootDirectory / "Source";
@@ -98,7 +92,7 @@ class Build : NukeBuild
                 });
         });
 
-    Target CompileAndRun => _ => _
+    Target Run => _ => _
         .DependsOn(Compile)
         .Executes(() =>
         {
@@ -114,14 +108,14 @@ class Build : NukeBuild
         .DependsOn(Compile)
         .Executes(() =>
         {
-            var zipFiles = Directory.EnumerateFiles(ServiceBinPath, "*", SearchOption.AllDirectories)
+            var files = Directory.EnumerateFiles(ServiceBinPath, "*", SearchOption.AllDirectories)
                 .Where(f => Path.GetFileName(f) != "config.json"
                          && Path.GetExtension(f) != "InstallState");
 
             if (Configuration != Configuration.Debug)
-                zipFiles = zipFiles.Where(f => Path.GetExtension(f) != ".pdb");
+                files = files.Where(f => Path.GetExtension(f) != ".pdb");
 
-            ZipFiles(ArtifactsDirectory / $"TTController_{GitVersion.SemVer}.{GitVersion.Sha}.zip", ServiceBinPath, zipFiles);
+            ZipFiles(ArtifactsDirectory / $"TTController_{GitVersion.SemVer}.{GitVersion.Sha}.zip", ServiceBinPath, files);
         });
 
     private static void ZipFiles(string outFile, string workingDirectory, IEnumerable<string> files)

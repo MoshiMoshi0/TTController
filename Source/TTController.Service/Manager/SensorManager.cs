@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NLog;
 using OpenHardwareMonitor.Hardware;
 
@@ -50,8 +48,8 @@ namespace TTController.Service.Manager
         private void Dispose(bool disposing)
         {
             Logger.Info("Disposing SensorManager...");
-            _computer?.Close();
 
+            _computer?.Close();
             _sensors.Clear();
         }
     }
