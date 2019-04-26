@@ -58,19 +58,17 @@ namespace TTController.Service.Controller.Proxy
                 bytes.Add(color.B);
             }
 
-            var result = Device.WriteReadBytes(bytes);
-            return result[3] == 0xfc;
+            return Device.WriteReadBytes(bytes)?[3] == 0xfc;
         }
 
-        public override bool SetSpeed(byte port, byte speed)
-        {
-            var result = Device.WriteReadBytes(0x32, 0x51, port, 0x01, speed);
-            return result[3] == 0xfc;
-        }
+        public override bool SetSpeed(byte port, byte speed) => 
+            Device.WriteReadBytes(0x32, 0x51, port, 0x01, speed)?[3] == 0xfc;
 
         public override PortData GetPortData(byte port)
         {
             var result = Device.WriteReadBytes(0x33, 0x51, port);
+            if (result == null)
+                return null;
 
             var data = new PortData
             {
@@ -90,16 +88,11 @@ namespace TTController.Service.Controller.Proxy
             return _availableEffects.TryGetValue(effectType, out var value) ? value : (byte?) null;
         }
 
-        public override void SaveProfile()
-        {
+        public override void SaveProfile() =>
             Device.WriteReadBytes(0x32, 0x53);
-        }
 
-        public override bool Init()
-        {
-            var result = Device.WriteReadBytes(0xfe, 0x33);
-            return result != null && result.Length >= 3 && result[3] == 0xfc;
-        }
+        public override bool Init() =>
+            Device.WriteReadBytes(0xfe, 0x33)?[3] == 0xfc;
 
         public override bool IsValidPort(PortIdentifier port) =>
             port.ControllerProductId == Device.ProductId

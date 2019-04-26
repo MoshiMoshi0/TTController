@@ -1,14 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.ServiceProcess;
 using NLog;
-using NLog.Config;
-using NLog.Layouts;
-using NLog.Targets;
 using TTController.Common;
 using TTController.Service.Config.Data;
 using TTController.Service.Hardware.Temperature;

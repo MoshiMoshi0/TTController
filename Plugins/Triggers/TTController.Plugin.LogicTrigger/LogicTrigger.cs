@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using OpenHardwareMonitor.Hardware;
 using TTController.Common;
 
 namespace TTController.Plugin.LogicTrigger

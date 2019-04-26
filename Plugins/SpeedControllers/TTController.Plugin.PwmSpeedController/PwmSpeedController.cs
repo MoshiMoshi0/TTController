@@ -42,8 +42,7 @@ namespace TTController.Plugin.PwmSpeedController
 
                 var last = i == 0 ? new CurvePoint(0, current.Speed) : Config.CurvePoints[i - 1];
 
-                var span = current.Temperature - last.Temperature;
-                var t = (temperature - last.Temperature) / span;
+                var t = (temperature - last.Temperature) / (current.Temperature - last.Temperature);
                 curveTargetSpeed = (byte) Math.Round(last.Speed * (1 - t) + current.Speed * t);
 
                 break;

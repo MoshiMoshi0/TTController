@@ -56,6 +56,7 @@ namespace TTController.Service.Manager
         private void Dispose(bool disposing)
         {
             Logger.Info("Disposing TimerManager...");
+
             Logger.Info("Stopping {0} timers...", _timers.Count);
             foreach (var timer in _timers)
                 timer.Stop();

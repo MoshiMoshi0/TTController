@@ -1,12 +1,13 @@
+﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28729.10
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Service", "Source\TTController.Service\TTController.Service.csproj", "{742F8CC7-E38A-4263-AECF-E7230AC909AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Service", "Source\TTController.Service\TTController.Service.csproj", "{742F8CC7-E38A-4263-AECF-E7230AC909AB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenHardwareMonitorLib", "ThirdParty\LibreHardwareMonitor\OpenHardwareMonitorLib.csproj", "{BBC31437-DED6-4F85-B634-C4F03AD3D8B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Common", "Source\TTController.Common\TTController.Common.csproj", "{C1E69FF7-20F6-425C-B8BA-9A1116A35E52}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Common", "Source\TTController.Common\TTController.Common.csproj", "{C1E69FF7-20F6-425C-B8BA-9A1116A35E52}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HidLibrary", "ThirdParty\HidLibrary\src\HidLibrary\HidLibrary.csproj", "{9E8F1D50-74EA-4C60-BD5C-AB2C5B53BC66}"
 EndProject
@@ -18,51 +19,53 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SpeedControllers", "SpeedCo
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ThirdParty", "ThirdParty", "{87837F9D-CC3C-4C37-B7C6-F74B33BE7D69}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.StaticSpeedController", "Plugins\SpeedControllers\TTController.Plugin.StaticSpeedController\TTController.Plugin.StaticSpeedController.csproj", "{AF042821-0045-469E-91A2-E558649E140F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.StaticSpeedController", "Plugins\SpeedControllers\TTController.Plugin.StaticSpeedController\TTController.Plugin.StaticSpeedController.csproj", "{AF042821-0045-469E-91A2-E558649E140F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.PwmSpeedController", "Plugins\SpeedControllers\TTController.Plugin.PwmSpeedController\TTController.Plugin.PwmSpeedController.csproj", "{AA931D28-C5F0-46B6-A049-6DBC5DA8EB66}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.PwmSpeedController", "Plugins\SpeedControllers\TTController.Plugin.PwmSpeedController\TTController.Plugin.PwmSpeedController.csproj", "{AA931D28-C5F0-46B6-A049-6DBC5DA8EB66}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.SnakeEffect", "Plugins\Effects\TTController.Plugin.SnakeEffect\TTController.Plugin.SnakeEffect.csproj", "{823639D2-4EC8-4541-BA26-AD93576FF79B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.SnakeEffect", "Plugins\Effects\TTController.Plugin.SnakeEffect\TTController.Plugin.SnakeEffect.csproj", "{823639D2-4EC8-4541-BA26-AD93576FF79B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.TemperatureEffect", "Plugins\Effects\TTController.Plugin.TemperatureEffect\TTController.Plugin.TemperatureEffect.csproj", "{1C0448C2-4357-4734-87B3-BF4808F879B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.TemperatureEffect", "Plugins\Effects\TTController.Plugin.TemperatureEffect\TTController.Plugin.TemperatureEffect.csproj", "{1C0448C2-4357-4734-87B3-BF4808F879B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.SoundEffect", "Plugins\Effects\TTController.Plugin.SoundEffect\TTController.Plugin.SoundEffect.csproj", "{44D6DB37-3870-46C8-8835-AE2B19344D16}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.SoundEffect", "Plugins\Effects\TTController.Plugin.SoundEffect\TTController.Plugin.SoundEffect.csproj", "{44D6DB37-3870-46C8-8835-AE2B19344D16}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Triggers", "Triggers", "{B69E5A42-8845-4081-92DD-95D2D10D7B3E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.ProcessTrigger", "Plugins\Triggers\TTController.Plugin.ProcessTrigger\TTController.Plugin.ProcessTrigger.csproj", "{C617233C-518D-4647-838D-F7B8981DDCE3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.ProcessTrigger", "Plugins\Triggers\TTController.Plugin.ProcessTrigger\TTController.Plugin.ProcessTrigger.csproj", "{C617233C-518D-4647-838D-F7B8981DDCE3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.AlwaysTrigger", "Plugins\Triggers\TTController.Plugin.AlwaysTrigger\TTController.Plugin.AlwaysTrigger.csproj", "{18DE060B-89D0-4C57-9265-A232BC876C1E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.AlwaysTrigger", "Plugins\Triggers\TTController.Plugin.AlwaysTrigger\TTController.Plugin.AlwaysTrigger.csproj", "{18DE060B-89D0-4C57-9265-A232BC876C1E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.LogicTrigger", "Plugins\Triggers\TTController.Plugin.LogicTrigger\TTController.Plugin.LogicTrigger.csproj", "{727AA206-8FAA-42A0-8E1A-63464A2E24A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.LogicTrigger", "Plugins\Triggers\TTController.Plugin.LogicTrigger\TTController.Plugin.LogicTrigger.csproj", "{727AA206-8FAA-42A0-8E1A-63464A2E24A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.OneTimeTrigger", "Plugins\Triggers\TTController.Plugin.OneTimeTrigger\TTController.Plugin.OneTimeTrigger.csproj", "{FAEC09CC-E2A6-4DC8-93C8-D1DD9CFADB2C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.OneTimeTrigger", "Plugins\Triggers\TTController.Plugin.OneTimeTrigger\TTController.Plugin.OneTimeTrigger.csproj", "{FAEC09CC-E2A6-4DC8-93C8-D1DD9CFADB2C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.PulseTrigger", "Plugins\Triggers\TTController.Plugin.PulseTrigger\TTController.Plugin.PulseTrigger.csproj", "{CB3C2841-00F6-47E2-B8EF-2E70729CBD78}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.PulseTrigger", "Plugins\Triggers\TTController.Plugin.PulseTrigger\TTController.Plugin.PulseTrigger.csproj", "{CB3C2841-00F6-47E2-B8EF-2E70729CBD78}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{5046DC2B-BC51-4119-83FD-CF4BBE7F8C2E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.WaveEffect", "Plugins\Effects\TTController.Plugin.WaveEffect\TTController.Plugin.WaveEffect.csproj", "{ACCAAA07-233C-48BC-B55C-BA31620AE371}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.WaveEffect", "Plugins\Effects\TTController.Plugin.WaveEffect\TTController.Plugin.WaveEffect.csproj", "{ACCAAA07-233C-48BC-B55C-BA31620AE371}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.FullColorEffect", "Plugins\Effects\TTController.Plugin.FullColorEffect\TTController.Plugin.FullColorEffect.csproj", "{D485F979-4D51-47DA-A52B-0CA51716D16F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.FullColorEffect", "Plugins\Effects\TTController.Plugin.FullColorEffect\TTController.Plugin.FullColorEffect.csproj", "{D485F979-4D51-47DA-A52B-0CA51716D16F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.ByLedColorEffect", "Plugins\Effects\TTController.Plugin.ByLedColorEffect\TTController.Plugin.ByLedColorEffect.csproj", "{17B4553B-99EF-49E8-8270-3153B9B12E57}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.ByLedColorEffect", "Plugins\Effects\TTController.Plugin.ByLedColorEffect\TTController.Plugin.ByLedColorEffect.csproj", "{17B4553B-99EF-49E8-8270-3153B9B12E57}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.PulseEffect", "Plugins\Effects\TTController.Plugin.PulseEffect\TTController.Plugin.PulseEffect.csproj", "{46BDD270-577F-43EF-94FA-B738A0020E37}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.PulseEffect", "Plugins\Effects\TTController.Plugin.PulseEffect\TTController.Plugin.PulseEffect.csproj", "{46BDD270-577F-43EF-94FA-B738A0020E37}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.RawEffect", "Plugins\Effects\TTController.Plugin.RawEffect\TTController.Plugin.RawEffect.csproj", "{0A09C256-D963-4C6E-A5A7-600479BD80A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.RawEffect", "Plugins\Effects\TTController.Plugin.RawEffect\TTController.Plugin.RawEffect.csproj", "{0A09C256-D963-4C6E-A5A7-600479BD80A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.BlinkEffect", "Plugins\Effects\TTController.Plugin.BlinkEffect\TTController.Plugin.BlinkEffect.csproj", "{CEF4BBE4-A710-4160-B673-B0FCD3B1CCAE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.BlinkEffect", "Plugins\Effects\TTController.Plugin.BlinkEffect\TTController.Plugin.BlinkEffect.csproj", "{CEF4BBE4-A710-4160-B673-B0FCD3B1CCAE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.RippleEffect", "Plugins\Effects\TTController.Plugin.RippleEffect\TTController.Plugin.RippleEffect.csproj", "{1366E1E4-6763-4AFB-A43F-FE6213A879D5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.RippleEffect", "Plugins\Effects\TTController.Plugin.RippleEffect\TTController.Plugin.RippleEffect.csproj", "{1366E1E4-6763-4AFB-A43F-FE6213A879D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.SpectrumEffect", "Plugins\Effects\TTController.Plugin.SpectrumEffect\TTController.Plugin.SpectrumEffect.csproj", "{70EBFDDF-8791-441F-BFC3-AB6E94F9ABDD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.SpectrumEffect", "Plugins\Effects\TTController.Plugin.SpectrumEffect\TTController.Plugin.SpectrumEffect.csproj", "{70EBFDDF-8791-441F-BFC3-AB6E94F9ABDD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.FlowEffect", "Plugins\Effects\TTController.Plugin.FlowEffect\TTController.Plugin.FlowEffect.csproj", "{FD3E1660-41D2-450A-BC75-751AF1056A3A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.FlowEffect", "Plugins\Effects\TTController.Plugin.FlowEffect\TTController.Plugin.FlowEffect.csproj", "{FD3E1660-41D2-450A-BC75-751AF1056A3A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.TemperatureTrigger", "Plugins\Triggers\TTController.Plugin.TemperatureTrigger\TTController.Plugin.TemperatureTrigger.csproj", "{AFA76B8C-9411-4796-99E8-58BEE749298E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.TemperatureTrigger", "Plugins\Triggers\TTController.Plugin.TemperatureTrigger\TTController.Plugin.TemperatureTrigger.csproj", "{AFA76B8C-9411-4796-99E8-58BEE749298E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.CopySpeedController", "Plugins\SpeedControllers\TTController.Plugin.CopySpeedController\TTController.Plugin.CopySpeedController.csproj", "{E07EBB0D-B2BB-4F00-BD67-233B330987A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.CopySpeedController", "Plugins\SpeedControllers\TTController.Plugin.CopySpeedController\TTController.Plugin.CopySpeedController.csproj", "{E07EBB0D-B2BB-4F00-BD67-233B330987A1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Build", "Build\Build.csproj", "{284FB758-3E94-40CC-BE97-E6DEDB8AF1AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -170,6 +173,8 @@ Global
 		{E07EBB0D-B2BB-4F00-BD67-233B330987A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E07EBB0D-B2BB-4F00-BD67-233B330987A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E07EBB0D-B2BB-4F00-BD67-233B330987A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{284FB758-3E94-40CC-BE97-E6DEDB8AF1AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{284FB758-3E94-40CC-BE97-E6DEDB8AF1AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

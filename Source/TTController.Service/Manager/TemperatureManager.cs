@@ -110,6 +110,7 @@ namespace TTController.Service.Manager
         private void Dispose(bool disposing)
         {
             Logger.Info("Disposing TemperatureManager...");
+
             _providerMap.Clear();
             _hardware.Clear();
             _sensors.Clear();

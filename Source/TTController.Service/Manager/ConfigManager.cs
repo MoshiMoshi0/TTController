@@ -132,6 +132,7 @@ namespace TTController.Service.Manager
         private void Dispose(bool disposing)
         {
             Logger.Info("Disposing ConfigManager...");
+
             CurrentConfig = null;
         }
     }
