@@ -24,6 +24,7 @@
     <NukeMetadata Include="**\*.json" Exclude="bin\**;obj\**" />
     <NukeExternalFiles Include="**\*.*.ext" Exclude="bin\**;obj\**" />
     <None Remove="*.csproj.DotSettings;*.ref.*.txt" />
+    <None Remove="artifacts\*" />
     <!-- Common build related files -->
     <None Include="..\build.ps1" />
     <None Include="..\build.sh" />
