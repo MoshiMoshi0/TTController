@@ -394,4 +394,4 @@ The source code also provides an easy way to write your own **speed controller**
 
 # Credits
 
-Logo based on icon by Freepik from [flaticon](www.flaticon.com)
+Logo based on icon by Freepik from [flaticon](https://flaticon.com)
