@@ -1,3 +1,5 @@
+<p align="center"><img src="Assets\logo-512.png" alt="logo" width="192"/></p>
+
 This is home to TTController, a windows service for controlling various Thermaltake RGB Plus devices. 
 
 It allows you to fully customize them by using **speed controllers**, which control the speed, and  **effects**, which control the led color. Each can be enabled or disabled dynamically by using various **triggers**.
@@ -389,3 +391,7 @@ The source code also provides an easy way to write your own **speed controller**
   }
 }
 ```
+
+# Credits
+
+Logo based on icon by Freepik from flaticon.com
