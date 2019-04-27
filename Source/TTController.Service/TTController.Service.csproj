@@ -10,6 +10,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <ApplicationIcon>../../Assets/logo.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
