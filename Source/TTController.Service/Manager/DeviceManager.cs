@@ -34,6 +34,7 @@ namespace TTController.Service.Manager
             var controllers = new List<IControllerProxy>();
             foreach (var definition in definitions)
             {
+                Logger.Debug("Searching for \"{0}\" controllers", definition.Name);
                 var detectedDevices = HidDevices.Enumerate(definition.VendorId, definition.ProductIds.ToArray());
                 foreach (var device in detectedDevices)
                 {
@@ -41,7 +42,7 @@ namespace TTController.Service.Manager
                     if(!controller.Init())
                         continue;
 
-                    Logger.Info("Detected controller: {0} [{1}, {2}]", definition.Name, device.Attributes.VendorHexId, device.Attributes.ProductHexId);
+                    Logger.Info("Found \"{0}\" controller [{1}, {2}]", definition.Name, device.Attributes.VendorHexId, device.Attributes.ProductHexId);
 
                     devices.Add(device);
                     controllers.Add(controller);
