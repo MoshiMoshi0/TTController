@@ -30,7 +30,7 @@ namespace TTController.Service.Hardware
 
             Logger.Trace("W[{vid}, {pid}] {data}", _device.Attributes.VendorId, _device.Attributes.ProductId, data);
 
-            return _device.Write(data);
+            return _device.Write(data, 1000);
         }
 
         public bool WriteBytes(IEnumerable<byte> bytes) =>
@@ -38,9 +38,11 @@ namespace TTController.Service.Hardware
 
         public byte[] ReadBytes()
         {
-            var data = _device.Read();
-            if (data.Status != HidDeviceData.ReadStatus.Success)
+            var data = _device.Read(1000);
+            if (data.Status != HidDeviceData.ReadStatus.Success) {
+                Logger.Warn("Read from [{0}, {1}] failed with status \"{2}\"!", _device.Attributes.VendorId, _device.Attributes.ProductId, data.Status);
                 return null;
+            }
 
             Logger.Trace("R[{vid}, {pid}] {data}", _device.Attributes.VendorId, _device.Attributes.ProductId, data.Data);
 
