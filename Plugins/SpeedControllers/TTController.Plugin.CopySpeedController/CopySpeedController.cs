@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using TTController.Common;
+using TTController.Common.Plugin;
 
 namespace TTController.Plugin.CopySpeedController
 {

@@ -1,9 +1,6 @@
 ﻿using System.Collections.Generic;
-using TTController.Common;
-using TTController.Service.Controller.Definition;
-using TTController.Service.Hardware;
 
-namespace TTController.Service.Controller.Proxy
+namespace TTController.Common.Plugin
 {
     public abstract class AbstractControllerProxy : IControllerProxy
     {

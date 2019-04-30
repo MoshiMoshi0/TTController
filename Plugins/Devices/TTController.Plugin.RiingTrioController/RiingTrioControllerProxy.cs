@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using TTController.Common;
-using TTController.Service.Controller.Definition;
-using TTController.Service.Hardware;
+using TTController.Common.Plugin;
 
-namespace TTController.Service.Controller.Proxy
+namespace TTController.Plugin.RiingTrioController
 {
     public class RiingTrioControllerProxy : DefaultControllerProxy
     {

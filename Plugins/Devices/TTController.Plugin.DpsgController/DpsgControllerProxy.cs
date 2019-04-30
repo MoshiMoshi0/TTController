@@ -2,10 +2,9 @@
 using System.Linq;
 using System.Text;
 using TTController.Common;
-using TTController.Service.Controller.Definition;
-using TTController.Service.Hardware;
+using TTController.Common.Plugin;
 
-namespace TTController.Service.Controller.Proxy
+namespace TTController.Plugin.DpsgController
 {
     public class DpsgControllerProxy : AbstractControllerProxy
     {

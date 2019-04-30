@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using TTController.Service.Controller.Proxy;
+using TTController.Common.Plugin;
 
-namespace TTController.Service.Controller.Definition
+namespace TTController.Plugin.DpsgController
 {
     public class DpsgControllerDefinition : IControllerDefinition
     {

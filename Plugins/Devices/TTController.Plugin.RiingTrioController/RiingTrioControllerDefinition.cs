@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using TTController.Service.Controller.Proxy;
+using TTController.Common.Plugin;
 
-namespace TTController.Service.Controller.Definition
+namespace TTController.Plugin.RiingTrioController
 {
     public class RiingTrioControllerDefinition : IControllerDefinition
     {

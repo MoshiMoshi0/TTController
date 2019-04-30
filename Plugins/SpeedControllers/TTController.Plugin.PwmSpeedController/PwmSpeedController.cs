@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using OpenHardwareMonitor.Hardware;
 using TTController.Common;
+using TTController.Common.Plugin;
 
 namespace TTController.Plugin.PwmSpeedController
 {

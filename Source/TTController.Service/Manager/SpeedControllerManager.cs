@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
-using TTController.Common;
+using TTController.Common.Plugin;
 
 namespace TTController.Service.Manager
 {

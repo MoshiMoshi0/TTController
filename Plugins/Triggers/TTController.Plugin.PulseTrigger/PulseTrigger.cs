@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using TTController.Common;
+using TTController.Common.Plugin;
 
 namespace TTController.Plugin.PulseTrigger
 {

@@ -1,11 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using TTController.Common;
-using TTController.Service.Controller.Definition;
-using TTController.Service.Hardware;
-using TTController.Service.Utils;
 
-namespace TTController.Service.Controller.Proxy
+namespace TTController.Common.Plugin
 {
     public class DefaultControllerProxy : AbstractControllerProxy
     {
@@ -33,9 +29,9 @@ namespace TTController.Service.Controller.Proxy
             };
 
             var result = new Dictionary<string, byte>();
-            foreach (var (e, eb) in effectModes)
-            foreach (var (s, sb) in effectSpeeds)
-                result.Add($"{e}_{s}", (byte)(eb + sb));
+            foreach (var mkv in effectModes)
+                foreach (var skv in effectSpeeds)
+                    result.Add($"{mkv.Key}_{skv.Key}", (byte)(mkv.Value + skv.Value));
 
             result.Add("ByLed", 0x18);
             result.Add("Full", 0x19);
@@ -44,7 +40,7 @@ namespace TTController.Service.Controller.Proxy
         }
 
         public override IEnumerable<PortIdentifier> Ports => Enumerable.Range(1, Definition.PortCount)
-            .Select(x => new PortIdentifier(Device.VendorId, Device.ProductId, (byte) x));
+            .Select(x => new PortIdentifier(Device.VendorId, Device.ProductId, (byte)x));
 
         public override IEnumerable<string> EffectTypes => _availableEffects.Keys;
 
@@ -61,7 +57,7 @@ namespace TTController.Service.Controller.Proxy
             return Device.WriteReadBytes(bytes)?[3] == 0xfc;
         }
 
-        public override bool SetSpeed(byte port, byte speed) => 
+        public override bool SetSpeed(byte port, byte speed) =>
             Device.WriteReadBytes(0x32, 0x51, port, 0x01, speed)?[3] == 0xfc;
 
         public override PortData GetPortData(byte port)
@@ -85,7 +81,7 @@ namespace TTController.Service.Controller.Proxy
         {
             if (effectType == null)
                 return null;
-            return _availableEffects.TryGetValue(effectType, out var value) ? value : (byte?) null;
+            return _availableEffects.TryGetValue(effectType, out var value) ? value : (byte?)null;
         }
 
         public override void SaveProfile() =>
