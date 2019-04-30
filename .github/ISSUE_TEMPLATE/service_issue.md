@@ -2,7 +2,7 @@
 name: Service issue
 about: Crash or problem with the service
 title: ''
-labels: issue
+labels: ":frowning: issue"
 assignees: MoshiMoshi0
 
 ---
