@@ -2,7 +2,7 @@
 name: Configuration help
 about: Ask for help with your configuration
 title: Configuration Help
-labels: ":gear: configuration"
+labels: ''
 assignees: MoshiMoshi0
 
 ---
