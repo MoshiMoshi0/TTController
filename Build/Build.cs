@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -37,6 +38,24 @@ class Build : NukeBuild
     AbsolutePath ArtifactsDirectory => RootDirectory / "Build" / "artifacts";
 
     AbsolutePath ServiceBinPath => SourceDirectory / "TTController.Service" / "bin" / Configuration;
+
+    protected override void OnBuildFinished()
+    {
+        if (string.Compare(InvokedTargets.Last().Name, "Run", true) != 0)
+            return;
+
+        Console.Out.Flush();
+        Console.Clear();
+
+        var process = Process.Start(new ProcessStartInfo()
+        {
+            FileName = ServiceBinPath / "TTController.Service.exe",
+            WorkingDirectory = ServiceBinPath,
+            UseShellExecute = false
+        });
+
+        process.WaitForExit();
+    }
 
     Target Clean => _ => _
         .Before(Restore)
@@ -93,15 +112,7 @@ class Build : NukeBuild
         });
 
     Target Run => _ => _
-        .DependsOn(Compile)
-        .Executes(() =>
-        {
-            Process.Start(new ProcessStartInfo()
-            {
-                FileName = ServiceBinPath / "TTController.Service.exe",
-                UseShellExecute = true
-            });
-        });
+        .DependsOn(Compile);
 
     Target Pack => _ => _
         .DependsOn(Clean)

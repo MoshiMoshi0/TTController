@@ -49,7 +49,7 @@ namespace TTController.Plugin.RippleEffect
                 for (var i = 0; i < length; i++)
                 {
                     var idx = Wrap(_rotation - i, config.LedCount);
-                    colors[idx] = LedColor.FromHsv(hue, saturation, value - (double)i / length);
+                    colors[idx] = LedColor.FromHsv(hue, saturation, value * (length - i) / length);
                 }
 
                 result.Add(port, colors);

@@ -34,14 +34,28 @@ namespace TTController.Service.Manager
             var controllers = new List<IControllerProxy>();
             foreach (var definition in definitions)
             {
+                Logger.Debug("Searching for \"{0}\" controllers", definition.Name);
                 var detectedDevices = HidDevices.Enumerate(definition.VendorId, definition.ProductIds.ToArray());
+                var detectedCount = detectedDevices.Count();
+
+                if (detectedCount == 0)
+                    continue;
+
+                if(detectedCount == 1)
+                    Logger.Trace("Found 1 controller [{vid}, {pid}]", definition.VendorId, detectedDevices.Select(d => d.Attributes.ProductId).First());
+                else
+                    Logger.Trace("Found {count} controllers [{vid}, [{pids}]]", detectedCount, definition.VendorId, detectedDevices.Select(d => d.Attributes.ProductId));
+
                 foreach (var device in detectedDevices)
                 {
                     var controller = (IControllerProxy) Activator.CreateInstance(definition.ControllerProxyType, new HidDeviceProxy(device), definition);
-                    if(!controller.Init())
+                    if (!controller.Init())
+                    {
+                        Logger.Warn("Failed to initialize \"{0}\" controller! [{1}, {2}]", definition.Name, device.Attributes.VendorHexId, device.Attributes.ProductHexId);
                         continue;
+                    }
 
-                    Logger.Info("Detected controller: {0} [{1}, {2}]", definition.Name, device.Attributes.VendorHexId, device.Attributes.ProductHexId);
+                    Logger.Info("Initialized \"{0}\" controller [{1}, {2}]", definition.Name, device.Attributes.VendorHexId, device.Attributes.ProductHexId);
 
                     devices.Add(device);
                     controllers.Add(controller);
