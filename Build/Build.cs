@@ -20,14 +20,10 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 [UnsetVisualStudioEnvironmentVariables]
 class Build : NukeBuild
 {
-    public static int Main() => Execute<Build>(x => x.Run);
+    public static int Main() => Execute<Build>(x => x.Compile);
 
     [Parameter("Configuration to build")]
-#if DEBUG
     readonly Configuration Configuration = Configuration.Debug;
-#elif RELEASE
-    readonly Configuration Configuration = Configuration.Release;
-#endif
 
     [Solution] readonly Solution Solution;
     [GitVersion] readonly GitVersion GitVersion;
@@ -38,24 +34,6 @@ class Build : NukeBuild
     AbsolutePath ArtifactsDirectory => RootDirectory / "Build" / "artifacts";
 
     AbsolutePath ServiceBinPath => SourceDirectory / "TTController.Service" / "bin" / Configuration;
-
-    protected override void OnBuildFinished()
-    {
-        if (string.Compare(InvokedTargets.Last().Name, "Run", true) != 0)
-            return;
-
-        Console.Out.Flush();
-        Console.Clear();
-
-        var process = Process.Start(new ProcessStartInfo()
-        {
-            FileName = ServiceBinPath / "TTController.Service.exe",
-            WorkingDirectory = ServiceBinPath,
-            UseShellExecute = false
-        });
-
-        process.WaitForExit();
-    }
 
     Target Clean => _ => _
         .Before(Restore)
@@ -97,7 +75,7 @@ class Build : NukeBuild
                 .EnableNoRestore());
 
             // Copy plugin files to service bin path      
-            var fileBlacklist = new [] { "TTController.Common", "OpenHardwareMonitorLib", "HidLibrary", "Newtonsoft.Json" };
+            var fileBlacklist = new[] { "TTController.Common", "OpenHardwareMonitorLib", "HidLibrary", "Newtonsoft.Json" };
             var extensionWhitelist = Configuration == Configuration.Debug ? new[] { ".pdb", ".dll" } : new[] { ".dll" };
             Solution.GetProjects("TTController.Plugin.*")
                 .ForEach(p =>
@@ -111,9 +89,6 @@ class Build : NukeBuild
                 });
         });
 
-    Target Run => _ => _
-        .DependsOn(Compile);
-
     Target Pack => _ => _
         .DependsOn(Clean)
         .DependsOn(Compile)
@@ -126,7 +101,7 @@ class Build : NukeBuild
             if (Configuration != Configuration.Debug)
                 files = files.Where(f => Path.GetExtension(f) != ".pdb");
 
-            ZipFiles(ArtifactsDirectory / $"TTController_{GitVersion.SemVer}.{GitVersion.Sha}.zip", ServiceBinPath, files);
+            ZipFiles(ArtifactsDirectory / $"TTController_{GitVersion.AssemblySemVer}{GitVersion.PreReleaseTagWithDash}.{GitVersion.Sha}.zip", ServiceBinPath, files);
         });
 
     private static void ZipFiles(string outFile, string workingDirectory, IEnumerable<string> files)
