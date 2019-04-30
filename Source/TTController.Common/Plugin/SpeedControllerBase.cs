@@ -4,29 +4,28 @@ using System.ComponentModel;
 using System.Linq;
 using OpenHardwareMonitor.Hardware;
 
-namespace TTController.Common
+namespace TTController.Common.Plugin
 {
-    public interface IEffectBase : IDisposable
+    public interface ISpeedControllerBase : IDisposable
     {
         bool IsEnabled(ICacheProvider cache);
-        string EffectType { get; }
         IEnumerable<Identifier> UsedSensors { get; }
-        IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache);
+        IDictionary<PortIdentifier, byte> GenerateSpeeds(List<PortIdentifier> ports, ICacheProvider cache);
     }
 
-    public abstract class EffectConfigBase
+    public abstract class SpeedControllerConfigBase
     {
         [DefaultValue(null)] public ITriggerBase Trigger { get; private set; } = null;
     }
 
-    public abstract class EffectBase<T> : IEffectBase where T : EffectConfigBase
+    public abstract class SpeedControllerBase<T> : ISpeedControllerBase where T : SpeedControllerConfigBase
     {
         protected T Config { get; private set; }
         public IEnumerable<Identifier> UsedSensors { get; private set; }
 
-        protected EffectBase(T config) : this(config, Enumerable.Empty<Identifier>()) { }
+        protected SpeedControllerBase(T config) : this(config, Enumerable.Empty<Identifier>()) { }
 
-        protected EffectBase(T config, IEnumerable<Identifier> usedSensors)
+        protected SpeedControllerBase(T config, IEnumerable<Identifier> usedSensors)
         {
             Config = config;
             UsedSensors = usedSensors
@@ -48,7 +47,6 @@ namespace TTController.Common
             UsedSensors = null;
         }
 
-        public abstract string EffectType { get; }
-        public abstract IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache);
+        public abstract IDictionary<PortIdentifier, byte> GenerateSpeeds(List<PortIdentifier> ports, ICacheProvider cache);
     }
 }

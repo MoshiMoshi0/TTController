@@ -5,6 +5,7 @@ using CSCore.DSP;
 using CSCore.SoundIn;
 using CSCore.Streams;
 using TTController.Common;
+using TTController.Common.Plugin;
 
 namespace TTController.Plugin.SoundEffect
 {

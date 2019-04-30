@@ -67,6 +67,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.CopySpe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Build", "Build\Build.csproj", "{284FB758-3E94-40CC-BE97-E6DEDB8AF1AD}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Devices", "Devices", "{72415EA8-F57C-4F2C-9B6C-167BF94FE3F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.DpsgController", "Plugins\Devices\TTController.Plugin.DpsgController\TTController.Plugin.DpsgController.csproj", "{D9553FBE-692D-4505-BD66-71DE9CA2B960}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.RiingController", "Plugins\Devices\TTController.Plugin.RiingController\TTController.Plugin.RiingController.csproj", "{9ABDFE2B-CFA6-45D4-8817-FA82F4465900}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.RiingPlusController", "Plugins\Devices\TTController.Plugin.RiingPlusController\TTController.Plugin.RiingPlusController.csproj", "{32B9B719-9813-4455-84EA-727560087B09}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.RiingTrioController", "Plugins\Devices\TTController.Plugin.RiingTrioController\TTController.Plugin.RiingTrioController.csproj", "{E64CE11A-6107-45AB-97E9-23B2AB546F1F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -175,6 +185,22 @@ Global
 		{E07EBB0D-B2BB-4F00-BD67-233B330987A1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{284FB758-3E94-40CC-BE97-E6DEDB8AF1AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{284FB758-3E94-40CC-BE97-E6DEDB8AF1AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9553FBE-692D-4505-BD66-71DE9CA2B960}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9553FBE-692D-4505-BD66-71DE9CA2B960}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9553FBE-692D-4505-BD66-71DE9CA2B960}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9553FBE-692D-4505-BD66-71DE9CA2B960}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9ABDFE2B-CFA6-45D4-8817-FA82F4465900}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9ABDFE2B-CFA6-45D4-8817-FA82F4465900}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9ABDFE2B-CFA6-45D4-8817-FA82F4465900}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9ABDFE2B-CFA6-45D4-8817-FA82F4465900}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32B9B719-9813-4455-84EA-727560087B09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32B9B719-9813-4455-84EA-727560087B09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32B9B719-9813-4455-84EA-727560087B09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32B9B719-9813-4455-84EA-727560087B09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E64CE11A-6107-45AB-97E9-23B2AB546F1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E64CE11A-6107-45AB-97E9-23B2AB546F1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E64CE11A-6107-45AB-97E9-23B2AB546F1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E64CE11A-6107-45AB-97E9-23B2AB546F1F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -208,6 +234,11 @@ Global
 		{FD3E1660-41D2-450A-BC75-751AF1056A3A} = {521264D1-73FB-44B3-8243-CB3C95AFB179}
 		{AFA76B8C-9411-4796-99E8-58BEE749298E} = {B69E5A42-8845-4081-92DD-95D2D10D7B3E}
 		{E07EBB0D-B2BB-4F00-BD67-233B330987A1} = {1C64E62C-0758-423A-B436-275C2DCAC3F6}
+		{72415EA8-F57C-4F2C-9B6C-167BF94FE3F8} = {A3A67BA6-9598-40EC-A5B5-9526A0592772}
+		{D9553FBE-692D-4505-BD66-71DE9CA2B960} = {72415EA8-F57C-4F2C-9B6C-167BF94FE3F8}
+		{9ABDFE2B-CFA6-45D4-8817-FA82F4465900} = {72415EA8-F57C-4F2C-9B6C-167BF94FE3F8}
+		{32B9B719-9813-4455-84EA-727560087B09} = {72415EA8-F57C-4F2C-9B6C-167BF94FE3F8}
+		{E64CE11A-6107-45AB-97E9-23B2AB546F1F} = {72415EA8-F57C-4F2C-9B6C-167BF94FE3F8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9B8A6C39-77D8-476B-B89B-C39D2AF3D3B9}

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using TTController.Common;
 
-namespace TTController.Service.Controller.Proxy
+namespace TTController.Common.Plugin
 {
     public interface IControllerProxy
     {

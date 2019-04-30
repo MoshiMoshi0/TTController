@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace TTController.Service.Hardware
+namespace TTController.Common
 {
     public interface IHidDeviceProxy
     {
