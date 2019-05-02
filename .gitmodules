@@ -1,7 +1,8 @@
-[submodule "LibreHardwareMonitor"]
-	path = ThirdParty/LibreHardwareMonitor
-	url = https://github.com/LibreHardwareMonitor/LibreHardwareMonitor.git
 [submodule "HidLibrary"]
 	path = ThirdParty/HidLibrary
-	url = https://github.com/OpenMacroBoard/HidLibrary.git
-	branch = hid-for-streamdeck
+	url = https://github.com/MoshiMoshi0/HidLibrary.git
+	branch = develop
+[submodule "LibreHardwareMonitor"]
+	path = ThirdParty/LibreHardwareMonitor
+	url = https://github.com/MoshiMoshi0/LibreHardwareMonitor.git
+	branch = develop
