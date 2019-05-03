@@ -359,11 +359,11 @@ The source code also provides an easy way to write your own **speed controller**
 ### Port Config
 ```json
 {
-  "Port identifier that this config applies to"
-  "Key": "<PortIdentifier>",
+  "List of port identifiers that this config applies to"
+  "Ports": ["<PortIdentifier>"],
 
   "Port config"
-  "Value": {
+  "Config": {
     "Port name"
     "Name": "<string>",
 
