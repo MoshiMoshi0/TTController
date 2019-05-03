@@ -9,7 +9,7 @@ namespace TTController.Service.Config.Data
     {
         public List<ProfileData> Profiles { get; private set; } = new List<ProfileData>();
         public List<ComputerStateProfileData> ComputerStateProfiles { get; private set; } = new List<ComputerStateProfileData>();
-        public IDictionary<PortIdentifier, PortConfig> PortConfig { get; private set; } = new Dictionary<PortIdentifier, PortConfig>();
+        public Dictionary<List<PortIdentifier>, PortConfig> PortConfigs { get; private set; } = new Dictionary<List<PortIdentifier>, PortConfig>();
         public IDictionary<Identifier, int> CriticalTemperature { get; private set; } = new Dictionary<Identifier, int>();
 
         [DefaultValue(250)] public int TemperatureTimerInterval { get; private set; } = 250;
