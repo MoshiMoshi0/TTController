@@ -21,6 +21,13 @@ namespace TTController.Common
             _points = points.OrderBy(p => p.Location).ToList();
         }
 
+        public LedColorGradient(IEnumerable<LedColor> colors, double locationScale = 1.0) : this()
+        {
+            var colorList = colors.ToList();
+            for (var i = 0; i < colorList.Count; i++)
+                _points.Add(new LedColorGradientPoint(locationScale * i / (colorList.Count - 1), colorList[i]));
+        }
+
         public LedColor GetColor(double location)
         {
             var (r, g, b) = ColorAtDeconstruct(location);
