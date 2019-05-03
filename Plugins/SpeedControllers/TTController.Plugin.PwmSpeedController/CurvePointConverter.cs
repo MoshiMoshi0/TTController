@@ -8,7 +8,7 @@ namespace TTController.Plugin.PwmSpeedController
     {
         public override void WriteJson(JsonWriter writer, CurvePoint value, JsonSerializer serializer)
         {
-            var array = new JArray {value.Temperature, value.Speed};
+            var array = new JArray {value.Value, value.Speed};
             writer.WriteRawValue(JsonConvert.SerializeObject(array, Formatting.None));
         }
 

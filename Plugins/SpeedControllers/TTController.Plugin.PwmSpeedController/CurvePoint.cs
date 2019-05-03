@@ -2,15 +2,15 @@
 {
     public struct CurvePoint
     {
-        public int Temperature { get; }
+        public int Value { get; }
         public int Speed { get; }
 
-        public CurvePoint(int temperature, int speed)
+        public CurvePoint(int value, int speed)
         {
-            Temperature = temperature;
+            Value = value;
             Speed = speed;
         }
 
-        public override string ToString() => $"[{Temperature}°C, {Speed}%]";
+        public override string ToString() => $"[{Value}°C, {Speed}%]";
     }
 }
