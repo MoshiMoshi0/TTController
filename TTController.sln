@@ -69,13 +69,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Build", "Build\Build.csproj
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Devices", "Devices", "{72415EA8-F57C-4F2C-9B6C-167BF94FE3F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.DpsgController", "Plugins\Devices\TTController.Plugin.DpsgController\TTController.Plugin.DpsgController.csproj", "{D9553FBE-692D-4505-BD66-71DE9CA2B960}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.DpsgController", "Plugins\Devices\TTController.Plugin.DpsgController\TTController.Plugin.DpsgController.csproj", "{D9553FBE-692D-4505-BD66-71DE9CA2B960}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.RiingController", "Plugins\Devices\TTController.Plugin.RiingController\TTController.Plugin.RiingController.csproj", "{9ABDFE2B-CFA6-45D4-8817-FA82F4465900}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.RiingController", "Plugins\Devices\TTController.Plugin.RiingController\TTController.Plugin.RiingController.csproj", "{9ABDFE2B-CFA6-45D4-8817-FA82F4465900}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.RiingPlusController", "Plugins\Devices\TTController.Plugin.RiingPlusController\TTController.Plugin.RiingPlusController.csproj", "{32B9B719-9813-4455-84EA-727560087B09}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.RiingPlusController", "Plugins\Devices\TTController.Plugin.RiingPlusController\TTController.Plugin.RiingPlusController.csproj", "{32B9B719-9813-4455-84EA-727560087B09}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.RiingTrioController", "Plugins\Devices\TTController.Plugin.RiingTrioController\TTController.Plugin.RiingTrioController.csproj", "{E64CE11A-6107-45AB-97E9-23B2AB546F1F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.RiingTrioController", "Plugins\Devices\TTController.Plugin.RiingTrioController\TTController.Plugin.RiingTrioController.csproj", "{E64CE11A-6107-45AB-97E9-23B2AB546F1F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
