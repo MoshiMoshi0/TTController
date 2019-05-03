@@ -12,7 +12,7 @@ namespace TTController.Service.Utils
 
     public interface ICacheCollector
     {
-        void StoreTemperature(Identifier sensor, float temperature);
+        void StoreSensorValue(Identifier sensor, float value);
         void StorePortData(PortIdentifier port, PortData data);
         void StorePortConfig(PortIdentifier port, PortConfig config);
     }
@@ -25,7 +25,7 @@ namespace TTController.Service.Utils
         private readonly CacheCollectorProxy _collectorProxy;
         private readonly ConcurrentDictionary<PortIdentifier, PortData> _portDataCache;
         private readonly ConcurrentDictionary<PortIdentifier, PortConfig> _portConfigCache;
-        private readonly ConcurrentDictionary<Identifier, float> _temperatureCache;
+        private readonly ConcurrentDictionary<Identifier, float> _sensorValueCache;
 
         public DataCache()
         {
@@ -36,14 +36,14 @@ namespace TTController.Service.Utils
 
             _portDataCache = new ConcurrentDictionary<PortIdentifier, PortData>();
             _portConfigCache = new ConcurrentDictionary<PortIdentifier, PortConfig>();
-            _temperatureCache = new ConcurrentDictionary<Identifier, float>();
+            _sensorValueCache = new ConcurrentDictionary<Identifier, float>();
         }
 
         public ICacheProvider AsReadOnly() => _providerProxy;
         public ICacheCollector AsWriteOnly() => _collectorProxy;
 
-        public float GetTemperature(Identifier sensor) => _temperatureCache.TryGetValue(sensor, out var temperature) ? temperature : float.NaN;
-        public void StoreTemperature(Identifier sensor, float temperature) => _temperatureCache[sensor] = temperature;
+        public float GetSensorValue(Identifier sensor) => _sensorValueCache.TryGetValue(sensor, out var value) ? value : float.NaN;
+        public void StoreSensorValue(Identifier sensor, float value) => _sensorValueCache[sensor] = value;
 
         public PortData GetPortData(PortIdentifier port) => _portDataCache.TryGetValue(port, out var data) ? data : null;
         public void StorePortData(PortIdentifier port, PortData data) => _portDataCache[port] = data;
@@ -55,7 +55,7 @@ namespace TTController.Service.Utils
         {
             _portDataCache.Clear();
             _portConfigCache.Clear();
-            _temperatureCache.Clear();
+            _sensorValueCache.Clear();
         }
 
         #region Proxy
@@ -68,7 +68,7 @@ namespace TTController.Service.Utils
                 _provider = provider;
             }
 
-            public float GetTemperature(Identifier sensor) => _provider.GetTemperature(sensor);
+            public float GetSensorValue(Identifier sensor) => _provider.GetSensorValue(sensor);
             public PortData GetPortData(PortIdentifier port) => _provider.GetPortData(port);
             public PortConfig GetPortConfig(PortIdentifier port) => _provider.GetPortConfig(port);
         }
@@ -82,7 +82,7 @@ namespace TTController.Service.Utils
                 _collector = collector;
             }
 
-            public void StoreTemperature(Identifier sensor, float temperature) => _collector.StoreTemperature(sensor, temperature);
+            public void StoreSensorValue(Identifier sensor, float value) => _collector.StoreSensorValue(sensor, value);
             public void StorePortData(PortIdentifier port, PortData data) => _collector.StorePortData(port, data);
             public void StorePortConfig(PortIdentifier port, PortConfig config) => _collector.StorePortConfig(port, config);
         }

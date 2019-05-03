@@ -27,7 +27,7 @@ namespace TTController.Plugin.TemperatureTrigger
 
         public override bool Value(ICacheProvider cache)
         {
-            var temperatures = Config.Sensors.Select(cache.GetTemperature);
+            var temperatures = Config.Sensors.Select(cache.GetSensorValue);
             var temperature = float.NaN;
             if (Config.SensorMixFunction == SensorMixFunction.Average)
                 temperature = temperatures.Average();

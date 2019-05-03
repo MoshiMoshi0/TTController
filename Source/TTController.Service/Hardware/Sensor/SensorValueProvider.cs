@@ -1,13 +1,13 @@
 ﻿using OpenHardwareMonitor.Hardware;
 
-namespace TTController.Service.Hardware.Temperature
+namespace TTController.Service.Hardware.Sensor
 {
-    public class TemperatureProvider : ITemperatureProvider
+    public class SensorValueProvider : ISensorValueProvider
     {
         protected float? CurrentValue { set; get; }
         protected ISensor Sensor { get; }
 
-        public TemperatureProvider(ISensor sensor)
+        public SensorValueProvider(ISensor sensor)
         {
             Sensor = sensor;
         }

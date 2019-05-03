@@ -7,7 +7,7 @@ using System.ServiceProcess;
 using NLog;
 using TTController.Common;
 using TTController.Service.Config.Data;
-using TTController.Service.Hardware.Temperature;
+using TTController.Service.Hardware.Sensor;
 using TTController.Service.Manager;
 using TTController.Service.Utils;
 
@@ -20,7 +20,6 @@ namespace TTController.Service
         private DeviceManager _deviceManager;
         private ConfigManager _configManager;
         private SensorManager _sensorManager;
-        private TemperatureManager _temperatureManager;
         private TimerManager _timerManager;
         private EffectManager _effectManager;
         private SpeedControllerManager _speedControllerManager;
@@ -63,11 +62,10 @@ namespace TTController.Service
                 return false;
 
             _cache = new DataCache();
-            _sensorManager = new SensorManager();
 
-            var alpha = Math.Exp(-_configManager.CurrentConfig.TemperatureTimerInterval / (double)_configManager.CurrentConfig.DeviceSpeedTimerInterval);
-            var providerFactory = new MovingAverageTemperatureProviderFactory(alpha);
-            _temperatureManager = new TemperatureManager(_sensorManager.TemperatureSensors.ToList(), providerFactory);
+            var alpha = Math.Exp(-_configManager.CurrentConfig.SensorTimerInterval / (double)_configManager.CurrentConfig.DeviceSpeedTimerInterval);
+            var providerFactory = new MovingAverageSensorValueProviderFactory(alpha);
+            _sensorManager = new SensorManager(providerFactory);
 
             _effectManager = new EffectManager();
             _speedControllerManager = new SpeedControllerManager();
@@ -84,14 +82,15 @@ namespace TTController.Service
                 foreach (var speedController in profile.SpeedControllers)
                     _speedControllerManager.Add(profile.Guid, speedController);
 
-                _temperatureManager.EnableSensors(_speedControllerManager.GetSpeedControllers(profile.Guid)?.SelectMany(c => c.UsedSensors));
-                _temperatureManager.EnableSensors(_effectManager.GetEffects(profile.Guid)?.SelectMany(e => e.UsedSensors));
+                _sensorManager.EnableSensors(_speedControllerManager.GetSpeedControllers(profile.Guid)?.SelectMany(c => c.UsedSensors));
+                _sensorManager.EnableSensors(_effectManager.GetEffects(profile.Guid)?.SelectMany(e => e.UsedSensors));
             }
+            _sensorManager.EnableSensors(_configManager.CurrentConfig.CriticalTemperature.Keys);
 
             ApplyComputerStateProfile(ComputerStateType.Boot);
 
             _timerManager = new TimerManager();
-            _timerManager.RegisterTimer(_configManager.CurrentConfig.TemperatureTimerInterval, TemperatureTimerCallback);
+            _timerManager.RegisterTimer(_configManager.CurrentConfig.SensorTimerInterval, SensorTimerCallback);
             _timerManager.RegisterTimer(_configManager.CurrentConfig.DeviceSpeedTimerInterval, DeviceSpeedTimerCallback);
             _timerManager.RegisterTimer(_configManager.CurrentConfig.DeviceRgbTimerInterval, DeviceRgbTimerCallback);
             if(LogManager.Configuration.LoggingRules.Any(r => r.IsLoggingEnabledForLevel(LogLevel.Debug)))
@@ -183,7 +182,6 @@ namespace TTController.Service
             if(_deviceManager != null)
                 ApplyComputerStateProfile(state);
 
-            _temperatureManager?.Dispose();
             _sensorManager?.Dispose();
             _deviceManager?.Dispose();
             _effectManager?.Dispose();
@@ -193,7 +191,6 @@ namespace TTController.Service
 
             _timerManager = null;
             _deviceManager = null;
-            _temperatureManager = null;
             _sensorManager = null;
             _deviceManager = null;
             _effectManager = null;
@@ -245,17 +242,17 @@ namespace TTController.Service
         }
 
         #region Timer Callbacks
-        private bool TemperatureTimerCallback()
+        private bool SensorTimerCallback()
         {
-            _temperatureManager.Update();
-            _temperatureManager.Accept(_cache.AsWriteOnly());
+            _sensorManager.Update();
+            _sensorManager.Accept(_cache.AsWriteOnly());
             return true;
         }
 
         private bool DeviceSpeedTimerCallback()
         {
             var isCriticalTemperature = _configManager.CurrentConfig.CriticalTemperature.Any(pair =>
-                _cache.GetTemperature(pair.Key) >= pair.Value);
+                _cache.GetSensorValue(pair.Key) >= pair.Value);
 
             foreach (var profile in _configManager.CurrentConfig.Profiles)
             {
@@ -398,14 +395,14 @@ namespace TTController.Service
                 }
             }
 
-            lock (_temperatureManager)
+            lock (_sensorManager)
             {
-                foreach (var sensor in _sensorManager.TemperatureSensors)
+                foreach (var identifier in _sensorManager.EnabledSensors)
                 {
-                    var value = _temperatureManager.GetSensorValue(sensor.Identifier);
+                    var value = _sensorManager.GetSensorValue(identifier);
                     if (float.IsNaN(value))
                         continue;
-                    Logger.Debug("Sensor \"{0}\" value: {1}", sensor.Identifier, value);
+                    Logger.Debug("Sensor \"{0}\" value: {1}", identifier, value);
                 }
             }
 

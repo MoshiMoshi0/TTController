@@ -33,7 +33,7 @@ namespace TTController.Plugin.TemperatureEffect
 
         public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
         {
-            var temperatures = Config.Sensors.Select(cache.GetTemperature);
+            var temperatures = Config.Sensors.Select(cache.GetSensorValue);
             var temperature = float.NaN;
             if (Config.SensorMixFunction == SensorMixFunction.Average)
                 temperature = temperatures.Average();
