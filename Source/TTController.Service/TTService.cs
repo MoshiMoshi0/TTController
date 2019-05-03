@@ -331,8 +331,35 @@ namespace TTController.Service
                         colors = colors.Skip(config.LedRotation).Concat(colors.Take(config.LedRotation)).ToList();
                     if (config.LedReverse)
                         colors.Reverse();
-                    if (config.LedCount < colors.Count)
-                        colors.RemoveRange(config.LedCount, colors.Count - config.LedCount);
+
+                    switch (config.LedCountHandling)
+                    {
+                        case LedCountHandling.Lerp:
+                        {
+                            if (config.LedCount == colors.Count)
+                                break;
+
+                            var newColors = new List<LedColor>();
+                            var gradient = new LedColorGradient(colors, config.LedCount - 1);
+
+                            for (var i = 0; i < config.LedCount; i++)
+                                newColors.Add(gradient.GetColor(i));
+
+                            colors = newColors;
+                            break;
+                        }
+                        case LedCountHandling.Trim:
+                            if (config.LedCount < colors.Count)
+                                colors.RemoveRange(config.LedCount, colors.Count - config.LedCount);
+                            break;
+                        case LedCountHandling.Copy:
+                            while (config.LedCount > colors.Count)
+                                colors.AddRange(colors.Take(config.LedCount - colors.Count));
+                            break;
+                        case LedCountHandling.DoNothing:
+                        default:
+                            break;
+                    }
 
                     colorMap[port] = colors;
                 }
