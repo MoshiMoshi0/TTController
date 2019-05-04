@@ -23,14 +23,14 @@ namespace TTController.Plugin.PwmSpeedController
 
         public override IDictionary<PortIdentifier, byte> GenerateSpeeds(List<PortIdentifier> ports, ICacheProvider cache)
         {
-            var temperatures = Config.Sensors.Select(cache.GetTemperature);
-            var temperature = float.NaN;
+            var values = Config.Sensors.Select(cache.GetSensorValue);
+            var value = float.NaN;
             if (Config.SensorMixFunction == SensorMixFunction.Average)
-                temperature = temperatures.Average();
+                value = values.Average();
             else if (Config.SensorMixFunction == SensorMixFunction.Minimum)
-                temperature = temperatures.Min();
+                value = values.Min();
             else if (Config.SensorMixFunction == SensorMixFunction.Maximum)
-                temperature = temperatures.Max();
+                value = values.Max();
 
             byte curveTargetSpeed = 100;
             for (var i = 0; i <= Config.CurvePoints.Count; i++)
@@ -38,12 +38,12 @@ namespace TTController.Plugin.PwmSpeedController
                 var current = i == Config.CurvePoints.Count
                     ? new CurvePoint(100, Config.CurvePoints[i - 1].Speed)
                     : Config.CurvePoints[i];
-                if (temperature >= current.Temperature)
+                if (value >= current.Value)
                     continue;
 
                 var last = i == 0 ? new CurvePoint(0, current.Speed) : Config.CurvePoints[i - 1];
 
-                var t = (temperature - last.Temperature) / (current.Temperature - last.Temperature);
+                var t = (value - last.Value) / (current.Value - last.Value);
                 curveTargetSpeed = (byte) Math.Round(last.Speed * (1 - t) + current.Speed * t);
 
                 break;

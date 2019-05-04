@@ -1,6 +1,6 @@
-﻿namespace TTController.Service.Hardware.Temperature
+﻿namespace TTController.Service.Hardware.Sensor
 {
-    public interface ITemperatureProvider
+    public interface ISensorValueProvider
     {
         void Update();
         float Value();
