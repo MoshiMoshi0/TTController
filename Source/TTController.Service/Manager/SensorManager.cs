@@ -63,7 +63,12 @@ namespace TTController.Service.Manager
                 return;
 
             Logger.Info("Enabling sensor: {0}", sensor.Identifier);
-            _sensorValueProviders.Add(identifier, _sensorValueProviderFactory.Create(sensor));
+
+            var sensorValueProvider = _sensorValueProviderFactory.Create(sensor);
+            if(_sensorConfigs.TryGetValue(identifier, out var config) && config.Offset.HasValue)
+                sensorValueProvider = new OffsetSensorValueDecorator(sensorValueProvider, config.Offset.Value);
+
+            _sensorValueProviders.Add(identifier, sensorValueProvider);
             _hardware.Add(sensor.Hardware);
         }
 
