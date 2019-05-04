@@ -53,6 +53,7 @@ The source code also provides an easy way to write your own **speed controller**
 | Floe Riing RGB 240/280/360  | :heavy_check_mark: | :heavy_check_mark: |
 | Pacific PR22-D5 Plus        | :heavy_check_mark: | :heavy_check_mark: |
 | Pacific W4                  | :heavy_check_mark: | :heavy_check_mark: |
+| Riing Duo 12/14             | :heavy_check_mark: | :x:                | same as Riing Trio?
 | WaterRam RGB                | :heavy_check_mark: | :x:                |
 | Pacific CL360/RL360         | :heavy_check_mark: | :x:                |
 | Pacific V-GTX/V-RTX         | :heavy_check_mark: | :x:                |
