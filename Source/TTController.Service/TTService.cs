@@ -62,18 +62,17 @@ namespace TTController.Service
                 return false;
 
             _cache = new DataCache();
+            _configManager.Accept(_cache.AsWriteOnly());
 
             var alpha = Math.Exp(-_configManager.CurrentConfig.SensorTimerInterval / (double)_configManager.CurrentConfig.DeviceSpeedTimerInterval);
             var providerFactory = new MovingAverageSensorValueProviderFactory(alpha);
-            _sensorManager = new SensorManager(providerFactory);
 
+            _sensorManager = new SensorManager(providerFactory, _cache.SensorConfigCache);
             _effectManager = new EffectManager();
             _speedControllerManager = new SpeedControllerManager();
             _deviceManager = new DeviceManager();
             _deviceManager.Accept(_cache.AsWriteOnly());
 
-            Logger.Info("Applying config...");
-            _configManager.Accept(_cache.AsWriteOnly());
             foreach (var profile in _configManager.CurrentConfig.Profiles)
             {
                 foreach (var effect in profile.Effects)
@@ -85,7 +84,6 @@ namespace TTController.Service
                 _sensorManager.EnableSensors(_speedControllerManager.GetSpeedControllers(profile.Guid)?.SelectMany(c => c.UsedSensors));
                 _sensorManager.EnableSensors(_effectManager.GetEffects(profile.Guid)?.SelectMany(e => e.UsedSensors));
             }
-            _sensorManager.EnableSensors(_configManager.CurrentConfig.CriticalTemperature.Keys);
 
             ApplyComputerStateProfile(ComputerStateType.Boot);
 
@@ -251,8 +249,11 @@ namespace TTController.Service
 
         private bool DeviceSpeedTimerCallback()
         {
-            var isCriticalTemperature = _configManager.CurrentConfig.CriticalTemperature.Any(pair =>
-                _cache.GetSensorValue(pair.Key) >= pair.Value);
+            var isCriticalTemperature = _sensorManager.EnabledSensors.Any(s => {
+                var value = _cache.GetSensorValue(s);
+                var config = _cache.GetSensorConfig(s);
+                return !float.IsNaN(value) && config.CriticalValue.HasValue && value > config.CriticalValue;
+            });
 
             foreach (var profile in _configManager.CurrentConfig.Profiles)
             {

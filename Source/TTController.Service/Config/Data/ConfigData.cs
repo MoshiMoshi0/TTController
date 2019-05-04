@@ -9,8 +9,8 @@ namespace TTController.Service.Config.Data
     {
         public List<ProfileData> Profiles { get; private set; } = new List<ProfileData>();
         public List<ComputerStateProfileData> ComputerStateProfiles { get; private set; } = new List<ComputerStateProfileData>();
-        public Dictionary<List<PortIdentifier>, PortConfig> PortConfigs { get; private set; } = new Dictionary<List<PortIdentifier>, PortConfig>();
-        public IDictionary<Identifier, int> CriticalTemperature { get; private set; } = new Dictionary<Identifier, int>();
+        public List<(List<PortIdentifier> Ports, PortConfig Config)> PortConfigs { get; private set; } = new List<(List<PortIdentifier> Ports, PortConfig Config)>();
+        public List<(List<Identifier> Sensors, SensorConfig Config)> SensorConfigs { get; private set; } = new List<(List<Identifier> Sensors, SensorConfig Config)>();
 
         [DefaultValue(250)] public int SensorTimerInterval { get; private set; } = 250;
         [DefaultValue(2500)] public int DeviceSpeedTimerInterval { get; private set; } = 2500;

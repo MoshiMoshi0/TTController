@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NLog;
 using OpenHardwareMonitor.Hardware;
+using TTController.Common;
 using TTController.Service.Hardware;
 using TTController.Service.Hardware.Sensor;
 using TTController.Service.Utils;
@@ -13,21 +14,26 @@ namespace TTController.Service.Manager
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly OpenHardwareMonitorFacade _openHardwareMonitorFacade;
         private readonly ISensorValueProviderFactory _sensorValueProviderFactory;
+        private readonly IReadOnlyDictionary<Identifier, SensorConfig> _sensorConfigs;
+
+        private readonly OpenHardwareMonitorFacade _openHardwareMonitorFacade;
         private readonly Dictionary<Identifier, ISensorValueProvider> _sensorValueProviders;
         private readonly HashSet<IHardware> _hardware;
 
         public IEnumerable<Identifier> EnabledSensors => _sensorValueProviders.Keys;
 
-        public SensorManager(ISensorValueProviderFactory sensorValueProviderFactory)
+        public SensorManager(ISensorValueProviderFactory sensorValueProviderFactory, IReadOnlyDictionary<Identifier, SensorConfig> sensorConfigs)
         {
             Logger.Info("Creating Sensor Manager...");
             _sensorValueProviderFactory = sensorValueProviderFactory;
+            _sensorConfigs = sensorConfigs;
 
             _openHardwareMonitorFacade = new OpenHardwareMonitorFacade();
             _sensorValueProviders = new Dictionary<Identifier, ISensorValueProvider>();
             _hardware = new HashSet<IHardware>();
+
+            EnableSensors(sensorConfigs.Keys);
         }
 
         public void Update()
