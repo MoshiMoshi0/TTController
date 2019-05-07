@@ -41,17 +41,7 @@ namespace TTController.Service
         {
             Logger.Info($"{new string('=', 64)}");
             Logger.Info("Initializing...");
-            var pluginAssemblies = Directory.GetFiles($@"{AppDomain.CurrentDomain.BaseDirectory}\Plugins", "*.dll", SearchOption.AllDirectories)
-                .Where(f => AppDomain.CurrentDomain.GetAssemblies().All(a => a.Location != f))
-                .TrySelect(Assembly.LoadFile, _ => { })
-                .ToList();
-
-            AppDomain.CurrentDomain.AssemblyResolve += (_, args) =>
-                pluginAssemblies.Find(a => string.CompareOrdinal(a.FullName, args.Name) == 0);
-
-            Logger.Info("Loading plugins...");
-            foreach (var assembly in pluginAssemblies)
-                Logger.Info("Loading assembly: {0} [{1}]", assembly.GetName().Name, assembly.GetName().Version);
+            PluginLoader.LoadAll($@"{AppDomain.CurrentDomain.BaseDirectory}\Plugins");
 
             const string key = "config-file";
             if (string.IsNullOrEmpty(AppSettingsHelper.ReadValue(key)))

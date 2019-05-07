@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration.Install;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.ServiceProcess;
 using NLog;
 using OpenHardwareMonitor.Hardware;
+using TTController.Common.Plugin;
 using TTController.Service.Config.Data;
 using TTController.Service.Hardware;
 using TTController.Service.Manager;
+using TTController.Service.Utils;
 
 namespace TTController.Service
 {
@@ -128,6 +131,8 @@ namespace TTController.Service
             Console.Clear();
             Console.WriteLine("Controllers");
             Console.WriteLine("-------------------------------");
+
+            PluginLoader.Load($@"{AppDomain.CurrentDomain.BaseDirectory}\Plugins", typeof(IControllerDefinition));
             using (var deviceManager = new DeviceManager())
             {
                 foreach (var controller in deviceManager.Controllers)
@@ -150,6 +155,17 @@ namespace TTController.Service
                     Console.WriteLine();
                 }
             }
+
+
+            Console.WriteLine("Plugins");
+            Console.WriteLine("-------------------------------");
+
+            var pluginAssemblies = PluginLoader.SearchAll($@"{AppDomain.CurrentDomain.BaseDirectory}\Plugins");
+            Console.WriteLine("Valid plugins:");
+            foreach (var assembly in pluginAssemblies)
+                Console.WriteLine($"\t{Path.GetFileName(assembly.Location)}");
+
+            Console.WriteLine();
 
             Console.WriteLine("Sensors");
             Console.WriteLine("-------------------------------");
