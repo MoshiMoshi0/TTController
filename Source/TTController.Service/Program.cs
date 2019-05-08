@@ -172,11 +172,8 @@ namespace TTController.Service
             using (var _openHardwareMonitorFacade = new OpenHardwareMonitorFacade())
             {
                 var availableSensors = _openHardwareMonitorFacade.Sensors.Where(s => s.SensorType == SensorType.Temperature);
-                foreach (var group in availableSensors.GroupBy(s => s.Hardware))
+                foreach (var (hardware, sensors) in availableSensors.GroupBy(s => s.Hardware))
                 {
-                    var hardware = group.Key;
-                    var sensors = group.ToList();
-
                     Console.WriteLine($"{hardware.Name}:");
                     hardware.Update();
 

@@ -23,5 +23,11 @@ namespace TTController.Service.Utils
             key = kvp.Key;
             value = kvp.Value;
         }
+
+        public static void Deconstruct<TKey, TElement>(this IGrouping<TKey, TElement> group, out TKey key, out IEnumerable<TElement> elements)
+        {
+            key = group.Key;
+            elements = group.AsEnumerable();
+        }
     }
 }
