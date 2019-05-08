@@ -5,7 +5,7 @@ using OpenHardwareMonitor.Hardware;
 using TTController.Common;
 using TTController.Common.Plugin;
 
-namespace TTController.Plugin.TemperatureEffect
+namespace TTController.Plugin.SensorEffect
 {
     public class SensorEffectConfig : EffectConfigBase
     {

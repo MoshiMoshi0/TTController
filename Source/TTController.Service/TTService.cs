@@ -239,7 +239,7 @@ namespace TTController.Service
 
         private bool DeviceSpeedTimerCallback()
         {
-            var isCriticalTemperature = _sensorManager.EnabledSensors.Any(s => {
+            var criticalState = _sensorManager.EnabledSensors.Any(s => {
                 var value = _cache.GetSensorValue(s);
                 var config = _cache.GetSensorConfig(s);
                 return !float.IsNaN(value) && config.CriticalValue.HasValue && value > config.CriticalValue;
@@ -258,7 +258,7 @@ namespace TTController.Service
                 }
 
                 IDictionary<PortIdentifier, byte> speedMap;
-                if (isCriticalTemperature)
+                if (criticalState)
                 {
                     speedMap = profile.Ports.ToDictionary(p => p, _ => (byte)100);
                 }
