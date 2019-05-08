@@ -32,6 +32,7 @@ namespace TTController.Common
 
         public static (double, double, double) LerpDeconstruct(double t, LedColor from, LedColor to)
         {
+            t = Math.Max(Math.Min(t, 1), 0);
             var r = from.R * (1 - t) + to.R * t;
             var g = from.G * (1 - t) + to.G * t;
             var b = from.B * (1 - t) + to.B * t;
@@ -60,14 +61,17 @@ namespace TTController.Common
 
         public static LedColor FromHsv(double hue, double saturation, double value)
         {
+            saturation = Math.Max(Math.Min(saturation, 1), 0);
+            value = Math.Max(Math.Min(value, 1), 0);
+
             var hi = Convert.ToInt32(Math.Floor(hue / 60)) % 6;
             var f = hue / 60 - Math.Floor(hue / 60);
 
             value *= 255;
-            var v = Convert.ToByte(value);
-            var p = Convert.ToByte(value * (1 - saturation));
-            var q = Convert.ToByte(value * (1 - f * saturation));
-            var t = Convert.ToByte(value * (1 - (1 - f) * saturation));
+            var v = (byte) (value);
+            var p = (byte) (value * (1 - saturation));
+            var q = (byte) (value * (1 - f * saturation));
+            var t = (byte) (value * (1 - (1 - f) * saturation));
 
             switch (hi)
             {

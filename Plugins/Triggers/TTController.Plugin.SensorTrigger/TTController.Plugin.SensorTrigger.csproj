@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net471</TargetFramework>
+    <AssemblyTitle>TTController.Plugin.SensorTrigger</AssemblyTitle>
+    <Product>TTController.Plugin.SensorTrigger</Product>
+    <Copyright>Copyright ©  2019</Copyright>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Source\TTController.Common\TTController.Common.csproj" />
+    <ProjectReference Include="..\..\..\ThirdParty\LibreHardwareMonitor\OpenHardwareMonitorLib.csproj" />
+  </ItemGroup>
+</Project>

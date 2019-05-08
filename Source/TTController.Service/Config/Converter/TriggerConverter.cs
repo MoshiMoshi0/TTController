@@ -1,4 +1,4 @@
-﻿using TTController.Common;
+﻿using TTController.Common.Plugin;
 
 namespace TTController.Service.Config.Converter
 {

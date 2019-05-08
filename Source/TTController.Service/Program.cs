@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration.Install;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.ServiceProcess;
 using NLog;
+using OpenHardwareMonitor.Hardware;
+using TTController.Common.Plugin;
 using TTController.Service.Config.Data;
+using TTController.Service.Hardware;
 using TTController.Service.Manager;
+using TTController.Service.Utils;
 
 namespace TTController.Service
 {
@@ -23,6 +28,7 @@ namespace TTController.Service
                 menu.Add("Manage Service", ManageService, () => true);
                 menu.Add("Run in console", () => {
                     Console.Clear();
+                    Console.ResetColor();
                     var service = new TTService();
                     service.Initialize();
                     Console.ReadKey(true);
@@ -32,7 +38,7 @@ namespace TTController.Service
                     return false;
                 }, () => Service != null && Service.Status != ServiceControllerStatus.Running);
                 menu.Add("Show hardware info", () => {
-                    ShowInfo();
+                    ShowHardwareInfo();
                     return false;
                 }, () => Service != null && Service.Status != ServiceControllerStatus.Running);
                 menu.Add("Exit", () => true, () => true, '0');
@@ -119,13 +125,32 @@ namespace TTController.Service
             }
         }
 
-        private static void ShowInfo()
+        private static void ShowHardwareInfo()
         {
             LogManager.DisableLogging();
 
+            void WriteHeader(string header)
+            {
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine(header);
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("-------------------------------");
+                Console.ForegroundColor = ConsoleColor.Gray;
+            }
+
+            void WriteFooter()
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("-------------------------------");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("Press any key to continue...");
+                Console.ResetColor();
+            }
+
             Console.Clear();
-            Console.WriteLine("Controllers");
-            Console.WriteLine("-------------------------------");
+            WriteHeader("Controllers");
+
+            PluginLoader.Load($@"{AppDomain.CurrentDomain.BaseDirectory}\Plugins", typeof(IControllerDefinition));
             using (var deviceManager = new DeviceManager())
             {
                 foreach (var controller in deviceManager.Controllers)
@@ -149,24 +174,30 @@ namespace TTController.Service
                 }
             }
 
-            Console.WriteLine("Sensors");
-            Console.WriteLine("-------------------------------");
-            using (var sensorManager = new SensorManager())
+            WriteHeader("Plugins");
+
+            var pluginAssemblies = PluginLoader.SearchAll($@"{AppDomain.CurrentDomain.BaseDirectory}\Plugins");
+            Console.WriteLine("Valid plugins:");
+            foreach (var assembly in pluginAssemblies)
+                Console.WriteLine($"\t{Path.GetFileName(assembly.Location)}");
+
+            Console.WriteLine();
+
+            WriteHeader("Sensors");
+            using (var _openHardwareMonitorFacade = new OpenHardwareMonitorFacade())
             {
-                foreach (var hardware in sensorManager.TemperatureSensors.Select(s => s.Hardware).Distinct())
+                var availableSensors = _openHardwareMonitorFacade.Sensors.Where(s => s.SensorType == SensorType.Temperature);
+                foreach (var (hardware, sensors) in availableSensors.GroupBy(s => s.Hardware))
+                {
+                    Console.WriteLine($"{hardware.Name}:");
                     hardware.Update();
 
-                foreach (var sensor in sensorManager.TemperatureSensors)
-                {
-                    Console.WriteLine($"{sensor.Hardware.Name}:");
-                    Console.WriteLine($"\t{sensor.Identifier}:" +
-                                      $"\n\t\tName: {sensor.Name}" +
-                                      $"\n\t\tValue: {sensor.Value ?? float.NaN}" +
-                                      $"\t");
+                    foreach(var sensor in sensors)
+                        Console.WriteLine($"\t{sensor.Name} ({sensor.Identifier}): {sensor.Value ?? float.NaN}");
                 }
             }
-            Console.WriteLine("-------------------------------");
-            Console.WriteLine("Press any key to continue...");
+
+            WriteFooter();
             Console.ReadKey(true);
 
             LogManager.EnableLogging();

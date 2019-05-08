@@ -18,35 +18,16 @@ namespace TTController.Service.Utils
                 return types.Where(t => t.IsSubclassOf(type));
         }
 
-        public static IEnumerable<TResult> TrySelect<TSource, TResult>(
-            this IEnumerable<TSource> enumerable,
-            Func<TSource, TResult> selector,
-            Action<Exception> exceptionAction)
-        {
-            foreach (var item in enumerable)
-            {
-                TResult result = default;
-                bool success = false;
-                try
-                {
-                    result = selector(item);
-                    success = true;
-                }
-                catch (Exception ex)
-                {
-                    exceptionAction(ex);
-                }
-                if (success)
-                {
-                    yield return result;
-                }
-            }
-        }
-
         public static void Deconstruct<TKey, TValue>(this KeyValuePair<TKey, TValue> kvp, out TKey key, out TValue value)
         {
             key = kvp.Key;
             value = kvp.Value;
+        }
+
+        public static void Deconstruct<TKey, TElement>(this IGrouping<TKey, TElement> group, out TKey key, out IEnumerable<TElement> elements)
+        {
+            key = group.Key;
+            elements = group.AsEnumerable();
         }
     }
 }

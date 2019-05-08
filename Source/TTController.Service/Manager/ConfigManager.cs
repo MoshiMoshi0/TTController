@@ -119,8 +119,13 @@ namespace TTController.Service.Manager
 
         public void Accept(ICacheCollector collector)
         {
-            foreach (var (port, config) in CurrentConfig.PortConfig)
-                collector.StorePortConfig(port, config);
+            foreach (var (ports, config) in CurrentConfig.PortConfigs)
+                foreach (var port in ports)
+                    collector.StorePortConfig(port, config);
+
+            foreach (var (sensors, config) in CurrentConfig.SensorConfigs)
+                foreach (var sensor in sensors)
+                    collector.StoreSensorConfig(sensor, config);
         }
 
         public void Dispose()

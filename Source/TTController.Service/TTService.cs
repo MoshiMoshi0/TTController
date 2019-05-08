@@ -7,7 +7,7 @@ using System.ServiceProcess;
 using NLog;
 using TTController.Common;
 using TTController.Service.Config.Data;
-using TTController.Service.Hardware.Temperature;
+using TTController.Service.Hardware.Sensor;
 using TTController.Service.Manager;
 using TTController.Service.Utils;
 
@@ -20,7 +20,6 @@ namespace TTController.Service
         private DeviceManager _deviceManager;
         private ConfigManager _configManager;
         private SensorManager _sensorManager;
-        private TemperatureManager _temperatureManager;
         private TimerManager _timerManager;
         private EffectManager _effectManager;
         private SpeedControllerManager _speedControllerManager;
@@ -42,17 +41,7 @@ namespace TTController.Service
         {
             Logger.Info($"{new string('=', 64)}");
             Logger.Info("Initializing...");
-            var pluginAssemblies = Directory.GetFiles($@"{AppDomain.CurrentDomain.BaseDirectory}\Plugins", "*.dll", SearchOption.AllDirectories)
-                .Where(f => AppDomain.CurrentDomain.GetAssemblies().All(a => a.Location != f))
-                .TrySelect(Assembly.LoadFile, _ => { })
-                .ToList();
-
-            AppDomain.CurrentDomain.AssemblyResolve += (_, args) =>
-                pluginAssemblies.Find(a => string.CompareOrdinal(a.FullName, args.Name) == 0);
-
-            Logger.Info("Loading plugins...");
-            foreach (var assembly in pluginAssemblies)
-                Logger.Info("Loading assembly: {0} [{1}]", assembly.GetName().Name, assembly.GetName().Version);
+            PluginLoader.LoadAll($@"{AppDomain.CurrentDomain.BaseDirectory}\Plugins");
 
             const string key = "config-file";
             if (string.IsNullOrEmpty(AppSettingsHelper.ReadValue(key)))
@@ -63,19 +52,17 @@ namespace TTController.Service
                 return false;
 
             _cache = new DataCache();
-            _sensorManager = new SensorManager();
+            _configManager.Accept(_cache.AsWriteOnly());
 
-            var alpha = Math.Exp(-_configManager.CurrentConfig.TemperatureTimerInterval / (double)_configManager.CurrentConfig.DeviceSpeedTimerInterval);
-            var providerFactory = new MovingAverageTemperatureProviderFactory(alpha);
-            _temperatureManager = new TemperatureManager(_sensorManager.TemperatureSensors.ToList(), providerFactory);
+            var alpha = Math.Exp(-_configManager.CurrentConfig.SensorTimerInterval / (double)_configManager.CurrentConfig.DeviceSpeedTimerInterval);
+            var providerFactory = new MovingAverageSensorValueProviderFactory(alpha);
 
+            _sensorManager = new SensorManager(providerFactory, _cache.SensorConfigCache);
             _effectManager = new EffectManager();
             _speedControllerManager = new SpeedControllerManager();
             _deviceManager = new DeviceManager();
             _deviceManager.Accept(_cache.AsWriteOnly());
 
-            Logger.Info("Applying config...");
-            _configManager.Accept(_cache.AsWriteOnly());
             foreach (var profile in _configManager.CurrentConfig.Profiles)
             {
                 foreach (var effect in profile.Effects)
@@ -84,14 +71,14 @@ namespace TTController.Service
                 foreach (var speedController in profile.SpeedControllers)
                     _speedControllerManager.Add(profile.Guid, speedController);
 
-                _temperatureManager.EnableSensors(_speedControllerManager.GetSpeedControllers(profile.Guid)?.SelectMany(c => c.UsedSensors));
-                _temperatureManager.EnableSensors(_effectManager.GetEffects(profile.Guid)?.SelectMany(e => e.UsedSensors));
+                _sensorManager.EnableSensors(_speedControllerManager.GetSpeedControllers(profile.Guid)?.SelectMany(c => c.UsedSensors));
+                _sensorManager.EnableSensors(_effectManager.GetEffects(profile.Guid)?.SelectMany(e => e.UsedSensors));
             }
 
             ApplyComputerStateProfile(ComputerStateType.Boot);
 
             _timerManager = new TimerManager();
-            _timerManager.RegisterTimer(_configManager.CurrentConfig.TemperatureTimerInterval, TemperatureTimerCallback);
+            _timerManager.RegisterTimer(_configManager.CurrentConfig.SensorTimerInterval, SensorTimerCallback);
             _timerManager.RegisterTimer(_configManager.CurrentConfig.DeviceSpeedTimerInterval, DeviceSpeedTimerCallback);
             _timerManager.RegisterTimer(_configManager.CurrentConfig.DeviceRgbTimerInterval, DeviceRgbTimerCallback);
             if(LogManager.Configuration.LoggingRules.Any(r => r.IsLoggingEnabledForLevel(LogLevel.Debug)))
@@ -183,7 +170,6 @@ namespace TTController.Service
             if(_deviceManager != null)
                 ApplyComputerStateProfile(state);
 
-            _temperatureManager?.Dispose();
             _sensorManager?.Dispose();
             _deviceManager?.Dispose();
             _effectManager?.Dispose();
@@ -193,7 +179,6 @@ namespace TTController.Service
 
             _timerManager = null;
             _deviceManager = null;
-            _temperatureManager = null;
             _sensorManager = null;
             _deviceManager = null;
             _effectManager = null;
@@ -245,17 +230,20 @@ namespace TTController.Service
         }
 
         #region Timer Callbacks
-        private bool TemperatureTimerCallback()
+        private bool SensorTimerCallback()
         {
-            _temperatureManager.Update();
-            _temperatureManager.Accept(_cache.AsWriteOnly());
+            _sensorManager.Update();
+            _sensorManager.Accept(_cache.AsWriteOnly());
             return true;
         }
 
         private bool DeviceSpeedTimerCallback()
         {
-            var isCriticalTemperature = _configManager.CurrentConfig.CriticalTemperature.Any(pair =>
-                _cache.GetTemperature(pair.Key) >= pair.Value);
+            var criticalState = _sensorManager.EnabledSensors.Any(s => {
+                var value = _cache.GetSensorValue(s);
+                var config = _cache.GetSensorConfig(s);
+                return !float.IsNaN(value) && config.CriticalValue.HasValue && value > config.CriticalValue;
+            });
 
             foreach (var profile in _configManager.CurrentConfig.Profiles)
             {
@@ -270,7 +258,7 @@ namespace TTController.Service
                 }
 
                 IDictionary<PortIdentifier, byte> speedMap;
-                if (isCriticalTemperature)
+                if (criticalState)
                 {
                     speedMap = profile.Ports.ToDictionary(p => p, _ => (byte)100);
                 }
@@ -281,7 +269,15 @@ namespace TTController.Service
                     if (speedController == null)
                         continue;
 
-                    speedMap = speedController.GenerateSpeeds(profile.Ports, _cache.AsReadOnly());
+                    try
+                    {
+                        speedMap = speedController.GenerateSpeeds(profile.Ports, _cache.AsReadOnly());
+                    }
+                    catch(Exception e)
+                    {
+                        Logger.Fatal("{0} failed with {1}", speedController.GetType().Name, e);
+                        speedMap = profile.Ports.ToDictionary(p => p, _ => (byte)100);
+                    }
                 }
 
                 if (speedMap == null)
@@ -305,24 +301,12 @@ namespace TTController.Service
 
         public bool DeviceRgbTimerCallback()
         {
-            foreach (var profile in _configManager.CurrentConfig.Profiles)
+            void ApplyConfig(IDictionary<PortIdentifier, List<LedColor>> colorMap)
             {
-                var effects = _effectManager.GetEffects(profile.Guid);
-                var effect = effects?.FirstOrDefault(e => e.IsEnabled(_cache.AsReadOnly()));
-                if (effect == null)
-                    continue;
-
-                var colorMap = effect.GenerateColors(profile.Ports, _cache.AsReadOnly());
-                if (colorMap == null)
-                    continue;
-
-                foreach (var port in profile.Ports)
+                foreach (var port in colorMap.Keys.ToList())
                 {
                     var config = _cache.GetPortConfig(port);
                     if (config == null)
-                        continue;
-
-                    if (!colorMap.ContainsKey(port))
                         continue;
 
                     var colors = colorMap[port];
@@ -331,11 +315,66 @@ namespace TTController.Service
                         colors = colors.Skip(config.LedRotation).Concat(colors.Take(config.LedRotation)).ToList();
                     if (config.LedReverse)
                         colors.Reverse();
-                    if (config.LedCount < colors.Count)
-                        colors.RemoveRange(config.LedCount, colors.Count - config.LedCount);
+
+                    switch (config.LedCountHandling)
+                    {
+                        case LedCountHandling.Lerp:
+                            {
+                                if (config.LedCount == colors.Count)
+                                    break;
+
+                                var newColors = new List<LedColor>();
+                                var gradient = new LedColorGradient(colors, config.LedCount - 1);
+
+                                for (var i = 0; i < config.LedCount; i++)
+                                    newColors.Add(gradient.GetColor(i));
+
+                                colors = newColors;
+                                break;
+                            }
+                        case LedCountHandling.Trim:
+                            if (config.LedCount < colors.Count)
+                                colors.RemoveRange(config.LedCount, colors.Count - config.LedCount);
+                            break;
+                        case LedCountHandling.Copy:
+                            while (config.LedCount > colors.Count)
+                                colors.AddRange(colors.Take(config.LedCount - colors.Count));
+                            break;
+                        case LedCountHandling.DoNothing:
+                        default:
+                            break;
+                    }
 
                     colorMap[port] = colors;
                 }
+            }
+
+            foreach (var profile in _configManager.CurrentConfig.Profiles)
+            {
+                var effects = _effectManager.GetEffects(profile.Guid);
+                var effect = effects?.FirstOrDefault(e => e.IsEnabled(_cache.AsReadOnly()));
+                if (effect == null)
+                    continue;
+
+                IDictionary<PortIdentifier, List<LedColor>> colorMap;
+                string effectType;
+
+                try
+                {
+                    colorMap = effect.GenerateColors(profile.Ports, _cache.AsReadOnly());
+                    effectType = effect.EffectType;
+                }
+                catch (Exception e)
+                {
+                    Logger.Fatal("{0} failed with {1}", effect.GetType().Name, e);
+                    colorMap = profile.Ports.ToDictionary(p => p, _ => new List<LedColor>() { new LedColor(255, 0, 0) });
+                    effectType = "Full";
+                }
+
+                if (colorMap == null)
+                    continue;
+
+                ApplyConfig(colorMap);
 
                 lock (_deviceManager)
                 {
@@ -345,7 +384,7 @@ namespace TTController.Service
                             continue;
 
                         var controller = _deviceManager.GetController(port);
-                        var effectByte = controller?.GetEffectByte(effect.EffectType);
+                        var effectByte = controller?.GetEffectByte(effectType);
                         if (effectByte == null)
                             continue;
 
@@ -371,14 +410,14 @@ namespace TTController.Service
                 }
             }
 
-            lock (_temperatureManager)
+            lock (_sensorManager)
             {
-                foreach (var sensor in _sensorManager.TemperatureSensors)
+                foreach (var identifier in _sensorManager.EnabledSensors)
                 {
-                    var value = _temperatureManager.GetSensorValue(sensor.Identifier);
+                    var value = _sensorManager.GetSensorValue(identifier);
                     if (float.IsNaN(value))
                         continue;
-                    Logger.Debug("Sensor \"{0}\" value: {1}", sensor.Identifier, value);
+                    Logger.Debug("Sensor \"{0}\" value: {1}", identifier, value);
                 }
             }
 

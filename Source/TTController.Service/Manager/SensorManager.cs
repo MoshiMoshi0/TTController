@@ -3,40 +3,117 @@ using System.Collections.Generic;
 using System.Linq;
 using NLog;
 using OpenHardwareMonitor.Hardware;
+using TTController.Common;
+using TTController.Service.Hardware;
+using TTController.Service.Hardware.Sensor;
+using TTController.Service.Utils;
 
 namespace TTController.Service.Manager
 {
-    public sealed class SensorManager : IDisposable
+    public sealed class SensorManager : IDataProvider, IDisposable
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly Computer _computer;
-        private readonly List<ISensor> _sensors;
+        private readonly ISensorValueProviderFactory _sensorValueProviderFactory;
+        private readonly IReadOnlyDictionary<Identifier, SensorConfig> _sensorConfigs;
 
-        public IEnumerable<ISensor> Sensors => _sensors;
+        private readonly OpenHardwareMonitorFacade _openHardwareMonitorFacade;
+        private readonly Dictionary<Identifier, ISensorValueProvider> _sensorValueProviders;
+        private readonly HashSet<IHardware> _hardware;
 
-        public IEnumerable<ISensor> TemperatureSensors =>
-            _sensors.Where(s => s.SensorType == SensorType.Temperature);
+        public IEnumerable<Identifier> EnabledSensors => _sensorValueProviders.Keys;
 
-        public SensorManager()
+        public SensorManager(ISensorValueProviderFactory sensorValueProviderFactory, IReadOnlyDictionary<Identifier, SensorConfig> sensorConfigs)
         {
             Logger.Info("Creating Sensor Manager...");
-            _sensors = new List<ISensor>();
-            _computer = new Computer()
-            {
-                CPUEnabled = true,
-                GPUEnabled = true,
-                HDDEnabled = true
-            };
+            _sensorValueProviderFactory = sensorValueProviderFactory;
+            _sensorConfigs = sensorConfigs;
 
-            _computer.Open();
-            _computer.Accept(new SensorVisitor(sensor =>
-            {
-                _sensors.Add(sensor);
-                sensor.ValuesTimeWindow = TimeSpan.Zero;
-            }));
+            _openHardwareMonitorFacade = new OpenHardwareMonitorFacade();
+            _sensorValueProviders = new Dictionary<Identifier, ISensorValueProvider>();
+            _hardware = new HashSet<IHardware>();
 
-            Logger.Info("Detected sensors: {0}", _sensors.Count);
+            EnableSensors(sensorConfigs.Keys);
+        }
+
+        public void Update()
+        {
+            foreach (var hardware in _hardware)
+                hardware.Update();
+
+            foreach (var provider in _sensorValueProviders.Values)
+                provider.Update();
+        }
+
+        public float GetSensorValue(Identifier identifier)
+        {
+            if (!_sensorValueProviders.ContainsKey(identifier))
+                return float.NaN;
+
+            return _sensorValueProviders[identifier].ValueOrDefault(float.NaN);
+        }
+
+        public void EnableSensor(Identifier identifier)
+        {
+            if (_sensorValueProviders.ContainsKey(identifier))
+                return;
+
+            var sensor = _openHardwareMonitorFacade.Sensors.FirstOrDefault(s => s.Identifier == identifier);
+            if (sensor == null)
+                return;
+
+            Logger.Info("Enabling sensor: {0}", sensor.Identifier);
+
+            var sensorValueProvider = _sensorValueProviderFactory.Create(sensor);
+            if(_sensorConfigs.TryGetValue(identifier, out var config) && config.Offset.HasValue)
+                sensorValueProvider = new OffsetSensorValueDecorator(sensorValueProvider, config.Offset.Value);
+
+            _sensorValueProviders.Add(identifier, sensorValueProvider);
+            _hardware.Add(sensor.Hardware);
+        }
+
+        public void EnableSensors(IEnumerable<Identifier> identifiers)
+        {
+            if (identifiers == null)
+                return;
+
+            foreach (var identifier in identifiers)
+                EnableSensor(identifier);
+        }
+
+        public void DisableSensor(Identifier identifier)
+        {
+            if (!_sensorValueProviders.ContainsKey(identifier))
+                return;
+
+            var sensor = _openHardwareMonitorFacade.Sensors.FirstOrDefault(s => s.Identifier == identifier);
+            if (sensor == null)
+                return;
+
+            Logger.Info("Disabling sensor: {0}", identifier);
+            _sensorValueProviders.Remove(identifier);
+
+            var removeHardware = _openHardwareMonitorFacade.Sensors
+                .Where(s => EnabledSensors.Contains(s.Identifier) && s.Identifier != sensor.Identifier)
+                .All(s => s.Hardware != sensor.Hardware);
+
+            if (removeHardware)
+                _hardware.Remove(sensor.Hardware);
+        }
+
+        public void DisableSensors(IEnumerable<Identifier> identifiers)
+        {
+            if (identifiers == null)
+                return;
+
+            foreach (var identifier in identifiers)
+                DisableSensor(identifier);
+        }
+
+        public void Accept(ICacheCollector collector)
+        {
+            foreach (var (sensor, provider) in _sensorValueProviders)
+                collector.StoreSensorValue(sensor, provider.Value());
         }
 
         public void Dispose()
@@ -49,8 +126,9 @@ namespace TTController.Service.Manager
         {
             Logger.Info("Disposing SensorManager...");
 
-            _computer?.Close();
-            _sensors.Clear();
+            _openHardwareMonitorFacade.Dispose();
+            _sensorValueProviders.Clear();
+            _hardware.Clear();
         }
     }
 }
