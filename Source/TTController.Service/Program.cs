@@ -28,6 +28,7 @@ namespace TTController.Service
                 menu.Add("Manage Service", ManageService, () => true);
                 menu.Add("Run in console", () => {
                     Console.Clear();
+                    Console.ResetColor();
                     var service = new TTService();
                     service.Initialize();
                     Console.ReadKey(true);
@@ -37,7 +38,7 @@ namespace TTController.Service
                     return false;
                 }, () => Service != null && Service.Status != ServiceControllerStatus.Running);
                 menu.Add("Show hardware info", () => {
-                    ShowInfo();
+                    ShowHardwareInfo();
                     return false;
                 }, () => Service != null && Service.Status != ServiceControllerStatus.Running);
                 menu.Add("Exit", () => true, () => true, '0');
@@ -124,13 +125,30 @@ namespace TTController.Service
             }
         }
 
-        private static void ShowInfo()
+        private static void ShowHardwareInfo()
         {
             LogManager.DisableLogging();
 
+            void WriteHeader(string header)
+            {
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine(header);
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("-------------------------------");
+                Console.ForegroundColor = ConsoleColor.Gray;
+            }
+
+            void WriteFooter()
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("-------------------------------");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("Press any key to continue...");
+                Console.ResetColor();
+            }
+
             Console.Clear();
-            Console.WriteLine("Controllers");
-            Console.WriteLine("-------------------------------");
+            WriteHeader("Controllers");
 
             PluginLoader.Load($@"{AppDomain.CurrentDomain.BaseDirectory}\Plugins", typeof(IControllerDefinition));
             using (var deviceManager = new DeviceManager())
@@ -156,9 +174,7 @@ namespace TTController.Service
                 }
             }
 
-
-            Console.WriteLine("Plugins");
-            Console.WriteLine("-------------------------------");
+            WriteHeader("Plugins");
 
             var pluginAssemblies = PluginLoader.SearchAll($@"{AppDomain.CurrentDomain.BaseDirectory}\Plugins");
             Console.WriteLine("Valid plugins:");
@@ -167,8 +183,7 @@ namespace TTController.Service
 
             Console.WriteLine();
 
-            Console.WriteLine("Sensors");
-            Console.WriteLine("-------------------------------");
+            WriteHeader("Sensors");
             using (var _openHardwareMonitorFacade = new OpenHardwareMonitorFacade())
             {
                 var availableSensors = _openHardwareMonitorFacade.Sensors.Where(s => s.SensorType == SensorType.Temperature);
@@ -181,8 +196,8 @@ namespace TTController.Service
                         Console.WriteLine($"\t{sensor.Name} ({sensor.Identifier}): {sensor.Value ?? float.NaN}");
                 }
             }
-            Console.WriteLine("-------------------------------");
-            Console.WriteLine("Press any key to continue...");
+
+            WriteFooter();
             Console.ReadKey(true);
 
             LogManager.EnableLogging();
