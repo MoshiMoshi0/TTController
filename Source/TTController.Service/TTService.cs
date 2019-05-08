@@ -269,7 +269,15 @@ namespace TTController.Service
                     if (speedController == null)
                         continue;
 
-                    speedMap = speedController.GenerateSpeeds(profile.Ports, _cache.AsReadOnly());
+                    try
+                    {
+                        speedMap = speedController.GenerateSpeeds(profile.Ports, _cache.AsReadOnly());
+                    }
+                    catch(Exception e)
+                    {
+                        Logger.Fatal("{0} failed with {1}", speedController.GetType().Name, e);
+                        speedMap = profile.Ports.ToDictionary(p => p, _ => (byte)100);
+                    }
                 }
 
                 if (speedMap == null)
@@ -300,7 +308,21 @@ namespace TTController.Service
                 if (effect == null)
                     continue;
 
-                var colorMap = effect.GenerateColors(profile.Ports, _cache.AsReadOnly());
+                IDictionary<PortIdentifier, List<LedColor>> colorMap;
+                string effectType;
+
+                try
+                {
+                    colorMap = effect.GenerateColors(profile.Ports, _cache.AsReadOnly());
+                    effectType = effect.EffectType;
+                }
+                catch (Exception e)
+                {
+                    Logger.Fatal("{0} failed with {1}", effect.GetType().Name, e);
+                    colorMap = profile.Ports.ToDictionary(p => p, _ => new List<LedColor>() { new LedColor(255, 0, 0) } );
+                    effectType = "Full";
+                }
+
                 if (colorMap == null)
                     continue;
 
@@ -360,7 +382,7 @@ namespace TTController.Service
                             continue;
 
                         var controller = _deviceManager.GetController(port);
-                        var effectByte = controller?.GetEffectByte(effect.EffectType);
+                        var effectByte = controller?.GetEffectByte(effectType);
                         if (effectByte == null)
                             continue;
 
