@@ -301,6 +301,54 @@ namespace TTController.Service
 
         public bool DeviceRgbTimerCallback()
         {
+            void ApplyConfig(IDictionary<PortIdentifier, List<LedColor>> colorMap)
+            {
+                foreach (var port in colorMap.Keys.ToList())
+                {
+                    var config = _cache.GetPortConfig(port);
+                    if (config == null)
+                        continue;
+
+                    var colors = colorMap[port];
+
+                    if (config.LedRotation > 0)
+                        colors = colors.Skip(config.LedRotation).Concat(colors.Take(config.LedRotation)).ToList();
+                    if (config.LedReverse)
+                        colors.Reverse();
+
+                    switch (config.LedCountHandling)
+                    {
+                        case LedCountHandling.Lerp:
+                            {
+                                if (config.LedCount == colors.Count)
+                                    break;
+
+                                var newColors = new List<LedColor>();
+                                var gradient = new LedColorGradient(colors, config.LedCount - 1);
+
+                                for (var i = 0; i < config.LedCount; i++)
+                                    newColors.Add(gradient.GetColor(i));
+
+                                colors = newColors;
+                                break;
+                            }
+                        case LedCountHandling.Trim:
+                            if (config.LedCount < colors.Count)
+                                colors.RemoveRange(config.LedCount, colors.Count - config.LedCount);
+                            break;
+                        case LedCountHandling.Copy:
+                            while (config.LedCount > colors.Count)
+                                colors.AddRange(colors.Take(config.LedCount - colors.Count));
+                            break;
+                        case LedCountHandling.DoNothing:
+                        default:
+                            break;
+                    }
+
+                    colorMap[port] = colors;
+                }
+            }
+
             foreach (var profile in _configManager.CurrentConfig.Profiles)
             {
                 var effects = _effectManager.GetEffects(profile.Guid);
@@ -319,60 +367,14 @@ namespace TTController.Service
                 catch (Exception e)
                 {
                     Logger.Fatal("{0} failed with {1}", effect.GetType().Name, e);
-                    colorMap = profile.Ports.ToDictionary(p => p, _ => new List<LedColor>() { new LedColor(255, 0, 0) } );
+                    colorMap = profile.Ports.ToDictionary(p => p, _ => new List<LedColor>() { new LedColor(255, 0, 0) });
                     effectType = "Full";
                 }
 
                 if (colorMap == null)
                     continue;
 
-                foreach (var port in profile.Ports)
-                {
-                    var config = _cache.GetPortConfig(port);
-                    if (config == null)
-                        continue;
-
-                    if (!colorMap.ContainsKey(port))
-                        continue;
-
-                    var colors = colorMap[port];
-
-                    if (config.LedRotation > 0)
-                        colors = colors.Skip(config.LedRotation).Concat(colors.Take(config.LedRotation)).ToList();
-                    if (config.LedReverse)
-                        colors.Reverse();
-
-                    switch (config.LedCountHandling)
-                    {
-                        case LedCountHandling.Lerp:
-                        {
-                            if (config.LedCount == colors.Count)
-                                break;
-
-                            var newColors = new List<LedColor>();
-                            var gradient = new LedColorGradient(colors, config.LedCount - 1);
-
-                            for (var i = 0; i < config.LedCount; i++)
-                                newColors.Add(gradient.GetColor(i));
-
-                            colors = newColors;
-                            break;
-                        }
-                        case LedCountHandling.Trim:
-                            if (config.LedCount < colors.Count)
-                                colors.RemoveRange(config.LedCount, colors.Count - config.LedCount);
-                            break;
-                        case LedCountHandling.Copy:
-                            while (config.LedCount > colors.Count)
-                                colors.AddRange(colors.Take(config.LedCount - colors.Count));
-                            break;
-                        case LedCountHandling.DoNothing:
-                        default:
-                            break;
-                    }
-
-                    colorMap[port] = colors;
-                }
+                ApplyConfig(colorMap);
 
                 lock (_deviceManager)
                 {
