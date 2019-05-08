@@ -53,7 +53,7 @@ The source code also provides an easy way to write your own **speed controller**
 | Floe Riing RGB 240/280/360  | :heavy_check_mark: | :heavy_check_mark: |
 | Pacific PR22-D5 Plus        | :heavy_check_mark: | :heavy_check_mark: |
 | Pacific W4                  | :heavy_check_mark: | :heavy_check_mark: |
-| Riing Duo 12/14             | :heavy_check_mark: | :x:                | same as Riing Trio?
+| Riing Duo 12/14             | :heavy_check_mark: | :x:                |
 | WaterRam RGB                | :heavy_check_mark: | :x:                |
 | Pacific CL360/RL360         | :heavy_check_mark: | :x:                |
 | Pacific V-GTX/V-RTX         | :heavy_check_mark: | :x:                |
@@ -77,7 +77,7 @@ The source code also provides an easy way to write your own **speed controller**
 * [RippleEffect](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Effects/TTController.Plugin.RippleEffect/RippleEffect.cs)
 * [WaveEffect](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Effects/TTController.Plugin.WaveEffect/WaveEffect.cs)
 * [SnakeEffect](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Effects/TTController.Plugin.SnakeEffect/SnakeEffect.cs)
-* [TemperatureEffect](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Effects/TTController.Plugin.TemperatureEffect/TemperatureEffect.cs)
+* [SensorEffect](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Effects/TTController.Plugin.SensorEffect/SensorEffect.cs)
 * [SoundEffect](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Effects/TTController.Plugin.SoundEffect/SoundEffect.cs)
 * [RawEffect](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Effects/TTController.Plugin.RawEffect/RawEffect.cs)
 
@@ -87,7 +87,13 @@ The source code also provides an easy way to write your own **speed controller**
 * [ProcessTrigger](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Triggers/TTController.Plugin.ProcessTrigger/ProcessTrigger.cs)
 * [PulseTrigger](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Triggers/TTController.Plugin.PulseTrigger/PulseTrigger.cs)
 * [LogicTrigger](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Triggers/TTController.Plugin.LogicTrigger/LogicTrigger.cs)
-* [TemperatureTrigger](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Triggers/TTController.Plugin.TemperatureTrigger/TemperatureTrigger.cs)
+* [SensorTrigger](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Triggers/TTController.Plugin.SensorTrigger/SensorTrigger.cs)
+
+### Devices
+* [RiingController](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Devices/TTController.Plugin.RiingController/RiingControllerDefinition.cs)
+* [RiingPlusController](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Devices/TTController.Plugin.RiingPlusController/RiingPlusControllerDefinition.cs)
+* [RiingTrioController](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Devices/TTController.Plugin.RiingTrioController/RiingTrioControllerDefinition.cs)
+* [DpsgController](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Devices/TTController.Plugin.DpsgController/DpsgControllerDefinition.cs)
 
 # Config
 
@@ -131,13 +137,14 @@ The source code also provides an easy way to write your own **speed controller**
       ]
     }
   ],
-  "PortConfig": [],
-  "CriticalTemperature": {
-    "/intelcpu/0/temperature/8": 90
-  },
-  "TemperatureTimerInterval": 250,
-  "DeviceSpeedTimerInterval": 2500,
-  "DeviceRgbTimerInterval": 32
+  "SensorConfigs": [
+    {
+      "Sensors": ["/intelcpu/0/temperature/8"],
+      "Config": {
+        "CriticalValue": 90
+      }
+    }
+  ]
 }
 ```
 
@@ -154,12 +161,12 @@ The source code also provides an easy way to write your own **speed controller**
   "List of port configs"
   "The values in this list are optional, if PortConfig for a port is not present"
   "the default values will be used"
-  "PortConfig": ["<PortConfig>"],
+  "PortConfigs": ["<PortConfig>"],
 
-  "Sensor -> Critical Temperature map"
-  "If the temperature of a sensor exceeds critical temperature"
-  "the speed on all ports is set to 100% ignoring speed controllers"
-  "CriticalTemperature": {},
+  "List of sensor configs"
+  "The values in this list are optional, if SensorConfig for a sesnor is not present"
+  "the default valuse will be used"
+  "SensorConfigs": ["<SensorConfig"],
 
   "Miliseconds between temperature updates"
   "TemperatureTimerInterval": "<int>",
@@ -172,20 +179,6 @@ The source code also provides an easy way to write your own **speed controller**
 
   "Miliseconds between log update when running in console mode"
   "LoggingTimerInterval": "<int>"
-}
-```
-
-##### Examples:
-```json
-{
-  "Profiles": ["..."],
-  "PortConfig": ["..."],
-  "CriticalTemperature": {
-    "/intelcpu/0/temperature/8": 90
-  },
-  "TemperatureTimerInterval": 250,
-  "DeviceSpeedTimerInterval": 2500,
-  "DeviceRgbTimerInterval": 32
 }
 ```
 
@@ -329,6 +322,7 @@ The source code also provides an easy way to write your own **speed controller**
 
   "Effect type, depends on the controller type"
   "If not set the rgb effect is not changed" 
+  "See show hardware info option for avaible effect types for each controller"
   "EffectType": "<string>",
 
   "List of LedColor that the effect should use."
@@ -388,12 +382,44 @@ The source code also provides an easy way to write your own **speed controller**
 ##### Examples:
 ```json
 {
-  "Key": [9802, 8101, 1],
-  "Value": {
+  "Ports": [[9802, 8101, 1]],
+  "Config": {
     "Name": "Top Left",
     "LedCount": 12,
+    "LedCountHandling": "Lerp",
     "LedRotation": 10,
     "LedReverse": true
+  }
+}
+```
+
+---
+
+
+### Sensor Config
+```json
+{
+  "List of sensor identifiers that this config applies to"
+  "Sensors": ["<string>"],
+
+  "Sensor config"
+  "Config": {
+    "If the value of the sensor exceeds this value"
+    "all fans will be set to 100% speed"
+    "CriticalValue": "<float>",
+
+    "Sensor value offset"
+    "Offset": "<float>"
+  }
+}
+```
+
+##### Examples:
+```json
+{
+  "Sensors": ["/intelcpu/0/temperature/8"],
+  "Config": {
+    "CriticalValue": 90
   }
 }
 ```
