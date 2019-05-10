@@ -2,7 +2,7 @@
 name: Service issue
 about: Crash or problem with the service
 title: ''
-labels: ''
+labels: ":beetle: bug"
 assignees: MoshiMoshi0
 
 ---
