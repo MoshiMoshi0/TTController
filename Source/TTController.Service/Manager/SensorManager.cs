@@ -36,8 +36,6 @@ namespace TTController.Service.Manager
             _hardware = new HashSet<IHardware>();
 
             _cacheInitialized = false;
-
-            EnableSensors(sensorConfigs.Keys);
         }
 
         public void Update()

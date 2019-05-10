@@ -55,12 +55,16 @@ namespace TTController.Service
 
             var alpha = Math.Exp(-_configManager.CurrentConfig.SensorTimerInterval / (double)_configManager.CurrentConfig.DeviceSpeedTimerInterval);
             var providerFactory = new MovingAverageSensorValueProviderFactory(alpha);
+            var sensorConfigs = _configManager.CurrentConfig.SensorConfigs
+                .SelectMany(x => x.Sensors.Select(s => (Sensor: s, Config: x.Config)))
+                .ToDictionary(x => x.Sensor, x => x.Config);
 
-            _sensorManager = new SensorManager(providerFactory, _cache.SensorConfigCache);
+            _sensorManager = new SensorManager(providerFactory, sensorConfigs);
             _effectManager = new EffectManager();
             _speedControllerManager = new SpeedControllerManager();
             _deviceManager = new DeviceManager();
 
+            _sensorManager.EnableSensors(sensorConfigs.Keys);
             foreach (var profile in _configManager.CurrentConfig.Profiles)
             {
                 foreach (var effect in profile.Effects)
