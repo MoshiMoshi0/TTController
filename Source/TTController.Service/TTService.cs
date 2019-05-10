@@ -241,8 +241,14 @@ namespace TTController.Service
         {
             var criticalState = _sensorManager.EnabledSensors.Any(s => {
                 var value = _cache.GetSensorValue(s);
+                if (float.IsNaN(value))
+                    return false;
+
                 var config = _cache.GetSensorConfig(s);
-                return !float.IsNaN(value) && config.CriticalValue.HasValue && value > config.CriticalValue;
+                if (config == null || config.CriticalValue == null)
+                    return false;
+
+                return value > config.CriticalValue;
             });
 
             foreach (var profile in _configManager.CurrentConfig.Profiles)
