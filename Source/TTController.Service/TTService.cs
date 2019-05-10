@@ -52,7 +52,6 @@ namespace TTController.Service
                 return false;
 
             _cache = new DataCache();
-            _configManager.Accept(_cache.AsWriteOnly());
 
             var alpha = Math.Exp(-_configManager.CurrentConfig.SensorTimerInterval / (double)_configManager.CurrentConfig.DeviceSpeedTimerInterval);
             var providerFactory = new MovingAverageSensorValueProviderFactory(alpha);
@@ -61,7 +60,6 @@ namespace TTController.Service
             _effectManager = new EffectManager();
             _speedControllerManager = new SpeedControllerManager();
             _deviceManager = new DeviceManager();
-            _deviceManager.Accept(_cache.AsWriteOnly());
 
             foreach (var profile in _configManager.CurrentConfig.Profiles)
             {
@@ -74,6 +72,10 @@ namespace TTController.Service
                 _sensorManager.EnableSensors(_speedControllerManager.GetSpeedControllers(profile.Guid)?.SelectMany(c => c.UsedSensors));
                 _sensorManager.EnableSensors(_effectManager.GetEffects(profile.Guid)?.SelectMany(e => e.UsedSensors));
             }
+
+            _sensorManager.Accept(_cache.AsWriteOnly());
+            _deviceManager.Accept(_cache.AsWriteOnly());
+            _configManager.Accept(_cache.AsWriteOnly());
 
             ApplyComputerStateProfile(ComputerStateType.Boot);
 
