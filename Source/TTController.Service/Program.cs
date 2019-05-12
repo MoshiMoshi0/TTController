@@ -74,7 +74,7 @@ namespace TTController.Service
                 {
                     Service?.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(15));
                 }
-                catch (Exception e)
+                catch
                 {
                     Console.WriteLine("Failed to start the service...");
                     Console.WriteLine("Press any key to return to the menu...");

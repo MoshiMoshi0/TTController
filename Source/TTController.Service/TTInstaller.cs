@@ -54,7 +54,7 @@ namespace TTController.Service
             {
                 if (sc.Status != ServiceControllerStatus.Stopped)
                 {
-                    Console.WriteLine("Shutting down service...");
+                    Console.WriteLine("Shutting down the service...");
                     sc.Stop();
                     sc.WaitForStatus(ServiceControllerStatus.Stopped);
                 }

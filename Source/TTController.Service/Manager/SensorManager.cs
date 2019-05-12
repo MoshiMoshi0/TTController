@@ -21,8 +21,6 @@ namespace TTController.Service.Manager
         private readonly Dictionary<Identifier, ISensorValueProvider> _sensorValueProviders;
         private readonly HashSet<IHardware> _hardware;
 
-        private bool _cacheInitialized;
-
         public IEnumerable<Identifier> EnabledSensors => _sensorValueProviders.Keys;
 
         public SensorManager(ISensorValueProviderFactory sensorValueProviderFactory, IReadOnlyDictionary<Identifier, SensorConfig> sensorConfigs)
@@ -34,8 +32,6 @@ namespace TTController.Service.Manager
             _openHardwareMonitorFacade = new OpenHardwareMonitorFacade();
             _sensorValueProviders = new Dictionary<Identifier, ISensorValueProvider>();
             _hardware = new HashSet<IHardware>();
-
-            _cacheInitialized = false;
         }
 
         public void Update()
@@ -67,8 +63,11 @@ namespace TTController.Service.Manager
             Logger.Info("Enabling sensor: {0}", sensor.Identifier);
 
             var sensorValueProvider = _sensorValueProviderFactory.Create(sensor);
-            if(_sensorConfigs.TryGetValue(identifier, out var config) && config.Offset.HasValue)
-                sensorValueProvider = new OffsetSensorValueDecorator(sensorValueProvider, config.Offset.Value);
+            if (_sensorConfigs.TryGetValue(identifier, out var config))
+            {
+                if (config.Offset.HasValue)
+                    sensorValueProvider = new OffsetSensorValueDecorator(sensorValueProvider, config.Offset.Value);
+            }
 
             _sensorValueProviders.Add(identifier, sensorValueProvider);
             _hardware.Add(sensor.Hardware);
@@ -114,13 +113,6 @@ namespace TTController.Service.Manager
 
         public void Accept(ICacheCollector collector)
         {
-            if (!_cacheInitialized)
-            {
-                _cacheInitialized = true;
-                foreach (var sensor in EnabledSensors)
-                    collector.StoreSensorConfig(sensor, SensorConfig.Default);
-            }
-
             foreach (var (sensor, provider) in _sensorValueProviders)
                 collector.StoreSensorValue(sensor, provider.Value());
         }
@@ -133,7 +125,7 @@ namespace TTController.Service.Manager
 
         private void Dispose(bool disposing)
         {
-            Logger.Info("Disposing SensorManager...");
+            Logger.Info("Disposing Sensor Manager...");
 
             _openHardwareMonitorFacade.Dispose();
             _sensorValueProviders.Clear();

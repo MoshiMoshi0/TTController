@@ -3,7 +3,6 @@
 namespace TTController.Service.Hardware.Sensor
 {
     public class MovingAverageSensorValueProviderFactory : ISensorValueProviderFactory
-
     {
         private readonly double _alpha;
 

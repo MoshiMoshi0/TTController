@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TTController.Service.Hardware.Sensor
+﻿namespace TTController.Service.Hardware.Sensor
 {
     public class OffsetSensorValueDecorator : AbstractSensorValueDecorator
     {

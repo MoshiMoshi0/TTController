@@ -4,7 +4,7 @@ namespace TTController.Service.Hardware.Sensor
 {
     public class SensorValueProvider : ISensorValueProvider
     {
-        protected float? CurrentValue { set; get; }
+        protected float? CurrentValue { get; set; }
         protected ISensor Sensor { get; }
 
         public SensorValueProvider(ISensor sensor)

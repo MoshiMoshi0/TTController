@@ -11,47 +11,43 @@ using TTController.Service.Utils;
 
 namespace TTController.Service.Manager
 {
-    public sealed class ConfigManager : IDataProvider, IDisposable
+    public sealed class ConfigManager : IDisposable
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly string _filename;
 
-        public ConfigData CurrentConfig { private set; get; }
+        public ConfigData CurrentConfig { get; private set; }
 
         public ConfigManager(string filename)
         {
             Logger.Info("Creating Config Manager...");
             _filename = filename;
 
-            JsonConvert.DefaultSettings = () =>
+            var jsonSettings = new JsonSerializerSettings()
             {
-                var settings = new JsonSerializerSettings()
-                {
-                    NullValueHandling = NullValueHandling.Ignore,
-                    DefaultValueHandling = DefaultValueHandling.Ignore,
-                    Formatting = Formatting.Indented,
-                    Culture = CultureInfo.InvariantCulture,
-                    ContractResolver = new ContractResolver()
-                };
-                settings.Error += (sender, args) =>
-                {
-                    if(args.CurrentObject == args.ErrorContext.OriginalObject)
-                        Logger.Fatal(args.ErrorContext.Error.Message);
-                };
+                NullValueHandling = NullValueHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Ignore,
+                Formatting = Formatting.Indented,
+                Culture = CultureInfo.InvariantCulture,
+                ContractResolver = new ContractResolver()
+            };
+            jsonSettings.Error += (sender, args) =>
+            {
+                if (args.CurrentObject == args.ErrorContext.OriginalObject)
+                    Logger.Fatal(args.ErrorContext.Error.Message);
+            };
 
-                var converters = typeof(JsonConverter).FindInAssemblies()
+            var converters = typeof(JsonConverter).FindInAssemblies()
                     .Where(t => t.Namespace?.StartsWith("TTController") ?? false)
                     .Where(t => !t.IsGenericType && !t.IsAbstract)
-                    .Select(t => (JsonConverter) Activator.CreateInstance(t));
+                    .Select(t => (JsonConverter)Activator.CreateInstance(t));
 
-                settings.Converters.Add(new StringEnumConverter());
+            jsonSettings.Converters.Add(new StringEnumConverter());
+            foreach (var converter in converters)
+                jsonSettings.Converters.Add(converter);
 
-                foreach (var converter in converters)
-                    settings.Converters.Add(converter);
-
-                return settings;
-            };
+            JsonConvert.DefaultSettings = () => jsonSettings;
         }
 
         public bool SaveConfig()
@@ -68,12 +64,11 @@ namespace TTController.Service.Manager
                     if (!(e is JsonWriterException))
                         Logger.Fatal(e);
 
-                    Logger.Fatal("Failed to save the config file!");
+                    Logger.Fatal("Failed to save config!");
                     return false;
                 }
             }
 
-            Logger.Info("Saving done...");
             return true;
         }
 
@@ -83,7 +78,7 @@ namespace TTController.Service.Manager
             var path = GetConfigAbsolutePath();
             if (!File.Exists(path))
             {
-                Logger.Warn("Config does not exist! Creating default config...");
+                Logger.Warn("Config does not exist! Creating default...");
                 CurrentConfig = ConfigData.CreateDefault();
                 SaveConfig();
             }
@@ -102,12 +97,11 @@ namespace TTController.Service.Manager
 
                 if (CurrentConfig == null)
                 {
-                    Logger.Fatal("Failed to load the config file!");
+                    Logger.Fatal("Failed to load the config!");
                     return false;
                 }
             }
 
-            Logger.Info("Loading done...");
             return true;
         }
 
@@ -115,17 +109,6 @@ namespace TTController.Service.Manager
         {
             var directory = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
             return Path.Combine(directory, _filename);
-        }
-
-        public void Accept(ICacheCollector collector)
-        {
-            foreach (var (ports, config) in CurrentConfig.PortConfigs)
-                foreach (var port in ports)
-                    collector.StorePortConfig(port, config);
-
-            foreach (var (sensors, config) in CurrentConfig.SensorConfigs)
-                foreach (var sensor in sensors)
-                    collector.StoreSensorConfig(sensor, config);
         }
 
         public void Dispose()
@@ -136,7 +119,7 @@ namespace TTController.Service.Manager
 
         private void Dispose(bool disposing)
         {
-            Logger.Info("Disposing ConfigManager...");
+            Logger.Info("Disposing Config Manager...");
 
             CurrentConfig = null;
         }

@@ -10,7 +10,7 @@ using TTController.Service.Utils;
 
 namespace TTController.Service.Manager
 {
-    public sealed class DeviceManager : IDataProvider, IDisposable
+    public sealed class DeviceManager : IDisposable
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -65,17 +65,8 @@ namespace TTController.Service.Manager
             _controllers = controllers;
         }
 
-        public IControllerProxy GetController(PortIdentifier port)
-        {
-            return _controllers.FirstOrDefault(c => c.IsValidPort(port));
-        }
-
-        public void Accept(ICacheCollector collector)
-        {
-            foreach (var controller in _controllers)
-                foreach (var port in controller.Ports)
-                    collector.StorePortConfig(port, PortConfig.Default);
-        }
+        public IControllerProxy GetController(PortIdentifier port) =>
+            _controllers.FirstOrDefault(c => c.IsValidPort(port));
 
         public void Dispose()
         {
@@ -85,13 +76,13 @@ namespace TTController.Service.Manager
 
         private void Dispose(bool disposing)
         {
-            Logger.Info("Disposing DeviceManager...");
+            Logger.Info("Disposing Device Manager...");
 
             var count = _devices.Count;
             foreach (var device in _devices)
                 device.Dispose();
 
-            Logger.Info("Disposed devices: {0}", count);
+            Logger.Debug("Disposed devices: {0}", count);
         }
     }
 }
