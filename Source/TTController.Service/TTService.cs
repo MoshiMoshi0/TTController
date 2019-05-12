@@ -52,17 +52,19 @@ namespace TTController.Service
                 return false;
 
             _cache = new DataCache();
-            _configManager.Accept(_cache.AsWriteOnly());
 
             var alpha = Math.Exp(-_configManager.CurrentConfig.SensorTimerInterval / (double)_configManager.CurrentConfig.DeviceSpeedTimerInterval);
             var providerFactory = new MovingAverageSensorValueProviderFactory(alpha);
+            var sensorConfigs = _configManager.CurrentConfig.SensorConfigs
+                .SelectMany(x => x.Sensors.Select(s => (Sensor: s, Config: x.Config)))
+                .ToDictionary(x => x.Sensor, x => x.Config);
 
-            _sensorManager = new SensorManager(providerFactory, _cache.SensorConfigCache);
+            _sensorManager = new SensorManager(providerFactory, sensorConfigs);
             _effectManager = new EffectManager();
             _speedControllerManager = new SpeedControllerManager();
             _deviceManager = new DeviceManager();
-            _deviceManager.Accept(_cache.AsWriteOnly());
 
+            _sensorManager.EnableSensors(sensorConfigs.Keys);
             foreach (var profile in _configManager.CurrentConfig.Profiles)
             {
                 foreach (var effect in profile.Effects)
@@ -74,6 +76,10 @@ namespace TTController.Service
                 _sensorManager.EnableSensors(_speedControllerManager.GetSpeedControllers(profile.Guid)?.SelectMany(c => c.UsedSensors));
                 _sensorManager.EnableSensors(_effectManager.GetEffects(profile.Guid)?.SelectMany(e => e.UsedSensors));
             }
+
+            _sensorManager.Accept(_cache.AsWriteOnly());
+            _deviceManager.Accept(_cache.AsWriteOnly());
+            _configManager.Accept(_cache.AsWriteOnly());
 
             ApplyComputerStateProfile(ComputerStateType.Boot);
 
@@ -241,8 +247,14 @@ namespace TTController.Service
         {
             var criticalState = _sensorManager.EnabledSensors.Any(s => {
                 var value = _cache.GetSensorValue(s);
+                if (float.IsNaN(value))
+                    return false;
+
                 var config = _cache.GetSensorConfig(s);
-                return !float.IsNaN(value) && config.CriticalValue.HasValue && value > config.CriticalValue;
+                if (config == null || config.CriticalValue == null)
+                    return false;
+
+                return value > config.CriticalValue;
             });
 
             foreach (var profile in _configManager.CurrentConfig.Profiles)

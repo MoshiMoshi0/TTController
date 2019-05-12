@@ -21,6 +21,8 @@ namespace TTController.Service.Manager
         private readonly Dictionary<Identifier, ISensorValueProvider> _sensorValueProviders;
         private readonly HashSet<IHardware> _hardware;
 
+        private bool _cacheInitialized;
+
         public IEnumerable<Identifier> EnabledSensors => _sensorValueProviders.Keys;
 
         public SensorManager(ISensorValueProviderFactory sensorValueProviderFactory, IReadOnlyDictionary<Identifier, SensorConfig> sensorConfigs)
@@ -33,7 +35,7 @@ namespace TTController.Service.Manager
             _sensorValueProviders = new Dictionary<Identifier, ISensorValueProvider>();
             _hardware = new HashSet<IHardware>();
 
-            EnableSensors(sensorConfigs.Keys);
+            _cacheInitialized = false;
         }
 
         public void Update()
@@ -112,6 +114,13 @@ namespace TTController.Service.Manager
 
         public void Accept(ICacheCollector collector)
         {
+            if (!_cacheInitialized)
+            {
+                _cacheInitialized = true;
+                foreach (var sensor in EnabledSensors)
+                    collector.StoreSensorConfig(sensor, SensorConfig.Default);
+            }
+
             foreach (var (sensor, provider) in _sensorValueProviders)
                 collector.StoreSensorValue(sensor, provider.Value());
         }
