@@ -29,6 +29,11 @@ namespace TTController.Service.Config.Converter
 
             foreach (JObject o in JArray.Load(reader))
             {
+                if (!o.ContainsKey(KeyName()))
+                    throw new JsonException($"Missing required property: \"{KeyName()}\"");
+                if (!o.ContainsKey(ValueName()))
+                    throw new JsonException($"Missing required property: \"{ValueName()}\"");
+
                 var key = ReadKey(o[KeyName()] as JProperty);
                 var value = ReadValue(o[ValueName()] as JProperty);
                 result.Add(key, value);
