@@ -36,7 +36,7 @@ namespace TTController.Service
                     Console.WriteLine("Press any key to return to the menu...");
                     Console.ReadKey(true);
                     return false;
-                }, () => Service != null && Service.Status != ServiceControllerStatus.Running);
+                }, () => Service == null || Service.Status != ServiceControllerStatus.Running);
                 menu.Add("Show hardware info", () => {
                     ShowHardwareInfo();
                     return false;
