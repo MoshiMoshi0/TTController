@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net471</TargetFramework>
+    <TargetFramework>net472</TargetFramework>
     <AssemblyTitle>TTController.Common</AssemblyTitle>
     <Product>TTController.Common</Product>
     <Copyright>Copyright ©  2018</Copyright>

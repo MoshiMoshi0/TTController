@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net471</TargetFramework>
+    <TargetFramework>net472</TargetFramework>
     <AssemblyTitle>TTController.Plugin.SensorEffect</AssemblyTitle>
     <Product>TTController.Plugin.SensorEffect</Product>
     <Copyright>Copyright ©  2019</Copyright>
