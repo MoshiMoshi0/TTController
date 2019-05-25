@@ -69,14 +69,15 @@ namespace TTController.Service
             void StartService()
             {
                 Console.WriteLine("Starting the service...");
-                Service?.Start();
                 try
                 {
+                    Service?.Start();
                     Service?.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(15));
                 }
-                catch
+                catch(Exception e)
                 {
                     Console.WriteLine("Failed to start the service...");
+                    Console.WriteLine(e);
                     Console.WriteLine("Press any key to return to the menu...");
                     Console.ReadKey(true);
                 }
