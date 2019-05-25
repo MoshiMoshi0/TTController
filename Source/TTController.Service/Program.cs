@@ -74,7 +74,7 @@ namespace TTController.Service
                     Service?.Start();
                     Service?.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(15));
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Console.WriteLine("Failed to start the service...");
                     Console.WriteLine(e);
@@ -102,15 +102,34 @@ namespace TTController.Service
             menu.Add("Uninstall", () => {
                 if(Service?.Status != ServiceControllerStatus.Stopped)
                     StopService();
-                ManagedInstallerClass.InstallHelper(new[]
-                    {"/u", "/LogFile=", "/LogToConsole=true", Assembly.GetExecutingAssembly().Location});
+
+                try
+                {
+                    ManagedInstallerClass.InstallHelper(new[]
+                        {"/u", "/LogFile=", "/LogToConsole=true", Assembly.GetExecutingAssembly().Location});
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Failed to uninstall the service...");
+                    Console.WriteLine(e);
+                }
+
                 Console.WriteLine("Press any key to return to the menu...");
                 Console.ReadKey(true);
                 return false;
             }, () => Service != null);
             menu.Add("Install", () => {
-                ManagedInstallerClass.InstallHelper(new[]
-                    {"/LogFile=", "/LogToConsole=true", Assembly.GetExecutingAssembly().Location});
+                try
+                {
+                    ManagedInstallerClass.InstallHelper(new[]
+                        {"/LogFile=", "/LogToConsole=true", Assembly.GetExecutingAssembly().Location});
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Failed to install the service...");
+                    Console.WriteLine(e);
+                }
+
                 Console.WriteLine("Press any key to return to the menu...");
                 Console.ReadKey(true);
                 return false;
