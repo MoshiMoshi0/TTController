@@ -165,7 +165,7 @@ The source code also provides an easy way to write your own **speed controller**
 
   "List of sensor configs"
   "The values in this list are optional, if SensorConfig for a sesnor is not present"
-  "the default valuse will be used"
+  "the default values will be used"
   "SensorConfigs": ["<SensorConfig"],
 
   "Miliseconds between temperature updates"
