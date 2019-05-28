@@ -15,6 +15,7 @@ namespace TTController.Plugin.RazerConnectEffect
 
         private readonly LedColor[] _colors;
         private readonly int[] _packedColors;
+        private readonly RzBroadcastCallback _callback;
 
         private bool _connected;
 
@@ -32,7 +33,9 @@ namespace TTController.Plugin.RazerConnectEffect
                 var init = RzChromaBroadcastNative.Init(Guid.Parse("b0ecdaf9-26b2-d33f-f046-1c44ce64eb58"));
                 if (init == RzResult.SUCCESS)
                 {
-                    var register = RzChromaBroadcastNative.RegisterEventNotification(BroadcastCallback);
+                    _callback = new RzBroadcastCallback(BroadcastCallback);
+
+                    var register = RzChromaBroadcastNative.RegisterEventNotification(_callback);
                     if (register == RzResult.SUCCESS)
                         _connected = true;
                 }

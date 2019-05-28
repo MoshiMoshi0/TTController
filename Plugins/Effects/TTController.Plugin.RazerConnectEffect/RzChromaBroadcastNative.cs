@@ -13,6 +13,9 @@ namespace TTController.Plugin.RazerConnectEffect
         SUCCESS = 0
     }
 
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate int RzBroadcastCallback(int message, IntPtr data);
+
     public static class RzChromaBroadcastNative
     {
         private static IntPtr _dllHandle;
@@ -56,9 +59,6 @@ namespace TTController.Plugin.RazerConnectEffect
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         private delegate RzResult UnRegisterEventNotificationPointer();
-
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate int RzBroadcastCallback(int message, IntPtr data);
 
         internal static RzResult Init(Guid guid)
         {
