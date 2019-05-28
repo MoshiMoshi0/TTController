@@ -17,16 +17,21 @@ namespace TTController.Plugin.RazerConnectEffect
     {
         private static IntPtr _dllHandle;
 
-        public static void Load()
+        public static bool Load()
         {
             if (_dllHandle != IntPtr.Zero)
-                return;
+                return true;
 
             _dllHandle = LoadLibrary("RzChromaBroadcastAPI.dll");
+            if (_dllHandle == IntPtr.Zero)
+                return false;
+
             _initPointer = (InitPointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "Init"), typeof(InitPointer));
             _unInitPointer = (UnInitPointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "UnInit"), typeof(UnInitPointer));
             _registerEventNotificationPointer = (RegisterEventNotificationPointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "RegisterEventNotification"), typeof(RegisterEventNotificationPointer));
             _unRegisterEventNotificationPointer = (UnRegisterEventNotificationPointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "UnRegisterEventNotification"), typeof(UnRegisterEventNotificationPointer));
+
+            return true;
         }
 
         public static void UnLoad()

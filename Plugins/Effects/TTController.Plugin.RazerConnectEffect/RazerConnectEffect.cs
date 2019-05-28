@@ -27,13 +27,15 @@ namespace TTController.Plugin.RazerConnectEffect
             _colors = new LedColor[BroadcastColorCount];
             _packedColors = new int[BroadcastColorCount];
 
-            RzChromaBroadcastNative.Load();
-            var init = RzChromaBroadcastNative.Init(Guid.Parse("b0ecdaf9-26b2-d33f-f046-1c44ce64eb58"));
-            if (init == RzResult.SUCCESS)
+            if (RzChromaBroadcastNative.Load())
             {
-                var register = RzChromaBroadcastNative.RegisterEventNotification(BroadcastCallback);
-                if (register == RzResult.SUCCESS)
-                    _connected = true;
+                var init = RzChromaBroadcastNative.Init(Guid.Parse("b0ecdaf9-26b2-d33f-f046-1c44ce64eb58"));
+                if (init == RzResult.SUCCESS)
+                {
+                    var register = RzChromaBroadcastNative.RegisterEventNotification(BroadcastCallback);
+                    if (register == RzResult.SUCCESS)
+                        _connected = true;
+                }
             }
         }
 
