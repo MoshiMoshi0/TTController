@@ -76,7 +76,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.SensorT
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.SensorEffect", "Plugins\Effects\TTController.Plugin.SensorEffect\TTController.Plugin.SensorEffect.csproj", "{EE45FA25-50FB-42E8-8523-4868D34C5659}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.RazerConnectEffect", "Plugins\Effects\TTController.Plugin.RazerConnectEffect\TTController.Plugin.RazerConnectEffect.csproj", "{847D9772-60D9-4D18-B662-FC9994C3B567}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.RazerConnectEffect", "Plugins\Effects\TTController.Plugin.RazerConnectEffect\TTController.Plugin.RazerConnectEffect.csproj", "{847D9772-60D9-4D18-B662-FC9994C3B567}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
