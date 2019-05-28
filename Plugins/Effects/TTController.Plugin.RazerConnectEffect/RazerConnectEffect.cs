@@ -7,9 +7,9 @@ using TTController.Common.Plugin;
 
 namespace TTController.Plugin.RazerConnectEffect
 {
-    public class RazerConnectConfig : EffectConfigBase { }
+    public class RazerConnectEffectConfig : EffectConfigBase { }
 
-    public class RazerConnectEffect : EffectBase<RazerConnectConfig>
+    public class RazerConnectEffect : EffectBase<RazerConnectEffectConfig>
     {
         private readonly int BroadcastColorCount = 5;
 
@@ -21,7 +21,7 @@ namespace TTController.Plugin.RazerConnectEffect
         public override string EffectType => "ByLed";
         public override bool IsEnabled(ICacheProvider cache) => base.IsEnabled(cache) && _connected;
 
-        public RazerConnectEffect(RazerConnectConfig config) : base(config)
+        public RazerConnectEffect(RazerConnectEffectConfig config) : base(config)
         {
             _connected = false;
             _colors = new LedColor[BroadcastColorCount];
