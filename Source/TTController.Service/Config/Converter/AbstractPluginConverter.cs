@@ -32,9 +32,7 @@ namespace TTController.Service.Config.Converter
                 throw new JsonException($"Invalid plugin name \"{pluginTypeName}\"");
             }
 
-            var configType = typeof(TConfig).FindInAssemblies()
-                .First(t => string.CompareOrdinal(t.Name, configTypeName) == 0);
-
+            var configType = pluginType.BaseType.GetGenericArguments().First();
             var configJson = configProperty != null ? configProperty.ToString() : "";
             var config = (TConfig) JsonConvert.DeserializeObject(configJson, configType);
 
