@@ -52,7 +52,7 @@ namespace TTController.Plugin.RazerConnectEffect
 
                     for (var i = 0; i < BroadcastColorCount; i++)
                     {
-                        _colors[i].R = (byte)((_packedColors[i] >> 0) & 0xf);
+                        _colors[i].R = (byte)((_packedColors[i] >> 0) & 0xff);
                         _colors[i].G = (byte)((_packedColors[i] >> 8) & 0xff);
                         _colors[i].B = (byte)((_packedColors[i] >> 16) & 0xff);
                     }
