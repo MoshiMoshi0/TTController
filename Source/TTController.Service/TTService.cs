@@ -391,7 +391,7 @@ namespace TTController.Service
                             break;
                         case LedCountHandling.Copy:
                             while (config.LedCount > colors.Count)
-                                colors.AddRange(colors.Take(config.LedCount - colors.Count));
+                                colors.AddRange(colors.Take(config.LedCount - colors.Count).ToList());
                             break;
                         case LedCountHandling.DoNothing:
                         default:
