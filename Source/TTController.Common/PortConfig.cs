@@ -6,6 +6,8 @@ namespace TTController.Common
     {
         DoNothing,
         Lerp,
+        Nearest,
+        Wrap,
         Trim,
         Copy
     }

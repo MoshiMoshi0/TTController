@@ -362,6 +362,29 @@ namespace TTController.Service
                                 colors = newColors;
                                 break;
                             }
+                        case LedCountHandling.Nearest:
+                            {
+                                if (config.LedCount == colors.Count)
+                                    break;
+
+                                var newColors = new List<LedColor>();
+                                for (var i = 0; i < config.LedCount; i++) {
+                                    var idx = (int)Math.Round((i / (config.LedCount - 1d)) * (colors.Count - 1d));
+                                    newColors.Add(colors[i]);
+                                }
+
+                                colors = newColors;
+                                break;
+                            }
+                        case LedCountHandling.Wrap:
+                            if (config.LedCount < colors.Count)
+                                break;
+
+                            var remainder = colors.Count % config.LedCount;
+                            colors = colors.Skip(colors.Count - remainder)
+                                .Concat(colors.Take(colors.Count - remainder).Skip(colors.Count - config.LedCount))
+                                .ToList();
+                            break;
                         case LedCountHandling.Trim:
                             if (config.LedCount < colors.Count)
                                 colors.RemoveRange(config.LedCount, colors.Count - config.LedCount);
