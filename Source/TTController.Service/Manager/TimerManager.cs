@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
+using System.Threading.Tasks;
 using NLog;
 
 namespace TTController.Service.Manager
@@ -55,11 +56,10 @@ namespace TTController.Service.Manager
 
         private void Dispose(bool disposing)
         {
-            Logger.Info("Disposing TimerManager...");
+            Logger.Info("Disposing Timer Manager...");
 
             Logger.Info("Stopping {0} timers...", _timers.Count);
-            foreach (var timer in _timers)
-                timer.Stop();
+            Parallel.ForEach(_timers, t => t.Stop());
 
             _timers.Clear();
         }

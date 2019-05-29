@@ -13,17 +13,26 @@ namespace TTController.Service.Config.Converter
             var o = JToken.ReadFrom(reader) as JObject;
 
             var typeProperty = o.GetValue("Type");
+            if(typeProperty == null)
+                throw new JsonException("Missing required property: \"Type\"");
+
             var configProperty = o.GetValue("Config");
 
             var pluginTypeName = typeProperty.ToString();
             var configTypeName = $"{pluginTypeName}Config";
 
-            var pluginType = typeof(TPlugin).FindInAssemblies()
-                .First(t => string.CompareOrdinal(t.Name, pluginTypeName) == 0);
+            Type pluginType;
+            try
+            {
+                pluginType = typeof(TPlugin).FindInAssemblies()
+                    .First(t => string.CompareOrdinal(t.Name, pluginTypeName) == 0);
+            }
+            catch
+            {
+                throw new JsonException($"Invalid plugin name \"{pluginTypeName}\"");
+            }
 
-            var configType = typeof(TConfig).FindInAssemblies()
-                .First(t => string.CompareOrdinal(t.Name, configTypeName) == 0);
-
+            var configType = pluginType.BaseType.GetGenericArguments().First();
             var configJson = configProperty != null ? configProperty.ToString() : "";
             var config = (TConfig) JsonConvert.DeserializeObject(configJson, configType);
 

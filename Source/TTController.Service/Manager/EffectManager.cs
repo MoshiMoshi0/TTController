@@ -43,14 +43,14 @@ namespace TTController.Service.Manager
 
         private void Dispose(bool disposing)
         {
-            Logger.Info("Disposing EffectManager...");
+            Logger.Info("Disposing Effect Manager...");
 
             var count = _effectsGuidMap.Values.Sum(l => l.Count);
             foreach (var effects in _effectsGuidMap.Values)
                 foreach (var effect in effects)
                     effect.Dispose();
 
-            Logger.Info("Disposed effects: {0}", count);
+            Logger.Debug("Disposed effects: {0}", count);
 
             _effectsGuidMap.Clear();
         }

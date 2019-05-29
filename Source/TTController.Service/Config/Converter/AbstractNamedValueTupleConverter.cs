@@ -1,10 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TTController.Service.Config.Converter
 {
@@ -24,6 +20,11 @@ namespace TTController.Service.Config.Converter
             JsonSerializer serializer)
         {
             var o = JObject.Load(reader);
+
+            if (!o.ContainsKey(KeyName()))
+                throw new JsonException($"Missing required property: \"{KeyName()}\"");
+            if (!o.ContainsKey(ValueName()))
+                throw new JsonException($"Missing required property: \"{ValueName()}\"");
 
             var v1 = (T1) JsonConvert.DeserializeObject(o[KeyName()].ToString(), typeof(T1));
             var v2 = (T2) JsonConvert.DeserializeObject(o[ValueName()].ToString(), typeof(T2));

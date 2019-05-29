@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
-    <AssemblyTitle>TTController.Plugin.AlwaysTrigger</AssemblyTitle>
-    <Product>TTController.Plugin.AlwaysTrigger</Product>
+    <AssemblyTitle>TTController.Plugin.RazerConnectEffect</AssemblyTitle>
+    <Product>TTController.Plugin.RazerConnectEffect</Product>
     <Copyright>Copyright ©  2019</Copyright>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>

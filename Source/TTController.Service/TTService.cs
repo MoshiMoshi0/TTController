@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.ServiceProcess;
 using NLog;
 using TTController.Common;
+using TTController.Common.Plugin;
 using TTController.Service.Config.Data;
 using TTController.Service.Hardware.Sensor;
 using TTController.Service.Manager;
@@ -68,18 +67,32 @@ namespace TTController.Service
             foreach (var profile in _configManager.CurrentConfig.Profiles)
             {
                 foreach (var effect in profile.Effects)
+                {
                     _effectManager.Add(profile.Guid, effect);
+                    _sensorManager.EnableSensors(effect.UsedSensors);
+                }
 
                 foreach (var speedController in profile.SpeedControllers)
+                {
                     _speedControllerManager.Add(profile.Guid, speedController);
-
-                _sensorManager.EnableSensors(_speedControllerManager.GetSpeedControllers(profile.Guid)?.SelectMany(c => c.UsedSensors));
-                _sensorManager.EnableSensors(_effectManager.GetEffects(profile.Guid)?.SelectMany(e => e.UsedSensors));
+                    _sensorManager.EnableSensors(speedController.UsedSensors);
+                }
             }
 
-            _sensorManager.Accept(_cache.AsWriteOnly());
-            _deviceManager.Accept(_cache.AsWriteOnly());
-            _configManager.Accept(_cache.AsWriteOnly());
+            foreach (var sensor in _sensorManager.EnabledSensors)
+                _cache.StoreSensorConfig(sensor, SensorConfig.Default);
+
+            foreach (var controller in _deviceManager.Controllers)
+                foreach (var port in controller.Ports)
+                    _cache.StorePortConfig(port, PortConfig.Default);
+
+            foreach (var (ports, config) in _configManager.CurrentConfig.PortConfigs)
+                foreach (var port in ports)
+                    _cache.StorePortConfig(port, config);
+
+            foreach (var (sensors, config) in _configManager.CurrentConfig.SensorConfigs)
+                foreach (var sensor in sensors)
+                    _cache.StoreSensorConfig(sensor, config);
 
             ApplyComputerStateProfile(ComputerStateType.Boot);
 
@@ -140,6 +153,7 @@ namespace TTController.Service
             switch (powerStatus)
             {
                 case PowerBroadcastStatus.QuerySuspendFailed:
+                    Logger.Warn("System failed to enter Suspend state!");
                     OnStart(null);
                     break;
 
@@ -195,7 +209,7 @@ namespace TTController.Service
             Dispose();
             IsDisposed = true;
 
-            Logger.Info("Disposing done!");
+            Logger.Info("Finalizing done!");
             Logger.Info($"{new string('=', 64)}");
         }
 
@@ -213,6 +227,7 @@ namespace TTController.Service
             Logger.Info("Applying computer state profile: {0}", state);
             lock (_deviceManager)
             {
+                var dirtyControllers = new HashSet<IControllerProxy>();
                 foreach (var profile in _configManager.CurrentConfig.ComputerStateProfiles.Where(p => p.StateType == state))
                 {
                     foreach (var port in profile.Ports)
@@ -228,10 +243,13 @@ namespace TTController.Service
                         if (effectByte.HasValue && profile.EffectColors != null)
                             controller.SetRgb(port.Id, effectByte.Value, profile.EffectColors);
 
-                        if(state == ComputerStateType.Boot && (profile.Speed.HasValue || effectByte.HasValue))
-                            controller.SaveProfile();
+                        if (state == ComputerStateType.Boot && (profile.Speed.HasValue || effectByte.HasValue))
+                            dirtyControllers.Add(controller);
                     }
                 }
+
+                foreach(var controller in dirtyControllers)
+                    controller.SaveProfile();
             }
         }
 
@@ -344,6 +362,29 @@ namespace TTController.Service
                                 colors = newColors;
                                 break;
                             }
+                        case LedCountHandling.Nearest:
+                            {
+                                if (config.LedCount == colors.Count)
+                                    break;
+
+                                var newColors = new List<LedColor>();
+                                for (var i = 0; i < config.LedCount; i++) {
+                                    var idx = (int)Math.Round((i / (config.LedCount - 1d)) * (colors.Count - 1d));
+                                    newColors.Add(colors[i]);
+                                }
+
+                                colors = newColors;
+                                break;
+                            }
+                        case LedCountHandling.Wrap:
+                            if (config.LedCount < colors.Count)
+                                break;
+
+                            var remainder = colors.Count % config.LedCount;
+                            colors = colors.Skip(colors.Count - remainder)
+                                .Concat(colors.Take(colors.Count - remainder).Skip(colors.Count - config.LedCount))
+                                .ToList();
+                            break;
                         case LedCountHandling.Trim:
                             if (config.LedCount < colors.Count)
                                 colors.RemoveRange(config.LedCount, colors.Count - config.LedCount);

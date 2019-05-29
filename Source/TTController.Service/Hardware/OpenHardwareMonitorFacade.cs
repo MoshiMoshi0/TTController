@@ -1,8 +1,9 @@
 ﻿using NLog;
 using OpenHardwareMonitor.Hardware;
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using TTController.Service.Utils;
 
 namespace TTController.Service.Hardware
 {
@@ -17,7 +18,7 @@ namespace TTController.Service.Hardware
 
         public OpenHardwareMonitorFacade()
         {
-            Logger.Info("Creating Open Hardware Monitor Proxy...");
+            Logger.Info("Initializing Open Hardware Monitor...");
 
             _sensors = new List<ISensor>();
             _computer = new Computer()
@@ -36,7 +37,7 @@ namespace TTController.Service.Hardware
                 Logger.Trace("Valid sensor identifier: {0}", sensor.Identifier);
             }));
 
-            Logger.Info("Detected sensors: {0}", _sensors.Count);
+            Logger.Debug("Detected {0} sensors", _sensors.Count);
         }
 
         public void Dispose()
@@ -47,7 +48,7 @@ namespace TTController.Service.Hardware
 
         private void Dispose(bool disposing)
         {
-            Logger.Info("Disposing Open Hardware Monitor Proxy...");
+            Logger.Info("Finalizing Open Hardware Monitor...");
 
             _computer?.Close();
             _sensors.Clear();

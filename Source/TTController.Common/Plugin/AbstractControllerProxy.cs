@@ -26,5 +26,20 @@ namespace TTController.Common.Plugin
         public abstract void SaveProfile();
         public abstract bool Init();
         public abstract bool IsValidPort(PortIdentifier port);
+
+        public override bool Equals(object obj)
+        {
+            return obj is AbstractControllerProxy other
+                   && VendorId == other.VendorId
+                   && ProductId == other.ProductId;
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = -810527825;
+            hashCode = hashCode * -1521134295 + VendorId.GetHashCode();
+            hashCode = hashCode * -1521134295 + ProductId.GetHashCode();
+            return hashCode;
+        }
     }
 }
