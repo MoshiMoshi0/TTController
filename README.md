@@ -1,11 +1,9 @@
 <p align="center"><img src="Assets\logo-512.png" alt="logo" width="192"/><br/><h1 align="center"><b>TTController</b></h1></p>
 
 
-<a href="https://github.com/MoshiMoshi0/TTController/releases/latest">
-<img alt="download" src="https://img.shields.io/github/tag-date/MoshiMoshi0/ttcontroller.svg?color=green&label=download&style=flat"></a>
-<a href="https://paypal.me/MoshiMoshi0">
+<a href="https://github.com/MoshiMoshi0/TTController/releases/latest"><img alt="download" src="https://img.shields.io/github/tag-date/MoshiMoshi0/ttcontroller.svg?color=green&label=download&style=flat"></a>
 <img alt="downloads" src="https://img.shields.io/github/downloads/MoshiMoshi0/TTController/total.svg?color=yellow">
-<img alt="donate" src="https://img.shields.io/badge/donate-paypal-blue.svg?style=flat"></a>
+<a href="https://paypal.me/MoshiMoshi0"><img alt="donate" src="https://img.shields.io/badge/donate-paypal-blue.svg?style=flat"></a>
 <br/><br/>
 
 
