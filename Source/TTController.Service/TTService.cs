@@ -370,7 +370,7 @@ namespace TTController.Service
                                 var newColors = new List<LedColor>();
                                 for (var i = 0; i < config.LedCount; i++) {
                                     var idx = (int)Math.Round((i / (config.LedCount - 1d)) * (colors.Count - 1d));
-                                    newColors.Add(colors[i]);
+                                    newColors.Add(colors[idx]);
                                 }
 
                                 colors = newColors;
