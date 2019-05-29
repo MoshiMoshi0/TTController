@@ -4,9 +4,9 @@ namespace TTController.Common
 {
     public struct LedColor
     {
-        public byte R { get; }
-        public byte G { get; }
-        public byte B { get; }
+        public byte R { get; set; }
+        public byte G { get; set; }
+        public byte B { get; set; }
 
         public LedColor(byte r, byte g, byte b)
         {
