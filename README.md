@@ -1,4 +1,13 @@
-<p align="center"><img src="Assets\logo-512.png" alt="logo" width="192"/></p>
+<p align="center"><img src="Assets\logo-512.png" alt="logo" width="192"/><br/><h1 align="center"><b>TTController</b></h1></p>
+
+
+<a href="https://github.com/MoshiMoshi0/TTController/releases/latest">
+<img alt="download" src="https://img.shields.io/github/tag-date/MoshiMoshi0/ttcontroller.svg?color=green&label=download&style=flat"></a>
+<a href="https://paypal.me/MoshiMoshi0">
+<img alt="downloads" src="https://img.shields.io/github/downloads/MoshiMoshi0/TTController/total.svg?color=yellow">
+<img alt="donate" src="https://img.shields.io/badge/donate-paypal-blue.svg?style=flat"></a>
+<br/><br/>
+
 
 This is home to TTController, a windows service for controlling various Thermaltake RGB Plus devices. 
 
@@ -6,9 +15,6 @@ It allows you to fully customize them by using **speed controllers**, which cont
 
 The source code also provides an easy way to write your own **speed controller**, **effect** or **trigger**.
 
----
-<a href="https://github.com/MoshiMoshi0/TTController/releases/latest">
-<img alt="undefined" src="https://img.shields.io/github/tag-date/MoshiMoshi0/ttcontroller.svg?colorB=blue&label=release&style=flat"></a>
 <br/><br/>
 
 # Quick start
