@@ -1,4 +1,4 @@
-<p align="center"><img src="Assets\logo-512.png" alt="logo" width="192"/><br/><h1 align="center"><b>TTController</b></h1></p>
+<p align="center"><img src="Assets\logo-512.png" alt="logo" width="256"/><br/><h1 align="center"><b>TTController</b></h1></p>
 
 
 <a href="https://github.com/MoshiMoshi0/TTController/releases/latest"><img alt="download" src="https://img.shields.io/github/tag-date/MoshiMoshi0/ttcontroller.svg?color=green&label=download&style=flat"></a>
