@@ -370,7 +370,7 @@ namespace TTController.Service
                                 var newColors = new List<LedColor>();
                                 for (var i = 0; i < config.LedCount; i++) {
                                     var idx = (int)Math.Round((i / (config.LedCount - 1d)) * (colors.Count - 1d));
-                                    newColors.Add(colors[i]);
+                                    newColors.Add(colors[idx]);
                                 }
 
                                 colors = newColors;
@@ -391,7 +391,7 @@ namespace TTController.Service
                             break;
                         case LedCountHandling.Copy:
                             while (config.LedCount > colors.Count)
-                                colors.AddRange(colors.Take(config.LedCount - colors.Count));
+                                colors.AddRange(colors.Take(config.LedCount - colors.Count).ToList());
                             break;
                         case LedCountHandling.DoNothing:
                         default:
