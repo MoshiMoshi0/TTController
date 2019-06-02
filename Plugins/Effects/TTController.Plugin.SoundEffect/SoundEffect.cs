@@ -16,7 +16,6 @@ namespace TTController.Plugin.SoundEffect
         [DefaultValue(10000)] public int MaximumFrequency { get; private set; } = 10000;
         [DefaultValue(ScalingStrategy.Sqrt)] public ScalingStrategy ScalingStrategy { get; private set; } = ScalingStrategy.Sqrt;
         [DefaultValue(2.0)] public double ScalingFactor { get; private set; } = 2.0;
-        [DefaultValue(ColorGenerationMethod.SpanPorts)] public ColorGenerationMethod ColorGenerationMethod { get; private set; } = ColorGenerationMethod.SpanPorts;
         public LedColorGradient ColorGradient { get; private set; } = new LedColorGradient();
     }
 
