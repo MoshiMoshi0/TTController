@@ -291,7 +291,7 @@ namespace TTController.Service
             menu.Add("Report", () => {
                 Console.Clear();
                 ListControllers();
-                ListSensors();
+                ListSensors(SensorType.Temperature);
                 ListPlugins();
                 WaitForInput();
                 return false;
