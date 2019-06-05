@@ -27,6 +27,8 @@ The source code also provides an easy way to write your own **speed controller**
 
 > The service will start automatically and will create a default empty config. See **Configure** section on how to configure it.
 
+> A quick test to see if the service is working is to use `Main Menu -> Debug -> Report` menu, it should list all detected controllers, sensors and plugins. 
+
 ### Configure
 
 * If the service is running
@@ -34,7 +36,7 @@ The source code also provides an easy way to write your own **speed controller**
 * Edit the **config.json** file located in the same directory as **TTController.Service.exe**
 * Start the service using either **Manage Service** menu, **services.msc** or **net start**
 
-> You can use **Show hardware info** option from the commandline menu to determine what controllers are detected and find out your port and temperature sensor identifiers to be used in **config.json**.
+> You can use `Main Menu -> Debug -> Controllers` menu to find your port identifiers, and `Main Menu -> Debug -> Sensors` menu to find your sensor identifiers to be used in **config.json**.
 
 ### Uninstall
 
@@ -330,7 +332,7 @@ The source code also provides an easy way to write your own **speed controller**
 
   "Effect type, depends on the controller type"
   "If not set the rgb effect is not changed" 
-  "See show hardware info option for avaible effect types for each controller"
+  "See \"Main Menu -> Debug -> Controllers\" for avaible effect types for each controller"
   "EffectType": "<string>",
 
   "List of LedColor that the effect should use."
