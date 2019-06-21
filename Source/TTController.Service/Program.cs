@@ -17,8 +17,7 @@ namespace TTController.Service
 {
     internal static class Program
     {
-        private static ServiceController Service => ServiceController.GetServices()
-            .FirstOrDefault(s => s.ServiceName.Equals(TTInstaller.ServiceName));
+        private static ServiceController Service { get; set; }
 
         private static void Main(string[] args)
         {
@@ -343,6 +342,9 @@ namespace TTController.Service
 
             public MenuOption Show()
             {
+                Service = ServiceController.GetServices()
+                    .FirstOrDefault(s => s.ServiceName.Equals(TTInstaller.ServiceName));
+
                 if (_header != null)
                 {
                     Console.ForegroundColor = ConsoleColor.White;
