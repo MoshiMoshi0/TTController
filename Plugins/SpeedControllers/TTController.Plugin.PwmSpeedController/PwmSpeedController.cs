@@ -32,6 +32,9 @@ namespace TTController.Plugin.PwmSpeedController
             else if (Config.SensorMixFunction == SensorMixFunction.Maximum)
                 value = values.Max();
 
+            if (float.IsNaN(value))
+                return ports.ToDictionary(p => p, _ => (byte) 100);
+
             byte curveTargetSpeed = 100;
             for (var i = 0; i <= Config.CurvePoints.Count; i++)
             {
