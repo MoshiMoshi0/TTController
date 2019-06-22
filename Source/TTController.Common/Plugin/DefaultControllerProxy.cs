@@ -66,6 +66,9 @@ namespace TTController.Common.Plugin
             if (result == null)
                 return null;
 
+            if (result[3] == 0xfe)
+                return null;
+
             var data = new PortData
             {
                 PortId = result[3],
