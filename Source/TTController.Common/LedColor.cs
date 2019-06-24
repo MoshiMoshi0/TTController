@@ -44,12 +44,15 @@ namespace TTController.Common
             var max = Math.Max(color.R, Math.Max(color.G, color.B));
             var min = Math.Min(color.R, Math.Min(color.G, color.B));
 
-            var delta = (double)(max - min);
+            var delta = max - min;
 
             var hue = 0d;
-            if(color.R == max) hue = (color.G - color.B) / delta;
-            else if (color.G == max) hue = 2d + (color.B - color.R) / delta;
-            else if (color.B == max) hue = 4d + (color.R - color.G) / delta;
+            if (delta != 0)
+            {
+                if (color.R == max) hue = (color.G - color.B) / (double)delta;
+                else if (color.G == max) hue = 2d + (color.B - color.R) / (double)delta;
+                else if (color.B == max) hue = 4d + (color.R - color.G) / (double)delta;
+            }
 
             hue *= 60;
             if (hue < 0.0) hue += 360;

@@ -34,7 +34,29 @@ namespace TTController.Plugin.WaveEffect
                 _colors.RemoveLast();
             }
 
-            return ports.ToDictionary(p => p, _ => _colors.ToList());
+            if (Config.ColorGenerationMethod == ColorGenerationMethod.PerPort)
+            {
+                return ports.ToDictionary(p => p, _ => _colors.ToList());
+            }
+            else if(Config.ColorGenerationMethod == ColorGenerationMethod.SpanPorts)
+            {
+                var result = new Dictionary<PortIdentifier, List<LedColor>>();
+
+                var offset = 0;
+                foreach(var port in ports)
+                {
+                    var config = cache.GetPortConfig(port);
+                    if (config == null)
+                        continue;
+
+                    result.Add(port, _colors.Skip(offset).Take(config.LedCount).ToList());
+                    offset += config.LedCount;
+                }
+
+                return result;
+            }
+
+            return null;
         }
     }
 }

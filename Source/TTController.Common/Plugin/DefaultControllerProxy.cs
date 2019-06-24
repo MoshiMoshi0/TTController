@@ -10,33 +10,7 @@ namespace TTController.Common.Plugin
         public DefaultControllerProxy(IHidDeviceProxy device, IControllerDefinition definition)
             : base(device, definition)
         {
-            var effectModes = new Dictionary<string, byte>()
-            {
-                ["Flow"] = 0x00,
-                ["Spectrum"] = 0x04,
-                ["Ripple"] = 0x08,
-                ["Blink"] = 0x0c,
-                ["Pulse"] = 0x10,
-                ["Wave"] = 0x14,
-            };
-
-            var effectSpeeds = new Dictionary<string, byte>()
-            {
-                ["Extreme"] = 0x00,
-                ["Fast"] = 0x01,
-                ["Normal"] = 0x02,
-                ["Slow"] = 0x03
-            };
-
-            var result = new Dictionary<string, byte>();
-            foreach (var mkv in effectModes)
-                foreach (var skv in effectSpeeds)
-                    result.Add($"{mkv.Key}_{skv.Key}", (byte)(mkv.Value + skv.Value));
-
-            result.Add("ByLed", 0x18);
-            result.Add("Full", 0x19);
-
-            _availableEffects = result;
+            _availableEffects = GenerateAvailableEffects();
         }
 
         public override IEnumerable<PortIdentifier> Ports => Enumerable.Range(1, Definition.PortCount)
@@ -64,6 +38,9 @@ namespace TTController.Common.Plugin
         {
             var result = Device.WriteReadBytes(0x33, 0x51, port);
             if (result == null)
+                return null;
+
+            if (result[3] == 0xfe)
                 return null;
 
             var data = new PortData
@@ -95,5 +72,36 @@ namespace TTController.Common.Plugin
             && port.ControllerVendorId == Device.VendorId
             && port.Id >= 1
             && port.Id <= Definition.PortCount;
+
+        protected virtual Dictionary<string, byte> GenerateAvailableEffects()
+        {
+            var effectModes = new Dictionary<string, byte>()
+            {
+                ["Flow"] = 0x00,
+                ["Spectrum"] = 0x04,
+                ["Ripple"] = 0x08,
+                ["Blink"] = 0x0c,
+                ["Pulse"] = 0x10,
+                ["Wave"] = 0x14,
+            };
+
+            var effectSpeeds = new Dictionary<string, byte>()
+            {
+                ["Extreme"] = 0x00,
+                ["Fast"] = 0x01,
+                ["Normal"] = 0x02,
+                ["Slow"] = 0x03
+            };
+
+            var result = new Dictionary<string, byte>();
+            foreach (var mkv in effectModes)
+                foreach (var skv in effectSpeeds)
+                    result.Add($"{mkv.Key}_{skv.Key}", (byte)(mkv.Value + skv.Value));
+
+            result.Add("ByLed", 0x18);
+            result.Add("Full", 0x19);
+
+            return result;
+        }
     }
 }

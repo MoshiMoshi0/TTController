@@ -49,8 +49,11 @@ class Build : NukeBuild
             ThirdPartyDirectory.GlobDirectories("**/bin", "**/obj").ForEach(DeleteDirectory);
 
             // Clean service bin path but leave 'config.json' file
-            ServiceBinPath.GlobDirectories("*").ForEach(DeleteDirectory);
-            ServiceBinPath.GlobFiles("*").Where(f => !f.ToString().EndsWith("config.json")).ForEach(DeleteFile);
+            if (Directory.Exists(ServiceBinPath))
+            {
+                ServiceBinPath.GlobDirectories("*").ForEach(DeleteDirectory);
+                ServiceBinPath.GlobFiles("*").Where(f => !f.ToString().EndsWith("config.json")).ForEach(DeleteFile);
+            }
 
             EnsureCleanDirectory(ArtifactsDirectory);
         });

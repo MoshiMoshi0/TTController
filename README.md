@@ -4,6 +4,8 @@
 <a href="https://github.com/MoshiMoshi0/TTController/releases/latest"><img alt="download" src="https://img.shields.io/github/tag-date/MoshiMoshi0/ttcontroller.svg?color=green&label=download&style=flat"></a>
 <img alt="downloads" src="https://img.shields.io/github/downloads/MoshiMoshi0/TTController/total.svg?color=yellow">
 <a href="https://paypal.me/MoshiMoshi0"><img alt="donate" src="https://img.shields.io/badge/donate-paypal-blue.svg?style=flat"></a>
+<a href="https://ci.appveyor.com/project/MoshiMoshi0/ttcontroller"><img alt="ci" src="https://ci.appveyor.com/api/projects/status/shinpu4cd2sjrs0c?svg=true"></a>
+<a href="https://ci.appveyor.com/project/MoshiMoshi0/ttcontroller/build/artifacts"><img alt="download-develop" src="https://img.shields.io/badge/download-develop-red.svg?logo=appveyor&logoColor=ccc"></a>
 <br/><br/>
 
 
@@ -27,6 +29,8 @@ The source code also provides an easy way to write your own **speed controller**
 
 > The service will start automatically and will create a default empty config. See **Configure** section on how to configure it.
 
+> A quick test to see if the service is working is to use `Main Menu -> Debug -> Report` menu, it should list all detected controllers, sensors and plugins. 
+
 ### Configure
 
 * If the service is running
@@ -34,7 +38,7 @@ The source code also provides an easy way to write your own **speed controller**
 * Edit the **config.json** file located in the same directory as **TTController.Service.exe**
 * Start the service using either **Manage Service** menu, **services.msc** or **net start**
 
-> You can use **Show hardware info** option from the commandline menu to determine what controllers are detected and find out your port and temperature sensor identifiers to be used in **config.json**.
+> You can use `Main Menu -> Debug -> Controllers` menu to find your port identifiers, and `Main Menu -> Debug -> Sensors` menu to find your sensor identifiers to be used in **config.json**.
 
 ### Uninstall
 
@@ -330,7 +334,7 @@ The source code also provides an easy way to write your own **speed controller**
 
   "Effect type, depends on the controller type"
   "If not set the rgb effect is not changed" 
-  "See show hardware info option for avaible effect types for each controller"
+  "See \"Main Menu -> Debug -> Controllers\" for avaible effect types for each controller"
   "EffectType": "<string>",
 
   "List of LedColor that the effect should use."

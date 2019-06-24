@@ -11,6 +11,8 @@ namespace TTController.Plugin.RazerConnectEffect
 
     public class RazerConnectEffect : EffectBase<RazerConnectEffectConfig>
     {
+        private static int InstanceCount;
+
         private readonly int BroadcastColorCount = 5;
 
         private readonly LedColor[] _colors;
@@ -24,6 +26,9 @@ namespace TTController.Plugin.RazerConnectEffect
 
         public RazerConnectEffect(RazerConnectEffectConfig config) : base(config)
         {
+            if (++InstanceCount > 1)
+                throw new NotSupportedException("More than one instance of \"RazerConnectEffect\" is not supported!");
+
             _connected = false;
             _colors = new LedColor[BroadcastColorCount];
             _packedColors = new int[BroadcastColorCount];
@@ -81,6 +86,8 @@ namespace TTController.Plugin.RazerConnectEffect
             var unRegister = RzChromaBroadcastNative.UnregisterEventNotification();
             var unInit = RzChromaBroadcastNative.UnInit();
             RzChromaBroadcastNative.UnLoad();
+
+            --InstanceCount;
         }
     }
 }

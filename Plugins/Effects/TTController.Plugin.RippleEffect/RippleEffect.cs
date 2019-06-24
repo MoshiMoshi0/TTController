@@ -15,12 +15,19 @@ namespace TTController.Plugin.RippleEffect
 
     public class RippleEffect : EffectBase<RippleEffectConfig>
     {
+        private readonly LedColor[] _rippleColors;
+
         private int _tick;
         private int _rotation;
 
         public RippleEffect(RippleEffectConfig config) : base(config)
         {
             _tick = Config.TickInterval;
+            _rippleColors = new LedColor[Config.Length];
+
+            var (hue, saturation, value) = LedColor.ToHsv(Config.Color);
+            for (var i = 0; i < Config.Length; i++)
+                _rippleColors[i] = LedColor.FromHsv(hue, saturation, value * (Config.Length - i - 1) / (Config.Length - 1));
         }
 
         public override string EffectType => "ByLed";
@@ -36,24 +43,48 @@ namespace TTController.Plugin.RippleEffect
             }
 
             var result = new Dictionary<PortIdentifier, List<LedColor>>();
-            foreach (var port in ports)
+
+            if (Config.ColorGenerationMethod == ColorGenerationMethod.PerPort)
             {
-                var config = cache.GetPortConfig(port);
-                if (config == null)
-                    continue;
+                foreach (var port in ports)
+                {
+                    var config = cache.GetPortConfig(port);
+                    if (config == null)
+                        continue;
+
+                    var off = new LedColor(0, 0, 0);
+                    var colors = Enumerable.Range(0, config.LedCount).Select(_ => off).ToList();
+                    for (var i = 0; i < Config.Length; i++)
+                    {
+                        var idx = Wrap(_rotation - i, config.LedCount);
+                        colors[idx] = _rippleColors[i];
+                    }
+
+                    result.Add(port, colors);
+                }
+            }
+            else if (Config.ColorGenerationMethod == ColorGenerationMethod.SpanPorts)
+            {
+                var totalLength = ports.Select(p => cache.GetPortConfig(p)).Sum(c => c?.LedCount ?? 0);
 
                 var off = new LedColor(0, 0, 0);
-                var colors = Enumerable.Range(0, config.LedCount).Select(_ => off).ToList();
-                var (hue, saturation, value) = LedColor.ToHsv(Config.Color);
-                var length = Config.Length == 0 ? config.LedCount : Config.Length;
-
-                for (var i = 0; i < length; i++)
+                var colors = Enumerable.Range(0, totalLength).Select(_ => off).ToList();
+                for (var i = 0; i < Config.Length; i++)
                 {
-                    var idx = Wrap(_rotation - i, config.LedCount);
-                    colors[idx] = LedColor.FromHsv(hue, saturation, value * (length - i) / length);
+                    var idx = Wrap(_rotation - i, totalLength);
+                    colors[idx] = _rippleColors[i];
                 }
 
-                result.Add(port, colors);
+                var offset = 0;
+                foreach (var port in ports)
+                {
+                    var config = cache.GetPortConfig(port);
+                    if (config == null)
+                        continue;
+
+                    result.Add(port, colors.Skip(offset).Take(config.LedCount).ToList());
+                    offset += config.LedCount;
+                }
             }
 
             return result;

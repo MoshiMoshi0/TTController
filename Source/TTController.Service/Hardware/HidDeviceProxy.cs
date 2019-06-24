@@ -29,7 +29,7 @@ namespace TTController.Service.Hardware
             var data = new byte[_device.Capabilities.OutputReportByteLength];
             Array.Copy(bytes, 0, data, 1, Math.Min(bytes.Length, _device.Capabilities.OutputReportByteLength - 1));
 
-            Logger.Trace("W[{vid}, {pid}] {data}", _device.Attributes.VendorId, _device.Attributes.ProductId, data);
+            Logger.Trace("W[{vid}, {pid}] {data:X2}", _device.Attributes.VendorId, _device.Attributes.ProductId, data);
 
             return _device.Write(data, 1000);
         }
@@ -45,7 +45,7 @@ namespace TTController.Service.Hardware
                 return null;
             }
 
-            Logger.Trace("R[{vid}, {pid}] {data}", _device.Attributes.VendorId, _device.Attributes.ProductId, data.Data);
+            Logger.Trace("R[{vid}, {pid}] {data:X2}", _device.Attributes.VendorId, _device.Attributes.ProductId, data.Data);
 
             return data.Data;
         }

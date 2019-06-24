@@ -36,26 +36,56 @@ namespace TTController.Plugin.FlowEffect
             {
                 _fill = 0;
                 _lastHue = _currentHue;
-                _currentHue = (_currentHue + Config.HueStep) % 360;
+                _currentHue = ((_currentHue + Config.HueStep) % 360 + 360) % 360;
             }
 
+            var lastColor = LedColor.FromHsv(_lastHue, Config.Saturation, Config.Brightness);
+            var currentColor = LedColor.FromHsv(_currentHue, Config.Saturation, Config.Brightness);
+
             var result = new Dictionary<PortIdentifier, List<LedColor>>();
-            foreach (var port in ports)
+            if(Config.ColorGenerationMethod == ColorGenerationMethod.PerPort)
             {
-                var config = cache.GetPortConfig(port);
-                if(config == null)
-                    continue;
-
-                var lastColor = LedColor.FromHsv(_lastHue, Config.Saturation, Config.Brightness);
-                var currentColor = LedColor.FromHsv(_currentHue, Config.Saturation, Config.Brightness);
-
-                var colors = Enumerable.Range(0, config.LedCount).Select(_ => lastColor).ToList();
-                for (var i = 0; i < (int) Math.Round(config.LedCount * _fill); i++)
+                foreach (var port in ports)
                 {
-                    colors[i] = currentColor;
+                    var config = cache.GetPortConfig(port);
+                    if (config == null)
+                        continue;
+
+                    var colors = new List<LedColor>();
+                    for (var i = 0; i < config.LedCount; i++)
+                    {
+                        if (i < (int)Math.Round(config.LedCount * _fill))
+                            colors.Add(currentColor);
+                        else
+                            colors.Add(lastColor);
+                    }
+
+                    result.Add(port, colors);
+                }
+            }
+            else if(Config.ColorGenerationMethod == ColorGenerationMethod.SpanPorts)
+            {
+                var totalLength = ports.Select(p => cache.GetPortConfig(p)).Sum(c => c?.LedCount ?? 0);
+
+                var colors = new List<LedColor>();
+                for (var i = 0; i < totalLength; i++)
+                {
+                    if (i < (int)Math.Round(totalLength * _fill))
+                        colors.Add(currentColor);
+                    else
+                        colors.Add(lastColor);
                 }
 
-                result.Add(port, colors);
+                var offset = 0;
+                foreach (var port in ports)
+                {
+                    var config = cache.GetPortConfig(port);
+                    if (config == null)
+                        continue;
+
+                    result.Add(port, colors.Skip(offset).Take(config.LedCount).ToList());
+                    offset += config.LedCount;
+                }
             }
 
             return result;

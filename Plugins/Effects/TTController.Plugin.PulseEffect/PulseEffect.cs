@@ -14,19 +14,16 @@ namespace TTController.Plugin.PulseEffect
 
     public class PulseEffect : EffectBase<PulseEffectConfig>
     {
+        private readonly LedColor[] _colors;
+
         private double _t;
         private int _direction;
-        private readonly double[] _maxBrightness;
 
         public PulseEffect(PulseEffectConfig config) : base(config)
         {
             _direction = -1;
             _t = 1d;
-            _maxBrightness = config.Colors.Select(c =>
-            {
-                var (h, s, v) = LedColor.ToHsv(c);
-                return v;
-            }).ToArray();
+            _colors = new LedColor[Config.Colors.Count];
         }
 
         public override string EffectType => "ByLed";
@@ -45,14 +42,36 @@ namespace TTController.Plugin.PulseEffect
                 _t = 1;
             }
 
-            var colors = new List<LedColor>();
             for (var i = 0; i < Config.Colors.Count; i++)
             {
                 var (h, s, v) = LedColor.ToHsv(Config.Colors[i]);
-                colors.Add(LedColor.FromHsv(h, s, _maxBrightness[i] * _t));
+                _colors[i] = LedColor.FromHsv(h, s, v * _t);
             }
 
-            return ports.ToDictionary(p => p, _ => colors.ToList());
+            if (Config.ColorGenerationMethod == ColorGenerationMethod.PerPort)
+            {
+                return ports.ToDictionary(p => p, _ => _colors.ToList());
+            }
+            else if (Config.ColorGenerationMethod == ColorGenerationMethod.SpanPorts)
+            {
+                var result = new Dictionary<PortIdentifier, List<LedColor>>();
+
+                var offset = 0;
+                foreach (var port in ports)
+                {
+                    var config = cache.GetPortConfig(port);
+                    if (config == null)
+                        continue;
+
+                    result.Add(port, _colors.Skip(offset).Take(config.LedCount).ToList());
+                    offset += config.LedCount;
+                }
+
+                return result;
+            }
+
+            return null;
+
         }
     }
 }
