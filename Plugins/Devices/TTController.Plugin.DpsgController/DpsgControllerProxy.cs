@@ -60,8 +60,8 @@ namespace TTController.Plugin.DpsgController
             // WATTS = VVOut33 * VIOut33
             // EFF = (int)((VVOut12 * VIOut12 + VVOut5 * VIOut5 + VVOut33 * VIOut33) / 10.0)
 
-            byte[] GetData(byte b) => Device.WriteReadBytes(0x31, b).Take(2).ToArray();
-            string GetDataAsString(byte b) => $"{string.Concat(GetData(b).Select(x => x.ToString("X2")))}";
+            byte[] GetData(byte b) => Device.WriteReadBytes(0x31, b)?.Skip(3).Take(2).ToArray();
+            string GetDataAsString(byte b) => $"{string.Concat(GetData(b)?.Select(x => $"{x:X2}") ?? Enumerable.Empty<string>())}";
 
             var data = new PortData()
             {
