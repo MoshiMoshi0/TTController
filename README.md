@@ -5,6 +5,7 @@
 <img alt="downloads" src="https://img.shields.io/github/downloads/MoshiMoshi0/TTController/total.svg?color=yellow">
 <a href="https://paypal.me/MoshiMoshi0"><img alt="donate" src="https://img.shields.io/badge/donate-paypal-blue.svg?style=flat"></a>
 <a href="https://ci.appveyor.com/project/MoshiMoshi0/ttcontroller"><img alt="ci" src="https://ci.appveyor.com/api/projects/status/shinpu4cd2sjrs0c?svg=true"></a>
+<a href="https://ci.appveyor.com/project/MoshiMoshi0/ttcontroller/build/artifacts"><img alt="download-develop" src="https://img.shields.io/badge/download-develop-red.svg?logo=appveyor&logoColor=ccc"></a>
 <br/><br/>
 
 
