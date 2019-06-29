@@ -24,7 +24,8 @@ namespace TTController.Plugin.RiingController
                 bytes.Add(color.B);
             }
 
-            return Device.WriteReadBytes(bytes)?[3] == 0xfc;
+            var result = Device.WriteReadBytes(bytes)?[3] ?? -1;
+            return result == 0xfe || result == 0x00;
         }
 
         public override bool SetSpeed(byte port, byte speed) =>
