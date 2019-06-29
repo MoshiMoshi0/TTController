@@ -87,7 +87,6 @@ The source code also provides an easy way to write your own **speed controller**
 * [SpectrumEffect](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Effects/TTController.Plugin.SpectrumEffect/SpectrumEffect.cs)
 * [RippleEffect](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Effects/TTController.Plugin.RippleEffect/RippleEffect.cs)
 * [WaveEffect](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Effects/TTController.Plugin.WaveEffect/WaveEffect.cs)
-* [SnakeEffect](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Effects/TTController.Plugin.SnakeEffect/SnakeEffect.cs)
 * [SensorEffect](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Effects/TTController.Plugin.SensorEffect/SensorEffect.cs)
 * [SoundEffect](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Effects/TTController.Plugin.SoundEffect/SoundEffect.cs)
 * [RawEffect](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Effects/TTController.Plugin.RawEffect/RawEffect.cs)
@@ -240,9 +239,14 @@ The source code also provides an easy way to write your own **speed controller**
   "The class name of the speed controller"
   "Type": "<string>", 
 
-  "Config json for this speed controller, depends on controller type"
-  "Must contain a 'Trigger' property"
-  "Config": {}
+  "Config json for this speed controller"
+  "Config": {
+    "Required"
+    "Trigger": {"..."},
+
+    "Other properties depending on speed controller type"
+    "..."
+  }
 }
 ```
 
@@ -267,9 +271,18 @@ The source code also provides an easy way to write your own **speed controller**
   "The class name of the effect"
   "Type": "<string>", 
 
-  "Config json for this effect, depends on effect type"
-  "Must contain a 'Trigger' property"
-  "Config": {}
+  "Config json for this effect"
+  "Config": {
+    "Required"
+    "Trigger": {"..."},
+
+    "Optional, defaults to 'PerPort'"
+    "One of: [SpanPorts, PerPort]" 
+    "ColorGenerationMethod": "<string>",
+
+    "Other properties depending on effect type"
+    "..."
+  }
 }
 ```
 
@@ -354,7 +367,7 @@ The source code also provides an easy way to write your own **speed controller**
     [9802, 8101, 1]
   ],
   "Speed": 35,
-  "EffectByte": 25,
+  "EffectType": "Full",
   "EffectColors": [
     [0, 255, 0]
   ]
