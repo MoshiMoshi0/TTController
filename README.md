@@ -367,7 +367,7 @@ The source code also provides an easy way to write your own **speed controller**
     [9802, 8101, 1]
   ],
   "Speed": 35,
-  "EffectByte": 25,
+  "EffectType": "Full",
   "EffectColors": [
     [0, 255, 0]
   ]
