@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TTController.Common;
@@ -43,8 +43,13 @@ namespace TTController.Plugin.DpsgController
             return Device.WriteReadBytes(bytes)?[3] == 0xfc;
         }
 
-        public override bool SetSpeed(byte port, byte speed) =>
-            Device.WriteReadBytes(0x30, 0x41, 0x04, speed)?[3] == 0xfc;
+        public override bool SetSpeed(byte port, byte speed)
+        {
+            if(speed == 0)
+                return Device.WriteReadBytes(0x30, 0x41, 0x03)?[3] == 0xfc;
+
+            return Device.WriteReadBytes(0x30, 0x41, 0x04, speed)?[3] == 0xfc;
+        }
 
         public override PortData GetPortData(byte port)
         {
