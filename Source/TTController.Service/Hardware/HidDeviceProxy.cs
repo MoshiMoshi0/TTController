@@ -59,5 +59,14 @@ namespace TTController.Service.Hardware
 
         public byte[] WriteReadBytes(IEnumerable<byte> bytes) =>
             WriteReadBytes(bytes.ToArray());
+
+        public byte[] ReadReport(byte reportId)
+        {
+            var report = _device.ReadReportSync(reportId);
+            if (report.ReadStatus != HidDeviceData.ReadStatus.Success)
+                return null;
+
+            return report.Data;
+        }
     }
 }
