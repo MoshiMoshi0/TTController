@@ -14,11 +14,33 @@ namespace TTController.Plugin.DpsgController
         public DpsgControllerProxy(IHidDeviceProxy device, IControllerDefinition definition)
             : base(device, definition)
         {
-            _availableEffects = new Dictionary<string, byte>()
+            var effectModes = new Dictionary<string, byte>()
             {
-                ["ByLed"] = 0x18,
-                ["Full"] = 0x19
+                ["Flow"] = 0x00,
+                ["Spectrum"] = 0x04,
+                ["Ripple"] = 0x08,
+                ["Blink"] = 0x0c,
+                ["Pulse"] = 0x10,
+                ["Wave"] = 0x14,
             };
+
+            var effectSpeeds = new Dictionary<string, byte>()
+            {
+                ["Extreme"] = 0x00,
+                ["Fast"] = 0x01,
+                ["Normal"] = 0x02,
+                ["Slow"] = 0x03
+            };
+
+            var result = new Dictionary<string, byte>();
+            foreach (var mkv in effectModes)
+                foreach (var skv in effectSpeeds)
+                    result.Add($"{mkv.Key}_{skv.Key}", (byte)(mkv.Value + skv.Value));
+
+            result.Add("ByLed", 0x18);
+            result.Add("Full", 0x19);
+
+            _availableEffects = result;
         }
 
         public override IEnumerable<PortIdentifier> Ports
