@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -57,32 +58,49 @@ namespace TTController.Plugin.DpsgController
 
         public override PortData GetPortData(byte port)
         {
-            // 0x31, 0x33 // VIN
-            // 0x31, 0x34 // VVOut12
-            // 0x31, 0x35 // VVout5
-            // 0x31, 0x36 // VVOut33
-            // 0x31, 0x37 // VIOut12
-            // 0x31, 0x38 // VIOut5
-            // 0x31, 0x39 // VIOut33
-            // 0x31, 0x3a // Temp
-            // 0x31, 0x3b // FanSpeed
-            // WATTS = VVOut33 * VIOut33
-            // EFF = (int)((VVOut12 * VIOut12 + VVOut5 * VIOut5 + VVOut33 * VIOut33) / 10.0)
+            float GetData(byte b)
+            {
+                var bytes = Device.WriteReadBytes(0x31, b)?.Skip(3).Take(2).ToArray();
+                if (bytes == null || bytes.Length == 0)
+                    return float.NaN;
 
-            byte[] GetData(byte b) => Device.WriteReadBytes(0x31, b)?.Skip(3).Take(2).ToArray();
-            string GetDataAsString(byte b) => $"{string.Concat(GetData(b)?.Select(x => $"{x:X2}") ?? Enumerable.Empty<string>())}";
+                var value = bytes[1] << 8 | bytes[0];
+                var exponent = (value & 0x7800) >> 11;
+                var sign = (value & 0x8000) >> 15;
+                var fraction = (value & 0x7ff);
+
+                if (sign == 1)
+                    exponent -= 16;
+
+                return (float)Math.Pow(2.0, exponent) * fraction;
+            }
+
+            var vin = GetData(0x33);
+            var vvOut12 = GetData(0x34);
+            var vvOut5 = GetData(0x35);
+            var vvOut33 = GetData(0x36);
+            var viOut12 = GetData(0x37);
+            var viOut5 = GetData(0x38);
+            var viOut33 = GetData(0x39);
+            var temp = GetData(0x3a);
+            var fanSpeed = GetData(0x3b);
+
+            var watts = vvOut33 * viOut33;
+            var eff = (int)((vvOut12 * viOut12 + vvOut5 * viOut5 + vvOut33 * viOut33) / 10.0);
 
             var data = new PortData()
             {
-                ["VIN"] = GetDataAsString(0x33),
-                ["VVOut12"] = GetDataAsString(0x34),
-                ["VVout5"] = GetDataAsString(0x35),
-                ["VVOut33"] = GetDataAsString(0x36),
-                ["VIOut12"] = GetDataAsString(0x37),
-                ["VIOut5"] = GetDataAsString(0x38),
-                ["VIOut33"] = GetDataAsString(0x39),
-                ["Temp"] = GetDataAsString(0x3a),
-                ["FanSpeed"] = GetDataAsString(0x3b)
+                Temperature = temp,
+                Rpm = (int)fanSpeed,
+                ["VIN"] = vin,
+                ["VVOut12"] = vvOut12,
+                ["VVOut5"] = vvOut5,
+                ["VVOut33"] = vvOut33,
+                ["VIOut12"] = viOut12,
+                ["VIOut5"] = viOut5,
+                ["VIOut33"] = viOut33,
+                ["WATTS"] = watts,
+                ["EFF"] = eff
             };
 
             return data;
