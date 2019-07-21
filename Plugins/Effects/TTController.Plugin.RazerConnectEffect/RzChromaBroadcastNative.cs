@@ -18,6 +18,8 @@ namespace TTController.Plugin.RazerConnectEffect
 
     public static class RzChromaBroadcastNative
     {
+        public static readonly int BroadcastColorCount = 5;
+
         private static IntPtr _dllHandle;
 
         public static bool Load()

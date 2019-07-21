@@ -11,13 +11,10 @@ namespace TTController.Plugin.RazerConnectEffect
 
     public class RazerConnectEffect : EffectBase<RazerConnectEffectConfig>
     {
-        private static int InstanceCount;
-
-        private readonly int BroadcastColorCount = 5;
+        private static RzChromaBroadcastManager _manager;
+        private static int _instances;
 
         private readonly LedColor[] _colors;
-        private readonly int[] _packedColors;
-        private readonly RzBroadcastCallback _callback;
 
         private bool _connected;
 
@@ -26,52 +23,31 @@ namespace TTController.Plugin.RazerConnectEffect
 
         public RazerConnectEffect(RazerConnectEffectConfig config) : base(config)
         {
-            if (++InstanceCount > 1)
-                throw new NotSupportedException("More than one instance of \"RazerConnectEffect\" is not supported!");
-
-            _connected = false;
-            _colors = new LedColor[BroadcastColorCount];
-            _packedColors = new int[BroadcastColorCount];
-
-            if (RzChromaBroadcastNative.Load())
+            if (_instances++ == 0)
             {
-                var init = RzChromaBroadcastNative.Init(Guid.Parse("b0ecdaf9-26b2-d33f-f046-1c44ce64eb58"));
-                if (init == RzResult.SUCCESS)
-                {
-                    _callback = new RzBroadcastCallback(BroadcastCallback);
+                _manager = new RzChromaBroadcastManager();
+            }
 
-                    var register = RzChromaBroadcastNative.RegisterEventNotification(_callback);
-                    if (register == RzResult.SUCCESS)
-                        _connected = true;
-                }
+            if(_manager != null)
+            {
+                _manager.ColorChanged += OnColorUpdate;
+                _manager.ConnectionChanged += OnConnectionUpdate;
             }
         }
 
-        private int BroadcastCallback(int message, IntPtr data)
+        private void OnColorUpdate(object sender, RzBroadcastColorChangedEventArgs e)
         {
-            if (message == 1)
+            for (var i = 0; i < e.Colors.Length; i++)
             {
-                if (data != IntPtr.Zero)
-                {
-                    Marshal.Copy(data, _packedColors, 0, BroadcastColorCount);
-
-                    for (var i = 0; i < BroadcastColorCount; i++)
-                    {
-                        _colors[i].R = (byte)((_packedColors[i] >> 0) & 0xff);
-                        _colors[i].G = (byte)((_packedColors[i] >> 8) & 0xff);
-                        _colors[i].B = (byte)((_packedColors[i] >> 16) & 0xff);
-                    }
-                }
+                _colors[i].R = (byte)((e.Colors[i] >> 0) & 0xff);
+                _colors[i].G = (byte)((e.Colors[i] >> 8) & 0xff);
+                _colors[i].B = (byte)((e.Colors[i] >> 16) & 0xff);
             }
-            else if (message == 2)
-            {
-                if (data.ToInt32() == 1)
-                    _connected = true;
-                else if (data.ToInt32() == 2)
-                    _connected = false;
-            }
+        }
 
-            return 0;
+        private void OnConnectionUpdate(object sender, RzBroadcastConnectionChangedEventArgs e)
+        {
+            _connected = e.Connected;
         }
 
         public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
@@ -83,11 +59,17 @@ namespace TTController.Plugin.RazerConnectEffect
         {
             base.Dispose(disposing);
 
-            var unRegister = RzChromaBroadcastNative.UnregisterEventNotification();
-            var unInit = RzChromaBroadcastNative.UnInit();
-            RzChromaBroadcastNative.UnLoad();
+            if (_manager != null)
+            {
+                _manager.ColorChanged -= OnColorUpdate;
+                _manager.ConnectionChanged -= OnConnectionUpdate;
+            }
 
-            --InstanceCount;
+            if(--_instances == 0)
+            {
+                _manager?.Dispose();
+                _manager = null;
+            }
         }
     }
 }
