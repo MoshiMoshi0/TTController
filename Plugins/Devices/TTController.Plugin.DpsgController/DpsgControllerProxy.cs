@@ -105,15 +105,15 @@ namespace TTController.Plugin.DpsgController
             var viOut5 = GetData(0x38);
             var viOut33 = GetData(0x39);
             var temp = GetData(0x3a);
-            var fanSpeed = GetData(0x3b);
+            var fanRpm = GetData(0x3b);
 
-            var watts = vvOut33 * viOut33;
-            var eff = (int)((vvOut12 * viOut12 + vvOut5 * viOut5 + vvOut33 * viOut33) / 10.0);
+            var watts = vvOut12 * viOut12 + vvOut5 * viOut5 + vvOut33 * viOut33;
+            //var efficiency = lut[(int)(watts / 10.0)];
 
             var data = new PortData()
             {
                 Temperature = temp,
-                Rpm = (int)fanSpeed,
+                Rpm = (int)fanRpm,
                 ["VIN"] = vin,
                 ["VVOut12"] = vvOut12,
                 ["VVOut5"] = vvOut5,
@@ -121,8 +121,7 @@ namespace TTController.Plugin.DpsgController
                 ["VIOut12"] = viOut12,
                 ["VIOut5"] = viOut5,
                 ["VIOut33"] = viOut33,
-                ["WATTS"] = watts,
-                ["EFF"] = eff
+                ["Watts"] = watts,
             };
 
             return data;
