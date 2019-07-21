@@ -12,33 +12,10 @@ namespace TTController.Plugin.RiingTrioController
         public RiingTrioControllerProxy(IHidDeviceProxy device, IControllerDefinition definition)
             : base(device, definition)
         {
-            var effectModes = new Dictionary<string, byte>()
+            _availableEffects = new Dictionary<string, byte>
             {
-                ["Flow"] = 0x00,
-                ["Spectrum"] = 0x04,
-                ["Ripple"] = 0x08,
-                ["Blink"] = 0x0c,
-                ["Pulse"] = 0x10,
-                ["Wave"] = 0x14,
+                { "ByLed", 0x24 }
             };
-
-            var effectSpeeds = new Dictionary<string, byte>()
-            {
-                ["Extreme"] = 0x00,
-                ["Fast"] = 0x01,
-                ["Normal"] = 0x02,
-                ["Slow"] = 0x03
-            };
-
-            var result = new Dictionary<string, byte>();
-            foreach (var mkv in effectModes)
-                foreach (var skv in effectSpeeds)
-                    result.Add($"{mkv.Key}_{skv.Key}", (byte)(mkv.Value + skv.Value));
-
-            result.Add("ByLed", 0x18);
-            result.Add("Full", 0x19);
-
-            _availableEffects = result;
         }
 
         public override IEnumerable<PortIdentifier> Ports => Enumerable.Range(1, Definition.PortCount)
@@ -49,24 +26,10 @@ namespace TTController.Plugin.RiingTrioController
 
         public override bool SetRgb(byte port, byte mode, IEnumerable<LedColor> colors)
         {
-            var colorCount = colors.Count();
-            if (colorCount <= 12)
-            {
-                var bytes = new List<byte> { 0x32, 0x52, port, mode };
-                foreach (var color in colors)
-                {
-                    bytes.Add(color.G);
-                    bytes.Add(color.R);
-                    bytes.Add(color.B);
-                }
-
-                return Device.WriteReadBytes(bytes)?[3] == 0xfc;
-            }
-
             bool WriteChunk(byte chunkId)
             {
                 const byte maxPerChunk = 19;
-                var bytes = new List<byte> { 0x32, 0x52, port, 0x24, 0x03, chunkId, 0x00 };
+                var bytes = new List<byte> { 0x32, 0x52, port, mode, 0x03, chunkId, 0x00 };
                 foreach (var color in colors.Skip((chunkId - 1) * maxPerChunk).Take(maxPerChunk))
                 {
                     bytes.Add(color.G);
