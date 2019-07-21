@@ -22,13 +22,13 @@ namespace TTController.Plugin.SpectrumEffect
             _hue = 0;
         }
 
-        public override string EffectType => "Full";
+        public override string EffectType => "ByLed";
 
         public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
         {
             _hue = (_hue + Config.HueStep) % 360;
             var color = LedColor.FromHsv(_hue, Config.Saturation, Config.Brightness);
-            return ports.ToDictionary(p => p, _ => new List<LedColor>() {color});
+            return ports.ToDictionary(p => p, p => Enumerable.Repeat(color, cache.GetPortConfig(p).LedCount).ToList());
         }
     }
 }
