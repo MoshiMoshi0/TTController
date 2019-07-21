@@ -30,7 +30,7 @@ namespace TTController.Plugin.RippleEffect
                 _rippleColors[i] = LedColor.FromHsv(hue, saturation, value * (Config.Length - i - 1) / (Config.Length - 1));
         }
 
-        public override string EffectType => "ByLed";
+        public override string EffectType => "PerLed";
 
         public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
         {

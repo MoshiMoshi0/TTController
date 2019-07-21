@@ -19,7 +19,7 @@ namespace TTController.Plugin.SensorEffect
         private double _r, _g, _b;
         private readonly float _minValue, _maxValue;
 
-        public override string EffectType => "ByLed";
+        public override string EffectType => "PerLed";
 
         public SensorEffect(SensorEffectConfig config) : base(config, config.Sensors)
         {

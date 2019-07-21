@@ -37,7 +37,7 @@ namespace TTController.Plugin.DpsgController
                 foreach (var skv in effectSpeeds)
                     result.Add($"{mkv.Key}_{skv.Key}", (byte)(mkv.Value + skv.Value));
 
-            result.Add("ByLed", 0x18);
+            result.Add("PerLed", 0x18);
             result.Add("Full", 0x19);
 
             _availableEffects = result;

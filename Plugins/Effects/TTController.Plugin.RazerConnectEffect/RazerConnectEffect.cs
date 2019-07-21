@@ -21,7 +21,7 @@ namespace TTController.Plugin.RazerConnectEffect
 
         private bool _connected;
 
-        public override string EffectType => "ByLed";
+        public override string EffectType => "PerLed";
         public override bool IsEnabled(ICacheProvider cache) => base.IsEnabled(cache) && _connected;
 
         public RazerConnectEffect(RazerConnectEffectConfig config) : base(config)

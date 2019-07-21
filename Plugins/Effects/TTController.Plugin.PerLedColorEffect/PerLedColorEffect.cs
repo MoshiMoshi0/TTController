@@ -3,18 +3,18 @@ using System.Linq;
 using TTController.Common;
 using TTController.Common.Plugin;
 
-namespace TTController.Plugin.ByLedColorEffect
+namespace TTController.Plugin.PerLedColorEffect
 {
-    public class ByLedColorEffectConfig : EffectConfigBase
+    public class PerLedColorEffectConfig : EffectConfigBase
     {
         public List<LedColor> Colors { get; private set; } = new List<LedColor>();
     }
 
-    public class ByLedColorEffect : EffectBase<ByLedColorEffectConfig>
+    public class PerLedColorEffect : EffectBase<PerLedColorEffectConfig>
     {
-        public ByLedColorEffect(ByLedColorEffectConfig config) : base(config) { }
+        public PerLedColorEffect(PerLedColorEffectConfig config) : base(config) { }
 
-        public override string EffectType => "ByLed";
+        public override string EffectType => "PerLed";
 
         public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache) =>
             ports.ToDictionary(p => p, _ => Config.Colors.ToList());

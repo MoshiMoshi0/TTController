@@ -14,7 +14,7 @@ namespace TTController.Plugin.RiingTrioController
         {
             _availableEffects = new Dictionary<string, byte>
             {
-                { "ByLed", 0x24 }
+                { "PerLed", 0x24 }
             };
         }
 

@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
-    <AssemblyTitle>TTController.Plugin.ByLedColorEffect</AssemblyTitle>
-    <Product>TTController.Plugin.ByLedColorEffect</Product>
+    <AssemblyTitle>TTController.Plugin.PerLedColorEffect</AssemblyTitle>
+    <Product>TTController.Plugin.PerLedColorEffect</Product>
     <Copyright>Copyright ©  2019</Copyright>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>

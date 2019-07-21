@@ -22,7 +22,7 @@ namespace TTController.Plugin.SpectrumEffect
             _hue = 0;
         }
 
-        public override string EffectType => "ByLed";
+        public override string EffectType => "PerLed";
 
         public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
         {

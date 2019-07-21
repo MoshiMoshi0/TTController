@@ -42,7 +42,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.WaveEff
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.FullColorEffect", "Plugins\Effects\TTController.Plugin.FullColorEffect\TTController.Plugin.FullColorEffect.csproj", "{D485F979-4D51-47DA-A52B-0CA51716D16F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.ByLedColorEffect", "Plugins\Effects\TTController.Plugin.ByLedColorEffect\TTController.Plugin.ByLedColorEffect.csproj", "{17B4553B-99EF-49E8-8270-3153B9B12E57}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.PerLedColorEffect", "Plugins\Effects\TTController.Plugin.PerLedColorEffect\TTController.Plugin.PerLedColorEffect.csproj", "{17B4553B-99EF-49E8-8270-3153B9B12E57}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.PulseEffect", "Plugins\Effects\TTController.Plugin.PulseEffect\TTController.Plugin.PulseEffect.csproj", "{46BDD270-577F-43EF-94FA-B738A0020E37}"
 EndProject
@@ -76,7 +76,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.SensorE
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.RazerConnectEffect", "Plugins\Effects\TTController.Plugin.RazerConnectEffect\TTController.Plugin.RazerConnectEffect.csproj", "{847D9772-60D9-4D18-B662-FC9994C3B567}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.DpsgSpeedController", "Plugins\SpeedControllers\TTController.Plugin.DpsgSpeedController\TTController.Plugin.DpsgSpeedController.csproj", "{EF6B133A-0AB3-4E53-A51C-F0D88C291001}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.DpsgSpeedController", "Plugins\SpeedControllers\TTController.Plugin.DpsgSpeedController\TTController.Plugin.DpsgSpeedController.csproj", "{EF6B133A-0AB3-4E53-A51C-F0D88C291001}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
