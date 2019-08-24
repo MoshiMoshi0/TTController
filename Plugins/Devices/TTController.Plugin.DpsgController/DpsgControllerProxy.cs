@@ -135,8 +135,7 @@ namespace TTController.Plugin.DpsgController
         }
 
         public override void SaveProfile()
-        {
-        }
+            => Device.WriteReadBytes(0x30, 0x43, 0x01);
 
         public override bool Init()
         {
