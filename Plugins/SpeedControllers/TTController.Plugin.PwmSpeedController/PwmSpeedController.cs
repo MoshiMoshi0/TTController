@@ -52,20 +52,21 @@ namespace TTController.Plugin.PwmSpeedController
                 break;
             }
 
-            var port = ports.First(p => cache.GetPortData(p).Speed.HasValue);
-            var currentSpeed = cache.GetPortData(port).Speed.Value;
-            var targetSpeed = currentSpeed;
-            var speedDiff = curveTargetSpeed - currentSpeed;
+            var targetSpeed = curveTargetSpeed;
+            var currentSpeed = ports.Select(p => cache.GetPortData(p)?.Speed).FirstOrDefault(s => s != null);
 
-            if (Math.Abs(speedDiff) >= Config.MinimumChange || curveTargetSpeed >= 100 || curveTargetSpeed <= 20)
+            if (currentSpeed != null)
             {
-                targetSpeed = (byte) (currentSpeed + Math.Sign(speedDiff) * Math.Min(Config.MaximumChange, Math.Abs(speedDiff)));
+                var speedDiff = curveTargetSpeed - currentSpeed.Value;
 
-                if (targetSpeed < 20)
-                    targetSpeed = curveTargetSpeed == 0 ? (byte) 0 : (byte) 20;
-                else if (targetSpeed > 100)
-                    targetSpeed = 100;
+                if (Math.Abs(speedDiff) >= Config.MinimumChange || curveTargetSpeed >= 100 || curveTargetSpeed <= 20)
+                    targetSpeed = (byte)(currentSpeed.Value + Math.Sign(speedDiff) * Math.Min(Config.MaximumChange, Math.Abs(speedDiff)));
             }
+
+            if (targetSpeed < 20)
+                targetSpeed = curveTargetSpeed == 0 ? (byte)0 : (byte)20;
+            else if (targetSpeed > 100)
+                targetSpeed = 100;
 
             return ports.ToDictionary(p => p, _ => targetSpeed);
         }
