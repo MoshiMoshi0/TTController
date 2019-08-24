@@ -8,8 +8,9 @@ namespace TTController.Plugin.DpsgSpeedController
 {
     public enum FanMode
     {
-        Silent,
-        Performance
+        Off = 0,
+        Silent = 1,
+        Performance = 2,
     }
 
     public class DpsgSpeedControllerConfig : SpeedControllerConfigBase
@@ -22,15 +23,6 @@ namespace TTController.Plugin.DpsgSpeedController
         public DpsgSpeedController(DpsgSpeedControllerConfig config) : base(config) { }
 
         public override IDictionary<PortIdentifier, byte> GenerateSpeeds(List<PortIdentifier> ports, ICacheProvider cache)
-        {
-            switch (Config.FanMode)
-            {
-                default:
-                case FanMode.Silent:
-                    return ports.ToDictionary(p => p, _ => (byte) 1);
-                case FanMode.Performance:
-                    return ports.ToDictionary(p => p, _ => (byte) 2);
-            }
-        }
+            => ports.ToDictionary(p => p, _ => (byte)Config.FanMode);
     }
 }

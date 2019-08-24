@@ -68,7 +68,7 @@ namespace TTController.Plugin.DpsgController
 
         public override bool SetSpeed(byte port, byte speed)
         {
-            if (speed == 0)
+            if (speed == 0) // off
                 return Device.WriteReadBytes(0x30, 0x41, 0x03)?[3] == 0xfc;
             if (speed == 1) // silent
                 return Device.WriteReadBytes(0x30, 0x41, 0x01)?[3] == 0xfc;
