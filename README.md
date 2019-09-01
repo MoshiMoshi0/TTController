@@ -77,6 +77,7 @@ The source code also provides an easy way to write your own **speed controller**
 * [PwmSpeedController](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/SpeedControllers/TTController.Plugin.PwmSpeedController/PwmSpeedController.cs)
 * [StaticSpeedController](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/SpeedControllers/TTController.Plugin.StaticSpeedController/StaticSpeedController.cs)
 * [CopySpeedController](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/SpeedControllers/TTController.Plugin.CopySpeedController/CopySpeedController.cs)
+* [DpsgSpeedController](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/SpeedControllers/TTController.Plugin.DpsgSpeedController/DpsgSpeedController.cs)
 
 ### Effects:
 * [BlinkEffect](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Effects/TTController.Plugin.BlinkEffect/BlinkEffect.cs)
