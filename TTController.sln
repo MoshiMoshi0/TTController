@@ -42,7 +42,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.WaveEff
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.FullColorEffect", "Plugins\Effects\TTController.Plugin.FullColorEffect\TTController.Plugin.FullColorEffect.csproj", "{D485F979-4D51-47DA-A52B-0CA51716D16F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.ByLedColorEffect", "Plugins\Effects\TTController.Plugin.ByLedColorEffect\TTController.Plugin.ByLedColorEffect.csproj", "{17B4553B-99EF-49E8-8270-3153B9B12E57}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.PerLedColorEffect", "Plugins\Effects\TTController.Plugin.PerLedColorEffect\TTController.Plugin.PerLedColorEffect.csproj", "{17B4553B-99EF-49E8-8270-3153B9B12E57}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.PulseEffect", "Plugins\Effects\TTController.Plugin.PulseEffect\TTController.Plugin.PulseEffect.csproj", "{46BDD270-577F-43EF-94FA-B738A0020E37}"
 EndProject
@@ -75,6 +75,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.SensorEffect", "Plugins\Effects\TTController.Plugin.SensorEffect\TTController.Plugin.SensorEffect.csproj", "{EE45FA25-50FB-42E8-8523-4868D34C5659}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.RazerConnectEffect", "Plugins\Effects\TTController.Plugin.RazerConnectEffect\TTController.Plugin.RazerConnectEffect.csproj", "{847D9772-60D9-4D18-B662-FC9994C3B567}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.DpsgSpeedController", "Plugins\SpeedControllers\TTController.Plugin.DpsgSpeedController\TTController.Plugin.DpsgSpeedController.csproj", "{EF6B133A-0AB3-4E53-A51C-F0D88C291001}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -200,6 +202,10 @@ Global
 		{847D9772-60D9-4D18-B662-FC9994C3B567}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{847D9772-60D9-4D18-B662-FC9994C3B567}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{847D9772-60D9-4D18-B662-FC9994C3B567}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF6B133A-0AB3-4E53-A51C-F0D88C291001}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF6B133A-0AB3-4E53-A51C-F0D88C291001}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF6B133A-0AB3-4E53-A51C-F0D88C291001}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF6B133A-0AB3-4E53-A51C-F0D88C291001}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -238,6 +244,7 @@ Global
 		{697D50A1-ABEB-493E-B996-A155126EED05} = {B69E5A42-8845-4081-92DD-95D2D10D7B3E}
 		{EE45FA25-50FB-42E8-8523-4868D34C5659} = {521264D1-73FB-44B3-8243-CB3C95AFB179}
 		{847D9772-60D9-4D18-B662-FC9994C3B567} = {521264D1-73FB-44B3-8243-CB3C95AFB179}
+		{EF6B133A-0AB3-4E53-A51C-F0D88C291001} = {1C64E62C-0758-423A-B436-275C2DCAC3F6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9B8A6C39-77D8-476B-B89B-C39D2AF3D3B9}

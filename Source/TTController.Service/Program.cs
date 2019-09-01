@@ -168,6 +168,21 @@ namespace TTController.Service
                 Console.ResetColor();
             }
 
+            void WriteProperty(int indent, string propertyName, object value = null)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.Write($"» {new string('\t', indent)} ");
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Console.Write($"{propertyName}");
+                if (value != null)
+                {
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.Write($"{value}");
+                }
+                Console.WriteLine();
+                Console.ResetColor();
+            }
+
             void WaitForInput()
             {
                 Console.WriteLine("Press any key to continue...");
@@ -177,37 +192,38 @@ namespace TTController.Service
             void ListControllers()
             {
                 WriteHeader("Controllers");
+                WriteProperty(0, "");
 
                 PluginLoader.Load($@"{AppDomain.CurrentDomain.BaseDirectory}\Plugins", typeof(IControllerDefinition));
                 using (var deviceManager = new DeviceManager())
                 {
-                    foreach (var controller in deviceManager.Controllers)
+                    foreach(var controller in deviceManager.Controllers)
                     {
-                        Console.WriteLine($"Name: {controller.Name}" +
-                                          $"\nVendorId: {controller.VendorId}" +
-                                          $"\nProductId: {controller.ProductId}");
-                        Console.WriteLine($"Ports:");
+                        WriteProperty(0, "Name: ", controller.Name);
+                        WriteProperty(1, "VendorId: ", controller.VendorId);
+                        WriteProperty(1, "ProductId: ", controller.ProductId);
+                        WriteProperty(1, "Ports: ");
+
                         foreach (var port in controller.Ports)
                         {
                             var data = controller.GetPortData(port.Id);
-                            Console.WriteLine($"\tId: {port.Id}" +
-                                              $"\n\tData: {data}" +
-                                              $"\n\tIdentifier: {port}" +
-                                              $"\n");
+                            WriteProperty(2, $"{port.Id}: ");
+                            WriteProperty(3, "Data: ", data);
+                            WriteProperty(3, "Identifier: ", port);
                         }
 
-                        Console.WriteLine($"Available effect types:");
-                        Console.WriteLine($"{string.Join(", ", controller.EffectTypes)}");
-                        Console.WriteLine();
+                        WriteProperty(1, "Available effect types: ", string.Join(", ", controller.EffectTypes));
                     }
                 }
 
+                WriteProperty(0, "");
                 WriteFooter();
             }
 
             void ListSensors(params SensorType[] types)
             {
                 WriteHeader("Sensors");
+                WriteProperty(0, "");
 
                 string FormatValue(SensorType type, float value)
                 {
@@ -237,18 +253,17 @@ namespace TTController.Service
                     var availableSensors = _openHardwareMonitorFacade.Sensors.Where(s => types.Length > 0 ? types.Contains(s.SensorType) : true);
                     foreach (var (hardware, sensors) in availableSensors.GroupBy(s => s.Hardware))
                     {
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.WriteLine($"{hardware.Name}:");
+                        WriteProperty(0, $"{hardware.Name}:");
                         hardware.Update();
 
                         foreach (var (type, group) in sensors.GroupBy(s => s.SensorType))
                         {
-                            Console.ForegroundColor = ConsoleColor.White;
-                            Console.WriteLine($"\t{type}");
-                            Console.ResetColor();
+                            WriteProperty(1, $"{type}:");
                             foreach (var sensor in group)
-                                Console.WriteLine($"\t\t{sensor.Name} ({sensor.Identifier}): {FormatValue(type, sensor.Value ?? float.NaN)}");
+                                WriteProperty(2, $"{ sensor.Name} ({ sensor.Identifier}): ", FormatValue(type, sensor.Value ?? float.NaN));
                         }
+
+                        WriteProperty(0, "");
                     }
                 }
 
@@ -258,17 +273,26 @@ namespace TTController.Service
             void ListPlugins()
             {
                 WriteHeader("Plugins");
+                WriteProperty(0, "");
 
                 var pluginAssemblies = PluginLoader.SearchAll($@"{AppDomain.CurrentDomain.BaseDirectory}\Plugins");
-                Console.WriteLine("Valid plugins:");
+                WriteProperty(0, "Detected plugins:");
                 foreach (var assembly in pluginAssemblies)
-                    Console.WriteLine($"\t{Path.GetFileName(assembly.Location)}");
+                    WriteProperty(1, Path.GetFileName(assembly.Location));
 
+                WriteProperty(0, "");
                 WriteFooter();
             }
 
             var enabled = Service != null && Service.Status != ServiceControllerStatus.Running;
             var menu = new MenuPage("Main Menu > Debug");
+            menu.Add("Report", () => {
+                Console.Clear();
+                ListControllers();
+                ListSensors(SensorType.Temperature);
+                WaitForInput();
+                return false;
+            }, () => enabled);
             menu.Add("Controllers", () => {
                 Console.Clear();
                 ListControllers();
@@ -283,14 +307,6 @@ namespace TTController.Service
             }, () => enabled);
             menu.Add("Plugins", () => {
                 Console.Clear();
-                ListPlugins();
-                WaitForInput();
-                return false;
-            }, () => enabled);
-            menu.Add("Report", () => {
-                Console.Clear();
-                ListControllers();
-                ListSensors(SensorType.Temperature);
                 ListPlugins();
                 WaitForInput();
                 return false;

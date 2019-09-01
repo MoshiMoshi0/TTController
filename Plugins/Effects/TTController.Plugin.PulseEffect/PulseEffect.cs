@@ -26,7 +26,7 @@ namespace TTController.Plugin.PulseEffect
             _colors = new LedColor[Config.Colors.Count];
         }
 
-        public override string EffectType => "ByLed";
+        public override string EffectType => "PerLed";
 
         public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
         {

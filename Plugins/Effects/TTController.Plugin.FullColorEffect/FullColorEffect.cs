@@ -14,11 +14,11 @@ namespace TTController.Plugin.FullColorEffect
     {
         public FullColorEffect(FullColorEffectConfig config) : base(config) { }
 
-        public override string EffectType => "Full";
+        public override string EffectType => "PerLed";
 
         public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
         {
-            return ports.ToDictionary(p => p, _ => new List<LedColor>(){ Config.Color });
+            return ports.ToDictionary(p => p, p => Enumerable.Repeat(Config.Color, cache.GetPortConfig(p).LedCount).ToList());
         }
     }
 }

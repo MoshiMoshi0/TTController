@@ -19,7 +19,7 @@ namespace TTController.Plugin.SensorEffect
         private double _r, _g, _b;
         private readonly float _minValue, _maxValue;
 
-        public override string EffectType => "Full";
+        public override string EffectType => "PerLed";
 
         public SensorEffect(SensorEffectConfig config) : base(config, config.Sensors)
         {
@@ -64,7 +64,7 @@ namespace TTController.Plugin.SensorEffect
             }
 
             var color = new LedColor((byte)_r, (byte)_g, (byte)_b);
-            return ports.ToDictionary(p => p, _ => new List<LedColor> { color });
+            return ports.ToDictionary(p => p, p => Enumerable.Repeat(color, cache.GetPortConfig(p).LedCount).ToList());
         }
     }
 }

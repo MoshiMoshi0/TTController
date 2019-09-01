@@ -62,7 +62,7 @@ namespace TTController.Plugin.SoundEffect
             _soundIn.Start();
         }
 
-        public override string EffectType => "ByLed";
+        public override string EffectType => "PerLed";
 
         public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
         {
