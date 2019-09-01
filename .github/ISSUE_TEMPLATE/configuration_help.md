@@ -12,7 +12,8 @@ A clear and concise description of what your desired effect and/or speed control
 
 **Hardware info**
 ```
-Replace this text (between ``` characters) with the output of "Show hardware info" option from the command line menu. 
+Replace this text (between ``` characters) with a debug report.
+You can generate it by going to "Main Menu -> Debug -> Report" in the command line menu.
 
 Make sure no official software is not running at the same time.
 ```
