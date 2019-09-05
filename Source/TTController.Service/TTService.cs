@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.ServiceProcess;
 using NLog;
@@ -40,7 +41,7 @@ namespace TTController.Service
         {
             Logger.Info($"{new string('=', 64)}");
             Logger.Info("Initializing...");
-            PluginLoader.LoadAll($@"{AppDomain.CurrentDomain.BaseDirectory}\Plugins");
+            PluginLoader.LoadAll(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Plugins"));
 
             const string key = "config-file";
             if (string.IsNullOrEmpty(AppSettingsHelper.ReadValue(key)))

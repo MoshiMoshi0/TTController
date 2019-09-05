@@ -194,7 +194,7 @@ namespace TTController.Service
                 WriteHeader("Controllers");
                 WriteProperty(0, "");
 
-                PluginLoader.Load($@"{AppDomain.CurrentDomain.BaseDirectory}\Plugins", typeof(IControllerDefinition));
+                PluginLoader.Load(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Plugins"), typeof(IControllerDefinition));
                 using (var deviceManager = new DeviceManager())
                 {
                     foreach(var controller in deviceManager.Controllers)
@@ -275,7 +275,7 @@ namespace TTController.Service
                 WriteHeader("Plugins");
                 WriteProperty(0, "");
 
-                var pluginAssemblies = PluginLoader.SearchAll($@"{AppDomain.CurrentDomain.BaseDirectory}\Plugins");
+                var pluginAssemblies = PluginLoader.SearchAll(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Plugins"));
                 WriteProperty(0, "Detected plugins:");
                 foreach (var assembly in pluginAssemblies)
                     WriteProperty(1, Path.GetFileName(assembly.Location));
