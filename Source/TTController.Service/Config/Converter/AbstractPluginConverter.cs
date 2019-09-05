@@ -14,7 +14,7 @@ namespace TTController.Service.Config.Converter
 
             var typeProperty = o.GetValue("Type");
             if(typeProperty == null)
-                throw new JsonException("Missing required property: \"Type\"");
+                throw new JsonReaderException("Missing required property: \"Type\"");
 
             var configProperty = o.GetValue("Config");
 
@@ -29,7 +29,7 @@ namespace TTController.Service.Config.Converter
             }
             catch
             {
-                throw new JsonException($"Invalid plugin name \"{pluginTypeName}\"");
+                throw new JsonReaderException($"Invalid plugin name \"{pluginTypeName}\"");
             }
 
             var configType = pluginType.BaseType.GetGenericArguments().First();

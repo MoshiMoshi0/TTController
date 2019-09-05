@@ -32,11 +32,7 @@ namespace TTController.Service.Manager
                 Culture = CultureInfo.InvariantCulture,
                 ContractResolver = new ContractResolver()
             };
-            jsonSettings.Error += (sender, args) =>
-            {
-                if (args.CurrentObject == args.ErrorContext.OriginalObject)
-                    Logger.Fatal(args.ErrorContext.Error.Message);
-            };
+            jsonSettings.Error += (sender, args) => {};
 
             var converters = typeof(JsonConverter).FindInAssemblies()
                     .Where(t => t.Namespace?.StartsWith("TTController") ?? false)
@@ -61,9 +57,7 @@ namespace TTController.Service.Manager
                 }
                 catch (Exception e)
                 {
-                    if (!(e is JsonWriterException))
-                        Logger.Fatal(e);
-
+                    Logger.Fatal(e);
                     Logger.Fatal("Failed to save config!");
                     return false;
                 }
@@ -91,8 +85,7 @@ namespace TTController.Service.Manager
                 }
                 catch (Exception e)
                 {
-                    if (!(e is JsonReaderException))
-                        Logger.Fatal(e);
+                    Logger.Fatal(e);
                 }
 
                 if (CurrentConfig == null)
