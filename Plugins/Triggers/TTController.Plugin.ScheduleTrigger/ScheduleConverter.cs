@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -8,15 +8,16 @@ using System.Threading.Tasks;
 
 namespace TTController.Plugin.ScheduleTrigger
 {
-    class ScheduleConverter : JsonConverter<Schedule>
+    public class ScheduleConverter : JsonConverter<Schedule>
     {
         private readonly string Separator = " -> ";
+        private readonly string[] Formats = new string[] { @"d\.hh\:mm", @"hh\:mm", @"ss" };
 
         public override void WriteJson(JsonWriter writer, Schedule value, JsonSerializer serializer)
         {
             var array = new JArray();
-            foreach (var entry in value.Entries)
-                array.Add($"{entry.Start:c}{Separator}{entry.End:c}");
+            foreach (var (Start, End) in value.Entries)
+                array.Add($"{Start:c}{Separator}{End:c}");
 
             serializer.Serialize(writer, array);
         }
@@ -33,8 +34,11 @@ namespace TTController.Plugin.ScheduleTrigger
                 if (parts.Length != 2)
                     continue;
 
-                if (TimeSpan.TryParse(parts[0], out var start) && TimeSpan.TryParse(parts[1], out var end))
+                if (TimeSpan.TryParseExact(parts[0], Formats, null, out var start)
+                    && TimeSpan.TryParseExact(parts[1], Formats, null, out var end))
+                {
                     entries.Add((start, end));
+                }
             }
 
             return new Schedule(entries);
