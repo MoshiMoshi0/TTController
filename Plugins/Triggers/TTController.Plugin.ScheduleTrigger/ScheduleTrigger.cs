@@ -18,6 +18,7 @@ namespace TTController.Plugin.ScheduleTrigger
     {
         [DefaultValue(ScheduleScope.Day)] public ScheduleScope Scope { get; private set; } = ScheduleScope.Day;
         [DefaultValue(true)] public bool Value { get; private set; } = true;
+        [DefaultValue(null)] public TimeSpan? UpdateInterval { get; private set; } = null;
         [DefaultValue(null)] public Schedule Schedule { get; private set; } = null;
     }
 
@@ -29,12 +30,19 @@ namespace TTController.Plugin.ScheduleTrigger
         public ScheduleTrigger(ScheduleTriggerConfig config) : base(config)
         {
             TimeSpan period;
-            switch (Config.Scope)
+            if (!Config.UpdateInterval.HasValue)
             {
-                case ScheduleScope.Minute: period = TimeSpan.FromSeconds(1); break;
-                case ScheduleScope.Hour: period = TimeSpan.FromMinutes(1); break;
-                case ScheduleScope.Week: period = TimeSpan.FromMinutes(15); break;
-                default: period = TimeSpan.FromMinutes(1); break;
+                switch (Config.Scope)
+                {
+                    case ScheduleScope.Minute: period = TimeSpan.FromSeconds(1); break;
+                    case ScheduleScope.Hour: period = TimeSpan.FromMinutes(1); break;
+                    case ScheduleScope.Week: period = TimeSpan.FromMinutes(15); break;
+                    default: period = TimeSpan.FromMinutes(1); break;
+                }
+            }
+            else
+            {
+                period = Config.UpdateInterval.Value;
             }
 
             _timer = new Timer(TimerCallback, null, TimeSpan.Zero, period);
