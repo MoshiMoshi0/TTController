@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -37,6 +37,13 @@ namespace TTController.Plugin.ScheduleTrigger
                 if (TimeSpan.TryParseExact(parts[0], Formats, null, out var start)
                     && TimeSpan.TryParseExact(parts[1], Formats, null, out var end))
                 {
+                    if (start < TimeSpan.Zero || end < TimeSpan.Zero)
+                        throw new JsonReaderException($"Invalid negative time: \"{s}\"");
+                    if (start >= end)
+                        throw new JsonReaderException($"Start time must be before End time: \"{s}\"");
+                    if (start.Days > 7 || end.Days > 7)
+                        throw new JsonReaderException($"Invalid day number: \"{s}\"");
+
                     entries.Add((start, end));
                 }
             }
