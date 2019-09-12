@@ -6,7 +6,7 @@ namespace TTController.Service.Utils
 {
     public static class Extensions
     {
-        public static IEnumerable<Type> FindInAssemblies(this Type type)
+        public static IEnumerable<Type> FindImplementations(this Type type)
         {
             var types = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(a => a.GetTypes())

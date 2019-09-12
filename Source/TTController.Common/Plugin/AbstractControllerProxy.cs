@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace TTController.Common.Plugin
 {
@@ -40,6 +41,17 @@ namespace TTController.Common.Plugin
             hashCode = hashCode * -1521134295 + VendorId.GetHashCode();
             hashCode = hashCode * -1521134295 + ProductId.GetHashCode();
             return hashCode;
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            Device?.Dispose();
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

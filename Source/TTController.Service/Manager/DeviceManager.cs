@@ -14,18 +14,13 @@ namespace TTController.Service.Manager
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly IReadOnlyList<HidDevice> _devices;
-        private readonly IReadOnlyList<IControllerProxy> _controllers;
-
-        public IReadOnlyList<IControllerProxy> Controllers => _controllers;
+        public IReadOnlyList<IControllerProxy> Controllers { get; }
 
         public DeviceManager()
         {
             Logger.Info("Creating Device Manager...");
-            _devices = new List<HidDevice>();
-            _controllers = new List<IControllerProxy>();
 
-            var definitions = typeof(IControllerDefinition).FindInAssemblies()
+            var definitions = typeof(IControllerDefinition).FindImplementations()
                 .Select(t => (IControllerDefinition)Activator.CreateInstance(t))
                 .ToList();
 
@@ -56,17 +51,15 @@ namespace TTController.Service.Manager
 
                     Logger.Info("Initialized \"{0}\" controller [{1}, {2}]", definition.Name, device.Attributes.VendorHexId, device.Attributes.ProductHexId);
 
-                    devices.Add(device);
                     controllers.Add(controller);
                 }
             }
 
-            _devices = devices;
-            _controllers = controllers;
+            Controllers = controllers;
         }
 
         public IControllerProxy GetController(PortIdentifier port) =>
-            _controllers.FirstOrDefault(c => c.IsValidPort(port));
+            Controllers.FirstOrDefault(c => c.IsValidPort(port));
 
         public void Dispose()
         {
@@ -78,9 +71,9 @@ namespace TTController.Service.Manager
         {
             Logger.Info("Disposing Device Manager...");
 
-            var count = _devices.Count;
-            foreach (var device in _devices)
-                device.Dispose();
+            var count = Controllers.Count;
+            foreach (var controller in Controllers)
+                controller.Dispose();
 
             Logger.Debug("Disposed devices: {0}", count);
         }

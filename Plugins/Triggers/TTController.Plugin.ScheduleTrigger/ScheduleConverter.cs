@@ -17,7 +17,17 @@ namespace TTController.Plugin.ScheduleTrigger
         {
             var array = new JArray();
             foreach (var (Start, End) in value.Entries)
-                array.Add($"{Start:c}{Separator}{End:c}");
+            {
+                var format = Formats[0];
+                if (Start.TotalMinutes < 1 && End.TotalMinutes < 1)
+                    format = Formats[2];
+                else if (Start.TotalDays < 1 && End.TotalDays < 1)
+                    format = Formats[1];
+
+                var start = Start.ToString(format);
+                var end = End.ToString(format);
+                array.Add($"{start}{Separator}{end}");
+            }
 
             serializer.Serialize(writer, array);
         }

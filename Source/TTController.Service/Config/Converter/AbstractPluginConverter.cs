@@ -24,7 +24,7 @@ namespace TTController.Service.Config.Converter
             Type pluginType;
             try
             {
-                pluginType = typeof(TPlugin).FindInAssemblies()
+                pluginType = typeof(TPlugin).FindImplementations()
                     .First(t => string.CompareOrdinal(t.Name, pluginTypeName) == 0);
             }
             catch
