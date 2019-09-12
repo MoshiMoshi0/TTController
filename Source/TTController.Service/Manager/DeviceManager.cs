@@ -14,7 +14,10 @@ namespace TTController.Service.Manager
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public IReadOnlyList<IControllerProxy> Controllers { get; }
+        private readonly List<IHidDeviceProxy> _deviceProxies;
+        private readonly List<IControllerProxy> _controllers;
+
+        public IReadOnlyList<IControllerProxy> Controllers => _controllers;
 
         public DeviceManager()
         {
@@ -24,7 +27,7 @@ namespace TTController.Service.Manager
                 .Select(t => (IControllerDefinition)Activator.CreateInstance(t))
                 .ToList();
 
-            var devices = new List<HidDevice>();
+            var devices = new List<IHidDeviceProxy>();
             var controllers = new List<IControllerProxy>();
             foreach (var definition in definitions)
             {
@@ -42,20 +45,25 @@ namespace TTController.Service.Manager
 
                 foreach (var device in detectedDevices)
                 {
-                    var controller = (IControllerProxy) Activator.CreateInstance(definition.ControllerProxyType, new HidDeviceProxy(device), definition);
+                    var deviceProxy = new HidDeviceProxy(device);
+                    var controller = (IControllerProxy) Activator.CreateInstance(definition.ControllerProxyType, deviceProxy, definition);
                     if (!controller.Init())
                     {
                         Logger.Warn("Failed to initialize \"{0}\" controller! [{1}, {2}]", definition.Name, device.Attributes.VendorHexId, device.Attributes.ProductHexId);
+
+                        deviceProxy.Dispose();
                         continue;
                     }
 
                     Logger.Info("Initialized \"{0}\" controller [{1}, {2}]", definition.Name, device.Attributes.VendorHexId, device.Attributes.ProductHexId);
 
+                    devices.Add(deviceProxy);
                     controllers.Add(controller);
                 }
             }
 
-            Controllers = controllers;
+            _deviceProxies = devices;
+            _controllers = controllers;
         }
 
         public IControllerProxy GetController(PortIdentifier port) =>
@@ -71,9 +79,9 @@ namespace TTController.Service.Manager
         {
             Logger.Info("Disposing Device Manager...");
 
-            var count = Controllers.Count;
-            foreach (var controller in Controllers)
-                controller.Dispose();
+            var count = _deviceProxies.Count;
+            foreach (var deviceProxy in _deviceProxies)
+                deviceProxy.Dispose();
 
             Logger.Debug("Disposed devices: {0}", count);
         }
