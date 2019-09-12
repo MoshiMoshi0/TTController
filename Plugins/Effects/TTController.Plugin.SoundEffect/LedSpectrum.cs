@@ -27,7 +27,7 @@ namespace TTController.Plugin.SoundEffect
                 foreach (var port in ports)
                 {
                     var config = cache.GetPortConfig(port);
-                    var colors = GenerateColorSpectrum(config.LedCount, points);
+                    var colors = GenerateColorSpectrum(config.DeviceType.GetLedCount(), points);
                     result.Add(port, colors);
                 }
 
@@ -35,15 +35,15 @@ namespace TTController.Plugin.SoundEffect
             }
             else if (generationMethod == ColorGenerationMethod.SpanPorts)
             {
-                var ledCount = ports.Select(p => cache.GetPortConfig(p).LedCount).Sum();
+                var ledCount = ports.Select(p => cache.GetPortConfig(p).DeviceType.GetLedCount()).Sum();
                 var colors = GenerateColorSpectrum(ledCount, points);
 
                 var sliceOffset = 0;
                 foreach (var port in ports)
                 {
                     var config = cache.GetPortConfig(port);
-                    result.Add(port, colors.GetRange(sliceOffset, config.LedCount));
-                    sliceOffset += config.LedCount;
+                    result.Add(port, colors.GetRange(sliceOffset, config.DeviceType.GetLedCount()));
+                    sliceOffset += config.DeviceType.GetLedCount();
                 }
 
                 return result;

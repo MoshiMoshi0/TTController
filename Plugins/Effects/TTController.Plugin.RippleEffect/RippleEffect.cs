@@ -53,10 +53,10 @@ namespace TTController.Plugin.RippleEffect
                         continue;
 
                     var off = new LedColor(0, 0, 0);
-                    var colors = Enumerable.Range(0, config.LedCount).Select(_ => off).ToList();
+                    var colors = Enumerable.Range(0, config.DeviceType.GetLedCount()).Select(_ => off).ToList();
                     for (var i = 0; i < Config.Length; i++)
                     {
-                        var idx = Wrap(_rotation - i, config.LedCount);
+                        var idx = Wrap(_rotation - i, config.DeviceType.GetLedCount());
                         colors[idx] = _rippleColors[i];
                     }
 
@@ -65,7 +65,7 @@ namespace TTController.Plugin.RippleEffect
             }
             else if (Config.ColorGenerationMethod == ColorGenerationMethod.SpanPorts)
             {
-                var totalLength = ports.Select(p => cache.GetPortConfig(p)).Sum(c => c?.LedCount ?? 0);
+                var totalLength = ports.Select(p => cache.GetPortConfig(p)).Sum(c => c.DeviceType.GetLedCount());
 
                 var off = new LedColor(0, 0, 0);
                 var colors = Enumerable.Range(0, totalLength).Select(_ => off).ToList();
@@ -82,8 +82,8 @@ namespace TTController.Plugin.RippleEffect
                     if (config == null)
                         continue;
 
-                    result.Add(port, colors.Skip(offset).Take(config.LedCount).ToList());
-                    offset += config.LedCount;
+                    result.Add(port, colors.Skip(offset).Take(config.DeviceType.GetLedCount()).ToList());
+                    offset += config.DeviceType.GetLedCount();
                 }
             }
 

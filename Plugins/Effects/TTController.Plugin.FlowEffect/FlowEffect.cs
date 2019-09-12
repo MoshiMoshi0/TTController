@@ -52,9 +52,9 @@ namespace TTController.Plugin.FlowEffect
                         continue;
 
                     var colors = new List<LedColor>();
-                    for (var i = 0; i < config.LedCount; i++)
+                    for (var i = 0; i < config.DeviceType.GetLedCount(); i++)
                     {
-                        if (i < (int)Math.Round(config.LedCount * _fill))
+                        if (i < (int)Math.Round(config.DeviceType.GetLedCount() * _fill))
                             colors.Add(currentColor);
                         else
                             colors.Add(lastColor);
@@ -65,7 +65,7 @@ namespace TTController.Plugin.FlowEffect
             }
             else if(Config.ColorGenerationMethod == ColorGenerationMethod.SpanPorts)
             {
-                var totalLength = ports.Select(p => cache.GetPortConfig(p)).Sum(c => c?.LedCount ?? 0);
+                var totalLength = ports.Select(p => cache.GetPortConfig(p)).Sum(c => c.DeviceType.GetLedCount());
 
                 var colors = new List<LedColor>();
                 for (var i = 0; i < totalLength; i++)
@@ -83,8 +83,8 @@ namespace TTController.Plugin.FlowEffect
                     if (config == null)
                         continue;
 
-                    result.Add(port, colors.Skip(offset).Take(config.LedCount).ToList());
-                    offset += config.LedCount;
+                    result.Add(port, colors.Skip(offset).Take(config.DeviceType.GetLedCount()).ToList());
+                    offset += config.DeviceType.GetLedCount();
                 }
             }
 

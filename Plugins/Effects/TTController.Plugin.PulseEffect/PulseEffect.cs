@@ -63,8 +63,8 @@ namespace TTController.Plugin.PulseEffect
                     if (config == null)
                         continue;
 
-                    result.Add(port, _colors.Skip(offset).Take(config.LedCount).ToList());
-                    offset += config.LedCount;
+                    result.Add(port, _colors.Skip(offset).Take(config.DeviceType.GetLedCount()).ToList());
+                    offset += config.DeviceType.GetLedCount();
                 }
 
                 return result;
