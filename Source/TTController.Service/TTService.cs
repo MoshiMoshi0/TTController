@@ -343,7 +343,7 @@ namespace TTController.Service
                     var colors = colorMap[port];
 
                     if (config.LedRotation > 0)
-                        colors = colors.Skip(config.LedRotation).Concat(colors.Take(config.LedRotation)).ToList();
+                        colors = colors.RotateLeft(config.LedRotation).ToList();
                     if (config.LedReverse)
                         colors.Reverse();
 

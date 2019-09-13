@@ -29,5 +29,8 @@ namespace TTController.Service.Utils
             key = group.Key;
             elements = group.AsEnumerable();
         }
+
+        public static IEnumerable<T> RotateLeft<T>(this IEnumerable<T> enumberable, int rotate) 
+            => enumberable.Skip(rotate).Concat(enumberable.Take(rotate));
     }
 }
