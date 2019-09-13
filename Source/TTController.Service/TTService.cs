@@ -342,11 +342,30 @@ namespace TTController.Service
 
                     var colors = colorMap[port];
                     var ledCount = config.DeviceType.GetLedCount();
+                    var zones = config.DeviceType.GetZones();
 
-                    if (config.LedRotation > 0)
-                        colors = colors.RotateLeft(config.LedRotation).ToList();
-                    if (config.LedReverse)
-                        colors.Reverse();
+                    if (config.LedRotation != null || config.LedReverse != null)
+                    {
+                        var offset = 0;
+                        var newColors = new List<LedColor>();
+                        for (int i = 0; i < zones.Length; i++)
+                        {
+                            var zoneColors = colors.Skip(offset).Take(zones[i]);
+
+                            if (i < config.LedRotation.Length && config.LedRotation[i] > 0)
+                                zoneColors = zoneColors.RotateLeft(config.LedRotation[i]);
+                            if (i < config.LedReverse.Length && config.LedReverse[i])
+                                zoneColors = zoneColors.Reverse();
+
+                            offset += zones[i];
+                            newColors.AddRange(zoneColors);
+                        }
+
+                        if (newColors.Count < colors.Count)
+                            newColors.AddRange(colors.Skip(offset));
+
+                        colors = newColors;
+                    }
 
                     switch (config.LedCountHandling)
                     {
