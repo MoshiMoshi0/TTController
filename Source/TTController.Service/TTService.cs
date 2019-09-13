@@ -341,13 +341,13 @@ namespace TTController.Service
                         continue;
 
                     var colors = colorMap[port];
+                    var ledCount = config.DeviceType.GetLedCount();
 
                     if (config.LedRotation > 0)
                         colors = colors.RotateLeft(config.LedRotation).ToList();
                     if (config.LedReverse)
                         colors.Reverse();
 
-                    var ledCount = config.DeviceType.GetLedCount();
                     switch (config.LedCountHandling)
                     {
                         case LedCountHandling.Lerp:
@@ -379,12 +379,15 @@ namespace TTController.Service
                                 break;
                             }
                         case LedCountHandling.Wrap:
-                            if (ledCount < colors.Count)
+                            if (colors.Count <= ledCount)
                                 break;
 
-                            var remainder = colors.Count % ledCount;
+                            var wrapCount = (int)Math.Floor(colors.Count / (double)ledCount);
+                            var startOffset = (wrapCount - 1) * ledCount;
+                            var remainder = colors.Count - wrapCount * ledCount;
+
                             colors = colors.Skip(colors.Count - remainder)
-                                .Concat(colors.Take(colors.Count - remainder).Skip(colors.Count - ledCount))
+                                .Concat(colors.Skip(startOffset + remainder).Take(ledCount - remainder))
                                 .ToList();
                             break;
                         case LedCountHandling.Trim:
