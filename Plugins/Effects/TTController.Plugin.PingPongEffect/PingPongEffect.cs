@@ -10,8 +10,8 @@ namespace TTController.Plugin.PingPongEffect
     public class PingPongEffectConfig : EffectConfigBase
     {
         [DefaultValue(0.01f)] public float Step { get; private set; } = 0.01f;
-        [DefaultValue(0.02f)] public float Height { get; private set; } = 0.02f;
-        [DefaultValue(0.3f)] public float Width { get; private set; } = 0.3f;
+        [DefaultValue(0.2f)] public float Height { get; private set; } = 0.2f;
+        [DefaultValue(0.5f)] public float Width { get; private set; } = 0.5f;
     }
 
     public class PingPongEffect : EffectBase<PingPongEffectConfig>
@@ -70,14 +70,14 @@ namespace TTController.Plugin.PingPongEffect
                         case DeviceType.RiingTrio:
                             colors.AddRange(GenerateColors(12, localStart, localEnd));
                             colors.AddRange(colors);
-                            colors.AddRange(GenerateColors(6, localStart, localEnd, ringOffset: 0.4, oddDivide: false));
+                            colors.AddRange(GenerateColors(6, localStart, localEnd, radius: 0.33, oddDivide: false));
                             break;
                         case DeviceType.RiingDuo:
                             colors.AddRange(GenerateColors(12, localStart, localEnd));
-                            colors.AddRange(GenerateColors(6, localStart, localEnd, ringOffset: 0.4, oddDivide: false));
+                            colors.AddRange(GenerateColors(6, localStart, localEnd, radius: 0.33, oddDivide: false));
                             break;
                         case DeviceType.PurePlus:
-                            colors.AddRange(GenerateColors(9, localStart, localEnd, ringOffset: 0.4));
+                            colors.AddRange(GenerateColors(9, localStart, localEnd, radius: 0.33));
                             break;
                         case DeviceType.Default:
                             colors.AddRange(GenerateColors(ledCount, localStart, localEnd));
@@ -93,20 +93,24 @@ namespace TTController.Plugin.PingPongEffect
             return result;
         }
 
-        private List<LedColor> GenerateColors(int ledCount, double localStart, double localEnd, double ringOffset = 0.0, bool oddDivide = true)
+        private List<LedColor> GenerateColors(int ledCount, double localStart, double localEnd, double radius = 1.0, bool oddDivide = true)
         {
             var colors = Enumerable.Range(0, ledCount).Select(_ => new LedColor()).ToList();
 
             var isOdd = ledCount % 2 != 0;
-            for (var j = 0; j <= ledCount / 2 + (oddDivide || isOdd ? 0 : -1); j++)
+            var halfCount = ledCount / 2 + (oddDivide || isOdd ? 0 : -1);
+            for (var j = 0; j <= halfCount; j++)
             {
-                var position = ringOffset + (j / (double)(ledCount / 2)) * (1.0 - ringOffset * 2);
-                if (position >= Config.Width && position <= 1 - Config.Width)
+                var a = (0.5 + j / (double)halfCount) * Math.PI;
+                var x = -Math.Cos(a) / 2 * radius;
+                var y = 1 - (1 + Math.Sin(a) * radius) / 2;
+
+                if (x >= Config.Width / 2)
                     continue;
 
-                if (position >= localStart && position <= localEnd)
+                if (y >= localStart && y <= localEnd)
                 {
-                    var dist = Math.Abs(Math.Min(position - localStart, localEnd - position));
+                    var dist = Math.Abs(Math.Min(y - localStart, localEnd - y));
                     var falloff = (2 * dist) / (localEnd - localStart);
                     var brightness = (byte)(255 * falloff);
                     var color = new LedColor(brightness, brightness, brightness);
