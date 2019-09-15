@@ -407,9 +407,9 @@ namespace TTController.Service
                         {
                             var zoneColors = colors.Skip(offset).Take(zones[i]);
 
-                            if (i < config.LedRotation.Length && config.LedRotation[i] > 0)
+                            if (i < config.LedRotation?.Length && config.LedRotation[i] > 0)
                                 zoneColors = zoneColors.RotateLeft(config.LedRotation[i]);
-                            if (i < config.LedReverse.Length && config.LedReverse[i])
+                            if (i < config.LedReverse?.Length && config.LedReverse[i])
                                 zoneColors = zoneColors.Reverse();
 
                             offset += zones[i];
