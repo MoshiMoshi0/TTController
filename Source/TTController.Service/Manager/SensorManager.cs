@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
-using OpenHardwareMonitor.Hardware;
+using LibreHardwareMonitor.Hardware;
 using TTController.Common;
 using TTController.Service.Hardware;
 using TTController.Service.Hardware.Sensor;
@@ -17,7 +17,7 @@ namespace TTController.Service.Manager
         private readonly ISensorValueProviderFactory _sensorValueProviderFactory;
         private readonly IReadOnlyDictionary<Identifier, SensorConfig> _sensorConfigs;
 
-        private readonly OpenHardwareMonitorFacade _openHardwareMonitorFacade;
+        private readonly LibreHardwareMonitorFacade _libreHardwareMonitorFacade;
         private readonly Dictionary<Identifier, ISensorValueProvider> _sensorValueProviders;
         private readonly HashSet<IHardware> _hardware;
 
@@ -29,7 +29,7 @@ namespace TTController.Service.Manager
             _sensorValueProviderFactory = sensorValueProviderFactory;
             _sensorConfigs = sensorConfigs;
 
-            _openHardwareMonitorFacade = new OpenHardwareMonitorFacade();
+            _libreHardwareMonitorFacade = new LibreHardwareMonitorFacade();
             _sensorValueProviders = new Dictionary<Identifier, ISensorValueProvider>();
             _hardware = new HashSet<IHardware>();
         }
@@ -56,7 +56,7 @@ namespace TTController.Service.Manager
             if (_sensorValueProviders.ContainsKey(identifier))
                 return;
 
-            var sensor = _openHardwareMonitorFacade.Sensors.FirstOrDefault(s => s.Identifier == identifier);
+            var sensor = _libreHardwareMonitorFacade.Sensors.FirstOrDefault(s => s.Identifier == identifier);
             if (sensor == null)
                 return;
 
@@ -87,14 +87,14 @@ namespace TTController.Service.Manager
             if (!_sensorValueProviders.ContainsKey(identifier))
                 return;
 
-            var sensor = _openHardwareMonitorFacade.Sensors.FirstOrDefault(s => s.Identifier == identifier);
+            var sensor = _libreHardwareMonitorFacade.Sensors.FirstOrDefault(s => s.Identifier == identifier);
             if (sensor == null)
                 return;
 
             Logger.Info("Disabling sensor: {0}", identifier);
             _sensorValueProviders.Remove(identifier);
 
-            var removeHardware = _openHardwareMonitorFacade.Sensors
+            var removeHardware = _libreHardwareMonitorFacade.Sensors
                 .Where(s => EnabledSensors.Contains(s.Identifier) && s.Identifier != sensor.Identifier)
                 .All(s => s.Hardware != sensor.Hardware);
 
@@ -127,7 +127,7 @@ namespace TTController.Service.Manager
         {
             Logger.Info("Disposing Sensor Manager...");
 
-            _openHardwareMonitorFacade.Dispose();
+            _libreHardwareMonitorFacade.Dispose();
             _sensorValueProviders.Clear();
             _hardware.Clear();
         }

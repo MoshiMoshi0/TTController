@@ -1,5 +1,5 @@
 ﻿using NLog;
-using OpenHardwareMonitor.Hardware;
+using LibreHardwareMonitor.Hardware;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using TTController.Service.Utils;
 
 namespace TTController.Service.Hardware
 {
-    public sealed class OpenHardwareMonitorFacade : IDisposable
+    public sealed class LibreHardwareMonitorFacade : IDisposable
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -16,16 +16,16 @@ namespace TTController.Service.Hardware
 
         public IReadOnlyList<ISensor> Sensors => _sensors.AsReadOnly();
 
-        public OpenHardwareMonitorFacade()
+        public LibreHardwareMonitorFacade()
         {
             Logger.Info("Initializing Open Hardware Monitor...");
 
             _sensors = new List<ISensor>();
             _computer = new Computer()
             {
-                CPUEnabled = true,
-                GPUEnabled = true,
-                HDDEnabled = true
+                IsCpuEnabled = true,
+                IsGpuEnabled = true,
+                IsStorageEnabled = true
             };
 
             _computer.Open();

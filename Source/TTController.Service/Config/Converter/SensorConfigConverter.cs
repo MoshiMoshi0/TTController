@@ -1,4 +1,4 @@
-﻿using OpenHardwareMonitor.Hardware;
+﻿using LibreHardwareMonitor.Hardware;
 using System.Collections.Generic;
 using TTController.Common;
 

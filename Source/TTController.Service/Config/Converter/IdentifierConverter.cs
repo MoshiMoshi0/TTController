@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using OpenHardwareMonitor.Hardware;
+using LibreHardwareMonitor.Hardware;
 
 namespace TTController.Service.Config.Converter
 {

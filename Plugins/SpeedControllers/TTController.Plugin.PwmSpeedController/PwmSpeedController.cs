@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using OpenHardwareMonitor.Hardware;
+using LibreHardwareMonitor.Hardware;
 using TTController.Common;
 using TTController.Common.Plugin;
 

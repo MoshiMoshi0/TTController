@@ -1,7 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using NLog;
-using OpenHardwareMonitor.Hardware;
+using LibreHardwareMonitor.Hardware;
 using TTController.Common;
 
 namespace TTController.Service.Utils

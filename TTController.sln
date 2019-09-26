@@ -4,7 +4,7 @@ VisualStudioVersion = 16.0.28729.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Service", "Source\TTController.Service\TTController.Service.csproj", "{742F8CC7-E38A-4263-AECF-E7230AC909AB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenHardwareMonitorLib", "ThirdParty\LibreHardwareMonitor\OpenHardwareMonitorLib.csproj", "{BBC31437-DED6-4F85-B634-C4F03AD3D8B2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibreHardwareMonitorLib", "ThirdParty\LibreHardwareMonitor\LibreHardwareMonitorLib\LibreHardwareMonitorLib.csproj", "{BBC31437-DED6-4F85-B634-C4F03AD3D8B2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Common", "Source\TTController.Common\TTController.Common.csproj", "{C1E69FF7-20F6-425C-B8BA-9A1116A35E52}"
 EndProject

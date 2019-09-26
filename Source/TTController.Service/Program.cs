@@ -5,8 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.ServiceProcess;
+using LibreHardwareMonitor.Hardware;
 using NLog;
-using OpenHardwareMonitor.Hardware;
 using TTController.Common.Plugin;
 using TTController.Service.Config.Data;
 using TTController.Service.Hardware;
@@ -248,9 +248,9 @@ namespace TTController.Service
                     return $"{value}";
                 }
 
-                using (var _openHardwareMonitorFacade = new OpenHardwareMonitorFacade())
+                using (var _libreHardwareMonitorFacade = new LibreHardwareMonitorFacade())
                 {
-                    var availableSensors = _openHardwareMonitorFacade.Sensors.Where(s => types.Length > 0 ? types.Contains(s.SensorType) : true);
+                    var availableSensors = _libreHardwareMonitorFacade.Sensors.Where(s => types.Length > 0 ? types.Contains(s.SensorType) : true);
                     foreach (var (hardware, sensors) in availableSensors.GroupBy(s => s.Hardware))
                     {
                         WriteProperty(0, $"{hardware.Name}:");

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
-using OpenHardwareMonitor.Hardware;
+using LibreHardwareMonitor.Hardware;
 using TTController.Common;
 
 namespace TTController.Service.Config.Data
