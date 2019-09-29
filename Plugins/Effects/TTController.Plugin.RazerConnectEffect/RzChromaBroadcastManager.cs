@@ -13,25 +13,26 @@ namespace TTController.Plugin.RazerConnectEffect
         private readonly RzBroadcastCallback _callback;
         private readonly int[] _colors;
 
+        public bool Initialized { get; private set; }
+
         public event EventHandler<RzBroadcastColorChangedEventArgs> ColorChanged;
         public event EventHandler<RzBroadcastConnectionChangedEventArgs> ConnectionChanged;
 
         public RzChromaBroadcastManager()
         {
-            if (RzChromaBroadcastNative.Load())
-            {
-                var init = RzChromaBroadcastNative.Init(Guid.Parse("b0ecdaf9-26b2-d33f-f046-1c44ce64eb58"));
-                if (init == RzResult.SUCCESS)
-                {
-                    _callback = new RzBroadcastCallback(BroadcastCallback);
+            if (!RzChromaBroadcastNative.Load())
+                return;
 
-                    var register = RzChromaBroadcastNative.RegisterEventNotification(_callback);
-                    if (register == RzResult.SUCCESS)
-                    {
-                        _colors = new int[RzChromaBroadcastNative.BroadcastColorCount];
-                    }
-                }
-            }
+            var guid = Guid.Parse("b0ecdaf9-26b2-d33f-f046-1c44ce64eb58");
+            if (RzChromaBroadcastNative.Init(guid) != RzResult.SUCCESS)
+                return;
+
+            _callback = new RzBroadcastCallback(BroadcastCallback);
+            if (RzChromaBroadcastNative.RegisterEventNotification(_callback) != RzResult.SUCCESS)
+                return;
+
+            _colors = new int[RzChromaBroadcastNative.BroadcastColorCount];
+            Initialized = true;
         }
 
         private int BroadcastCallback(int message, IntPtr data)
@@ -57,6 +58,8 @@ namespace TTController.Plugin.RazerConnectEffect
             var unRegister = RzChromaBroadcastNative.UnregisterEventNotification();
             var unInit = RzChromaBroadcastNative.UnInit();
             RzChromaBroadcastNative.UnLoad();
+
+            Initialized = false;
         }
 
         public void Dispose()
