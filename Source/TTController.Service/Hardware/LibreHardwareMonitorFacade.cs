@@ -18,7 +18,7 @@ namespace TTController.Service.Hardware
 
         public LibreHardwareMonitorFacade()
         {
-            Logger.Info("Initializing Open Hardware Monitor...");
+            Logger.Info("Initializing Libre Hardware Monitor...");
 
             _sensors = new List<ISensor>();
             _computer = new Computer()
@@ -48,7 +48,7 @@ namespace TTController.Service.Hardware
 
         private void Dispose(bool disposing)
         {
-            Logger.Info("Finalizing Open Hardware Monitor...");
+            Logger.Info("Finalizing Libre Hardware Monitor...");
 
             _computer?.Close();
             _sensors.Clear();
