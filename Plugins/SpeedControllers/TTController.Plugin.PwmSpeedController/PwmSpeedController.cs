@@ -53,7 +53,8 @@ namespace TTController.Plugin.PwmSpeedController
             }
 
             var targetSpeed = curveTargetSpeed;
-            var currentSpeed = ports.Select(p => cache.GetPortData(p)?.Speed).FirstOrDefault(s => s != null);
+            var currentSpeed = ports.Select(p => cache.GetPortData(p)?.Speed).FirstOrDefault(s => s != null)
+                            ?? ports.Select(p => cache.GetPortSpeed(p)).FirstOrDefault(s => s != null);
 
             if (currentSpeed != null)
             {
