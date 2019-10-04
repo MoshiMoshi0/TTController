@@ -15,10 +15,7 @@ namespace TTController.Service.Utils
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private static readonly Type[] PluginTypes = new [] {
-                typeof(IEffectBase),
-                typeof(ISpeedControllerBase),
-                typeof(ITriggerBase),
-                typeof(IControllerDefinition)
+                typeof(IPlugin)
         };
 
         internal static List<Assembly> LoadAll(string path) => Load(path, PluginTypes);

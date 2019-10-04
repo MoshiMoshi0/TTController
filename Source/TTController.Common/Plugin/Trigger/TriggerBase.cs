@@ -5,14 +5,6 @@ using System.Linq;
 
 namespace TTController.Common.Plugin
 {
-    public interface ITriggerBase : IDisposable
-    {
-        bool Value(ICacheProvider cache);
-        IEnumerable<Identifier> UsedSensors { get; }
-    }
-
-    public abstract class TriggerConfigBase { }
-
     public abstract class TriggerBase<T> : ITriggerBase where T : TriggerConfigBase
     {
         public T Config { get; private set; }

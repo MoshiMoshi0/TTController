@@ -6,26 +6,14 @@ using LibreHardwareMonitor.Hardware;
 
 namespace TTController.Common.Plugin
 {
-    public interface ISpeedControllerBase : IDisposable
-    {
-        bool IsEnabled(ICacheProvider cache);
-        IEnumerable<Identifier> UsedSensors { get; }
-        IDictionary<PortIdentifier, byte> GenerateSpeeds(List<PortIdentifier> ports, ICacheProvider cache);
-    }
-
-    public abstract class SpeedControllerConfigBase
-    {
-        [DefaultValue(null)] public ITriggerBase Trigger { get; private set; } = null;
-    }
-
-    public abstract class SpeedControllerBase<T> : ISpeedControllerBase where T : SpeedControllerConfigBase
+    public abstract class EffectBase<T> : IEffectBase where T : EffectConfigBase
     {
         protected T Config { get; private set; }
         public IEnumerable<Identifier> UsedSensors { get; private set; }
 
-        protected SpeedControllerBase(T config) : this(config, Enumerable.Empty<Identifier>()) { }
+        protected EffectBase(T config) : this(config, Enumerable.Empty<Identifier>()) { }
 
-        protected SpeedControllerBase(T config, IEnumerable<Identifier> usedSensors)
+        protected EffectBase(T config, IEnumerable<Identifier> usedSensors)
         {
             Config = config;
             UsedSensors = usedSensors
@@ -47,6 +35,7 @@ namespace TTController.Common.Plugin
             UsedSensors = null;
         }
 
-        public abstract IDictionary<PortIdentifier, byte> GenerateSpeeds(List<PortIdentifier> ports, ICacheProvider cache);
+        public abstract string EffectType { get; }
+        public abstract IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache);
     }
 }

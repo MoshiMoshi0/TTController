@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace TTController.Common.Plugin
 {
-    public interface IControllerDefinition
+    public interface IControllerDefinition : IPlugin
     {
         string Name { get; }
         int VendorId { get; }
