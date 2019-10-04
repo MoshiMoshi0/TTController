@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using TTController.Common;
 
-namespace TTController.Service.Config.Converter
+namespace TTController.Service.Config.Converters
 {
     public class PortConfigConverter : AbstractNamedValueTupleConverter<List<PortIdentifier>, PortConfig>
     {

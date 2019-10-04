@@ -8,7 +8,7 @@ using TTController.Common.Plugin;
 using TTController.Service.Hardware;
 using TTController.Service.Utils;
 
-namespace TTController.Service.Manager
+namespace TTController.Service.Managers
 {
     public sealed class DeviceManager : IDisposable
     {
@@ -38,7 +38,7 @@ namespace TTController.Service.Manager
                 if (detectedCount == 0)
                     continue;
 
-                if(detectedCount == 1)
+                if (detectedCount == 1)
                     Logger.Trace("Found 1 controller [{vid}, {pid}]", definition.VendorId, detectedDevices.Select(d => d.Attributes.ProductId).First());
                 else
                     Logger.Trace("Found {count} controllers [{vid}, [{pids}]]", detectedCount, definition.VendorId, detectedDevices.Select(d => d.Attributes.ProductId));
@@ -46,7 +46,7 @@ namespace TTController.Service.Manager
                 foreach (var device in detectedDevices)
                 {
                     var deviceProxy = new HidDeviceProxy(device);
-                    var controller = (IControllerProxy) Activator.CreateInstance(definition.ControllerProxyType, deviceProxy, definition);
+                    var controller = (IControllerProxy)Activator.CreateInstance(definition.ControllerProxyType, deviceProxy, definition);
                     if (!controller.Init())
                     {
                         Logger.Warn("Failed to initialize \"{0}\" controller! [{1}, {2}]", definition.Name, device.Attributes.VendorHexId, device.Attributes.ProductHexId);

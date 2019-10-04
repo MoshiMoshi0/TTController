@@ -80,7 +80,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.DpsgSpe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.ScheduleTrigger", "Plugins\Triggers\TTController.Plugin.ScheduleTrigger\TTController.Plugin.ScheduleTrigger.csproj", "{2B86D77A-303F-4AE2-A83E-D34B8CE028D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.PingPongEffect", "Plugins\Effects\TTController.Plugin.PingPongEffect\TTController.Plugin.PingPongEffect.csproj", "{E2BBAC6F-B505-4BE4-A849-4D6A77459DC3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.PingPongEffect", "Plugins\Effects\TTController.Plugin.PingPongEffect\TTController.Plugin.PingPongEffect.csproj", "{E2BBAC6F-B505-4BE4-A849-4D6A77459DC3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

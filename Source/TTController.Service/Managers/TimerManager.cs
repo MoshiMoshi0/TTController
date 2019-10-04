@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using NLog;
 
-namespace TTController.Service.Manager
+namespace TTController.Service.Managers
 {
     public sealed class TimerManager : IDisposable
     {
@@ -137,7 +137,7 @@ namespace TTController.Service.Manager
                 get => _interval;
                 set
                 {
-                    if (value < 0f || Single.IsNaN(value))
+                    if (value < 0f || float.IsNaN(value))
                     {
                         throw new ArgumentOutOfRangeException(nameof(value));
                     }

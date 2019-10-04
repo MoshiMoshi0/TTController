@@ -10,7 +10,7 @@ using NLog;
 using TTController.Common.Plugin;
 using TTController.Service.Config.Data;
 using TTController.Service.Hardware;
-using TTController.Service.Manager;
+using TTController.Service.Managers;
 using TTController.Service.Utils;
 
 namespace TTController.Service

@@ -1,4 +1,5 @@
 ﻿using LibreHardwareMonitor.Hardware;
+using TTController.Service.Hardware.Sensor.Decorators;
 
 namespace TTController.Service.Hardware.Sensor
 {

@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using TTController.Service.Utils;
 
-namespace TTController.Service.Config.Converter
+namespace TTController.Service.Config.Converters
 {
     public abstract class AbstractPluginConverter<TPlugin, TConfig> : JsonConverter<TPlugin>
     {
@@ -13,7 +13,7 @@ namespace TTController.Service.Config.Converter
             var o = JToken.ReadFrom(reader) as JObject;
 
             var typeProperty = o.GetValue("Type");
-            if(typeProperty == null)
+            if (typeProperty == null)
                 throw new JsonReaderException("Missing required property: \"Type\"");
 
             var configProperty = o.GetValue("Config");
@@ -34,9 +34,9 @@ namespace TTController.Service.Config.Converter
 
             var configType = pluginType.BaseType.GetGenericArguments().First();
             var configJson = configProperty != null ? configProperty.ToString() : "";
-            var config = (TConfig) JsonConvert.DeserializeObject(configJson, configType);
+            var config = (TConfig)JsonConvert.DeserializeObject(configJson, configType);
 
-            return (TPlugin) Activator.CreateInstance(pluginType, config);
+            return (TPlugin)Activator.CreateInstance(pluginType, config);
         }
 
         public override void WriteJson(JsonWriter writer, TPlugin value, JsonSerializer serializer)

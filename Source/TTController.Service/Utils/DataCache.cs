@@ -1,4 +1,4 @@
-﻿using System.Collections.Concurrent;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using NLog;
 using LibreHardwareMonitor.Hardware;
@@ -116,7 +116,7 @@ namespace TTController.Service.Utils
             public void StorePortConfig(PortIdentifier port, PortConfig config) => _collector.StorePortConfig(port, config);
             public void StorePortSpeed(PortIdentifier port, byte speed) => _collector.StorePortSpeed(port, speed);
             public void StorePortColors(PortIdentifier port, List<LedColor> colors) => _collector.StorePortColors(port, colors);
-            }
+        }
         #endregion
     }
 }

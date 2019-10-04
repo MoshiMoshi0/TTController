@@ -5,7 +5,7 @@ using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace TTController.Service.Config.Converter
+namespace TTController.Service.Config.Converters
 {
     public abstract class AbstractObjectToArrayConverter<T> : JsonConverter<T>
     {

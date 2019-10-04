@@ -9,7 +9,7 @@ using TTController.Service.Config;
 using TTController.Service.Config.Data;
 using TTController.Service.Utils;
 
-namespace TTController.Service.Manager
+namespace TTController.Service.Managers
 {
     public sealed class ConfigManager : IDisposable
     {
@@ -32,7 +32,7 @@ namespace TTController.Service.Manager
                 Culture = CultureInfo.InvariantCulture,
                 ContractResolver = new ContractResolver()
             };
-            jsonSettings.Error += (sender, args) => {};
+            jsonSettings.Error += (sender, args) => { };
 
             var converters = typeof(JsonConverter).FindImplementations()
                     .Where(t => t.Namespace?.StartsWith("TTController") ?? false)

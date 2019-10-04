@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using LibreHardwareMonitor.Hardware;
 
-namespace TTController.Service.Config.Converter
+namespace TTController.Service.Config.Converters
 {
     public class IdentifierConverter : JsonConverter<Identifier>
     {
@@ -12,6 +12,6 @@ namespace TTController.Service.Config.Converter
 
         public override Identifier ReadJson(JsonReader reader, Type objectType, Identifier existingValue, bool hasExistingValue,
             JsonSerializer serializer) =>
-            new Identifier(JToken.ReadFrom(reader).Value<string>().Split(new []{'/'}, StringSplitOptions.RemoveEmptyEntries));
+            new Identifier(JToken.ReadFrom(reader).Value<string>().Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries));
     }
 }

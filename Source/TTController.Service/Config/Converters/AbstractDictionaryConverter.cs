@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using TTController.Service.Utils;
 
-namespace TTController.Service.Config.Converter
+namespace TTController.Service.Config.Converters
 {
     public abstract class AbstractDictionaryConverter<TKey, TValue> : JsonConverter<IDictionary<TKey, TValue>>
     {

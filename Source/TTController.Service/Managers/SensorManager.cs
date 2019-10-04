@@ -7,8 +7,9 @@ using TTController.Common;
 using TTController.Service.Hardware;
 using TTController.Service.Hardware.Sensor;
 using TTController.Service.Utils;
+using TTController.Service.Hardware.Sensor.Decorators;
 
-namespace TTController.Service.Manager
+namespace TTController.Service.Managers
 {
     public sealed class SensorManager : IDataProvider, IDisposable
     {

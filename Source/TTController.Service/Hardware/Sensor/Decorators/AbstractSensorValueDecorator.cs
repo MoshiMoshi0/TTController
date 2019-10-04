@@ -1,4 +1,4 @@
-﻿namespace TTController.Service.Hardware.Sensor
+﻿namespace TTController.Service.Hardware.Sensor.Decorators
 {
     public abstract class AbstractSensorValueDecorator : ISensorValueProvider
     {

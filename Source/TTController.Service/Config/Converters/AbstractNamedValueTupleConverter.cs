@@ -2,7 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 
-namespace TTController.Service.Config.Converter
+namespace TTController.Service.Config.Converters
 {
     public abstract class AbstractNamedValueTupleConverter<T1, T2> : JsonConverter<ValueTuple<T1, T2>>
     {
@@ -26,8 +26,8 @@ namespace TTController.Service.Config.Converter
             if (!o.ContainsKey(ValueName()))
                 throw new JsonReaderException($"Missing required property: \"{ValueName()}\"");
 
-            var v1 = (T1) JsonConvert.DeserializeObject(o[KeyName()].ToString(), typeof(T1));
-            var v2 = (T2) JsonConvert.DeserializeObject(o[ValueName()].ToString(), typeof(T2));
+            var v1 = (T1)JsonConvert.DeserializeObject(o[KeyName()].ToString(), typeof(T1));
+            var v2 = (T2)JsonConvert.DeserializeObject(o[ValueName()].ToString(), typeof(T2));
 
             return new ValueTuple<T1, T2>(v1, v2);
         }
