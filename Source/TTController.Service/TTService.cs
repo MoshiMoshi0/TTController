@@ -318,10 +318,14 @@ namespace TTController.Service
                 {
                     foreach (var (port, speed) in speedMap)
                     {
+                        if (speed == _cache.GetPortSpeed(port))
+                            continue;
+
                         var controller = _deviceManager.GetController(port);
                         if (controller == null)
                             continue;
 
+                        _cache.StorePortSpeed(port, speed);
                         controller.SetSpeed(port.Id, speed);
                     }
                 }
@@ -460,11 +464,15 @@ namespace TTController.Service
                         if (colors == null)
                             continue;
 
+                        if (colors.ContentsEqual(_cache.GetPortColors(port)))
+                            continue;
+
                         var controller = _deviceManager.GetController(port);
                         var effectByte = controller?.GetEffectByte(effectType);
                         if (effectByte == null)
                             continue;
 
+                        _cache.StorePortColors(port, colors);
                         controller.SetRgb(port.Id, effectByte.Value, colors);
                     }
                 }

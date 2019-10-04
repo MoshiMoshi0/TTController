@@ -17,6 +17,8 @@ namespace TTController.Service.Utils
         void StoreSensorConfig(Identifier sensor, SensorConfig config);
         void StorePortData(PortIdentifier port, PortData data);
         void StorePortConfig(PortIdentifier port, PortConfig config);
+        void StorePortSpeed(PortIdentifier port, byte speed);
+        void StorePortColors(PortIdentifier port, List<LedColor> colors);
     }
 
     public class DataCache : ICacheCollector, ICacheProvider
@@ -25,8 +27,11 @@ namespace TTController.Service.Utils
 
         private readonly CacheProviderProxy _providerProxy;
         private readonly CacheCollectorProxy _collectorProxy;
+
         private readonly ConcurrentDictionary<PortIdentifier, PortData> _portDataCache;
         private readonly ConcurrentDictionary<PortIdentifier, PortConfig> _portConfigCache;
+        private readonly ConcurrentDictionary<PortIdentifier, byte> _portSpeedCache;
+        private readonly ConcurrentDictionary<PortIdentifier, List<LedColor>> _portColorCache;
         private readonly ConcurrentDictionary<Identifier, float> _sensorValueCache;
         private readonly ConcurrentDictionary<Identifier, SensorConfig> _sensorConfigCache;
 
@@ -44,6 +49,8 @@ namespace TTController.Service.Utils
 
             _portDataCache = new ConcurrentDictionary<PortIdentifier, PortData>();
             _portConfigCache = new ConcurrentDictionary<PortIdentifier, PortConfig>();
+            _portSpeedCache = new ConcurrentDictionary<PortIdentifier, byte>();
+            _portColorCache = new ConcurrentDictionary<PortIdentifier, List<LedColor>>();
             _sensorValueCache = new ConcurrentDictionary<Identifier, float>();
             _sensorConfigCache = new ConcurrentDictionary<Identifier, SensorConfig>();
         }
@@ -62,6 +69,12 @@ namespace TTController.Service.Utils
 
         public PortConfig GetPortConfig(PortIdentifier port) => _portConfigCache.TryGetValue(port, out var config) ? config : null;
         public void StorePortConfig(PortIdentifier port, PortConfig config) => _portConfigCache[port] = config;
+
+        public byte? GetPortSpeed(PortIdentifier port) => _portSpeedCache.TryGetValue(port, out var speed) ? speed : (byte?)null;
+        public void StorePortSpeed(PortIdentifier port, byte speed) => _portSpeedCache[port] = speed;
+
+        public List<LedColor> GetPortColors(PortIdentifier port) => _portColorCache.TryGetValue(port, out var colors) ? colors : null;
+        public void StorePortColors(PortIdentifier port, List<LedColor> colors) => _portColorCache[port] = colors;
 
         public void Clear()
         {
@@ -84,6 +97,8 @@ namespace TTController.Service.Utils
             public SensorConfig GetSensorConfig(Identifier sensor) => _provider.GetSensorConfig(sensor);
             public PortData GetPortData(PortIdentifier port) => _provider.GetPortData(port);
             public PortConfig GetPortConfig(PortIdentifier port) => _provider.GetPortConfig(port);
+            public byte? GetPortSpeed(PortIdentifier port) => _provider.GetPortSpeed(port);
+            public List<LedColor> GetPortColors(PortIdentifier port) => _provider.GetPortColors(port);
         }
 
         public class CacheCollectorProxy : ICacheCollector
@@ -99,7 +114,9 @@ namespace TTController.Service.Utils
             public void StoreSensorConfig(Identifier sensor, SensorConfig config) => _collector.StoreSensorConfig(sensor, config);
             public void StorePortData(PortIdentifier port, PortData data) => _collector.StorePortData(port, data);
             public void StorePortConfig(PortIdentifier port, PortConfig config) => _collector.StorePortConfig(port, config);
-        }
+            public void StorePortSpeed(PortIdentifier port, byte speed) => _collector.StorePortSpeed(port, speed);
+            public void StorePortColors(PortIdentifier port, List<LedColor> colors) => _collector.StorePortColors(port, colors);
+            }
         #endregion
     }
 }

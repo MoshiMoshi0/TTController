@@ -1,4 +1,5 @@
 ﻿using LibreHardwareMonitor.Hardware;
+using System.Collections.Generic;
 
 namespace TTController.Common
 {
@@ -8,5 +9,7 @@ namespace TTController.Common
         SensorConfig GetSensorConfig(Identifier sensor);
         PortData GetPortData(PortIdentifier port);
         PortConfig GetPortConfig(PortIdentifier port);
+        byte? GetPortSpeed(PortIdentifier port);
+        List<LedColor> GetPortColors(PortIdentifier port);
     }
 }
