@@ -21,8 +21,8 @@ namespace TTController.Service
         private ConfigManager _configManager;
         private SensorManager _sensorManager;
         private TimerManager _timerManager;
-        private EffectManager _effectManager;
-        private SpeedControllerManager _speedControllerManager;
+
+        private PluginStore _pluginStore;
         private DataCache _cache;
 
         protected bool IsDisposed;
@@ -52,6 +52,7 @@ namespace TTController.Service
                 return false;
 
             _cache = new DataCache();
+            _pluginStore = new PluginStore();
 
             var alpha = Math.Exp(-_configManager.CurrentConfig.SensorTimerInterval / (double)_configManager.CurrentConfig.DeviceSpeedTimerInterval);
             var providerFactory = new MovingAverageSensorValueProviderFactory(alpha);
@@ -60,8 +61,6 @@ namespace TTController.Service
                 .ToDictionary(x => x.Sensor, x => x.Config);
 
             _sensorManager = new SensorManager(providerFactory, sensorConfigs);
-            _effectManager = new EffectManager();
-            _speedControllerManager = new SpeedControllerManager();
             _deviceManager = new DeviceManager();
 
             _sensorManager.EnableSensors(sensorConfigs.Keys);
@@ -69,13 +68,13 @@ namespace TTController.Service
             {
                 foreach (var effect in profile.Effects)
                 {
-                    _effectManager.Add(profile.Guid, effect);
+                    _pluginStore.Add(profile.Guid, effect);
                     _sensorManager.EnableSensors(effect.UsedSensors);
                 }
 
                 foreach (var speedController in profile.SpeedControllers)
                 {
-                    _speedControllerManager.Add(profile.Guid, speedController);
+                    _pluginStore.Add(profile.Guid, speedController);
                     _sensorManager.EnableSensors(speedController.UsedSensors);
                 }
             }
@@ -193,18 +192,17 @@ namespace TTController.Service
 
             _sensorManager?.Dispose();
             _deviceManager?.Dispose();
-            _effectManager?.Dispose();
-            _speedControllerManager?.Dispose();
             _configManager?.Dispose();
+
+            _pluginStore.Dispose();
             _cache?.Clear();
 
             _timerManager = null;
-            _deviceManager = null;
             _sensorManager = null;
             _deviceManager = null;
-            _effectManager = null;
-            _speedControllerManager = null;
             _configManager = null;
+
+            _pluginStore = null;
             _cache = null;
 
             Dispose();
@@ -295,8 +293,9 @@ namespace TTController.Service
                 }
                 else
                 {
-                    var speedControllers = _speedControllerManager.GetSpeedControllers(profile.Guid);
-                    var speedController = speedControllers?.FirstOrDefault(c => c.IsEnabled(_cache.AsReadOnly()));
+                    var speedController = _pluginStore
+                        .Get<ISpeedControllerBase>(profile.Guid)
+                        .FirstOrDefault(c => c.IsEnabled(_cache.AsReadOnly()));
                     if (speedController == null)
                         continue;
 
@@ -432,8 +431,9 @@ namespace TTController.Service
 
             foreach (var profile in _configManager.CurrentConfig.Profiles)
             {
-                var effects = _effectManager.GetEffects(profile.Guid);
-                var effect = effects?.FirstOrDefault(e => e.IsEnabled(_cache.AsReadOnly()));
+                var effect = _pluginStore
+                    .Get<IEffectBase>(profile.Guid)
+                    .FirstOrDefault(e => e.IsEnabled(_cache.AsReadOnly()));
                 if (effect == null)
                     continue;
 
