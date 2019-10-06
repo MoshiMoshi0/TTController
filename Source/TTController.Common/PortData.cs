@@ -12,17 +12,22 @@ namespace TTController.Common
         public int? Rpm { get; set; }
         public float? Temperature { get; set; }
 
-        private readonly IDictionary<string, object> _additionalData;
+        private Dictionary<string, object> _additionalData;
 
         public object this[string key]
         {
-            get => _additionalData.TryGetValue(key, out var value) ? value : null;
-            set => _additionalData[key] = value;
-        }
-
-        public PortData()
-        {
-            _additionalData = new Dictionary<string, object>();
+            get
+            {
+                if (_additionalData != null && _additionalData.TryGetValue(key, out var value))
+                    return value;
+                return null;
+            }
+            set
+            {
+                if (_additionalData == null)
+                    _additionalData = new Dictionary<string, object>();
+                _additionalData[key] = value;
+            }
         }
 
         public override string ToString()
