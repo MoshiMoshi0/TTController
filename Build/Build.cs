@@ -90,6 +90,8 @@ class Build : NukeBuild
                                              null,
                                              f => fileBlacklist.Contains(Path.GetFileNameWithoutExtension(f.Name)) || !extensionWhitelist.Contains(Path.GetExtension(f.Name)));
                 });
+
+            CopyDirectoryRecursively(PluginsDirectory / "Devices", ServiceBinPath / "Plugins" / "Devices", DirectoryExistsPolicy.Merge, FileExistsPolicy.OverwriteIfNewer); 
         });
 
     Target Pack => _ => _

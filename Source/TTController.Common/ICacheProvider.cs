@@ -11,5 +11,6 @@ namespace TTController.Common
         PortConfig GetPortConfig(PortIdentifier port);
         byte? GetPortSpeed(PortIdentifier port);
         List<LedColor> GetPortColors(PortIdentifier port);
+        DeviceConfig GetDeviceConfig(PortIdentifier port);
     }
 }

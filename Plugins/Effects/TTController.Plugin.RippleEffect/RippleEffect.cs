@@ -52,11 +52,12 @@ namespace TTController.Plugin.RippleEffect
                     if (config == null)
                         continue;
 
+                    var ledCount = cache.GetDeviceConfig(port).LedCount;
                     var off = new LedColor(0, 0, 0);
-                    var colors = Enumerable.Range(0, config.DeviceType.GetLedCount()).Select(_ => off).ToList();
+                    var colors = Enumerable.Range(0, ledCount).Select(_ => off).ToList();
                     for (var i = 0; i < Config.Length; i++)
                     {
-                        var idx = Wrap(_rotation - i, config.DeviceType.GetLedCount());
+                        var idx = Wrap(_rotation - i, ledCount);
                         colors[idx] = _rippleColors[i];
                     }
 
@@ -65,13 +66,13 @@ namespace TTController.Plugin.RippleEffect
             }
             else if (Config.ColorGenerationMethod == ColorGenerationMethod.SpanPorts)
             {
-                var totalLength = ports.Select(p => cache.GetPortConfig(p)).Sum(c => c.DeviceType.GetLedCount());
+                var totalLedCount = ports.Select(p => cache.GetDeviceConfig(p).LedCount).Sum();
 
                 var off = new LedColor(0, 0, 0);
-                var colors = Enumerable.Range(0, totalLength).Select(_ => off).ToList();
+                var colors = Enumerable.Range(0, totalLedCount).Select(_ => off).ToList();
                 for (var i = 0; i < Config.Length; i++)
                 {
-                    var idx = Wrap(_rotation - i, totalLength);
+                    var idx = Wrap(_rotation - i, totalLedCount);
                     colors[idx] = _rippleColors[i];
                 }
 
@@ -82,8 +83,9 @@ namespace TTController.Plugin.RippleEffect
                     if (config == null)
                         continue;
 
-                    result.Add(port, colors.Skip(offset).Take(config.DeviceType.GetLedCount()).ToList());
-                    offset += config.DeviceType.GetLedCount();
+                    var ledCount = cache.GetDeviceConfig(port).LedCount;
+                    result.Add(port, colors.Skip(offset).Take(ledCount).ToList());
+                    offset += ledCount;
                 }
             }
 

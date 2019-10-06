@@ -19,6 +19,7 @@ namespace TTController.Service.Utils
         void StorePortConfig(PortIdentifier port, PortConfig config);
         void StorePortSpeed(PortIdentifier port, byte speed);
         void StorePortColors(PortIdentifier port, List<LedColor> colors);
+        void StoreDeviceConfig(PortIdentifier port, DeviceConfig data);
     }
 
     public class DataCache : ICacheCollector, ICacheProvider
@@ -32,13 +33,9 @@ namespace TTController.Service.Utils
         private readonly ConcurrentDictionary<PortIdentifier, PortConfig> _portConfigCache;
         private readonly ConcurrentDictionary<PortIdentifier, byte> _portSpeedCache;
         private readonly ConcurrentDictionary<PortIdentifier, List<LedColor>> _portColorCache;
+        private readonly ConcurrentDictionary<PortIdentifier, DeviceConfig> _deviceConfigCache;
         private readonly ConcurrentDictionary<Identifier, float> _sensorValueCache;
         private readonly ConcurrentDictionary<Identifier, SensorConfig> _sensorConfigCache;
-
-        public IReadOnlyDictionary<PortIdentifier, PortData> PortDataCache => _portDataCache;
-        public IReadOnlyDictionary<PortIdentifier, PortConfig> PortConfigCache => _portConfigCache;
-        public IReadOnlyDictionary<Identifier, float> SensorValueCache => _sensorValueCache;
-        public IReadOnlyDictionary<Identifier, SensorConfig> SensorConfigCache => _sensorConfigCache;
 
         public DataCache()
         {
@@ -47,12 +44,13 @@ namespace TTController.Service.Utils
             _providerProxy = new CacheProviderProxy(this);
             _collectorProxy = new CacheCollectorProxy(this);
 
+            _sensorValueCache = new ConcurrentDictionary<Identifier, float>();
+            _sensorConfigCache = new ConcurrentDictionary<Identifier, SensorConfig>();
             _portDataCache = new ConcurrentDictionary<PortIdentifier, PortData>();
             _portConfigCache = new ConcurrentDictionary<PortIdentifier, PortConfig>();
             _portSpeedCache = new ConcurrentDictionary<PortIdentifier, byte>();
             _portColorCache = new ConcurrentDictionary<PortIdentifier, List<LedColor>>();
-            _sensorValueCache = new ConcurrentDictionary<Identifier, float>();
-            _sensorConfigCache = new ConcurrentDictionary<Identifier, SensorConfig>();
+            _deviceConfigCache = new ConcurrentDictionary<PortIdentifier, DeviceConfig>();
         }
 
         public ICacheProvider AsReadOnly() => _providerProxy;
@@ -75,6 +73,9 @@ namespace TTController.Service.Utils
 
         public List<LedColor> GetPortColors(PortIdentifier port) => _portColorCache.TryGetValue(port, out var colors) ? colors : null;
         public void StorePortColors(PortIdentifier port, List<LedColor> colors) => _portColorCache[port] = colors;
+
+        public DeviceConfig GetDeviceConfig(PortIdentifier port) => _deviceConfigCache.TryGetValue(port, out var data) ? data : null;
+        public void StoreDeviceConfig(PortIdentifier port, DeviceConfig data) => _deviceConfigCache[port] = data;
 
         public void Clear()
         {
@@ -99,6 +100,7 @@ namespace TTController.Service.Utils
             public PortConfig GetPortConfig(PortIdentifier port) => _provider.GetPortConfig(port);
             public byte? GetPortSpeed(PortIdentifier port) => _provider.GetPortSpeed(port);
             public List<LedColor> GetPortColors(PortIdentifier port) => _provider.GetPortColors(port);
+            public DeviceConfig GetDeviceConfig(PortIdentifier port) => _provider.GetDeviceConfig(port);
         }
 
         public class CacheCollectorProxy : ICacheCollector
@@ -116,6 +118,7 @@ namespace TTController.Service.Utils
             public void StorePortConfig(PortIdentifier port, PortConfig config) => _collector.StorePortConfig(port, config);
             public void StorePortSpeed(PortIdentifier port, byte speed) => _collector.StorePortSpeed(port, speed);
             public void StorePortColors(PortIdentifier port, List<LedColor> colors) => _collector.StorePortColors(port, colors);
+            public void StoreDeviceConfig(PortIdentifier port, DeviceConfig data) => _collector.StoreDeviceConfig(port, data);
         }
         #endregion
     }

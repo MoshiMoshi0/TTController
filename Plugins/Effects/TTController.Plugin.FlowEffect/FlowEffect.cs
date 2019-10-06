@@ -51,10 +51,11 @@ namespace TTController.Plugin.FlowEffect
                     if (config == null)
                         continue;
 
+                    var ledCount = cache.GetDeviceConfig(port).LedCount;
                     var colors = new List<LedColor>();
-                    for (var i = 0; i < config.DeviceType.GetLedCount(); i++)
+                    for (var i = 0; i < ledCount; i++)
                     {
-                        if (i < (int)Math.Round(config.DeviceType.GetLedCount() * _fill))
+                        if (i < (int)Math.Round(ledCount * _fill))
                             colors.Add(currentColor);
                         else
                             colors.Add(lastColor);
@@ -65,12 +66,12 @@ namespace TTController.Plugin.FlowEffect
             }
             else if(Config.ColorGenerationMethod == ColorGenerationMethod.SpanPorts)
             {
-                var totalLength = ports.Select(p => cache.GetPortConfig(p)).Sum(c => c.DeviceType.GetLedCount());
+                var totalLedCount = ports.Select(p => cache.GetDeviceConfig(p).LedCount).Sum();
 
                 var colors = new List<LedColor>();
-                for (var i = 0; i < totalLength; i++)
+                for (var i = 0; i < totalLedCount; i++)
                 {
-                    if (i < (int)Math.Round(totalLength * _fill))
+                    if (i < (int)Math.Round(totalLedCount * _fill))
                         colors.Add(currentColor);
                     else
                         colors.Add(lastColor);
@@ -83,8 +84,9 @@ namespace TTController.Plugin.FlowEffect
                     if (config == null)
                         continue;
 
-                    result.Add(port, colors.Skip(offset).Take(config.DeviceType.GetLedCount()).ToList());
-                    offset += config.DeviceType.GetLedCount();
+                    var ledCount = cache.GetDeviceConfig(port).LedCount;
+                    result.Add(port, colors.Skip(offset).Take(ledCount).ToList());
+                    offset += ledCount;
                 }
             }
 

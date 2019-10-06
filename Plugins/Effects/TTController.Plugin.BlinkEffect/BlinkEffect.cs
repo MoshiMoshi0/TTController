@@ -48,7 +48,7 @@ namespace TTController.Plugin.BlinkEffect
                 else
                 {
                     var offColor = new LedColor(0, 0, 0);
-                    result.Add(port, Enumerable.Range(0, config.DeviceType.GetLedCount()).Select(_ => offColor).ToList());
+                    result.Add(port, Enumerable.Range(0, cache.GetDeviceConfig(port).LedCount).Select(_ => offColor).ToList());
                 }
             }
 

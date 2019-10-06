@@ -1,21 +1,24 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using NLog;
+using TTController.Common;
 using TTController.Service.Config;
 using TTController.Service.Config.Data;
 using TTController.Service.Utils;
 
 namespace TTController.Service.Managers
 {
-    public sealed class ConfigManager : IDisposable
+    public sealed class ConfigManager : IDataProvider, IDisposable
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly string _filename;
+        private Dictionary<string, DeviceConfig> _deviceConfigs;
 
         public ConfigData CurrentConfig { get; private set; }
 
@@ -23,6 +26,7 @@ namespace TTController.Service.Managers
         {
             Logger.Info("Creating Config Manager...");
             _filename = filename;
+            _deviceConfigs = new Dictionary<string, DeviceConfig>();
 
             var jsonSettings = new JsonSerializerSettings()
             {
@@ -82,6 +86,16 @@ namespace TTController.Service.Managers
                 {
                     using (var reader = new StreamReader(path))
                         CurrentConfig = JsonConvert.DeserializeObject<ConfigData>(reader.ReadToEnd());
+
+                    _deviceConfigs = Directory.EnumerateFiles(@"Plugins\Devices\", "*.json")
+                        .Select(f =>
+                        {
+                            using (var reader = new StreamReader(f))
+                                return (Name: Path.GetFileNameWithoutExtension(f),
+                                        Config: JsonConvert.DeserializeObject<DeviceConfig>(reader.ReadToEnd()));
+                        })
+                        .Where(x => x != default)
+                        .ToDictionary(x => x.Name, x => x.Config);
                 }
                 catch (Exception e)
                 {
@@ -115,6 +129,26 @@ namespace TTController.Service.Managers
             Logger.Info("Disposing Config Manager...");
 
             CurrentConfig = null;
+        }
+
+        public void Accept(ICacheCollector collector)
+        {
+            foreach (var (ports, config) in CurrentConfig.PortConfigs)
+            {
+                foreach (var port in ports)
+                {
+                    collector.StorePortConfig(port, config);
+
+                    if (_deviceConfigs.ContainsKey(config.DeviceType))
+                        collector.StoreDeviceConfig(port, _deviceConfigs[config.DeviceType]);
+                    else
+                        Logger.Warn("Unable to find device with name \"{0}\"!", config.DeviceType);
+                }
+            }
+
+            foreach (var (sensors, config) in CurrentConfig.SensorConfigs)
+                foreach (var sensor in sensors)
+                    collector.StoreSensorConfig(sensor, config);
         }
     }
 }

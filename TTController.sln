@@ -82,6 +82,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.Schedul
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.PingPongEffect", "Plugins\Effects\TTController.Plugin.PingPongEffect\TTController.Plugin.PingPongEffect.csproj", "{E2BBAC6F-B505-4BE4-A849-4D6A77459DC3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Devices", "Devices", "{A1AD8FD0-8BA7-4278-B7A8-2E3EF9D13579}"
+	ProjectSection(SolutionItems) = preProject
+		Plugins\Devices\FloeRiing.json = Plugins\Devices\FloeRiing.json
+		Plugins\Devices\PurePlus.json = Plugins\Devices\PurePlus.json
+		Plugins\Devices\RiingDuo.json = Plugins\Devices\RiingDuo.json
+		Plugins\Devices\RiingTrio.json = Plugins\Devices\RiingTrio.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -259,6 +267,7 @@ Global
 		{EF6B133A-0AB3-4E53-A51C-F0D88C291001} = {1C64E62C-0758-423A-B436-275C2DCAC3F6}
 		{2B86D77A-303F-4AE2-A83E-D34B8CE028D2} = {B69E5A42-8845-4081-92DD-95D2D10D7B3E}
 		{E2BBAC6F-B505-4BE4-A849-4D6A77459DC3} = {521264D1-73FB-44B3-8243-CB3C95AFB179}
+		{A1AD8FD0-8BA7-4278-B7A8-2E3EF9D13579} = {A3A67BA6-9598-40EC-A5B5-9526A0592772}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9B8A6C39-77D8-476B-B89B-C39D2AF3D3B9}

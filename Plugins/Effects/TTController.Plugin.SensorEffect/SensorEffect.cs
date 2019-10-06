@@ -64,7 +64,7 @@ namespace TTController.Plugin.SensorEffect
             }
 
             var color = new LedColor((byte)_r, (byte)_g, (byte)_b);
-            return ports.ToDictionary(p => p, p => Enumerable.Repeat(color, cache.GetPortConfig(p).DeviceType.GetLedCount()).ToList());
+            return ports.ToDictionary(p => p, p => Enumerable.Repeat(color, cache.GetDeviceConfig(p).LedCount).ToList());
         }
     }
 }

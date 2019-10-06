@@ -83,16 +83,15 @@ namespace TTController.Service
                 _cache.StoreSensorConfig(sensor, SensorConfig.Default);
 
             foreach (var controller in _deviceManager.Controllers)
+            {
                 foreach (var port in controller.Ports)
+                {
                     _cache.StorePortConfig(port, PortConfig.Default);
+                    _cache.StoreDeviceConfig(port, DeviceConfig.Default);
+                }
+            }
 
-            foreach (var (ports, config) in _configManager.CurrentConfig.PortConfigs)
-                foreach (var port in ports)
-                    _cache.StorePortConfig(port, config);
-
-            foreach (var (sensors, config) in _configManager.CurrentConfig.SensorConfigs)
-                foreach (var sensor in sensors)
-                    _cache.StoreSensorConfig(sensor, config);
+            _configManager.Accept(_cache.AsWriteOnly());
 
             ApplyComputerStateProfile(ComputerStateType.Boot);
 
@@ -344,8 +343,8 @@ namespace TTController.Service
                         continue;
 
                     var colors = colorMap[port];
-                    var ledCount = config.DeviceType.GetLedCount();
-                    var zones = config.DeviceType.GetZones();
+                    var ledCount = _cache.GetDeviceConfig(port).LedCount;
+                    var zones = _cache.GetDeviceConfig(port).Zones;
 
                     switch (config.LedCountHandling)
                     {

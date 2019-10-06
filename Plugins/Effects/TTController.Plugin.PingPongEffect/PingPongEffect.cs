@@ -45,8 +45,8 @@ namespace TTController.Plugin.PingPongEffect
             for (var i = 0; i < ports.Count; i++)
             {
                 var port = ports[i];
-                var config = cache.GetPortConfig(port);
-                var ledCount = config.DeviceType.GetLedCount();
+                var config = cache.GetDeviceConfig(port);
+                var ledCount = config.LedCount;
 
                 var globalStart = i / (double)ports.Count;
                 var globalEnd = (i + 1) / (double)ports.Count;
@@ -65,21 +65,21 @@ namespace TTController.Plugin.PingPongEffect
                     var localEnd = (tTop - globalStart) / (double)(globalEnd - globalStart);
 
                     var colors = new List<LedColor>();
-                    switch (config.DeviceType)
+                    switch (config.Name)
                     {
-                        case DeviceType.RiingTrio:
+                        case "RiingTrio":
                             colors.AddRange(GenerateColors(12, localStart, localEnd));
                             colors.AddRange(colors);
                             colors.AddRange(GenerateColors(6, localStart, localEnd, radius: 0.33, oddDivide: false));
                             break;
-                        case DeviceType.RiingDuo:
+                        case "RiingDuo":
                             colors.AddRange(GenerateColors(12, localStart, localEnd));
                             colors.AddRange(GenerateColors(6, localStart, localEnd, radius: 0.33, oddDivide: false));
                             break;
-                        case DeviceType.PurePlus:
+                        case "PurePlus":
                             colors.AddRange(GenerateColors(9, localStart, localEnd, radius: 0.33));
                             break;
-                        case DeviceType.Default:
+                        case "Default":
                             colors.AddRange(GenerateColors(ledCount, localStart, localEnd));
                             break;
                         default:

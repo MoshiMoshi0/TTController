@@ -1,0 +1,5 @@
+﻿{
+  "Name": "RiingTrio",
+  "LedCount": 30,
+  "Zones": [ 12, 12, 6 ]
+}
