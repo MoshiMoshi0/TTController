@@ -24,6 +24,7 @@ namespace TTController.Service
 
         private PluginStore _pluginStore;
         private DataCache _cache;
+        private ConfigData _config;
 
         protected bool IsDisposed;
 
@@ -51,6 +52,7 @@ namespace TTController.Service
             if (!_configManager.LoadOrCreateConfig())
                 return false;
 
+            _config = _configManager.CurrentConfig;
             _cache = new DataCache();
             _pluginStore = new PluginStore();
 
@@ -64,7 +66,7 @@ namespace TTController.Service
             _deviceManager = new DeviceManager();
 
             _sensorManager.EnableSensors(sensorConfigs.Keys);
-            foreach (var profile in _configManager.CurrentConfig.Profiles)
+            foreach (var profile in _config.Profiles)
             {
                 foreach (var effect in profile.Effects)
                 {
@@ -96,11 +98,11 @@ namespace TTController.Service
             ApplyComputerStateProfile(ComputerStateType.Boot);
 
             _timerManager = new TimerManager();
-            _timerManager.RegisterTimer(_configManager.CurrentConfig.SensorTimerInterval, SensorTimerCallback);
-            _timerManager.RegisterTimer(_configManager.CurrentConfig.DeviceSpeedTimerInterval, DeviceSpeedTimerCallback);
-            _timerManager.RegisterTimer(_configManager.CurrentConfig.DeviceRgbTimerInterval, DeviceRgbTimerCallback);
+            _timerManager.RegisterTimer(_config.SensorTimerInterval, SensorTimerCallback);
+            _timerManager.RegisterTimer(_config.DeviceSpeedTimerInterval, DeviceSpeedTimerCallback);
+            _timerManager.RegisterTimer(_config.DeviceRgbTimerInterval, DeviceRgbTimerCallback);
             if(LogManager.Configuration.LoggingRules.Any(r => r.IsLoggingEnabledForLevel(LogLevel.Debug)))
-                _timerManager.RegisterTimer(_configManager.CurrentConfig.LoggingTimerInterval, LoggingTimerCallback);
+                _timerManager.RegisterTimer(_config.LoggingTimerInterval, LoggingTimerCallback);
 
             _timerManager.Start();
 
@@ -226,7 +228,7 @@ namespace TTController.Service
             lock (_deviceManager)
             {
                 var dirtyControllers = new HashSet<IControllerProxy>();
-                foreach (var profile in _configManager.CurrentConfig.ComputerStateProfiles.Where(p => p.StateType == state))
+                foreach (var profile in _config.ComputerStateProfiles.Where(p => p.StateType == state))
                 {
                     foreach (var port in profile.Ports)
                     {
@@ -273,7 +275,7 @@ namespace TTController.Service
                 return value > config.CriticalValue;
             });
 
-            foreach (var profile in _configManager.CurrentConfig.Profiles)
+            foreach (var profile in _config.Profiles)
             {
                 lock (_deviceManager)
                 {
@@ -428,7 +430,7 @@ namespace TTController.Service
                 }
             }
 
-            foreach (var profile in _configManager.CurrentConfig.Profiles)
+            foreach (var profile in _config.Profiles)
             {
                 var effect = _pluginStore
                     .Get<IEffectBase>(profile.Guid)
@@ -482,7 +484,7 @@ namespace TTController.Service
 
         public bool LoggingTimerCallback()
         {
-            foreach (var profile in _configManager.CurrentConfig.Profiles)
+            foreach (var profile in _config.Profiles)
             {
                 foreach (var port in profile.Ports)
                 {
