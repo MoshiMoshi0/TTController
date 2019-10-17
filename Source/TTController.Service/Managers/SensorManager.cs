@@ -8,6 +8,7 @@ using TTController.Service.Hardware;
 using TTController.Service.Hardware.Sensor;
 using TTController.Service.Utils;
 using TTController.Service.Hardware.Sensor.Decorators;
+using TTController.Service.Config.Data;
 
 namespace TTController.Service.Managers
 {
@@ -15,8 +16,8 @@ namespace TTController.Service.Managers
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly ISensorValueProviderFactory _sensorValueProviderFactory;
-        private readonly IReadOnlyDictionary<Identifier, SensorConfig> _sensorConfigs;
+        private readonly ConfigData _config;
+        private readonly Dictionary<Identifier, SensorConfig> _sensorConfigs;
 
         private readonly LibreHardwareMonitorFacade _libreHardwareMonitorFacade;
         private readonly Dictionary<Identifier, ISensorValueProvider> _sensorValueProviders;
@@ -24,15 +25,18 @@ namespace TTController.Service.Managers
 
         public IEnumerable<Identifier> EnabledSensors => _sensorValueProviders.Keys;
 
-        public SensorManager(ISensorValueProviderFactory sensorValueProviderFactory, IReadOnlyDictionary<Identifier, SensorConfig> sensorConfigs)
+        public SensorManager(ConfigData Config)
         {
             Logger.Info("Creating Sensor Manager...");
-            _sensorValueProviderFactory = sensorValueProviderFactory;
-            _sensorConfigs = sensorConfigs;
+            _config = Config;
 
             _libreHardwareMonitorFacade = new LibreHardwareMonitorFacade();
             _sensorValueProviders = new Dictionary<Identifier, ISensorValueProvider>();
             _hardware = new HashSet<IHardware>();
+
+            _sensorConfigs = _config.SensorConfigs
+                .SelectMany(x => x.Sensors.Select(s => (Sensor: s, Config: x.Config)))
+                .ToDictionary(x => x.Sensor, x => x.Config);
         }
 
         public void Update()
@@ -63,15 +67,24 @@ namespace TTController.Service.Managers
 
             Logger.Info("Enabling sensor: {0}", sensor.Identifier);
 
-            var sensorValueProvider = _sensorValueProviderFactory.Create(sensor);
-            if (_sensorConfigs.TryGetValue(identifier, out var config))
+            _sensorValueProviders.Add(identifier, CreateProvider(sensor));
+            _hardware.Add(sensor.Hardware);
+        }
+
+        public ISensorValueProvider CreateProvider(ISensor sensor)
+        {
+            ISensorValueProvider sensorValueProvider = new SensorValueProvider(sensor);
+
+            var alpha = Math.Exp(-_config.SensorTimerInterval / (double)_config.DeviceSpeedTimerInterval);
+            sensorValueProvider = new MovingAverageSensorValueDecorator(sensorValueProvider, alpha);
+
+            if (_sensorConfigs.TryGetValue(sensor.Identifier, out var config))
             {
                 if (config.Offset.HasValue)
                     sensorValueProvider = new OffsetSensorValueDecorator(sensorValueProvider, config.Offset.Value);
             }
 
-            _sensorValueProviders.Add(identifier, sensorValueProvider);
-            _hardware.Add(sensor.Hardware);
+            return sensorValueProvider;
         }
 
         public void EnableSensors(IEnumerable<Identifier> identifiers)

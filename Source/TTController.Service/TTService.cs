@@ -56,16 +56,10 @@ namespace TTController.Service
             _cache = new DataCache();
             _pluginStore = new PluginStore();
 
-            var alpha = Math.Exp(-_configManager.CurrentConfig.SensorTimerInterval / (double)_configManager.CurrentConfig.DeviceSpeedTimerInterval);
-            var providerFactory = new MovingAverageSensorValueProviderFactory(alpha);
-            var sensorConfigs = _configManager.CurrentConfig.SensorConfigs
-                .SelectMany(x => x.Sensors.Select(s => (Sensor: s, Config: x.Config)))
-                .ToDictionary(x => x.Sensor, x => x.Config);
-
-            _sensorManager = new SensorManager(providerFactory, sensorConfigs);
+            _sensorManager = new SensorManager(_config);
             _deviceManager = new DeviceManager();
 
-            _sensorManager.EnableSensors(sensorConfigs.Keys);
+            _sensorManager.EnableSensors(_config.SensorConfigs.SelectMany(x => x.Sensors));
             foreach (var profile in _config.Profiles)
             {
                 foreach (var effect in profile.Effects)
