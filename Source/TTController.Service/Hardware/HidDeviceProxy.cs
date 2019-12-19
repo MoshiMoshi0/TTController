@@ -68,5 +68,16 @@ namespace TTController.Service.Hardware
 
             return report.Data;
         }
+
+        protected virtual void Dispose(bool disposing) 
+        {
+            _device?.Dispose();
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
     }
 }

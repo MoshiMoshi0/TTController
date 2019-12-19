@@ -9,6 +9,6 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Source\TTController.Common\TTController.Common.csproj" />
-    <ProjectReference Include="..\..\..\ThirdParty\LibreHardwareMonitor\OpenHardwareMonitorLib.csproj" />
+    <ProjectReference Include="..\..\..\ThirdParty\LibreHardwareMonitor\LibreHardwareMonitorLib\LibreHardwareMonitorLib.csproj" />
   </ItemGroup>
 </Project>

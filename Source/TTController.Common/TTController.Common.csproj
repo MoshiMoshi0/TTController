@@ -8,6 +8,6 @@
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\ThirdParty\LibreHardwareMonitor\OpenHardwareMonitorLib.csproj" />
+    <ProjectReference Include="..\..\ThirdParty\LibreHardwareMonitor\LibreHardwareMonitorLib\LibreHardwareMonitorLib.csproj" />
   </ItemGroup>
 </Project>

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.ServiceProcess;
 using NLog;
@@ -7,7 +8,7 @@ using TTController.Common;
 using TTController.Common.Plugin;
 using TTController.Service.Config.Data;
 using TTController.Service.Hardware.Sensor;
-using TTController.Service.Manager;
+using TTController.Service.Managers;
 using TTController.Service.Utils;
 
 namespace TTController.Service
@@ -20,9 +21,10 @@ namespace TTController.Service
         private ConfigManager _configManager;
         private SensorManager _sensorManager;
         private TimerManager _timerManager;
-        private EffectManager _effectManager;
-        private SpeedControllerManager _speedControllerManager;
+
+        private PluginStore _pluginStore;
         private DataCache _cache;
+        private ConfigData _config;
 
         protected bool IsDisposed;
 
@@ -40,7 +42,7 @@ namespace TTController.Service
         {
             Logger.Info($"{new string('=', 64)}");
             Logger.Info("Initializing...");
-            PluginLoader.LoadAll($@"{AppDomain.CurrentDomain.BaseDirectory}\Plugins");
+            PluginLoader.LoadAll(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Plugins"));
 
             const string key = "config-file";
             if (string.IsNullOrEmpty(AppSettingsHelper.ReadValue(key)))
@@ -50,31 +52,25 @@ namespace TTController.Service
             if (!_configManager.LoadOrCreateConfig())
                 return false;
 
+            _config = _configManager.CurrentConfig;
             _cache = new DataCache();
+            _pluginStore = new PluginStore();
 
-            var alpha = Math.Exp(-_configManager.CurrentConfig.SensorTimerInterval / (double)_configManager.CurrentConfig.DeviceSpeedTimerInterval);
-            var providerFactory = new MovingAverageSensorValueProviderFactory(alpha);
-            var sensorConfigs = _configManager.CurrentConfig.SensorConfigs
-                .SelectMany(x => x.Sensors.Select(s => (Sensor: s, Config: x.Config)))
-                .ToDictionary(x => x.Sensor, x => x.Config);
-
-            _sensorManager = new SensorManager(providerFactory, sensorConfigs);
-            _effectManager = new EffectManager();
-            _speedControllerManager = new SpeedControllerManager();
+            _sensorManager = new SensorManager(_config);
             _deviceManager = new DeviceManager();
 
-            _sensorManager.EnableSensors(sensorConfigs.Keys);
-            foreach (var profile in _configManager.CurrentConfig.Profiles)
+            _sensorManager.EnableSensors(_config.SensorConfigs.SelectMany(x => x.Sensors));
+            foreach (var profile in _config.Profiles)
             {
                 foreach (var effect in profile.Effects)
                 {
-                    _effectManager.Add(profile.Guid, effect);
+                    _pluginStore.Add(profile.Guid, effect);
                     _sensorManager.EnableSensors(effect.UsedSensors);
                 }
 
                 foreach (var speedController in profile.SpeedControllers)
                 {
-                    _speedControllerManager.Add(profile.Guid, speedController);
+                    _pluginStore.Add(profile.Guid, speedController);
                     _sensorManager.EnableSensors(speedController.UsedSensors);
                 }
             }
@@ -83,25 +79,24 @@ namespace TTController.Service
                 _cache.StoreSensorConfig(sensor, SensorConfig.Default);
 
             foreach (var controller in _deviceManager.Controllers)
+            {
                 foreach (var port in controller.Ports)
+                {
                     _cache.StorePortConfig(port, PortConfig.Default);
+                    _cache.StoreDeviceConfig(port, DeviceConfig.Default);
+                }
+            }
 
-            foreach (var (ports, config) in _configManager.CurrentConfig.PortConfigs)
-                foreach (var port in ports)
-                    _cache.StorePortConfig(port, config);
-
-            foreach (var (sensors, config) in _configManager.CurrentConfig.SensorConfigs)
-                foreach (var sensor in sensors)
-                    _cache.StoreSensorConfig(sensor, config);
+            _configManager.Accept(_cache.AsWriteOnly());
 
             ApplyComputerStateProfile(ComputerStateType.Boot);
 
             _timerManager = new TimerManager();
-            _timerManager.RegisterTimer(_configManager.CurrentConfig.SensorTimerInterval, SensorTimerCallback);
-            _timerManager.RegisterTimer(_configManager.CurrentConfig.DeviceSpeedTimerInterval, DeviceSpeedTimerCallback);
-            _timerManager.RegisterTimer(_configManager.CurrentConfig.DeviceRgbTimerInterval, DeviceRgbTimerCallback);
+            _timerManager.RegisterTimer(_config.SensorTimerInterval, SensorTimerCallback);
+            _timerManager.RegisterTimer(_config.DeviceSpeedTimerInterval, DeviceSpeedTimerCallback);
+            _timerManager.RegisterTimer(_config.DeviceRgbTimerInterval, DeviceRgbTimerCallback);
             if(LogManager.Configuration.LoggingRules.Any(r => r.IsLoggingEnabledForLevel(LogLevel.Debug)))
-                _timerManager.RegisterTimer(_configManager.CurrentConfig.LoggingTimerInterval, LoggingTimerCallback);
+                _timerManager.RegisterTimer(_config.LoggingTimerInterval, LoggingTimerCallback);
 
             _timerManager.Start();
 
@@ -192,18 +187,17 @@ namespace TTController.Service
 
             _sensorManager?.Dispose();
             _deviceManager?.Dispose();
-            _effectManager?.Dispose();
-            _speedControllerManager?.Dispose();
             _configManager?.Dispose();
+
+            _pluginStore.Dispose();
             _cache?.Clear();
 
             _timerManager = null;
-            _deviceManager = null;
             _sensorManager = null;
             _deviceManager = null;
-            _effectManager = null;
-            _speedControllerManager = null;
             _configManager = null;
+
+            _pluginStore = null;
             _cache = null;
 
             Dispose();
@@ -228,7 +222,7 @@ namespace TTController.Service
             lock (_deviceManager)
             {
                 var dirtyControllers = new HashSet<IControllerProxy>();
-                foreach (var profile in _configManager.CurrentConfig.ComputerStateProfiles.Where(p => p.StateType == state))
+                foreach (var profile in _config.ComputerStateProfiles.Where(p => p.StateType == state))
                 {
                     foreach (var port in profile.Ports)
                     {
@@ -275,7 +269,7 @@ namespace TTController.Service
                 return value > config.CriticalValue;
             });
 
-            foreach (var profile in _configManager.CurrentConfig.Profiles)
+            foreach (var profile in _config.Profiles)
             {
                 lock (_deviceManager)
                 {
@@ -294,8 +288,9 @@ namespace TTController.Service
                 }
                 else
                 {
-                    var speedControllers = _speedControllerManager.GetSpeedControllers(profile.Guid);
-                    var speedController = speedControllers?.FirstOrDefault(c => c.IsEnabled(_cache.AsReadOnly()));
+                    var speedController = _pluginStore
+                        .Get<ISpeedControllerBase>(profile.Guid)
+                        .FirstOrDefault(c => c.IsEnabled(_cache.AsReadOnly()));
                     if (speedController == null)
                         continue;
 
@@ -317,10 +312,14 @@ namespace TTController.Service
                 {
                     foreach (var (port, speed) in speedMap)
                     {
+                        if (speed == _cache.GetPortSpeed(port))
+                            continue;
+
                         var controller = _deviceManager.GetController(port);
                         if (controller == null)
                             continue;
 
+                        _cache.StorePortSpeed(port, speed);
                         controller.SetSpeed(port.Id, speed);
                     }
                 }
@@ -340,23 +339,20 @@ namespace TTController.Service
                         continue;
 
                     var colors = colorMap[port];
-
-                    if (config.LedRotation > 0)
-                        colors = colors.Skip(config.LedRotation).Concat(colors.Take(config.LedRotation)).ToList();
-                    if (config.LedReverse)
-                        colors.Reverse();
+                    var ledCount = _cache.GetDeviceConfig(port).LedCount;
+                    var zones = _cache.GetDeviceConfig(port).Zones;
 
                     switch (config.LedCountHandling)
                     {
                         case LedCountHandling.Lerp:
                             {
-                                if (config.LedCount == colors.Count)
+                                if (ledCount == colors.Count)
                                     break;
 
                                 var newColors = new List<LedColor>();
-                                var gradient = new LedColorGradient(colors, config.LedCount - 1);
+                                var gradient = new LedColorGradient(colors, ledCount - 1);
 
-                                for (var i = 0; i < config.LedCount; i++)
+                                for (var i = 0; i < ledCount; i++)
                                     newColors.Add(gradient.GetColor(i));
 
                                 colors = newColors;
@@ -364,12 +360,12 @@ namespace TTController.Service
                             }
                         case LedCountHandling.Nearest:
                             {
-                                if (config.LedCount == colors.Count)
+                                if (ledCount == colors.Count)
                                     break;
 
                                 var newColors = new List<LedColor>();
-                                for (var i = 0; i < config.LedCount; i++) {
-                                    var idx = (int)Math.Round((i / (config.LedCount - 1d)) * (colors.Count - 1d));
+                                for (var i = 0; i < ledCount; i++) {
+                                    var idx = (int)Math.Round((i / (ledCount - 1d)) * (colors.Count - 1d));
                                     newColors.Add(colors[idx]);
                                 }
 
@@ -377,35 +373,62 @@ namespace TTController.Service
                                 break;
                             }
                         case LedCountHandling.Wrap:
-                            if (config.LedCount < colors.Count)
+                            if (colors.Count <= ledCount)
                                 break;
 
-                            var remainder = colors.Count % config.LedCount;
+                            var wrapCount = (int)Math.Floor(colors.Count / (double)ledCount);
+                            var startOffset = (wrapCount - 1) * ledCount;
+                            var remainder = colors.Count - wrapCount * ledCount;
+
                             colors = colors.Skip(colors.Count - remainder)
-                                .Concat(colors.Take(colors.Count - remainder).Skip(colors.Count - config.LedCount))
+                                .Concat(colors.Skip(startOffset + remainder).Take(ledCount - remainder))
                                 .ToList();
                             break;
                         case LedCountHandling.Trim:
-                            if (config.LedCount < colors.Count)
-                                colors.RemoveRange(config.LedCount, colors.Count - config.LedCount);
+                            if (ledCount < colors.Count)
+                                colors.RemoveRange(ledCount, colors.Count - ledCount);
                             break;
                         case LedCountHandling.Copy:
-                            while (config.LedCount > colors.Count)
-                                colors.AddRange(colors.Take(config.LedCount - colors.Count).ToList());
+                            while (ledCount > colors.Count)
+                                colors.AddRange(colors.Take(ledCount - colors.Count).ToList());
                             break;
                         case LedCountHandling.DoNothing:
                         default:
                             break;
                     }
 
+                    if (config.LedRotation != null || config.LedReverse != null)
+                    {
+                        var offset = 0;
+                        var newColors = new List<LedColor>();
+                        for (int i = 0; i < zones.Length; i++)
+                        {
+                            var zoneColors = colors.Skip(offset).Take(zones[i]);
+
+                            if (i < config.LedRotation?.Length && config.LedRotation[i] > 0)
+                                zoneColors = zoneColors.RotateLeft(config.LedRotation[i]);
+                            if (i < config.LedReverse?.Length && config.LedReverse[i])
+                                zoneColors = zoneColors.Reverse();
+
+                            offset += zones[i];
+                            newColors.AddRange(zoneColors);
+                        }
+
+                        if (newColors.Count < colors.Count)
+                            newColors.AddRange(colors.Skip(offset));
+
+                        colors = newColors;
+                    }
+
                     colorMap[port] = colors;
                 }
             }
 
-            foreach (var profile in _configManager.CurrentConfig.Profiles)
+            foreach (var profile in _config.Profiles)
             {
-                var effects = _effectManager.GetEffects(profile.Guid);
-                var effect = effects?.FirstOrDefault(e => e.IsEnabled(_cache.AsReadOnly()));
+                var effect = _pluginStore
+                    .Get<IEffectBase>(profile.Guid)
+                    .FirstOrDefault(e => e.IsEnabled(_cache.AsReadOnly()));
                 if (effect == null)
                     continue;
 
@@ -436,11 +459,15 @@ namespace TTController.Service
                         if (colors == null)
                             continue;
 
+                        if (colors.ContentsEqual(_cache.GetPortColors(port)))
+                            continue;
+
                         var controller = _deviceManager.GetController(port);
                         var effectByte = controller?.GetEffectByte(effectType);
                         if (effectByte == null)
                             continue;
 
+                        _cache.StorePortColors(port, colors);
                         controller.SetRgb(port.Id, effectByte.Value, colors);
                     }
                 }
@@ -451,7 +478,7 @@ namespace TTController.Service
 
         public bool LoggingTimerCallback()
         {
-            foreach (var profile in _configManager.CurrentConfig.Profiles)
+            foreach (var profile in _config.Profiles)
             {
                 foreach (var port in profile.Ports)
                 {

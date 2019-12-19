@@ -28,7 +28,7 @@ namespace TTController.Plugin.SpectrumEffect
         {
             _hue = (_hue + Config.HueStep) % 360;
             var color = LedColor.FromHsv(_hue, Config.Saturation, Config.Brightness);
-            return ports.ToDictionary(p => p, p => Enumerable.Repeat(color, cache.GetPortConfig(p).LedCount).ToList());
+            return ports.ToDictionary(p => p, p => Enumerable.Repeat(color, cache.GetDeviceConfig(p).LedCount).ToList());
         }
     }
 }

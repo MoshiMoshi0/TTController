@@ -5,12 +5,12 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.ServiceProcess;
+using LibreHardwareMonitor.Hardware;
 using NLog;
-using OpenHardwareMonitor.Hardware;
 using TTController.Common.Plugin;
 using TTController.Service.Config.Data;
 using TTController.Service.Hardware;
-using TTController.Service.Manager;
+using TTController.Service.Managers;
 using TTController.Service.Utils;
 
 namespace TTController.Service
@@ -194,7 +194,7 @@ namespace TTController.Service
                 WriteHeader("Controllers");
                 WriteProperty(0, "");
 
-                PluginLoader.Load($@"{AppDomain.CurrentDomain.BaseDirectory}\Plugins", typeof(IControllerDefinition));
+                PluginLoader.Load(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Plugins"), typeof(IControllerDefinition));
                 using (var deviceManager = new DeviceManager())
                 {
                     foreach(var controller in deviceManager.Controllers)
@@ -248,9 +248,9 @@ namespace TTController.Service
                     return $"{value}";
                 }
 
-                using (var _openHardwareMonitorFacade = new OpenHardwareMonitorFacade())
+                using (var _libreHardwareMonitorFacade = new LibreHardwareMonitorFacade())
                 {
-                    var availableSensors = _openHardwareMonitorFacade.Sensors.Where(s => types.Length > 0 ? types.Contains(s.SensorType) : true);
+                    var availableSensors = _libreHardwareMonitorFacade.Sensors.Where(s => types.Length > 0 ? types.Contains(s.SensorType) : true);
                     foreach (var (hardware, sensors) in availableSensors.GroupBy(s => s.Hardware))
                     {
                         WriteProperty(0, $"{hardware.Name}:");
@@ -275,7 +275,7 @@ namespace TTController.Service
                 WriteHeader("Plugins");
                 WriteProperty(0, "");
 
-                var pluginAssemblies = PluginLoader.SearchAll($@"{AppDomain.CurrentDomain.BaseDirectory}\Plugins");
+                var pluginAssemblies = PluginLoader.SearchAll(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Plugins"));
                 WriteProperty(0, "Detected plugins:");
                 foreach (var assembly in pluginAssemblies)
                     WriteProperty(1, Path.GetFileName(assembly.Location));

@@ -34,7 +34,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\ThirdParty\HidLibrary\src\HidLibrary\HidLibrary.csproj" />
-    <ProjectReference Include="..\..\ThirdParty\LibreHardwareMonitor\OpenHardwareMonitorLib.csproj" />
+    <ProjectReference Include="..\..\ThirdParty\LibreHardwareMonitor\LibreHardwareMonitorLib\LibreHardwareMonitorLib.csproj" />
     <ProjectReference Include="..\TTController.Common\TTController.Common.csproj" />
   </ItemGroup>
 </Project>

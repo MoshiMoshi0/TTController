@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Configuration;
 
 namespace TTController.Service.Utils
@@ -17,7 +17,7 @@ namespace TTController.Service.Utils
         {
             try
             {
-                return (T) Convert.ChangeType(ReadValue(key), typeof(T));
+                return (T)Convert.ChangeType(ReadValue(key), typeof(T));
             }
             catch
             {

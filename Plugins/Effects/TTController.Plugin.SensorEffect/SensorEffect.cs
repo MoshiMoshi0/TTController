@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using OpenHardwareMonitor.Hardware;
+using LibreHardwareMonitor.Hardware;
 using TTController.Common;
 using TTController.Common.Plugin;
 
@@ -64,7 +64,7 @@ namespace TTController.Plugin.SensorEffect
             }
 
             var color = new LedColor((byte)_r, (byte)_g, (byte)_b);
-            return ports.ToDictionary(p => p, p => Enumerable.Repeat(color, cache.GetPortConfig(p).LedCount).ToList());
+            return ports.ToDictionary(p => p, p => Enumerable.Repeat(color, cache.GetDeviceConfig(p).LedCount).ToList());
         }
     }
 }

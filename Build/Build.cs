@@ -78,7 +78,7 @@ class Build : NukeBuild
                 .EnableNoRestore());
 
             // Copy plugin files to service bin path      
-            var fileBlacklist = new[] { "TTController.Common", "OpenHardwareMonitorLib", "HidLibrary", "Newtonsoft.Json" };
+            var fileBlacklist = new[] { "TTController.Common", "LibreHardwareMonitorLib", "HidLibrary", "Newtonsoft.Json" };
             var extensionWhitelist = Configuration == Configuration.Debug ? new[] { ".pdb", ".dll" } : new[] { ".dll" };
             Solution.GetProjects("TTController.Plugin.*")
                 .ForEach(p =>
@@ -90,6 +90,8 @@ class Build : NukeBuild
                                              null,
                                              f => fileBlacklist.Contains(Path.GetFileNameWithoutExtension(f.Name)) || !extensionWhitelist.Contains(Path.GetExtension(f.Name)));
                 });
+
+            CopyDirectoryRecursively(PluginsDirectory / "Devices", ServiceBinPath / "Plugins" / "Devices", DirectoryExistsPolicy.Merge, FileExistsPolicy.OverwriteIfNewer); 
         });
 
     Target Pack => _ => _

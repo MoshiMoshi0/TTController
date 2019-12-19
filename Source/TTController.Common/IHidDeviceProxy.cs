@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace TTController.Common
 {
-    public interface IHidDeviceProxy
+    public interface IHidDeviceProxy : IDisposable
     {
         int VendorId { get; }
         int ProductId { get; }
@@ -12,6 +13,5 @@ namespace TTController.Common
         byte[] ReadBytes();
         byte[] WriteReadBytes(params byte[] bytes);
         byte[] WriteReadBytes(IEnumerable<byte> bytes);
-        byte[] ReadReport(byte reportId);
     }
 }

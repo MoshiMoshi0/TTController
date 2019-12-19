@@ -24,13 +24,11 @@ namespace TTController.Plugin.RazerConnectEffect
         public RazerConnectEffect(RazerConnectEffectConfig config) : base(config)
         {
             if (_instances++ == 0)
-            {
                 _manager = new RzChromaBroadcastManager();
-            }
 
-            if(_manager != null)
+            _colors = new LedColor[RzChromaBroadcastNative.BroadcastColorCount];
+            if (_manager != null && _manager.Initialized)
             {
-                _colors = new LedColor[RzChromaBroadcastNative.BroadcastColorCount];
                 _manager.ColorChanged += OnColorUpdate;
                 _manager.ConnectionChanged += OnConnectionUpdate;
             }

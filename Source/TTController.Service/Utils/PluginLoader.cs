@@ -1,4 +1,4 @@
-﻿using NLog;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,11 +14,8 @@ namespace TTController.Service.Utils
     public class PluginLoader
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        private static readonly Type[] PluginTypes = new [] {
-                typeof(IEffectBase),
-                typeof(ISpeedControllerBase),
-                typeof(ITriggerBase),
-                typeof(IControllerDefinition)
+        private static readonly Type[] PluginTypes = new[] {
+                typeof(IPlugin)
         };
 
         internal static List<Assembly> LoadAll(string path) => Load(path, PluginTypes);
@@ -56,7 +53,8 @@ namespace TTController.Service.Utils
                 Assembly.ReflectionOnlyLoad(e.Name);
 
             var contractType = GetLoadFromContractType(type);
-            foreach (var dllFile in Directory.GetFiles(path, "*.dll", SearchOption.AllDirectories)) {
+            foreach (var dllFile in Directory.GetFiles(path, "*.dll", SearchOption.AllDirectories))
+            {
                 var assembly = Assembly.ReflectionOnlyLoadFrom(dllFile);
                 var found = assembly.GetExportedTypes().Any(contractType.IsAssignableFrom);
 
