@@ -64,13 +64,13 @@ The source code also provides an easy way to write your own **speed controller**
 | Pacific PR22-D5 Plus        | :heavy_check_mark: | :heavy_check_mark: |
 | Pacific W4                  | :heavy_check_mark: | :heavy_check_mark: |
 | Razer Connect               | :heavy_check_mark: | :heavy_check_mark: |
-| Riing Duo 12/14             | :heavy_check_mark: | :x:                |
+| Riing Duo 12/14             | :heavy_check_mark: | :heavy_check_mark: |
+| Toughpower iRGB PLUS        | :heavy_check_mark: | :heavy_check_mark: |
 | WaterRam RGB                | :heavy_check_mark: | :x:                |
 | Pacific CL360/RL360         | :heavy_check_mark: | :x:                |
 | Pacific V-GTX/V-RTX         | :heavy_check_mark: | :x:                |
 | Pacific Lumi/Rad/R1/Fitting | :heavy_check_mark: | :x:                |
 | Pacific W5/W6               | :heavy_minus_sign: | :x:                | temperature sensor unsupported
-| Toughpower iRGB PLUS        | :x:                | :heavy_minus_sign: | not fully implemented
 
 # Plugins
 ### Speed Controllers:
@@ -81,7 +81,7 @@ The source code also provides an easy way to write your own **speed controller**
 
 ### Effects:
 * [BlinkEffect](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Effects/TTController.Plugin.BlinkEffect/BlinkEffect.cs)
-* [ByLedColorEffect](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Effects/TTController.Plugin.ByLedColorEffect/ByLedColorEffect.cs)
+* [PerLedColorEffect](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Effects/TTController.Plugin.PerLedColorEffect/PerLedColorEffect.cs)
 * [FlowEffect](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Effects/TTController.Plugin.FlowEffect/FlowEffect.cs)
 * [FullColorEffect](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Effects/TTController.Plugin.FullColorEffect/FullColorEffect.cs)
 * [PulseEffect](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Effects/TTController.Plugin.PulseEffect/PulseEffect.cs)
