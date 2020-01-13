@@ -30,11 +30,11 @@ namespace TTController.Common
 
         public LedColor GetColor(double location)
         {
-            var (r, g, b) = ColorAtDeconstruct(location);
+            var (r, g, b) = GetColorSmooth(location);
             return new LedColor((byte)r, (byte)g, (byte)b);
         }
 
-        public (double, double, double) ColorAtDeconstruct(double location)
+        public (double, double, double) GetColorSmooth(double location)
         {
             if(_points.Count == 0)
                 return (0, 0, 0);
@@ -51,7 +51,7 @@ namespace TTController.Common
             } while (!(location >= start.Location && location <= end.Location));
 
             var correctedLocation = (location - start.Location) / (end.Location - start.Location);
-            return LedColor.LerpDeconstruct(correctedLocation, start.Color, end.Color);
+            return LedColor.LerpSmooth(correctedLocation, start.Color, end.Color);
         }
     }
 

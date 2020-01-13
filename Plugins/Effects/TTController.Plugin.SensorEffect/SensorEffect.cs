@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using LibreHardwareMonitor.Hardware;
@@ -55,7 +55,7 @@ namespace TTController.Plugin.SensorEffect
             }
             else
             {
-                var (rr, gg, bb) = Config.ColorGradient.ColorAtDeconstruct(value);
+                var (rr, gg, bb) = Config.ColorGradient.GetColorSmooth(value);
 
                 const float t = 0.05f;
                 _r = _r * (1 - t) + rr * t;

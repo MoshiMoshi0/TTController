@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace TTController.Common
 {
@@ -26,11 +26,11 @@ namespace TTController.Common
 
         public static LedColor Lerp(double t, LedColor from, LedColor to)
         {
-            var (r, g, b) = LerpDeconstruct(t, from, to);
+            var (r, g, b) = LerpSmooth(t, from, to);
             return new LedColor((byte)r, (byte)g, (byte)b);
         }
 
-        public static (double, double, double) LerpDeconstruct(double t, LedColor from, LedColor to)
+        public static (double, double, double) LerpSmooth(double t, LedColor from, LedColor to)
         {
             t = Math.Max(Math.Min(t, 1), 0);
             var r = from.R * (1 - t) + to.R * t;
