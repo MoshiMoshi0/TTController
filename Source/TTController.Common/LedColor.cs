@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace TTController.Common
 {
@@ -17,7 +17,7 @@ namespace TTController.Common
 
         public override string ToString() => $"[{R}, {G}, {B}]";
 
-        public void Deconstruct(out object r, out object g, out object b)
+        public void Deconstruct(out byte r, out byte g, out byte b)
         {
             r = R;
             g = G;
