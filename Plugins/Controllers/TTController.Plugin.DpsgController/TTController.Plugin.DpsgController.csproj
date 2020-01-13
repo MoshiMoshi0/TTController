@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net472</TargetFramework>
+    <TargetFramework>net48</TargetFramework>
     <AssemblyTitle>TTController.Plugin.DpsgController</AssemblyTitle>
     <Product>TTController.Plugin.DpsgController</Product>
     <Copyright>Copyright ©  2019</Copyright>
