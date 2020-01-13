@@ -73,7 +73,7 @@ namespace TTController.Service
                 try
                 {
                     Service?.Start();
-                    Service?.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(15));
+                    Service?.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(30));
                 }
                 catch (Exception e)
                 {
