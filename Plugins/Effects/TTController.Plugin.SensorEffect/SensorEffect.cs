@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using LibreHardwareMonitor.Hardware;
@@ -11,6 +11,7 @@ namespace TTController.Plugin.SensorEffect
     {
         public List<Identifier> Sensors { get; private set; } = new List<Identifier>();
         [DefaultValue(SensorMixFunction.Maximum)] public SensorMixFunction SensorMixFunction { get; private set; } = SensorMixFunction.Maximum;
+        [DefaultValue(0.05)] public double SmoothingFactor { get; private set; } = 0.05;
         public LedColorGradient ColorGradient { get; private set; } = new LedColorGradient();
     }
 
@@ -57,10 +58,9 @@ namespace TTController.Plugin.SensorEffect
             {
                 var (rr, gg, bb) = Config.ColorGradient.GetColorSmooth(value);
 
-                const float t = 0.05f;
-                _r = _r * (1 - t) + rr * t;
-                _g = _g * (1 - t) + gg * t;
-                _b = _b * (1 - t) + bb * t;
+                _r = _r * (1 - Config.SmoothingFactor) + rr * Config.SmoothingFactor;
+                _g = _g * (1 - Config.SmoothingFactor) + gg * Config.SmoothingFactor;
+                _b = _b * (1 - Config.SmoothingFactor) + bb * Config.SmoothingFactor;
             }
 
             var color = new LedColor((byte)_r, (byte)_g, (byte)_b);
