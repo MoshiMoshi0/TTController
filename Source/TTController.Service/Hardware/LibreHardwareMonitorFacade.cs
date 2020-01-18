@@ -14,17 +14,30 @@ namespace TTController.Service.Hardware
 
         public IReadOnlyList<ISensor> Sensors => _sensors.AsReadOnly();
 
-        public LibreHardwareMonitorFacade()
+        public LibreHardwareMonitorFacade(bool isCpuEnabled = true,
+                                          bool isGpuEnabled = true,
+                                          bool isStorageEnabled = true,
+                                          bool isMotherboardEnabled = true,
+                                          bool isMemoryEnabled = true,
+                                          bool isNetworkEnabled = true,
+                                          bool isControllerEnabled = true)
         {
             Logger.Info("Initializing Libre Hardware Monitor...");
+
+            if (!(isCpuEnabled || isGpuEnabled || isStorageEnabled || isMotherboardEnabled
+                || isMemoryEnabled || isNetworkEnabled || isControllerEnabled))
+                throw new ArgumentException("At least one sensor group needs to be enabled!");
 
             _sensors = new List<ISensor>();
             _computer = new Computer()
             {
-                IsCpuEnabled = true,
-                IsGpuEnabled = true,
-                IsStorageEnabled = true,
-                IsMotherboardEnabled = true
+                IsCpuEnabled = isCpuEnabled,
+                IsGpuEnabled = isGpuEnabled,
+                IsStorageEnabled = isStorageEnabled,
+                IsMotherboardEnabled = isMotherboardEnabled,
+                IsMemoryEnabled = isMemoryEnabled,
+                IsNetworkEnabled = isNetworkEnabled,
+                IsControllerEnabled = isControllerEnabled
             };
 
             _computer.Open();

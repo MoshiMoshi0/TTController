@@ -25,12 +25,20 @@ namespace TTController.Service.Managers
 
         public IEnumerable<Identifier> EnabledSensors => _sensorValueProviders.Keys;
 
-        public SensorManager(ConfigData Config)
+        public SensorManager(ConfigData config)
         {
             Logger.Info("Creating Sensor Manager...");
-            _config = Config;
+            _config = config;
 
-            _libreHardwareMonitorFacade = new LibreHardwareMonitorFacade();
+            _libreHardwareMonitorFacade = new LibreHardwareMonitorFacade(
+                isCpuEnabled: config.CpuSensorsEnabled,
+                isGpuEnabled: config.GpuSensorsEnabled,
+                isStorageEnabled: config.StorageSensorsEnabled,
+                isMotherboardEnabled: config.MotherboardSensorsEnabled,
+                isMemoryEnabled: config.MemorySensorsEnabled,
+                isNetworkEnabled: config.NetworkSensorsEnabled,
+                isControllerEnabled: config.ControllerSensorsEnabled
+            );
             _sensorValueProviders = new Dictionary<Identifier, ISensorValueProvider>();
             _hardware = new HashSet<IHardware>();
 
