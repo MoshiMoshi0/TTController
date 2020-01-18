@@ -138,7 +138,7 @@ namespace TTController.Service.Managers
 
                     if (_deviceConfigs.ContainsKey(config.DeviceType))
                         collector.StoreDeviceConfig(port, _deviceConfigs[config.DeviceType]);
-                    else
+                    else if (!string.Equals(config.DeviceType, "Default", StringComparison.OrdinalIgnoreCase))
                         Logger.Warn("Unable to find device with name \"{0}\"!", config.DeviceType);
                 }
             }
