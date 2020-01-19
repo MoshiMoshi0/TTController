@@ -84,7 +84,7 @@ namespace TTController.Plugin.PingPongEffect
             return result;
         }
 
-        private List<LedColor> GenerateColors(int ledCount, double portStart, double portEnd, double radius = 1.0, bool oddDivide = true)
+        private List<LedColor> GenerateColors(int ledCount, double portStart, double portEnd, double radius = 0.95, bool oddDivide = true)
         {
             var colors = Enumerable.Range(0, ledCount).Select(_ => new LedColor()).ToList();
 
