@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -21,7 +21,7 @@ namespace TTController.Plugin.PingPongEffect
         private float _t;
         private int _direction;
 
-        public PingPongEffect(PingPongEffectConfig config) : base(config) 
+        public PingPongEffect(PingPongEffectConfig config) : base(config)
         {
             _t = 0;
             _direction = 1;
@@ -42,36 +42,36 @@ namespace TTController.Plugin.PingPongEffect
                 var config = cache.GetDeviceConfig(port);
                 var ledCount = config.LedCount;
 
-                var globalStart = i / (double)ports.Count;
-                var globalEnd = (i + 1) / (double)ports.Count;
+                var portStart = i / (double)ports.Count;
+                var portEnd = (i + 1) / (double)ports.Count;
 
                 var tBottom = _t - Config.Height / 2;
                 var tTop = _t + Config.Height / 2;
-                if ((tBottom < globalStart && tTop < globalStart) || (tBottom > globalEnd && tTop > globalEnd))
+                if ((tBottom < portStart && tTop < portStart) || (tBottom > portEnd && tTop > portEnd))
                 {
                     result.Add(port, Enumerable.Range(0, ledCount).Select(_ => new LedColor()).ToList());
                 }
-                else if ((tBottom >= globalStart && tBottom <= globalEnd)
-                    || (tTop >= globalStart && tTop <= globalEnd)
-                    || (tBottom < globalStart && tTop > globalEnd))
+                else if ((tBottom >= portStart && tBottom <= portEnd)
+                    || (tTop >= portStart && tTop <= portEnd)
+                    || (tBottom < portStart && tTop > portEnd))
                 {
                     var colors = new List<LedColor>();
                     switch (config.Name)
                     {
                         case "RiingTrio":
-                            colors.AddRange(GenerateColors(12, globalStart, globalEnd));
+                            colors.AddRange(GenerateColors(12, portStart, portEnd));
                             colors.AddRange(colors.ToList());
-                            colors.AddRange(GenerateColors(6, globalStart, globalEnd, radius: 0.33, oddDivide: false));
+                            colors.AddRange(GenerateColors(6, portStart, portEnd, radius: 0.33, oddDivide: false));
                             break;
                         case "RiingDuo":
-                            colors.AddRange(GenerateColors(12, globalStart, globalEnd));
-                            colors.AddRange(GenerateColors(6, globalStart, globalEnd, radius: 0.33, oddDivide: false));
+                            colors.AddRange(GenerateColors(12, portStart, portEnd));
+                            colors.AddRange(GenerateColors(6, portStart, portEnd, radius: 0.33, oddDivide: false));
                             break;
                         case "PurePlus":
-                            colors.AddRange(GenerateColors(9, globalStart, globalEnd, radius: 0.33));
+                            colors.AddRange(GenerateColors(9, portStart, portEnd, radius: 0.33));
                             break;
                         case "Default":
-                            colors.AddRange(GenerateColors(ledCount, globalStart, globalEnd));
+                            colors.AddRange(GenerateColors(ledCount, portStart, portEnd));
                             break;
                         default:
                             break;
@@ -84,14 +84,14 @@ namespace TTController.Plugin.PingPongEffect
             return result;
         }
 
-        private List<LedColor> GenerateColors(int ledCount, double globalStart, double globalEnd, double radius = 1.0, bool oddDivide = true)
+        private List<LedColor> GenerateColors(int ledCount, double portStart, double portEnd, double radius = 1.0, bool oddDivide = true)
         {
             var colors = Enumerable.Range(0, ledCount).Select(_ => new LedColor()).ToList();
 
             var tBottom = _t - Config.Height / 2;
             var tTop = _t + Config.Height / 2;
-            var localStart = (tBottom - globalStart) / (globalEnd - globalStart);
-            var localEnd = (tTop - globalStart) / (globalEnd - globalStart);
+            var localStart = (tBottom - portStart) / (portEnd - portStart);
+            var localEnd = (tTop - portStart) / (portEnd - portStart);
 
             var isOdd = ledCount % 2 != 0;
             var halfCount = ledCount / 2 + (oddDivide || isOdd ? 0 : -1);
@@ -106,7 +106,7 @@ namespace TTController.Plugin.PingPongEffect
 
                 if (y >= localStart && y <= localEnd)
                 {
-                    var color = Config.ColorGradient.GetColor(globalStart + (globalEnd - globalStart) * y);
+                    var color = Config.ColorGradient.GetColor(portStart + (portEnd - portStart) * y);
                     if (Config.EnableSmoothing)
                     {
                         var dist = Math.Abs(Math.Min(y - localStart, localEnd - y));

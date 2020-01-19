@@ -7,7 +7,6 @@ using NLog;
 using TTController.Common;
 using TTController.Common.Plugin;
 using TTController.Service.Config.Data;
-using TTController.Service.Hardware.Sensor;
 using TTController.Service.Managers;
 using TTController.Service.Utils;
 
