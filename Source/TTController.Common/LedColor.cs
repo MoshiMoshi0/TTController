@@ -15,6 +15,11 @@ namespace TTController.Common
             B = b;
         }
 
+        public LedColor(double hue, double saturation, double value)
+        {
+            (R, G, B) = FromHsv(hue, saturation, value);
+        }
+
         public override string ToString() => $"[{R}, {G}, {B}]";
 
         public void Deconstruct(out byte r, out byte g, out byte b)
@@ -22,6 +27,30 @@ namespace TTController.Common
             r = R;
             g = G;
             b = B;
+        }
+
+        public LedColor Lerp(LedColor to, double t) => Lerp(t, this, to);
+        public (double, double, double) LerpSmooth(LedColor to, double t) => LerpSmooth(t, this, to);
+
+        public (double, double, double) ToHsv() => ToHsv(this);
+        public void SetHsv(double hue, double saturation, double value) => (R, G, B) = FromHsv(hue, saturation, value);
+
+        public void SetHue(double hue)
+        {
+            var (_, s, v) = ToHsv();
+            (R, G, B) = FromHsv(hue, s, v);
+        }
+
+        public void SetSaturation(double saturation)
+        {
+            var (h, _, v) = ToHsv();
+            (R, G, B) = FromHsv(h, saturation, v);
+        }
+
+        public void SetValue(double value)
+        {
+            var (h, s, _) = ToHsv();
+            (R, G, B) = FromHsv(h, s, value);
         }
 
         public static LedColor Lerp(double t, LedColor from, LedColor to)
