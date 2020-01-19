@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -33,7 +33,7 @@ namespace TTController.Plugin.PingPongEffect
         {
             _t += Config.Step * _direction;
             if (_t <= 0 || _t >= 1)
-                _direction = 1 - _direction;
+                _direction = -_direction;
 
             var result = new Dictionary<PortIdentifier, List<LedColor>>();
             for (var i = 0; i < ports.Count; i++)
