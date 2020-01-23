@@ -8,7 +8,7 @@ using System.ServiceProcess;
 using LibreHardwareMonitor.Hardware;
 using NLog;
 using TTController.Common.Plugin;
-using TTController.Service.Config.Data;
+using TTController.Service.Config;
 using TTController.Service.Hardware;
 using TTController.Service.Managers;
 using TTController.Service.Utils;

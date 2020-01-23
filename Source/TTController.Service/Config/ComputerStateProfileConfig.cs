@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using TTController.Common;
 
-namespace TTController.Service.Config.Data
+namespace TTController.Service.Config
 {
     public enum ComputerStateType
     {
@@ -11,7 +11,7 @@ namespace TTController.Service.Config.Data
         Suspend
     }
 
-    public class ComputerStateProfileData
+    public class ComputerStateProfileConfig
     {
         [DefaultValue(ComputerStateType.Shutdown)] public ComputerStateType StateType { get; private set; } = ComputerStateType.Shutdown;
         public List<PortIdentifier> Ports { get; private set; } = new List<PortIdentifier>();

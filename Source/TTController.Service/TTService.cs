@@ -6,7 +6,7 @@ using System.ServiceProcess;
 using NLog;
 using TTController.Common;
 using TTController.Common.Plugin;
-using TTController.Service.Config.Data;
+using TTController.Service.Config;
 using TTController.Service.Managers;
 using TTController.Service.Utils;
 
@@ -23,7 +23,7 @@ namespace TTController.Service
 
         private PluginStore _pluginStore;
         private DataCache _cache;
-        private ConfigData _config;
+        private ServiceConfig _config;
 
         protected bool IsDisposed;
 

@@ -4,7 +4,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using TTController.Common.Plugin;
-using TTController.Service.Config.Data;
+using TTController.Service.Config;
 
 namespace TTController.Service.Utils
 {
@@ -20,7 +20,7 @@ namespace TTController.Service.Utils
             _plugins = new ConcurrentDictionary<string, List<IPlugin>>();
         }
 
-        public void Add(ProfileData profile, IPlugin plugin)
+        public void Add(ProfileConfig profile, IPlugin plugin)
         {
             if (!_plugins.ContainsKey(profile.Name))
                 _plugins.TryAdd(profile.Name, new List<IPlugin>());
@@ -29,8 +29,8 @@ namespace TTController.Service.Utils
             Logger.Info("Adding plugin \"{0}\" [{1}]", plugin.GetType().Name, profile.Name);
         }
 
-        public IEnumerable<IPlugin> Get(ProfileData profile) => Get<IPlugin>(profile);
-        public IEnumerable<T> Get<T>(ProfileData profile) where T : IPlugin
+        public IEnumerable<IPlugin> Get(ProfileConfig profile) => Get<IPlugin>(profile);
+        public IEnumerable<T> Get<T>(ProfileConfig profile) where T : IPlugin
             => _plugins.TryGetValue(profile.Name, out var value) ? value.OfType<T>() : Enumerable.Empty<T>();
 
         public void Dispose()

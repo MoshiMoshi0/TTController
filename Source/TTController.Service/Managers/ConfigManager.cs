@@ -8,7 +8,6 @@ using Newtonsoft.Json.Converters;
 using NLog;
 using TTController.Common;
 using TTController.Service.Config;
-using TTController.Service.Config.Data;
 using TTController.Service.Utils;
 
 namespace TTController.Service.Managers
@@ -20,7 +19,7 @@ namespace TTController.Service.Managers
         private readonly string _filename;
         private Dictionary<string, DeviceConfig> _deviceConfigs;
 
-        public ConfigData CurrentConfig { get; private set; }
+        public ServiceConfig CurrentConfig { get; private set; }
 
         public ConfigManager(string filename)
         {
@@ -77,7 +76,7 @@ namespace TTController.Service.Managers
             if (!File.Exists(path))
             {
                 Logger.Warn("Config does not exist! Creating default...");
-                CurrentConfig = ConfigData.CreateDefault();
+                CurrentConfig = ServiceConfig.CreateDefault();
                 SaveConfig();
             }
             else
@@ -85,7 +84,7 @@ namespace TTController.Service.Managers
                 try
                 {
                     using (var reader = new StreamReader(path))
-                        CurrentConfig = JsonConvert.DeserializeObject<ConfigData>(reader.ReadToEnd());
+                        CurrentConfig = JsonConvert.DeserializeObject<ServiceConfig>(reader.ReadToEnd());
 
                     _deviceConfigs = Directory.EnumerateFiles(GetAbsolutePath(@"Plugins\Devices\"), "*.json")
                         .Select(f =>
