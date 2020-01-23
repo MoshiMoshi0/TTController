@@ -61,15 +61,21 @@ namespace TTController.Service
             _sensorManager.EnableSensors(_config.SensorConfigs.SelectMany(x => x.Sensors));
             foreach (var profile in _config.Profiles)
             {
+                if (_pluginStore.Get(profile).Any())
+                {
+                    Logger.Fatal("Duplicate profile \"{0}\" found!", profile.Name);
+                    return false;
+                }
+
                 foreach (var effect in profile.Effects)
                 {
-                    _pluginStore.Add(profile.Guid, effect);
+                    _pluginStore.Add(profile, effect);
                     _sensorManager.EnableSensors(effect.UsedSensors);
                 }
 
                 foreach (var speedController in profile.SpeedControllers)
                 {
-                    _pluginStore.Add(profile.Guid, speedController);
+                    _pluginStore.Add(profile, speedController);
                     _sensorManager.EnableSensors(speedController.UsedSensors);
                 }
             }
@@ -288,7 +294,7 @@ namespace TTController.Service
                 else
                 {
                     var speedController = _pluginStore
-                        .Get<ISpeedControllerBase>(profile.Guid)
+                        .Get<ISpeedControllerBase>(profile)
                         .FirstOrDefault(c => c.IsEnabled(_cache.AsReadOnly()));
                     if (speedController == null)
                         continue;
@@ -426,7 +432,7 @@ namespace TTController.Service
             foreach (var profile in _config.Profiles)
             {
                 var effect = _pluginStore
-                    .Get<IEffectBase>(profile.Guid)
+                    .Get<IEffectBase>(profile)
                     .FirstOrDefault(e => e.IsEnabled(_cache.AsReadOnly()));
                 if (effect == null)
                     continue;
