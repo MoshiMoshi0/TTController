@@ -10,16 +10,16 @@
 
 
 This is home to TTController, a windows service for controlling various Thermaltake RGB Plus devices. 
+It works as an alternative to the official TT RGB Plus software.
 
-It allows you to fully customize them by using **speed controllers**, which control the speed, and  **effects**, which control the led color. Each can be enabled or disabled dynamically by using various **triggers**.
+It allows you to fully customize your Thermaltake devices by using [_speed controllers_](https://github.com/MoshiMoshi0/TTController#speed-controllers), which control the speed, and  [_effects_](https://github.com/MoshiMoshi0/TTController#effects), which control the led colors. Each can be enabled or disabled dynamically by using [_triggers_](https://github.com/MoshiMoshi0/TTController#triggers).
 
-The source code also provides an easy way to write your own **speed controller**, **effect** or **trigger**.
 
-<br/><br/>
+<br><br>
 
 # Quick start
 
-### Install
+<details><summary>How to install?</summary>
 
 * Unpack latest release to a desired directory
 * Run **TTController.Service.exe**
@@ -30,8 +30,9 @@ The source code also provides an easy way to write your own **speed controller**
 > The service will start automatically and will create a default empty config. See **Configure** section on how to configure it.
 
 > A quick test to see if the service is working is to use `Main Menu -> Debug -> Report` menu, it should list all detected controllers, sensors and plugins. 
+</details>
 
-### Configure
+<details><summary>How to configure?</summary>
 
 * If the service is running
   * Stop the service using either **Manage Service** menu, **services.msc** or **net stop** 
@@ -39,22 +40,38 @@ The source code also provides an easy way to write your own **speed controller**
 * Start the service using either **Manage Service** menu, **services.msc** or **net start**
 
 > You can use `Main Menu -> Debug -> Controllers` menu to find your port identifiers, and `Main Menu -> Debug -> Sensors` menu to find your sensor identifiers to be used in **config.json**.
+</details>
 
-### Uninstall
+<details><summary>How to uninstall?</summary>
 
 * Run **TTController.Service.exe**
 * Select **Manage Service** from command line menu and uninstall the service
 * Remove the folder containing service files
+</details>
 
-### Update
+<details><summary>How to update?</summary>
 
 * If the service is running
   * Stop the service using either **Manage Service** menu, **services.msc** or **net stop** 
 * Remove all files but leave the **config.json** file
 * Unpack newest release to the same directory
 * Start the service using either **Manage Service** menu, **services.msc** or **net start** 
+</details>
 
-# Device support
+# Support matrix
+
+### Controllers
+
+| Controller      | Support            | Notes
+|-----------------|--------------------|---------------------------------------
+| Riing           | :heavy_check_mark: |
+| Riing Plus      | :heavy_check_mark: |
+| Riing Trio      | :heavy_check_mark: |
+| Dpsg            | :heavy_minus_sign: | not fully implemented
+| Riing Quad      | :x:                |
+
+### Devices
+
 | Device                      | Support            | Confirmed          | Notes
 |-----------------------------|--------------------|--------------------|-------------------------------------------
 | Riing Plus 12/14/20         | :heavy_check_mark: | :heavy_check_mark: |
@@ -65,57 +82,24 @@ The source code also provides an easy way to write your own **speed controller**
 | Pacific W4                  | :heavy_check_mark: | :heavy_check_mark: |
 | Razer Connect               | :heavy_check_mark: | :heavy_check_mark: |
 | Riing Duo 12/14             | :heavy_check_mark: | :heavy_check_mark: |
-| Toughpower iRGB PLUS        | :heavy_check_mark: | :heavy_check_mark: |
 | WaterRam RGB                | :heavy_check_mark: | :x:                |
 | Pacific CL360/RL360         | :heavy_check_mark: | :x:                |
 | Pacific V-GTX/V-RTX         | :heavy_check_mark: | :x:                |
 | Pacific Lumi/Rad/R1/Fitting | :heavy_check_mark: | :x:                |
+| Toughpower iRGB PLUS        | :heavy_minus_sign: | :heavy_minus_sign: | controller not fully implemented
 | Pacific W5/W6               | :heavy_minus_sign: | :x:                | temperature sensor unsupported
+| Riing Quad 12/14            | :x:                | :x:                |
 
-# Plugins
-### Speed Controllers:
-* [PwmSpeedController](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/SpeedControllers/TTController.Plugin.PwmSpeedController/PwmSpeedController.cs)
-* [StaticSpeedController](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/SpeedControllers/TTController.Plugin.StaticSpeedController/StaticSpeedController.cs)
-* [CopySpeedController](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/SpeedControllers/TTController.Plugin.CopySpeedController/CopySpeedController.cs)
-* [DpsgSpeedController](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/SpeedControllers/TTController.Plugin.DpsgSpeedController/DpsgSpeedController.cs)
-
-### Effects:
-* [BlinkEffect](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Effects/TTController.Plugin.BlinkEffect/BlinkEffect.cs)
-* [PerLedColorEffect](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Effects/TTController.Plugin.PerLedColorEffect/PerLedColorEffect.cs)
-* [FlowEffect](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Effects/TTController.Plugin.FlowEffect/FlowEffect.cs)
-* [FullColorEffect](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Effects/TTController.Plugin.FullColorEffect/FullColorEffect.cs)
-* [PulseEffect](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Effects/TTController.Plugin.PulseEffect/PulseEffect.cs)
-* [SpectrumEffect](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Effects/TTController.Plugin.SpectrumEffect/SpectrumEffect.cs)
-* [RippleEffect](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Effects/TTController.Plugin.RippleEffect/RippleEffect.cs)
-* [WaveEffect](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Effects/TTController.Plugin.WaveEffect/WaveEffect.cs)
-* [SensorEffect](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Effects/TTController.Plugin.SensorEffect/SensorEffect.cs)
-* [SoundEffect](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Effects/TTController.Plugin.SoundEffect/SoundEffect.cs)
-* [RawEffect](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Effects/TTController.Plugin.RawEffect/RawEffect.cs)
-* [RazerConnectEffect](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Effects/TTController.Plugin.RazerConnectEffect/RazerConnectEffect.cs)
-* [PingPongEffect](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Effects/TTController.Plugin.PingPongEffect/PingPongEffect.cs)
-
-### Triggers
-* [AlwaysTrigger](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Triggers/TTController.Plugin.AlwaysTrigger/AlwaysTrigger.cs)
-* [OneTimeTrigger](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Triggers/TTController.Plugin.OneTimeTrigger/OneTimeTrigger.cs)
-* [ProcessTrigger](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Triggers/TTController.Plugin.ProcessTrigger/ProcessTrigger.cs)
-* [PulseTrigger](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Triggers/TTController.Plugin.PulseTrigger/PulseTrigger.cs)
-* [LogicTrigger](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Triggers/TTController.Plugin.LogicTrigger/LogicTrigger.cs)
-* [SensorTrigger](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Triggers/TTController.Plugin.SensorTrigger/SensorTrigger.cs)
-* [ScheduleTrigger](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Triggers/TTController.Plugin.ScheduleTrigger/ScheduleTrigger.cs)
-
-### Controllers
-* [RiingController](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Controllers/TTController.Plugin.RiingController/RiingControllerDefinition.cs)
-* [RiingPlusController](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Controllers/TTController.Plugin.RiingPlusController/RiingPlusControllerDefinition.cs)
-* [RiingTrioController](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Controllers/TTController.Plugin.RiingTrioController/RiingTrioControllerDefinition.cs)
-* [DpsgController](https://github.com/MoshiMoshi0/TTController/blob/master/Plugins/Controllers/TTController.Plugin.DpsgController/DpsgControllerDefinition.cs)
+---
 
 # Config
 
-> ## The documentation is still WIP, if you have problems with configuration please make a new [issue](https://github.com/devcompl/TTController/issues/new/choose).
+> ## This documentation is still WIP, if you have problems with configuration please make a new [issue](https://github.com/devcompl/TTController/issues/new/choose).
 
 > The config is by default located in `config.json` file. You can modify this in `TTController.Service.exe.Config` file by changing the value of `config-file` key. 
 
 ## Example
+
 ```json
 {
   "Profiles": [
@@ -127,9 +111,16 @@ The source code also provides an easy way to write your own **speed controller**
       ],
       "SpeedControllers": [
         {
-          "Type": "StaticSpeedController", 
+          "Type": "PwmSpeedController", 
           "Config": {
-            "Speed": 50,
+            "CurvePoints": [
+              [30, 30],
+              [45, 50],
+              [55, 60],
+              [65, 75],
+              [75, 100]
+            ],
+            "Sensors": ["/intelcpu/0/temperature/8"],
             "Trigger": {
               "Type": "AlwaysTrigger"
             }
@@ -138,17 +129,43 @@ The source code also provides an easy way to write your own **speed controller**
       ],
       "Effects": [
         {
-          "Type": "RippleEffect",
+          "Type": "SensorEffect",
           "Config": {
-            "Length": 4,
-            "Color": [255, 0, 0],
-            "TickInterval": 2,
+            "Sensors": ["/intelcpu/0/temperature/8"],
+            "ColorGradient": [
+              [40, [16, 16, 128]],
+              [60, [16, 16, 16]],
+              [86, [128, 16, 16]]
+            ],
             "Trigger": {
-              "Type": "OneTimeTrigger"
+              "Type": "AlwaysTrigger"
             }
           }
         }
       ]
+    }
+  ],
+  "ComputerStateProfiles": [
+    {
+      "StateType": "Shutdown",
+      "Ports": [
+        [9802, 8101, 1]
+      ],
+      "Speed": 35,
+      "EffectType": "Full",
+      "EffectColors": [
+        [255, 0, 0]
+      ]
+    }
+  ],
+  "PortConfigs": [
+    {
+      "Ports": [[9802, 8101, 1]],
+      "Config": {
+        "Name": "Top Fan",
+        "LedRotation": [11],
+        "LedReverse": [false]
+      }
     }
   ],
   "SensorConfigs": [
@@ -161,6 +178,256 @@ The source code also provides an easy way to write your own **speed controller**
   ]
 }
 ```
+
+## Plugins
+### Speed Controllers:
+
+<details><summary>PwmSpeedController</summary>
+
+Sets the speed based on a custom PWM curve
+
+#### Configuration
+
+| Variable | Description | Default value | Example
+|----------|-------------|---------------|---------
+| CurvePoints | List of PWM curve points with format: <pre>[\<value\>, \<speed\>]</pre> | <pre>{}</pre> | <pre>"CurvePoints": {<br>    [30, 50],<br>    [40, 60],<br>    [45, 75],<br>    [55, 100]<br>}</pre>
+| Sensors | List of sensor identifiers to get the value from | <pre>[]</pre> | <pre>"Sensors": \[<br>    "/intelcpu/0/temperature/0",<br>    "/gpu/0/temperature/0"<br>\]</pre>
+| SensorMixFunction | Determines how to combine values from **Sensors** if multiple sensors are configured<br>Allowed values: <pre>"Maximum", "Minimum", "Average"</pre> | <pre>"Maximum"</pre> | <pre>"SensorMixFunction": "Average"</pre>
+| MinimumChange | Minimum allowed change of speed<br>This reduces speed fluctuation | <pre>4</pre> | <pre>"MinimumChange": 2</pre>
+| MaximumChange | Maximum allowed change of speed<br>This reduces speed fluctuation | <pre>8</pre> | <pre>"MaximumChange": 10</pre>
+</details>
+<details><summary>StaticSpeedController</summary>
+
+Sets the speed to a constant value
+
+#### Configuration
+
+| Variable | Description | Default value | Example
+|----------|-------------|---------------|---------
+| Speed | Constant speed value | <pre>50</pre> | <pre>"Speed": 35</pre>
+</details>
+<details><summary>CopySpeedController</summary>
+
+Copies the speed from another port
+
+#### Configuration
+
+| Variable | Description | Default value | Example
+|----------|-------------|---------------|---------
+| Target | Target port identifier | | <pre>"Target": [9802, 8101, 1]</pre>
+</details>
+<details><summary>DpsgSpeedController</summary>
+
+Sets the speed of DPSG psu to one of the internal profiles. Not usable with other fans!
+
+#### Configuration
+
+| Variable | Description | Default value | Example
+|----------|-------------|---------------|---------
+| FanMode | Internal fan profile name<br>Allowed values: <pre>"Off", "Silent", "Performance"</pre> | <pre>"Silent"</pre> | <pre>"FanMode": "Performance"</pre>
+</details>
+
+### Effects:
+
+<details><summary>BlinkEffect</summary>
+
+#### Configuration
+
+| Variable | Description | Default value | Example
+|----------|-------------|---------------|---------
+| On | Effect on time in ms | <pre>1000</pre> | <pre>"On": 250</pre>
+| Off | Effect off time in ms | <pre>1000</pre> | <pre>"Off": 250</pre>
+| Colors | List of colors when the effect is on | <pre>[]</pre> | <pre>"Colors": [<br>    [255, 0, 0],<br>    [255, 0, 0],<br>    [255, 0, 0],<br>    ...<br>]</pre>
+</details>
+<details><summary>PerLedColorEffect</summary>
+
+Static per led colors
+
+#### Configuration
+
+| Variable | Description | Default value | Example
+|----------|-------------|---------------|---------
+| Colors | List of colors | <pre>[]</pre> | <pre>"Colors": [<br>    [255, 0, 0],<br>    [0, 255, 0],<br>    [0, 0, 255],<br>    ...<br>]</pre>
+</details>
+<details><summary>FlowEffect</summary>
+
+#### Configuration
+
+| Variable | Description | Default value | Example
+|----------|-------------|---------------|---------
+| FillStep | Determines how fast the colors fills the device | <pre>0.05</pre> | <pre>"FillStep": 0.12</pre>
+| HueStep | Determines color hue increment when the colors fills the device completly | <pre>30</pre> | <pre> "HueStep": 60</pre>
+| Saturation | Saturation of colors | <pre>1.0</pre> | <pre>"Saturation": 0.5</pre>
+| Brightness | Brightness of colors | <pre>1.0</pre> | <pre>"Brightness": 0.75</pre> 
+</details>
+<details><summary>FullColorEffect</summary>
+
+Static color on all leds
+
+#### Configuration
+
+| Variable | Description | Default value | Example
+|----------|-------------|---------------|---------
+| Color | | <pre>[0, 0, 0]</pre> | <pre>"Color": [255, 0, 0]</pre>
+</details>
+<details><summary>PulseEffect</summary>
+
+#### Configuration
+
+| Variable | Description | Default value | Example
+|----------|-------------|---------------|---------
+| Colors | List of colors | <pre>[]</pre> | <pre>"Colors": [<br>    [255, 0, 0],<br>    [0, 255, 0],<br>    [0, 0, 255],<br>    ...<br>]</pre>
+| BrightnessStep | Determines how fast the colors go to and from black | <pre>0.025</pre> | <pre>"BrightnessStep": 0.033</pre>
+</details>
+<details><summary>SpectrumEffect</summary>
+
+#### Configuration
+
+| Variable | Description | Default value | Example
+|----------|-------------|---------------|---------
+| Saturation | Saturation of colors | <pre>1.0</pre> | <pre>"Saturation": 0.5</pre>
+| Brightness | Brightness of colors | <pre>1.0</pre> | <pre>"Brightness": 0.75</pre> 
+| HueStep | Color hue increment | <pre>1.0</pre> | <pre> "HueStep": 2.0</pre>
+</details>
+<details><summary>RippleEffect</summary>
+
+#### Configuration
+
+| Variable | Description | Default value | Example
+|----------|-------------|---------------|---------
+| Color | Ripple color | <pre>[0, 0, 0]</pre> | <pre>"Color": [255, 0, 0]</pre>
+| Length | Ripple length | <pre>5</pre> | <pre>"Length": 3</pre>
+| TickInterval | Determines how many updates before the ripple advances to the next led | <pre>3</pre> | <pre>"TickInterval": 2</pre>
+</details>
+<details><summary>WaveEffect</summary>
+
+#### Configuration
+
+| Variable | Description | Default value | Example
+|----------|-------------|---------------|---------
+| Colors | List of colors | <pre>[]</pre> | <pre>"Colors": [<br>    [255, 0, 0],<br>    [0, 255, 0],<br>    [0, 0, 255],<br>    ...<br>]</pre>
+| TickInterval | Determines how many updates before the wave advances | <pre>3</pre> | <pre>"TickInterval": 2</pre>
+</details>
+<details><summary>SensorEffect</summary>
+
+#### Configuration
+
+| Variable | Description | Default value | Example
+|----------|-------------|---------------|---------
+| Sensors | List of sensor identifiers to get the value from | <pre>[]</pre> | <pre>"Sensors": \[<br>    "/intelcpu/0/temperature/0",<br>    "/gpu/0/temperature/0"<br>\]</pre>
+| SensorMixFunction | Determines how to combine values from **Sensors** if multiple sensors are configured<br>Allowed values: <pre>"Maximum", "Minimum", "Average"</pre> | <pre>"Maximum"</pre> | <pre>"SensorMixFunction": "Average"</pre>
+| ColorGradient | List of color gradient entries<br>Entry format: <pre>[\<value\>, \<color\>]</pre> | | <pre>"ColorGradient": [<br>    [30, [0, 255, 0]],<br>    [60, [255, 0, 0]]<br>]</pre>
+</details>
+<details><summary>SoundEffect</summary>
+
+#### Configuration
+
+| Variable | Description | Default value | Example
+|----------|-------------|---------------|---------
+| UseAverage | Determines if fft values are averaged | <pre>true</pre> | <pre>"UseAverage": false</pre>
+| MinimumFrequency | Mimimum frequency for fft | <pre>100</pre> | <pre>"MinimumFrequency": 1000</pre>
+| MaximumFrequency | Maximum frequency for fft | <pre>10000</pre> | <pre>"MaximumFrequency": 12000</pre>
+| ScalingStrategy | Fft value scaling function<br>Allowed values: <pre>"Decibel", "Linear", "Sqrt"</pre> | <pre>"Sqrt"</pre> | <pre>"ScalingStrategy": "Decibel"</pre>
+| ScalingFactor | Fft scaling scaling factor<br>Used for "Linear" and "Sqrt" **ScalingStrategy** | <pre>2.0</pre> | <pre>"ScalingFactor": 4.0</pre>
+| ColorGradient | List of color gradient entries<br>Entry format: <pre>[\<fft value\>, \<color\>]</pre> | | <pre>"ColorGradient": [<br>    [0, [0, 255, 0]],<br>    [1.0, [255, 0, 0]]<br>]</pre>
+</details>
+<details><summary>RawEffect</summary>
+
+Sets controller built-in effects
+
+#### Configuration
+
+| Variable | Description | Default value | Example
+|----------|-------------|---------------|---------
+| EffectType | Effect type name | | <pre>"EffectType": "Full"</pre>
+| Colors | List of colors | <pre>[]</pre> | <pre>"Colors": [<br>    [255, 0, 0],<br>    [0, 255, 0],<br>    [0, 0, 255],<br>    ...<br>]</pre>
+</details>
+<details><summary>RazerConnectEffect</summary>
+
+Receives 5 colors from razer chroma
+</details>
+<details><summary>PingPongEffect</summary>
+
+#### Configuration
+
+| Variable | Description | Default value | Example
+|----------|-------------|---------------|---------
+| Step | Determines how fast the region moves | <pre>0.01</pre> | <pre>"Step": 0.03</pre>
+| Height | Height of the region | <pre>0.2</pre> | <pre>"Height": 0.2</pre>
+| Width | Width of the region | <pre>0.5</pre> | <pre>"Width": 0.33</pre>
+</details>
+
+### Triggers
+
+<details><summary>AlwaysTrigger</summary>
+
+Always triggers
+</details>
+<details><summary>OneTimeTrigger</summary>
+
+Triggers only one time
+
+Usefull for internal speed profiles or effects
+</details>
+<details><summary>ProcessTrigger</summary>
+
+Triggers when any of the specified processes is running
+
+#### Configuration
+
+| Variable | Description | Default value | Example
+|----------|-------------|---------------|---------
+| Processes | List of process names | <pre>[]</pre> | <pre>"Processes": ["cmd", "notepad"]</pre>
+</details>
+<details><summary>PulseTrigger</summary>
+
+Pulses the trigger on and off
+
+#### Configuration
+
+| Variable | Description | Default value | Example
+|----------|-------------|---------------|---------
+| On | Trigger on time in ms | <pre>1000</pre> | <pre>"On": 250</pre>
+| Off | Trigger off time in ms | <pre>1000</pre> | <pre>"Off": 250</pre>
+</details>
+<details><summary>LogicTrigger</summary>
+
+Combines multiple triggers
+
+#### Configuration
+
+| Variable | Description | Default value | Example
+|----------|-------------|---------------|---------
+| Operation | Determines how to combine the triggers<br>Allowed values: <pre>"And", "Or"</pre> | <pre>"And"</pre> | <pre>"Operation": "Or"</pre>
+| Negate | Determines if the combined value is negated | <pre>false</pre> | <pre>"Negate": true</pre>
+| Triggers | List of triggers | <pre>[]</pre> | <pre>"Triggers": [<br>    {...},<br>    {...}<br>]</pre>
+</details>
+<details><summary>SensorTrigger</summary>
+
+Triggers based on sensor value
+
+#### Configuration
+
+| Variable | Description | Default value | Example
+|----------|-------------|---------------|---------
+| Sensors | List of sensor identifiers to get the value from | <pre>[]</pre> | <pre>"Sensors": \[<br>    "/intelcpu/0/temperature/0",<br>    "/gpu/0/temperature/0"<br>\]</pre>
+| SensorMixFunction | Determines how to combine values from **Sensors** if multiple sensors are configured<br>Allowed values: <pre>"Maximum", "Minimum", "Average"</pre> | <pre>"Maximum"</pre> | <pre>"SensorMixFunction": "Average"</pre>
+| Value | Trigger value | | <pre>"Value": 50</pre>
+| ComparsionType | Determines how to compare current sensor value and the trigger value<br>Allowed values: <pre>"Equals", "Greater", "Less"</pre> | <pre>"Greater"</pre> | <pre>"ComparsionType": "Less"</pre>  
+</details>
+<details><summary>ScheduleTrigger</summary>
+
+Triggers based on configured schedule
+
+#### Configuration
+
+| Variable | Description | Default value | Example
+|----------|-------------|---------------|---------
+| Scope | Determines the repeat period of the schedule<br>Allowed values:<br><pre>"Minute", "Hour", "Day", "Week"</pre> | <pre>"Day"</pre> | <pre>"Scope": "Day"</pre>
+| Value | What value to return when current time matches the schedule | <pre>true</pre> | <pre>"Value": true</pre>
+| UpdateInterval | Determines how often to check the current time<br>If no value is set (default), **UpdateInterval** is set automatically based on **Scope** | | <pre>"UpdateInterval": "00:05:00"</pre>
+| Schedule | List of schedule entries<br>Entry format: <pre>[\<start time\>, \<end time\>]</pre>Allowed time formats: <pre>"d.hh:mm", "hh:mm", "ss"</pre> | <pre>[]</pre> | <pre>"Schedule": [<br>    ["00:00", "08:00"],<br>    ["20:00", "23:59"]<br>]</pre>
+</details>
 
 ## Documentation
 ### Root
