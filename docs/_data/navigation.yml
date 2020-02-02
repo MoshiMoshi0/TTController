@@ -12,6 +12,7 @@ docs:
       - title: Sensor
         url: /config/sensor
   - title: Common
+    children:
       - title: Port Identifier
         url: /common/port-identifier
       - title: Sensor Identifier
