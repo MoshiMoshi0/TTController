@@ -3,6 +3,9 @@ title: Main config
 permalink: /main-config
 ---
 
+**Note:** The config is by default located in `config.json` file. You can modify this in `TTController.Service.exe.Config` file by changing the value of `config-file` key.
+{: .notice--info}
+
 ## Format
 
 ~~~
