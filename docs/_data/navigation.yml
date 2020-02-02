@@ -2,6 +2,7 @@ docs:
   - title: Configuration
     children:
       - title: Main config
+        url: /main-config
       - title: Profile config
       - title: Computer state profile config
       - title: Port config

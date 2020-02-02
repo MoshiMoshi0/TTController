@@ -1,5 +1,6 @@
 ---
 title: Main config
+permalink: /main-config
 ---
 
 ## Format
