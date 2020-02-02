@@ -1,4 +1,4 @@
-remote_theme: "mmistakes/minimal-mistakes@4.18.1"
+remote_theme: mmistakes/minimal-mistakes@4.18.1
 
 minimal_mistakes_skin    : "default"
 
@@ -12,13 +12,14 @@ description              : "Documentation for TTController service."
 url                      : "https://moshimoshi0.github.io"
 baseurl                  : "/ttcontroller"
 repository               : "MoshiMoshi0/TTController"
-logo                     : "assets/images/logo.png"
+logo                     : "/assets/images/logo.png"
 masthead_title           : " "
 breadcrumbs              : false
 
 
 search                   : true
 search_full_content      : true
+
 
 footer:
 # Site Footer
@@ -39,15 +40,6 @@ markdown: kramdown
 
 # Plugins (previously gems:)
 plugins:
-  - jekyll-paginate
-  - jekyll-sitemap
-  - jekyll-gist
-  - jekyll-feed
-  - jemoji
-  - jekyll-include-cache
-
-# mimic GitHub Pages with --safe
-whitelist:
   - jekyll-paginate
   - jekyll-sitemap
   - jekyll-gist
