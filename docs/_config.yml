@@ -9,11 +9,8 @@ title_separator          : "|"
 subtitle                 : "v0.8.0.0-alpha"
 name                     : "MoshiMoshi0"
 description              : "Documentation for TTController service."
-#url                      : "https://moshimoshi0.github.io"
-#baseurl                  : "/ttcontroller"
 repository               : "MoshiMoshi0/TTController"
-logo                     : "/assets/images/logo.png"
-masthead_title           : " "
+logo                     : "/docs/assets/images/logo.png"
 breadcrumbs              : false
 
 
