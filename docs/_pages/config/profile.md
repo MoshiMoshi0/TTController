@@ -24,11 +24,11 @@ permalink: /config/profile
 Name of the profile
 
 **Required:** **Yes**<br>
-**Default value:**<br>
+**Default value:**
 ~~~
 "Default"
 ~~~
-**Example:**<br>
+**Example:**
 ~~~
 "Name": "Top Fans"
 ~~~
@@ -44,11 +44,11 @@ Unique GUID string in 8-4-4-4-12 format
 {: .notice--info}
 
 **Required:** **Yes**<br>
-**Default value:**<br>
+**Default value:**
 ~~~
 <Random Guid>
 ~~~
-**Example:**<br>
+**Example:**
 ~~~
 "Guid": "10af9207-7e67-4581-9d13-506cad5d53c1"
 ~~~
@@ -61,11 +61,11 @@ Unique GUID string in 8-4-4-4-12 format
 List of [Port Identifier]({{ "/common/port-identifier" | relative_url }}) objects modified by this config
 
 **Required:** **Yes**<br>
-**Default value:**<br>
+**Default value:**
 ~~~
 []
 ~~~
-**Example:**<br>
+**Example:**
 ~~~
 "Ports": [
     [9802, 9101, 1],
@@ -81,11 +81,11 @@ List of [Port Identifier]({{ "/common/port-identifier" | relative_url }}) object
 List of [Speed Controller]({{ "/common/speed-controller" | relative_url }}) objects
 
 **Required:** No<br>
-**Default value:**<br>
+**Default value:**
 ~~~
 []
 ~~~
-**Example:**<br>
+**Example:**
 ~~~
 "SpeedControllers": [
     {...},
@@ -101,11 +101,11 @@ List of [Speed Controller]({{ "/common/speed-controller" | relative_url }}) obje
 List of [Effect]({{ "/common/effect" | relative_url }}) objects
 
 **Required:** No<br>
-**Default value:**<br>
+**Default value:**
 ~~~
 []
 ~~~
-**Example:**<br>
+**Example:**
 ~~~
 "Effects": [
     {...},

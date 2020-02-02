@@ -12,4 +12,8 @@
     border: 1px solid  #f2f3f3;
     -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.125);
     box-shadow: 0 1px 1px rgba(0,0,0,0.125);
+
+    p:not([class]) {
+        margin-bottom: 0.25em !important;
+    }
 }

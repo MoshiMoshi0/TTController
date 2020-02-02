@@ -30,11 +30,11 @@ permalink: /config/service
 List of [Profile Config]({{ "/config/profile" | relative_url }}) objects
 
 **Required:** **Yes**<br>
-**Default value:**<br>
+**Default value:**
 ~~~
 []
 ~~~
-**Example:**<br>
+**Example:**
 ~~~
 "Profiles": [
     {...},
@@ -50,11 +50,11 @@ List of [Profile Config]({{ "/config/profile" | relative_url }}) objects
 List of [ComputerStateProfile Config]({{ "/config/computerstateprofile" | relative_url }}) objects
 
 **Required:** No<br>
-**Default value:**<br>
+**Default value:**
 ~~~
 []
 ~~~
-**Example:**<br>
+**Example:**
 ~~~
 "ComputerStateProfiles": [
     {...},
@@ -73,11 +73,11 @@ List of [Port Config]({{ "/config/port" | relative_url }}) objects<br>
 {: .notice--info}
 
 **Required:** No<br>
-**Default value:**<br>
+**Default value:**
 ~~~
 []
 ~~~
-**Example:**<br>
+**Example:**
 ~~~
 "PortConfigs": [
     {...},
@@ -96,11 +96,11 @@ List of [Sensor Config]({{ "/config/sensor" | relative_url }}) objects
 {: .notice--info}
 
 **Required:** No<br>
-**Default value:**<br>
+**Default value:**
 ~~~
 []
 ~~~
-**Example:**<br>
+**Example:**
 ~~~
 "SensorConfigs": [
     {...},
@@ -119,11 +119,11 @@ Determines timer delay for updating sensor values
 {: .notice--info}
 
 **Required:** No<br>
-**Default value:**<br>
+**Default value:**
 ~~~
 250
 ~~~
-**Example:**<br>
+**Example:**
 ~~~
 "SensorTimerInterval": 500
 ~~~
@@ -139,11 +139,11 @@ Determines timer delay for updating speed of devices
 {: .notice--info}
 
 **Required:** No<br>
-**Default value:**<br>
+**Default value:**
 ~~~
 2500
 ~~~
-**Example:**<br>
+**Example:**
 ~~~
 "DeviceSpeedTimerInterval": 3000
 ~~~
@@ -159,11 +159,11 @@ Determines timer delay for updating led colors
 {: .notice--info}
 
 **Required:** No<br>
-**Default value:**<br>
+**Default value:**
 ~~~
 32
 ~~~
-**Example:**<br>
+**Example:**
 ~~~
 "DeviceRgbTimerInterval": 16
 ~~~
@@ -182,11 +182,11 @@ Determines timer delay for logging port and sensor data
 {: .notice--info}
 
 **Required:** No<br>
-**Default value:**<br>
+**Default value:**
 ~~~
 5000
 ~~~
-**Example:**<br>
+**Example:**
 ~~~
 "LoggingTimerInterval": 1000
 ~~~

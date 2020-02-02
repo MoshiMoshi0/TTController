@@ -29,12 +29,11 @@ Determines computer state that enables this profile
 {: .notice--warning}
 
 **Required:** **Yes**<br>
-**Default value:**<br>
-
+**Default value:**
 ~~~
 "Shutdown"
 ~~~
-**Example:**<br>
+**Example:**
 ~~~
 "StateType": "Boot"
 ~~~
@@ -47,11 +46,11 @@ Determines computer state that enables this profile
 List of [Port Identifier]({{ "/common/port-identifier" | relative_url }}) objects modified by this config
 
 **Required:** **Yes**<br>
-**Default value:**<br>
+**Default value:**
 ~~~
 []
 ~~~
-**Example:**<br>
+**Example:**
 ~~~
 "Ports": [
     [9802, 9101, 1],
@@ -67,10 +66,10 @@ List of [Port Identifier]({{ "/common/port-identifier" | relative_url }}) object
 Speed to set the devices to when the profile is enabled
 
 **Required:** No<br>
-**Default value:**<br>
+**Default value:**
 ~~~
 ~~~
-**Example:**<br>
+**Example:**
 ~~~
 "Speed": 35
 ~~~
@@ -86,10 +85,10 @@ Effect type to set the devices to when the profile is enabled
 {: .notice--info}
 
 **Required:** No<br>
-**Default value:**<br>
+**Default value:**
 ~~~
 ~~~
-**Example:**<br>
+**Example:**
 ~~~
 "EffectType": "Full"
 ~~~
@@ -102,10 +101,10 @@ Effect type to set the devices to when the profile is enabled
 List of [Led Color]({{ "/common/led-color" | relative_url }}) objects used for [EffectType](#effecttype)
 
 **Required:** **Yes** if [EffectType](#effecttype) is set<br>
-**Default value:**<br>
+**Default value:**
 ~~~
 ~~~
-**Example:**<br>
+**Example:**
 ~~~
 "EffectColors": [
     [255, 0, 0],

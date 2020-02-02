@@ -23,11 +23,11 @@ permalink: /config/sensor
 List of [Sensor Identifier]({{ "/sensor-identifier" | relative_url }}) objects modified by this config
 
 **Required:** **Yes**<br>
-**Default value:**<br>
+**Default value:**
 ~~~
 []
 ~~~
-**Example:**<br>
+**Example:**
 ~~~
 "Sensors": ["/intelcpu/0/temperature/8"]
 ~~~
@@ -40,10 +40,10 @@ List of [Sensor Identifier]({{ "/sensor-identifier" | relative_url }}) objects m
 Sensor value offset
 
 **Required:** No<br>
-**Default value:**<br>
+**Default value:**
 ~~~
 ~~~
-**Example:**<br>
+**Example:**
 ~~~
 "Offset": 5
 ~~~
@@ -56,10 +56,10 @@ Sensor value offset
 If any sensor exceeds this value, all devices will be set to 100% speed
 
 **Required:** No<br>
-**Default value:**<br>
+**Default value:**
 ~~~
 ~~~
-**Example:**<br>
+**Example:**
 ~~~
 "CriticalValue": 90
 ~~~
