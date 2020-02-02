@@ -1,4 +1,4 @@
-remote_theme: "mmistakes/minimal-mistakes@4.18.1"
+remote_theme: "mmistakes/minimal-mistakes"
 
 minimal_mistakes_skin    : "default"
 
@@ -10,7 +10,7 @@ subtitle                 : "v0.8.0.0-alpha"
 name                     : "MoshiMoshi0"
 description              : "Documentation for TTController service."
 repository               : "MoshiMoshi0/TTController"
-logo                     : "/docs/assets/images/logo.png"
+logo                     : "/assets/images/logo.png"
 breadcrumbs              : false
 
 
