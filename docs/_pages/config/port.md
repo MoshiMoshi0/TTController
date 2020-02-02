@@ -27,12 +27,10 @@ List of [Port Identifier]({{ "/common/port-identifier" | relative_url }}) object
 
 **Required:** **Yes**<br>
 **Default value:**
-
 ~~~
 []
 ~~~
 **Example:**
-
 ~~~
 "Ports": [
     [9802, 9101, 1],
@@ -52,12 +50,10 @@ Name of this port config
 
 **Required:** No<br>
 **Default value:**
-
 ~~~
 "Unknown"
 ~~~
 **Example:**
-
 ~~~
 "Name": "Top Fans"
 ~~~
@@ -74,12 +70,10 @@ Used by effects to know exact led count and zones of each device<br>This ensures
 
 **Required:** No<br>
 **Default value:**
-
 ~~~
 "Default"
 ~~~
 **Example:**
-
 ~~~
 "DeviceType": "RiingTrio"
 ~~~

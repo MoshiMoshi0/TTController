@@ -23,7 +23,7 @@ docs:
         url: /common/effect
       - title: Trigger
         url: /common/trigger
-  - title: Available speed controllers
+  - title: Speed Controllers
     children:
       - title: PwmSpeedController
         url: /speed-controllers/pwmspeedcontroller
@@ -33,7 +33,7 @@ docs:
         url: /speed-controllers/copyspeedcontroller
       - title: DpsgSpeedController
         url: /speed-controllers/dpsgspeedcontroller
-  - title: Available effects
+  - title: Effects
     children:
       - title: BlinkEffect
         url: /effects/blinkeffect
@@ -61,7 +61,7 @@ docs:
         url: /effects/razerconnecteffect
       - title: PingPongEffect
         url: /effects/pingpongeffect
-  - title: Available triggers
+  - title: Triggers
     children:
       - title: AlwaysTrigger
         url: /triggers/alwaystrigger
