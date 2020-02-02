@@ -12,7 +12,7 @@ description              : "Documentation for TTController service."
 url                      : "https://moshimoshi0.github.io"
 baseurl                  : "/ttcontroller"
 repository               : "MoshiMoshi0/TTController"
-logo                     : "../assets/logo-512.png"
+logo                     : "assets/images/logo.png"
 masthead_title           : " "
 breadcrumbs              : false
 
