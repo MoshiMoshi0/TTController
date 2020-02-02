@@ -24,13 +24,11 @@ permalink: /config/profile
 Name of the profile
 
 **Required:** **Yes**<br>
-**Default value:**
-
+**Default value:**<br>
 ~~~
 "Default"
 ~~~
-**Example:**
-
+**Example:**<br>
 ~~~
 "Name": "Top Fans"
 ~~~
@@ -46,13 +44,11 @@ Unique GUID string in 8-4-4-4-12 format
 {: .notice--info}
 
 **Required:** **Yes**<br>
-**Default value:**
-
+**Default value:**<br>
 ~~~
 <Random Guid>
 ~~~
-**Example:**
-
+**Example:**<br>
 ~~~
 "Guid": "10af9207-7e67-4581-9d13-506cad5d53c1"
 ~~~
@@ -65,13 +61,11 @@ Unique GUID string in 8-4-4-4-12 format
 List of [Port Identifier]({{ "/common/port-identifier" | relative_url }}) objects modified by this config
 
 **Required:** **Yes**<br>
-**Default value:**
-
+**Default value:**<br>
 ~~~
 []
 ~~~
-**Example:**
-
+**Example:**<br>
 ~~~
 "Ports": [
     [9802, 9101, 1],
@@ -87,13 +81,11 @@ List of [Port Identifier]({{ "/common/port-identifier" | relative_url }}) object
 List of [Speed Controller]({{ "/common/speed-controller" | relative_url }}) objects
 
 **Required:** No<br>
-**Default value:**
-
+**Default value:**<br>
 ~~~
 []
 ~~~
-**Example:**
-
+**Example:**<br>
 ~~~
 "SpeedControllers": [
     {...},
@@ -109,13 +101,11 @@ List of [Speed Controller]({{ "/common/speed-controller" | relative_url }}) obje
 List of [Effect]({{ "/common/effect" | relative_url }}) objects
 
 **Required:** No<br>
-**Default value:**
-
+**Default value:**<br>
 ~~~
 []
 ~~~
-**Example:**
-
+**Example:**<br>
 ~~~
 "Effects": [
     {...},
@@ -124,8 +114,6 @@ List of [Effect]({{ "/common/effect" | relative_url }}) objects
 ~~~
 
 </div>
-
-List of [Effect](https://github.com/MoshiMoshi0/TTController/wiki/Effect) objects
 
 ## Examples
 ~~~ json

@@ -27,16 +27,14 @@ permalink: /config/service
 ### Profiles
 <div class="variable-block" markdown="block">
 
-List of [ProfileConfig]({{ "/profile-config" | relative_url }}) objects
+List of [Profile Config]({{ "/config/profile" | relative_url }}) objects
 
 **Required:** **Yes**<br>
-**Default value:**
-
+**Default value:**<br>
 ~~~
 []
 ~~~
-**Example:**
-
+**Example:**<br>
 ~~~
 "Profiles": [
     {...},
@@ -49,16 +47,14 @@ List of [ProfileConfig]({{ "/profile-config" | relative_url }}) objects
 ### ComputerStateProfiles
 <div class="variable-block" markdown="block">
 
-List of [ComputerStateProfileConfig]({{ "/computer-state-profile-config" | relative_url }}) objects
+List of [ComputerStateProfile Config]({{ "/config/computerstateprofile" | relative_url }}) objects
 
 **Required:** No<br>
-**Default value:**
-
+**Default value:**<br>
 ~~~
 []
 ~~~
-**Example:**
-
+**Example:**<br>
 ~~~
 "ComputerStateProfiles": [
     {...},
@@ -71,19 +67,17 @@ List of [ComputerStateProfileConfig]({{ "/computer-state-profile-config" | relat
 ### PortConfigs 
 <div class="variable-block" markdown="block">
 
-List of [PortConfig]({{ "port-config" | relative_url }}) objects<br>
+List of [Port Config]({{ "/config/port" | relative_url }}) objects<br>
 
-**Note:** If [PortConfig]({{ "port-config" | relative_url }}) is not configured for a port, a default [PortConfig]({{ "port-config" | relative_url }}) will be used
+**Note:** If [Port Config]({{ "/config/port" | relative_url }}) is not configured for a port, a default [Port Config]({{ "/config/port" | relative_url }}) will be used
 {: .notice--info}
 
 **Required:** No<br>
-**Default value:**
-
+**Default value:**<br>
 ~~~
 []
 ~~~
-**Example:**
-
+**Example:**<br>
 ~~~
 "PortConfigs": [
     {...},
@@ -96,19 +90,17 @@ List of [PortConfig]({{ "port-config" | relative_url }}) objects<br>
 ### SensorConfigs
 <div class="variable-block" markdown="block">
 
-List of [SensorConfig]({{ "/sensor-config" | relative_url }}) objects
+List of [Sensor Config]({{ "/config/sensor" | relative_url }}) objects
 
-**Note:** If [SensorConfig]({{ "/sensor-config" | relative_url }}) is not configured for a sensor, a default [SensorConfig]({{ "/sensor-config" | relative_url }}) will be used
+**Note:** If [Sensor Config]({{ "/config/sensor" | relative_url }}) is not configured for a sensor, a default [Sensor Config]({{ "/config/sensor" | relative_url }}) will be used
 {: .notice--info}
 
 **Required:** No<br>
-**Default value:**
-
+**Default value:**<br>
 ~~~
 []
 ~~~
-**Example:**
-
+**Example:**<br>
 ~~~
 "SensorConfigs": [
     {...},
@@ -127,13 +119,11 @@ Determines timer delay for updating sensor values
 {: .notice--info}
 
 **Required:** No<br>
-**Default value:**
-
+**Default value:**<br>
 ~~~
 250
 ~~~
-**Example:**
-
+**Example:**<br>
 ~~~
 "SensorTimerInterval": 500
 ~~~
@@ -149,13 +139,11 @@ Determines timer delay for updating speed of devices
 {: .notice--info}
 
 **Required:** No<br>
-**Default value:**
-
+**Default value:**<br>
 ~~~
 2500
 ~~~
-**Example:**
-
+**Example:**<br>
 ~~~
 "DeviceSpeedTimerInterval": 3000
 ~~~
@@ -171,13 +159,11 @@ Determines timer delay for updating led colors
 {: .notice--info}
 
 **Required:** No<br>
-**Default value:**
-
+**Default value:**<br>
 ~~~
 32
 ~~~
-**Example:**
-
+**Example:**<br>
 ~~~
 "DeviceRgbTimerInterval": 16
 ~~~
@@ -196,13 +182,11 @@ Determines timer delay for logging port and sensor data
 {: .notice--info}
 
 **Required:** No<br>
-**Default value:**
-
+**Default value:**<br>
 ~~~
 5000
 ~~~
-**Example:**
-
+**Example:**<br>
 ~~~
 "LoggingTimerInterval": 1000
 ~~~

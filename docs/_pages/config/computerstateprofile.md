@@ -25,17 +25,16 @@ Determines computer state that enables this profile
 **Allowed values:** `"Boot"`, `"Shutdown"`, `"Suspend"`
 {: .notice--warning}
 
-**Note:** If you want to update or add more profiles with **Boot** type, you need to modify `TTController.Service.exe.Config` file and remove `<add key="boot-profile-saved" value="true" />` line if its present or change its `value` to `false` and restart the service. This is to save **Boot** profiles only once otherwise they will blink when the service loads.
+**Note:** If you want to update or add more profiles with **Boot** type, you need to modify `TTController.Service.exe.Config` file and remove `<add key="boot-profile-saved" value="true" />` line if its present or change its `value` to `false` and restart the service. This is done to save **Boot** profiles only once, otherwise the service will initialize slower and they will cause leds to briefly flash on boot.
 {: .notice--warning}
 
 **Required:** **Yes**<br>
-**Default value:**
+**Default value:**<br>
 
 ~~~
 "Shutdown"
 ~~~
-**Example:**
-
+**Example:**<br>
 ~~~
 "StateType": "Boot"
 ~~~
@@ -48,13 +47,11 @@ Determines computer state that enables this profile
 List of [Port Identifier]({{ "/common/port-identifier" | relative_url }}) objects modified by this config
 
 **Required:** **Yes**<br>
-**Default value:**
-
+**Default value:**<br>
 ~~~
 []
 ~~~
-**Example:**
-
+**Example:**<br>
 ~~~
 "Ports": [
     [9802, 9101, 1],
@@ -70,12 +67,10 @@ List of [Port Identifier]({{ "/common/port-identifier" | relative_url }}) object
 Speed to set the devices to when the profile is enabled
 
 **Required:** No<br>
-**Default value:**
-
+**Default value:**<br>
 ~~~
 ~~~
-**Example:**
-
+**Example:**<br>
 ~~~
 "Speed": 35
 ~~~
@@ -91,12 +86,10 @@ Effect type to set the devices to when the profile is enabled
 {: .notice--info}
 
 **Required:** No<br>
-**Default value:**
-
+**Default value:**<br>
 ~~~
 ~~~
-**Example:**
-
+**Example:**<br>
 ~~~
 "EffectType": "Full"
 ~~~
@@ -109,12 +102,10 @@ Effect type to set the devices to when the profile is enabled
 List of [Led Color]({{ "/common/led-color" | relative_url }}) objects used for [EffectType](#effecttype)
 
 **Required:** **Yes** if [EffectType](#effecttype) is set<br>
-**Default value:**
-
+**Default value:**<br>
 ~~~
 ~~~
-**Example:**
-
+**Example:**<br>
 ~~~
 "EffectColors": [
     [255, 0, 0],
