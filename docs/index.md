@@ -1,7 +1,5 @@
 ---
-layout: single
 title: Home
-toc: true
 ---
 
 Welcome to the TTController documentation!
