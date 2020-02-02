@@ -1,43 +1,78 @@
 docs:
   - title: Configuration
     children:
-      - title: Main config
-        url: /main-config
-      - title: Profile config
-        url: /profile-config
-      - title: Computer state profile config
-        url: /computer-state-profile-config
-      - title: Port config
-        url: /port-config
-      - title: Sensor config
-        url: /sensor-config
-  - title: Speed controllers
+      - title: Service
+        url: /config/service
+      - title: Profile
+        url: /config/profile
+      - title: ComputerStateProfile
+        url: /config/computerstateprofile
+      - title: Port
+        url: /config/port
+      - title: Sensor
+        url: /config/sensor
+  - title: Common
+      - title: Port Identifier
+        url: /common/port-identifier
+      - title: Sensor Identifier
+        url: /common/sensor-identifier
+      - title: Speed Controller
+        url: /common/speed-controller
+      - title: Effect
+        url: /common/effect
+      - title: Trigger
+        url: /common/trigger
+  - title: Available speed controllers
     children:
       - title: PwmSpeedController
+        url: /speed-controllers/pwmspeedcontroller
       - title: StaticSpeedController
+        url: /speed-controllers/staticspeedcontroller
       - title: CopySpeedController
+        url: /speed-controllers/copyspeedcontroller
       - title: DpsgSpeedController
-  - title: Effects
+        url: /speed-controllers/dpsgspeedcontroller
+  - title: Available effects
     children:
       - title: BlinkEffect
+        url: /effects/blinkeffect
       - title: PerLedColorEffect
+        url: /effects/perledcoloreffect
       - title: FlowEffect
+        url: /effects/floweffect
       - title: FullColorEffect
+        url: /effects/fullcoloreffect
       - title: PulseEffect
+        url: /effects/pulseeffect
       - title: SpectrumEffect
+        url: /effects/spectrumffect
       - title: RippleEffect
+        url: /effects/rippleeffect
       - title: WaveEffect
+        url: /effects/waveeffect
       - title: SensorEffect
+        url: /effects/sensoreffect
       - title: SoundEffect
+        url: /effects/soundeffect
       - title: RawEffect
+        url: /effects/raweffecteffect
       - title: RazerConnectEffect
+        url: /effects/razerconnecteffect
       - title: PingPongEffect
-  - title: Triggers
+        url: /effects/pingpongeffect
+  - title: Available triggers
     children:
       - title: AlwaysTrigger
+        url: /triggers/alwaystrigger
       - title: OneTimeTrigger
+        url: /triggers/onetimetrigger
       - title: ProcessTrigger
+        url: /triggers/processtrigger
       - title: PulseTrigger
+        url: /triggers/pulsetrigger
       - title: LogicTrigger
+        url: /triggers/logictrigger
       - title: SensorTrigger
+        url: /triggers/sensortrigger
       - title: ScheduleTrigger
+        url: /triggers/scheduletrigger
