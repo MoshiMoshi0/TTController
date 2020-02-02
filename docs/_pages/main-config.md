@@ -22,7 +22,7 @@ permalink: /main-config
 ## Variables
 
 ### Profiles
-<div style="margin-left:25px;" markdown="block">
+<div class="variable-block" markdown="block">
 
 List of [ProfileConfig]({{ "/profile-config" | relative_url }}) objects
 
@@ -44,7 +44,7 @@ List of [ProfileConfig]({{ "/profile-config" | relative_url }}) objects
 </div>
 
 ### ComputerStateProfiles
-<div style="margin-left:25px;" markdown="block">
+<div class="variable-block" markdown="block">
 
 List of [ComputerStateProfileConfig]({{ "/computer-state-profile-config" | relative_url }}) objects
 
@@ -66,7 +66,7 @@ List of [ComputerStateProfileConfig]({{ "/computer-state-profile-config" | relat
 </div>
 
 ### PortConfigs 
-<div style="margin-left:25px;" markdown="block">
+<div class="variable-block" markdown="block">
 
 List of [PortConfig]({{ "port-config" | relative_url }}) objects<br>
 
@@ -91,7 +91,7 @@ List of [PortConfig]({{ "port-config" | relative_url }}) objects<br>
 </div>
 
 ### SensorConfigs
-<div style="margin-left:25px;" markdown="block">
+<div class="variable-block" markdown="block">
 
 List of [SensorConfig]({{ "/sensor-config" | relative_url }}) objects
 
@@ -116,7 +116,7 @@ List of [SensorConfig]({{ "/sensor-config" | relative_url }}) objects
 </div>
 
 ### SensorTimerInterval 
-<div style="margin-left:25px;" markdown="block">
+<div class="variable-block" markdown="block">
 
 Determines timer delay for updating sensor values
 
@@ -138,7 +138,7 @@ Determines timer delay for updating sensor values
 </div>
 
 ### DeviceSpeedTimerInterval
-<div style="margin-left:25px;" markdown="block">
+<div class="variable-block" markdown="block">
 
 Determines timer delay for updating speed of devices
 
@@ -160,7 +160,7 @@ Determines timer delay for updating speed of devices
 </div>
 
 ### DeviceRgbTimerInterval
-<div style="margin-left:25px;" markdown="block">
+<div class="variable-block" markdown="block">
 
 Determines timer delay for updating led colors
 
@@ -182,7 +182,7 @@ Determines timer delay for updating led colors
 </div>
 
 ### LoggingTimerInterval
-<div style="margin-left:25px;" markdown="block">
+<div class="variable-block" markdown="block">
 
 Determines timer delay for logging port and sensor data
 
