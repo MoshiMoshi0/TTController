@@ -4,9 +4,13 @@ docs:
       - title: Main config
         url: /main-config
       - title: Profile config
+        url: /profile-config
       - title: Computer state profile config
+        url: /computer-state-profile-config
       - title: Port config
+        url: /port-config
       - title: Sensor config
+        url: /sensor-config
   - title: Speed controllers
     children:
       - title: PwmSpeedController
