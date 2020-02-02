@@ -7,8 +7,9 @@ toc: true
 Welcome to the TTController documentation!
 
 **Note:** This documentation might not apply to develop builds!
+{: .notice--warning}
 
-**Note:** This documentation is still Work-in-Progress, if you have problems with configuring the service please make a new [<i class="fas fa-info-circle"/> issue](https://github.com/MoshiMoshi0/TTController/issues/new/choose).
+**Note:** This documentation is still Work-in-Progress, if you have problems with configuring the service please make a new [<i class="fab fa-github"/> issue](https://github.com/MoshiMoshi0/TTController/issues/new/choose).
 {: .notice--info}
 
 ## Quick start

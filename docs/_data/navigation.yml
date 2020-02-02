@@ -1,0 +1,42 @@
+docs:
+  - title: Home
+    url: /
+  - title: Configuration
+    children:
+      - title: Main config
+      - title: Profile config
+      - title: Computer state profile config
+      - title: Port config
+      - title: Sensor config
+  - title: Plugins
+    children:
+      - title: Speed controllers
+        children:
+          - title: PwmSpeedController
+          - title: StaticSpeedController
+          - title: CopySpeedController
+          - title: DpsgSpeedController
+      - title: Effects
+        children:
+          - title: BlinkEffect
+          - title: PerLedColorEffect
+          - title: FlowEffect
+          - title: FullColorEffect
+          - title: PulseEffect
+          - title: SpectrumEffect
+          - title: RippleEffect
+          - title: WaveEffect
+          - title: SensorEffect
+          - title: SoundEffect
+          - title: RawEffect
+          - title: RazerConnectEffect
+          - title: PingPongEffect
+      - title: Triggers
+        children:
+          -title: AlwaysTrigger
+          -title: OneTimeTrigger
+          -title: ProcessTrigger
+          -title: PulseTrigger
+          -title: LogicTrigger
+          -title: SensorTrigger
+          -title: ScheduleTrigger
