@@ -5,7 +5,7 @@ permalink: /main-config
 
 ## Format
 
-```
+~~~
 {
   "Profiles":  [<ProfileConfig>],
   "ComputerStateProfiles":  [<ComputerStateProfileConfig>],
@@ -17,82 +17,198 @@ permalink: /main-config
   "DeviceRgbTimerInterval": <int>,
   "LoggingTimerInterval": <int>
 }
-```
+~~~
 
 ## Variables
 
 ### Profiles
-List of [ProfileConfig](/profile-config) objects
+<div style="margin-left:25px;" markdown="block">
 
-| Required | Default value | Usage 
-|----------|---------------|--------
-| **Yes** | <pre>[]</pre> | <pre>"Profiles": [<br>    {...},<br>    {...}<br>]</pre>
+List of [ProfileConfig]({{ "/profile-config" | relative_url }}) objects
+
+**Required:** **Yes**<br>
+**Default value:**
+
+~~~
+[]
+~~~
+**Example:**
+
+~~~
+"Profiles": [
+    {...},
+    {...}
+]
+~~~
+
+</div>
 
 ### ComputerStateProfiles
-List of [ComputerStateProfileConfig](/computer-state-profile-config) objects
+<div style="margin-left:25px;" markdown="block">
 
-| Required | Default value | Usage 
-|----------|---------------|--------
-| No | <pre>[]</pre> | <pre>"ComputerStateProfiles": [<br>    {...},<br>    {...}<br>]</pre>
+List of [ComputerStateProfileConfig]({{ "/computer-state-profile-config" | relative_url }}) objects
+
+**Required:** No<br>
+**Default value:**
+
+~~~
+[]
+~~~
+**Example:**
+
+~~~
+"ComputerStateProfiles": [
+    {...},
+    {...}
+]
+~~~
+
+</div>
 
 ### PortConfigs 
-List of [PortConfig](/port-config) objects
+<div style="margin-left:25px;" markdown="block">
 
-If [PortConfig](/port-config) is not configured for a port, a default [PortConfig](/port-config) will be used
+List of [PortConfig]({{ "port-config" | relative_url }}) objects<br>
 
-| Required | Default value | Usage 
-|----------|---------------|--------
-| No | <pre>[]</pre> | <pre>"PortConfigs": [<br>    {...},<br>    {...}<br>]</pre>
+**Note:** If [PortConfig]({{ "port-config" | relative_url }}) is not configured for a port, a default [PortConfig]({{ "port-config" | relative_url }}) will be used
+{: .notice--info}
+
+**Required:** No<br>
+**Default value:**
+
+~~~
+[]
+~~~
+**Example:**
+
+~~~
+"PortConfigs": [
+    {...},
+    {...}
+]
+~~~
+
+</div>
 
 ### SensorConfigs
-List of [SensorConfig](/sensor-config) objects
+<div style="margin-left:25px;" markdown="block">
 
-If [SensorConfig](/sensor-config) is not configured for a sensor, a default [SensorConfig](/sensor-config) will be used
+List of [SensorConfig]({{ "/sensor-config" | relative_url }}) objects
 
-| Required | Default value | Usage 
-|----------|---------------|--------
-| No | <pre>[]</pre> | <pre>"SensorConfigs": [<br>    {...},<br>    {...}<br>]</pre>
+**Note:** If [SensorConfig]({{ "/sensor-config" | relative_url }}) is not configured for a sensor, a default [SensorConfig]({{ "/sensor-config" | relative_url }}) will be used
+{: .notice--info}
+
+**Required:** No<br>
+**Default value:**
+
+~~~
+[]
+~~~
+**Example:**
+
+~~~
+"SensorConfigs": [
+    {...},
+    {...}
+]
+~~~
+
+</div>
 
 ### SensorTimerInterval 
+<div style="margin-left:25px;" markdown="block">
+
 Determines timer delay for updating sensor values
 
-Value in miliseconds
+**Note:** Value in miliseconds
+{: .notice--info}
 
-| Required | Default value | Usage 
-|----------|---------------|--------
-| No | 250 | <pre>"SensorTimerInterval": 500</pre>
+**Required:** No<br>
+**Default value:**
+
+~~~
+250
+~~~
+**Example:**
+
+~~~
+"SensorTimerInterval": 500
+~~~
+
+</div>
 
 ### DeviceSpeedTimerInterval
+<div style="margin-left:25px;" markdown="block">
+
 Determines timer delay for updating speed of devices
 
-Value in miliseconds
+**Note:** Value in miliseconds
+{: .notice--info}
 
-| Required | Default value | Usage 
-|----------|---------------|--------
-| No | 2500 | <pre>"DeviceSpeedTimerInterval": 3000</pre>
+**Required:** No<br>
+**Default value:**
+
+~~~
+2500
+~~~
+**Example:**
+
+~~~
+"DeviceSpeedTimerInterval": 3000
+~~~
+
+</div>
 
 ### DeviceRgbTimerInterval
+<div style="margin-left:25px;" markdown="block">
+
 Determines timer delay for updating led colors
 
-Value in miliseconds
+**Note:** Value in miliseconds
+{: .notice--info}
 
-| Required | Default value | Usage 
-|----------|---------------|--------
-| No | 32 | <pre>"DeviceRgbTimerInterval": 16</pre>
+**Required:** No<br>
+**Default value:**
+
+~~~
+32
+~~~
+**Example:**
+
+~~~
+"DeviceRgbTimerInterval": 16
+~~~
+
+</div>
 
 ### LoggingTimerInterval
+<div style="margin-left:25px;" markdown="block">
+
 Determines timer delay for logging port and sensor data
 
-Used only in **console mode**
-Value in miliseconds
+**Note:** Used only in **console mode**
+{: .notice--info}
 
-| Required | Default value | Usage 
-|----------|---------------|--------
-| No | 5000 | <pre>"LoggingTimerInterval": 1000</pre>
+**Note:** Value in miliseconds
+{: .notice--info}
+
+**Required:** No<br>
+**Default value:**
+
+~~~
+5000
+~~~
+**Example:**
+
+~~~
+"LoggingTimerInterval": 1000
+~~~
+
+</div>
 
 ## Example
 
-```json
+~~~ json
 {
   "Profiles": [
     {
@@ -169,4 +285,4 @@ Value in miliseconds
     }
   ]
 }
-```
+~~~
