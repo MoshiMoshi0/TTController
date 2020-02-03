@@ -27,7 +27,7 @@ permalink: /config/service
 ### Profiles
 <div class="variable-block" markdown="block">
 
-List of [Profile Config]({{ "/config/profile" | relative_url }}) objects
+List of [Profile Configs]({{ "/config/profile" | relative_url }})
 
 **Required:** **Yes**<br>
 **Default value:**
@@ -47,7 +47,7 @@ List of [Profile Config]({{ "/config/profile" | relative_url }}) objects
 ### ComputerStateProfiles
 <div class="variable-block" markdown="block">
 
-List of [ComputerStateProfile Config]({{ "/config/computerstateprofile" | relative_url }}) objects
+List of [ComputerStateProfile Configs]({{ "/config/computerstateprofile" | relative_url }})
 
 **Required:** No<br>
 **Default value:**
@@ -67,7 +67,7 @@ List of [ComputerStateProfile Config]({{ "/config/computerstateprofile" | relati
 ### PortConfigs 
 <div class="variable-block" markdown="block">
 
-List of [Port Config]({{ "/config/port" | relative_url }}) objects<br>
+List of [Port Configs]({{ "/config/port" | relative_url }})
 
 **Note:** If [Port Config]({{ "/config/port" | relative_url }}) is not configured for a port, a default [Port Config]({{ "/config/port" | relative_url }}) will be used
 {: .notice--info}
@@ -90,7 +90,7 @@ List of [Port Config]({{ "/config/port" | relative_url }}) objects<br>
 ### SensorConfigs
 <div class="variable-block" markdown="block">
 
-List of [Sensor Config]({{ "/config/sensor" | relative_url }}) objects
+List of [Sensor Configs]({{ "/config/sensor" | relative_url }})
 
 **Note:** If [Sensor Config]({{ "/config/sensor" | relative_url }}) is not configured for a sensor, a default [Sensor Config]({{ "/config/sensor" | relative_url }}) will be used
 {: .notice--info}

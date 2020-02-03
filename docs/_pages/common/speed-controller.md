@@ -35,7 +35,7 @@ Name of the speed controller
 
 Config of the speed controller
 
-**Note:** The config has to have [Trigger]({{ "/common/trigger" | relative_url }}) object set to the required `Trigger` variable
+**Note:** The config has to have a required [Trigger]({{ "/common/trigger" | relative_url }}) set to the `Trigger` variable
 {: .notice--warning}
 
 **Note:** See page of the speed controller you are configuring for detailed documentation

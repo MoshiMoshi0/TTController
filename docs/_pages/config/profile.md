@@ -41,7 +41,7 @@ Name of the profile
 ### Ports
 <div class="variable-block" markdown="block">
 
-List of [Port Identifier]({{ "/common/port-identifier" | relative_url }}) objects modified by this config
+List of [Port Identifiers]({{ "/common/port-identifier" | relative_url }}) modified by this config
 
 **Required:** **Yes**<br>
 **Default value:**
@@ -61,7 +61,7 @@ List of [Port Identifier]({{ "/common/port-identifier" | relative_url }}) object
 ### SpeedControllers
 <div class="variable-block" markdown="block">
 
-List of [Speed Controller]({{ "/common/speed-controller" | relative_url }}) objects
+List of [Speed Controllers]({{ "/common/speed-controller" | relative_url }})
 
 **Required:** No<br>
 **Default value:**
@@ -81,7 +81,7 @@ List of [Speed Controller]({{ "/common/speed-controller" | relative_url }}) obje
 ### Effects
 <div class="variable-block" markdown="block">
 
-List of [Effect]({{ "/common/effect" | relative_url }}) objects
+List of [Effects]({{ "/common/effect" | relative_url }})
 
 **Required:** No<br>
 **Default value:**
