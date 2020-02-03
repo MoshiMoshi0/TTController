@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net472</TargetFramework>
+    <TargetFramework>net48</TargetFramework>
     <AssemblyTitle>TTController.Plugin.PerLedColorEffect</AssemblyTitle>
     <Product>TTController.Plugin.PerLedColorEffect</Product>
     <Copyright>Copyright ©  2019</Copyright>

@@ -9,9 +9,11 @@ namespace TTController.Plugin.SensorTrigger
 {
     public enum ComparsionType
     {
-        Equals,
+        Equal,
         Greater,
-        Less
+        GreaterOrEqual,
+        Less,
+        LessOrEqual,
     }
 
     public class SensorTriggerConfig : TriggerConfigBase
@@ -40,12 +42,14 @@ namespace TTController.Plugin.SensorTrigger
             if (float.IsNaN(value))
                 return false;
 
-            if (Config.ComparsionType == ComparsionType.Equals)
-                return value == Config.Value;
-            if (Config.ComparsionType == ComparsionType.Greater)
-                return value > Config.Value;
-            else if (Config.ComparsionType == ComparsionType.Less)
-                return value < Config.Value;
+            switch (Config.ComparsionType)
+            {
+                case ComparsionType.Equal:          return value == Config.Value;
+                case ComparsionType.Greater:        return value > Config.Value;
+                case ComparsionType.GreaterOrEqual: return value >= Config.Value;
+                case ComparsionType.Less:           return value < Config.Value;
+                case ComparsionType.LessOrEqual:    return value <= Config.Value;
+            }
 
             return false;
         }

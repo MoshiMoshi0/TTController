@@ -23,7 +23,7 @@ permalink: /config/port
 ### Ports
 <div class="variable-block" markdown="block">
 
-List of [Port Identifier]({{ "/common/port-identifier" | relative_url }}) objects modified by this config
+List of [Port Identifiers]({{ "/common/port-identifier" | relative_url }}) modified by this config
 
 **Required:** **Yes**<br>
 **Default value:**

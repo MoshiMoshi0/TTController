@@ -8,7 +8,7 @@ using TTController.Service.Hardware;
 using TTController.Service.Hardware.Sensor;
 using TTController.Service.Utils;
 using TTController.Service.Hardware.Sensor.Decorators;
-using TTController.Service.Config.Data;
+using TTController.Service.Config;
 
 namespace TTController.Service.Managers
 {
@@ -16,7 +16,7 @@ namespace TTController.Service.Managers
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly ConfigData _config;
+        private readonly ServiceConfig _config;
         private readonly Dictionary<Identifier, SensorConfig> _sensorConfigs;
 
         private readonly LibreHardwareMonitorFacade _libreHardwareMonitorFacade;
@@ -25,12 +25,20 @@ namespace TTController.Service.Managers
 
         public IEnumerable<Identifier> EnabledSensors => _sensorValueProviders.Keys;
 
-        public SensorManager(ConfigData Config)
+        public SensorManager(ServiceConfig config)
         {
             Logger.Info("Creating Sensor Manager...");
-            _config = Config;
+            _config = config;
 
-            _libreHardwareMonitorFacade = new LibreHardwareMonitorFacade();
+            _libreHardwareMonitorFacade = new LibreHardwareMonitorFacade(
+                isCpuEnabled: config.CpuSensorsEnabled,
+                isGpuEnabled: config.GpuSensorsEnabled,
+                isStorageEnabled: config.StorageSensorsEnabled,
+                isMotherboardEnabled: config.MotherboardSensorsEnabled,
+                isMemoryEnabled: config.MemorySensorsEnabled,
+                isNetworkEnabled: config.NetworkSensorsEnabled,
+                isControllerEnabled: config.ControllerSensorsEnabled
+            );
             _sensorValueProviders = new Dictionary<Identifier, ISensorValueProvider>();
             _hardware = new HashSet<IHardware>();
 

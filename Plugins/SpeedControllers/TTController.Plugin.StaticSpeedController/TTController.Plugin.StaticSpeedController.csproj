@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net472</TargetFramework>
+    <TargetFramework>net48</TargetFramework>
     <AssemblyTitle>TTController.Plugin.StaticSpeedController</AssemblyTitle>
     <Product>TTController.Plugin.StaticSpeedController</Product>
     <Copyright>Copyright ©  2019</Copyright>

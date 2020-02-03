@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using TTController.Common;
@@ -10,6 +11,7 @@ namespace TTController.Plugin.ProcessTrigger
     public class ProcessTriggerConfig : TriggerConfigBase
     {
         public List<string> Processes { get; private set; } = new List<string>();
+        [DefaultValue(2500)] public int UpdateInterval { get; private set; } = 2500;
     }
 
     public class ProcessTrigger : TriggerBase<ProcessTriggerConfig>
@@ -24,7 +26,7 @@ namespace TTController.Plugin.ProcessTrigger
 
         public override bool Value(ICacheProvider cache)
         {
-            if (Environment.TickCount - _ticks > 2500)
+            if (Environment.TickCount - _ticks >= Config.UpdateInterval)
             {
                 _ticks = Environment.TickCount;
 

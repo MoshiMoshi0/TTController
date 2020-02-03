@@ -8,7 +8,6 @@ using Newtonsoft.Json.Converters;
 using NLog;
 using TTController.Common;
 using TTController.Service.Config;
-using TTController.Service.Config.Data;
 using TTController.Service.Utils;
 
 namespace TTController.Service.Managers
@@ -20,7 +19,7 @@ namespace TTController.Service.Managers
         private readonly string _filename;
         private Dictionary<string, DeviceConfig> _deviceConfigs;
 
-        public ConfigData CurrentConfig { get; private set; }
+        public ServiceConfig CurrentConfig { get; private set; }
 
         public ConfigManager(string filename)
         {
@@ -53,7 +52,7 @@ namespace TTController.Service.Managers
         public bool SaveConfig()
         {
             Logger.Info("Saving config...");
-            using (var writer = new StreamWriter(GetConfigAbsolutePath(), false))
+            using (var writer = new StreamWriter(GetAbsolutePath(_filename), false))
             {
                 try
                 {
@@ -73,11 +72,11 @@ namespace TTController.Service.Managers
         public bool LoadOrCreateConfig()
         {
             Logger.Info("Loading config...");
-            var path = GetConfigAbsolutePath();
+            var path = GetAbsolutePath(_filename);
             if (!File.Exists(path))
             {
                 Logger.Warn("Config does not exist! Creating default...");
-                CurrentConfig = ConfigData.CreateDefault();
+                CurrentConfig = ServiceConfig.CreateDefault();
                 SaveConfig();
             }
             else
@@ -85,9 +84,9 @@ namespace TTController.Service.Managers
                 try
                 {
                     using (var reader = new StreamReader(path))
-                        CurrentConfig = JsonConvert.DeserializeObject<ConfigData>(reader.ReadToEnd());
+                        CurrentConfig = JsonConvert.DeserializeObject<ServiceConfig>(reader.ReadToEnd());
 
-                    _deviceConfigs = Directory.EnumerateFiles(@"Plugins\Devices\", "*.json")
+                    _deviceConfigs = Directory.EnumerateFiles(GetAbsolutePath(@"Plugins\Devices\"), "*.json")
                         .Select(f =>
                         {
                             using (var reader = new StreamReader(f))
@@ -112,11 +111,8 @@ namespace TTController.Service.Managers
             return true;
         }
 
-        private string GetConfigAbsolutePath()
-        {
-            var directory = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
-            return Path.Combine(directory, _filename);
-        }
+        private string GetAbsolutePath(string relativePath)
+            => Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location), relativePath);
 
         public void Dispose()
         {
@@ -141,7 +137,7 @@ namespace TTController.Service.Managers
 
                     if (_deviceConfigs.ContainsKey(config.DeviceType))
                         collector.StoreDeviceConfig(port, _deviceConfigs[config.DeviceType]);
-                    else
+                    else if (!string.Equals(config.DeviceType, "Default", StringComparison.OrdinalIgnoreCase))
                         Logger.Warn("Unable to find device with name \"{0}\"!", config.DeviceType);
                 }
             }

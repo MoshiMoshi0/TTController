@@ -7,8 +7,8 @@ permalink: /common/effect
 
 ~~~
 {
-  "Type":  <string>,
-  "Config":  <EffectConfig>,
+  "Type": <string>,
+  "Config": <EffectConfig>,
 }
 ~~~
 
@@ -35,13 +35,13 @@ Name of the effect
 
 Config of the effect
 
-**Note:** The config has to have [Trigger]({{ "/common/trigger" | relative_url }}) object set to the required `Trigger` variable
+**Note:** The config has to have a required [Trigger]({{ "/common/trigger" | relative_url }}) set to the `Trigger` variable
 {: .notice--warning}
 
 **Note:** See page of the effect you are configuring for detailed documentation
 {: .notice--info}
 
-**Required:** Depends on effect<br>
+**Required:** **Yes**<br>
 **Default value:**
 ~~~
 ~~~

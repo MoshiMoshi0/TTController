@@ -6,8 +6,7 @@ using System.ServiceProcess;
 using NLog;
 using TTController.Common;
 using TTController.Common.Plugin;
-using TTController.Service.Config.Data;
-using TTController.Service.Hardware.Sensor;
+using TTController.Service.Config;
 using TTController.Service.Managers;
 using TTController.Service.Utils;
 
@@ -24,7 +23,7 @@ namespace TTController.Service
 
         private PluginStore _pluginStore;
         private DataCache _cache;
-        private ConfigData _config;
+        private ServiceConfig _config;
 
         protected bool IsDisposed;
 
@@ -62,17 +61,32 @@ namespace TTController.Service
             _sensorManager.EnableSensors(_config.SensorConfigs.SelectMany(x => x.Sensors));
             foreach (var profile in _config.Profiles)
             {
+                if (_pluginStore.Get(profile).Any())
+                {
+                    Logger.Fatal("Duplicate profile \"{0}\" found!", profile.Name);
+                    return false;
+                }
+
                 foreach (var effect in profile.Effects)
                 {
-                    _pluginStore.Add(profile.Guid, effect);
+                    _pluginStore.Add(profile, effect);
                     _sensorManager.EnableSensors(effect.UsedSensors);
                 }
 
                 foreach (var speedController in profile.SpeedControllers)
                 {
-                    _pluginStore.Add(profile.Guid, speedController);
+                    _pluginStore.Add(profile, speedController);
                     _sensorManager.EnableSensors(speedController.UsedSensors);
                 }
+
+                profile.Ports.RemoveAll(p =>
+                {
+                    var portExists = _deviceManager.Controllers.SelectMany(c => c.Ports).Contains(p);
+                    if (!portExists)
+                        Logger.Warn("Removing invalid port: {0}", p);
+
+                    return !portExists;
+                });
             }
 
             foreach (var sensor in _sensorManager.EnabledSensors)
@@ -236,6 +250,8 @@ namespace TTController.Service
                         var effectByte = controller.GetEffectByte(profile.EffectType);
                         if (effectByte.HasValue && profile.EffectColors != null)
                             controller.SetRgb(port.Id, effectByte.Value, profile.EffectColors);
+                        else if (effectByte.HasValue && profile.EffectColor.HasValue)
+                            controller.SetRgb(port.Id, effectByte.Value, Enumerable.Repeat(profile.EffectColor.Value, _cache.GetDeviceConfig(port).LedCount));
 
                         if (state == ComputerStateType.Boot && (profile.Speed.HasValue || effectByte.HasValue))
                             dirtyControllers.Add(controller);
@@ -289,7 +305,7 @@ namespace TTController.Service
                 else
                 {
                     var speedController = _pluginStore
-                        .Get<ISpeedControllerBase>(profile.Guid)
+                        .Get<ISpeedControllerBase>(profile)
                         .FirstOrDefault(c => c.IsEnabled(_cache.AsReadOnly()));
                     if (speedController == null)
                         continue;
@@ -427,7 +443,7 @@ namespace TTController.Service
             foreach (var profile in _config.Profiles)
             {
                 var effect = _pluginStore
-                    .Get<IEffectBase>(profile.Guid)
+                    .Get<IEffectBase>(profile)
                     .FirstOrDefault(e => e.IsEnabled(_cache.AsReadOnly()));
                 if (effect == null)
                     continue;

@@ -15,22 +15,51 @@ namespace TTController.Common
             B = b;
         }
 
+        public LedColor(double hue, double saturation, double value)
+        {
+            (R, G, B) = FromHsv(hue, saturation, value);
+        }
+
         public override string ToString() => $"[{R}, {G}, {B}]";
 
-        public void Deconstruct(out object r, out object g, out object b)
+        public void Deconstruct(out byte r, out byte g, out byte b)
         {
             r = R;
             g = G;
             b = B;
         }
 
+        public LedColor Lerp(LedColor to, double t) => Lerp(t, this, to);
+        public (double, double, double) LerpSmooth(LedColor to, double t) => LerpSmooth(t, this, to);
+
+        public (double, double, double) ToHsv() => ToHsv(this);
+        public void SetHsv(double hue, double saturation, double value) => (R, G, B) = FromHsv(hue, saturation, value);
+
+        public void SetHue(double hue)
+        {
+            var (_, s, v) = ToHsv();
+            (R, G, B) = FromHsv(hue, s, v);
+        }
+
+        public void SetSaturation(double saturation)
+        {
+            var (h, _, v) = ToHsv();
+            (R, G, B) = FromHsv(h, saturation, v);
+        }
+
+        public void SetValue(double value)
+        {
+            var (h, s, _) = ToHsv();
+            (R, G, B) = FromHsv(h, s, value);
+        }
+
         public static LedColor Lerp(double t, LedColor from, LedColor to)
         {
-            var (r, g, b) = LerpDeconstruct(t, from, to);
+            var (r, g, b) = LerpSmooth(t, from, to);
             return new LedColor((byte)r, (byte)g, (byte)b);
         }
 
-        public static (double, double, double) LerpDeconstruct(double t, LedColor from, LedColor to)
+        public static (double, double, double) LerpSmooth(double t, LedColor from, LedColor to)
         {
             t = Math.Max(Math.Min(t, 1), 0);
             var r = from.R * (1 - t) + to.R * t;
