@@ -78,6 +78,15 @@ namespace TTController.Service
                     _pluginStore.Add(profile, speedController);
                     _sensorManager.EnableSensors(speedController.UsedSensors);
                 }
+
+                profile.Ports.RemoveAll(p =>
+                {
+                    var portExists = _deviceManager.Controllers.SelectMany(c => c.Ports).Contains(p);
+                    if (!portExists)
+                        Logger.Warn("Removing invalid port: {0}", p);
+
+                    return !portExists;
+                });
             }
 
             foreach (var sensor in _sensorManager.EnabledSensors)
