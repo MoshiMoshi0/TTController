@@ -23,6 +23,9 @@ permalink: /config/profile
 
 Name of the profile
 
+**Note:** The name has to be unique
+{: .notice--warning}
+
 **Required:** **Yes**<br>
 **Default value:**
 ~~~
@@ -31,26 +34,6 @@ Name of the profile
 **Example:**
 ~~~
 "Name": "Top Fans"
-~~~
-
-</div>
-
-### Guid
-<div class="variable-block" markdown="block">
-
-Unique GUID string in 8-4-4-4-12 format
-
-**Note:** Can be generated here: https://www.guidgen.com
-{: .notice--info}
-
-**Required:** **Yes**<br>
-**Default value:**
-~~~
-<Random Guid>
-~~~
-**Example:**
-~~~
-"Guid": "10af9207-7e67-4581-9d13-506cad5d53c1"
 ~~~
 
 </div>

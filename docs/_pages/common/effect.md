@@ -7,8 +7,8 @@ permalink: /common/effect
 
 ~~~
 {
-  "Type":  <string>,
-  "Config":  <EffectConfig>,
+  "Type": <string>,
+  "Config": <EffectConfig>,
 }
 ~~~
 
@@ -41,7 +41,7 @@ Config of the effect
 **Note:** See page of the effect you are configuring for detailed documentation
 {: .notice--info}
 
-**Required:** Depends on effect<br>
+**Required:** **Yes**<br>
 **Default value:**
 ~~~
 ~~~

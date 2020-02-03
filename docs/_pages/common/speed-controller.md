@@ -7,8 +7,8 @@ permalink: /common/speed-controller
 
 ~~~
 {
-  "Type":  <string>,
-  "Config":  <SpeedControllerConfig>,
+  "Type": <string>,
+  "Config": <SpeedControllerConfig>,
 }
 ~~~
 
@@ -41,7 +41,7 @@ Config of the speed controller
 **Note:** See page of the speed controller you are configuring for detailed documentation
 {: .notice--info}
 
-**Required:** Depends on speed controller<br>
+**Required:** **Yes**<br>
 **Default value:**
 ~~~
 ~~~

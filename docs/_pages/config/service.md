@@ -110,6 +110,125 @@ List of [Sensor Config]({{ "/config/sensor" | relative_url }}) objects
 
 </div>
 
+### CpuSensorsEnabled
+<div class="variable-block" markdown="block">
+
+Enables support for CPU sensors
+
+**Required:** No<br>
+**Default value:**
+~~~
+true
+~~~
+**Example:**
+~~~
+"CpuSensorsEnabled": false
+~~~
+
+</div>
+
+### GpuSensorsEnabled
+<div class="variable-block" markdown="block">
+
+Enables support for GPU sensors
+
+**Required:** No<br>
+**Default value:**
+~~~
+true
+~~~
+**Example:**
+~~~
+"GpuSensorsEnabled": false
+~~~
+
+</div>
+
+### StorageSensorsEnabled
+<div class="variable-block" markdown="block">
+
+Enables support for HDD/SDD sensors
+
+**Required:** No<br>
+**Default value:**
+~~~
+false
+~~~
+**Example:**
+~~~
+"StorageSensorsEnabled": false
+~~~
+
+</div>
+
+### MotherboardSensorsEnabled
+<div class="variable-block" markdown="block">
+
+Enables support for Motherboard sensors
+
+**Required:** No<br>
+**Default value:**
+~~~
+false
+~~~
+**Example:**
+~~~
+"MotherboardSensorsEnabled": false
+~~~
+
+</div>
+
+### MemorySensorsEnabled
+<div class="variable-block" markdown="block">
+
+Enables support for RAM sensors
+
+**Required:** No<br>
+**Default value:**
+~~~
+false
+~~~
+**Example:**
+~~~
+"MemorySensorsEnabled": false
+~~~
+
+</div>
+
+### NetworkSensorsEnabled
+<div class="variable-block" markdown="block">
+
+Enables support for NIC sensors
+
+**Required:** No<br>
+**Default value:**
+~~~
+false
+~~~
+**Example:**
+~~~
+"MemorySensorsEnabled": false
+~~~
+
+</div>
+
+### ControllerSensorsEnabled
+<div class="variable-block" markdown="block">
+
+Enables support for hid fan controller/pump sensors  
+
+**Required:** No<br>
+**Default value:**
+~~~
+false
+~~~
+**Example:**
+~~~
+"ControllerSensorsEnabled": false
+~~~
+
+</div>
+
 ### SensorTimerInterval 
 <div class="variable-block" markdown="block">
 

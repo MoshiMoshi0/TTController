@@ -3,13 +3,13 @@ docs:
     children:
       - title: Service
         url: /config/service
-      - title: Profile
+      - title: Profiles
         url: /config/profile
-      - title: ComputerStateProfile
+      - title: ComputerStateProfiles
         url: /config/computerstateprofile
-      - title: Port
+      - title: Ports
         url: /config/port
-      - title: Sensor
+      - title: Sensors
         url: /config/sensor
   - title: Common
     children:
