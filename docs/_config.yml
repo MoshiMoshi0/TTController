@@ -1,0 +1,64 @@
+remote_theme: "mmistakes/minimal-mistakes"
+
+minimal_mistakes_skin    : "default"
+
+# Site Settings
+locale                   : "en-US"
+title                    : "TTController"
+title_separator          : "|"
+subtitle                 : "v0.8.0.0-alpha"
+name                     : "MoshiMoshi0"
+description              : "Documentation for TTController service."
+repository               : "MoshiMoshi0/TTController"
+logo                     : "/assets/images/logo.png"
+breadcrumbs              : false
+
+
+search                   : true
+search_full_content      : true
+
+
+footer:
+# Site Footer
+  links:
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/MoshiMoshi0/TTController"
+
+
+# Reading Files
+include:
+  - _pages
+
+
+# Conversion
+markdown: kramdown
+
+
+# Plugins (previously gems:)
+plugins:
+  - jekyll-paginate
+  - jekyll-sitemap
+  - jekyll-gist
+  - jekyll-feed
+  - jemoji
+  - jekyll-include-cache
+  - jekyll-remote-theme
+
+
+# Defaults
+defaults:
+  # _posts
+  - scope:
+      path: ""
+      type: pages
+    values:
+      layout: single
+      toc: true
+      author_profile: false
+      read_time: false
+      comments: false
+      share: false
+      related: false
+      sidebar:
+        nav: "docs"
