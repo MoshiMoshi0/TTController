@@ -20,7 +20,7 @@ permalink: /config/sensor
 ### Sensors
 <div class="variable-block" markdown="block">
 
-List of [Sensor Identifiers]({{ "/sensor-identifier" | relative_url }}) modified by this config
+List of [Sensor Identifiers]({{ "/common/sensor-identifier" | relative_url }}) modified by this config
 
 **Required:** **Yes**<br>
 **Default value:**

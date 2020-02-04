@@ -24,7 +24,7 @@ Triggers based on configured sensor values.
 ### Sensors
 <div class="variable-block" markdown="block">
 
-List of [Sensor Identifiers]({{ "/sensor-identifier" | relative_url }}) to read values from
+List of [Sensor Identifiers]({{ "/common/sensor-identifier" | relative_url }}) to read values from
 
 **Required:** **Yes**<br>
 **Default value:**

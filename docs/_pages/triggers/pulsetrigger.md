@@ -25,7 +25,7 @@ Triggers on and off based on configured timing.
 Trigger on time
 
 **Note:** Value in miliseconds
-{: .notice--note}
+{: .notice--info}
 
 **Required:** No<br>
 **Default value:**
@@ -45,7 +45,7 @@ Trigger on time
 Trigger off time
 
 **Note:** Value in miliseconds
-{: .notice--note}
+{: .notice--info}
 
 **Required:** No<br>
 **Default value:**

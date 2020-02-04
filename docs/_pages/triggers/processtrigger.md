@@ -39,10 +39,10 @@ List of process names
 ### UpdateInterval
 <div class="variable-block" markdown="block">
 
-Determines how often to check the list of currently running processes.
+Determines how often to check the list of currently running processes
 
 **Note:** Value in miliseconds
-{: .notice--note}
+{: .notice--info}
 
 **Required:** No<br>
 **Default value:**

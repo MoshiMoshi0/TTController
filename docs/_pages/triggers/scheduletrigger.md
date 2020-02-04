@@ -3,7 +3,7 @@ title: Schedule Trigger
 permalink: /triggers/scheduletrigger
 ---
 
-Triggers based on configured schedule on per minute, hour, day, week basis.
+Triggers based on configured schedule on per minute, hour, day or week basis.
 
 ## Format
 
@@ -26,7 +26,7 @@ Triggers based on configured schedule on per minute, hour, day, week basis.
 
 Determines the repeat period of the schedule
 
-For example when set to `"Day"` the [Schedule](#schedule) entries will be set to time of day, and when set to `"Minute"` the [Schedule](#schedule) will be set to seconds of a minute.
+For example when set to `"Day"` the [Schedule](#schedule) entries will have be set to time of day, and when set to `"Minute"` the [Schedule](#schedule) will have to be set to seconds of a minute.
 
 **Allowed values:** `"Minute"`, `"Hour"`, `"Day"`, `"Week"`
 {: .notice--warning}
@@ -63,12 +63,13 @@ true
 ### UpdateInterval
 <div class="variable-block" markdown="block">
 
-Determines how often to check the current time. By default set automatically based on [Scope](#scope).
+Determines how often to check the current time. 
 
-* `"Minute"` - "00:00:01"
-* `"Hour"` - "00:01:00"
-* `"Day"` - "00:01:00"
-* `"Week"` - "00:15:00"
+By default set automatically to:
+* `"00:00:01"` - when [Scope](#scope) is set to `"Minute"` 
+* `"00:01:00"` - when [Scope](#scope) is set to `"Hour"` 
+* `"00:01:00"` - when [Scope](#scope) is set to `"Day"` 
+* `"00:15:00"` - when [Scope](#scope) is set to `"Week"` 
 
 **Required:** No<br>
 **Default value:**
@@ -85,7 +86,11 @@ Determines how often to check the current time. By default set automatically bas
 <div class="variable-block" markdown="block">
 
 List of schedule entries in `"<start time> -> <end time>"` format.<br>
-Allowed `<start time>` and `<end time>` formats: `"d.hh:mm"`, `"hh:mm"`, `"ss"`
+
+Allowed `<start time>` and `<end time>` formats: 
+* `"d.hh:mm"` - when [Scope](#scope) is set to `"Week"`
+* `"hh:mm"` - when [Scope](#scope) is set to `"Day"` or `"Hour"`
+* `"ss"` - when [Scope](#scope) is set to `"Minute"`
 
 **Required:** **Yes**<br>
 **Default value:**

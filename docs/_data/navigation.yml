@@ -25,55 +25,55 @@ docs:
         url: /common/trigger
   - title: Speed Controllers
     children:
-      - title: Pwm Speed Controller
+      - title: PwmSpeedController
         url: /speed-controllers/pwmspeedcontroller
-      - title: Static Speed Controller
+      - title: StaticSpeedController
         url: /speed-controllers/staticspeedcontroller
-      - title: Copy Speed Controller
+      - title: CopySpeedController
         url: /speed-controllers/copyspeedcontroller
-      - title: Dpsg Speed Controller
+      - title: DpsgSpeedController
         url: /speed-controllers/dpsgspeedcontroller
   - title: Effects
     children:
-      - title: Blink Effect
+      - title: BlinkEffect
         url: /effects/blinkeffect
-      - title: Per Led Color Effect
+      - title: PerLedColorEffect
         url: /effects/perledcoloreffect
-      - title: Flow Effect
+      - title: FlowEffect
         url: /effects/floweffect
-      - title: Full Color Effect
+      - title: FullColorEffect
         url: /effects/fullcoloreffect
-      - title: Pulse Effect
+      - title: PulseEffect
         url: /effects/pulseeffect
-      - title: Spectrum Effect
+      - title: SpectrumEffect
         url: /effects/spectrumffect
-      - title: Ripple Effect
+      - title: RippleEffect
         url: /effects/rippleeffect
-      - title: Wave Effect
+      - title: WaveEffect
         url: /effects/waveeffect
-      - title: Sensor Effect
+      - title: SensorEffect
         url: /effects/sensoreffect
-      - title: Sound Effect
+      - title: SoundEffect
         url: /effects/soundeffect
-      - title: Raw Effect
+      - title: RawEffect
         url: /effects/raweffecteffect
-      - title: Razer Connect Effect
+      - title: RazerConnectEffect
         url: /effects/razerconnecteffect
-      - title: Ping Pong Effect
+      - title: PingPongEffect
         url: /effects/pingpongeffect
   - title: Triggers
     children:
-      - title: Always Trigger
+      - title: AlwaysTrigger
         url: /triggers/alwaystrigger
-      - title: One Time Trigger
+      - title: OneTimeTrigger
         url: /triggers/onetimetrigger
-      - title: Process Trigger
+      - title: ProcessTrigger
         url: /triggers/processtrigger
-      - title: Pulse Trigger
+      - title: PulseTrigger
         url: /triggers/pulsetrigger
-      - title: Logic Trigger
+      - title: LogicTrigger
         url: /triggers/logictrigger
-      - title: Sensor Trigger
+      - title: SensorTrigger
         url: /triggers/sensortrigger
-      - title: Schedule Trigger
+      - title: ScheduleTrigger
         url: /triggers/scheduletrigger
