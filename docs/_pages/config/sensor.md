@@ -17,7 +17,7 @@ permalink: /config/sensor
 
 ## Variables
 
-### Ports
+### Sensors
 <div class="variable-block" markdown="block">
 
 List of [Sensor Identifiers]({{ "/sensor-identifier" | relative_url }}) modified by this config

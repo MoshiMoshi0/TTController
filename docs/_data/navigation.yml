@@ -5,7 +5,7 @@ docs:
         url: /config/service
       - title: Profiles
         url: /config/profile
-      - title: ComputerStateProfiles
+      - title: Computer State Profiles
         url: /config/computerstateprofile
       - title: Ports
         url: /config/port
@@ -25,55 +25,55 @@ docs:
         url: /common/trigger
   - title: Speed Controllers
     children:
-      - title: PwmSpeedController
+      - title: Pwm Speed Controller
         url: /speed-controllers/pwmspeedcontroller
-      - title: StaticSpeedController
+      - title: Static Speed Controller
         url: /speed-controllers/staticspeedcontroller
-      - title: CopySpeedController
+      - title: Copy Speed Controller
         url: /speed-controllers/copyspeedcontroller
-      - title: DpsgSpeedController
+      - title: Dpsg Speed Controller
         url: /speed-controllers/dpsgspeedcontroller
   - title: Effects
     children:
-      - title: BlinkEffect
+      - title: Blink Effect
         url: /effects/blinkeffect
-      - title: PerLedColorEffect
+      - title: Per Led Color Effect
         url: /effects/perledcoloreffect
-      - title: FlowEffect
+      - title: Flow Effect
         url: /effects/floweffect
-      - title: FullColorEffect
+      - title: Full Color Effect
         url: /effects/fullcoloreffect
-      - title: PulseEffect
+      - title: Pulse Effect
         url: /effects/pulseeffect
-      - title: SpectrumEffect
+      - title: Spectrum Effect
         url: /effects/spectrumffect
-      - title: RippleEffect
+      - title: Ripple Effect
         url: /effects/rippleeffect
-      - title: WaveEffect
+      - title: Wave Effect
         url: /effects/waveeffect
-      - title: SensorEffect
+      - title: Sensor Effect
         url: /effects/sensoreffect
-      - title: SoundEffect
+      - title: Sound Effect
         url: /effects/soundeffect
-      - title: RawEffect
+      - title: Raw Effect
         url: /effects/raweffecteffect
-      - title: RazerConnectEffect
+      - title: Razer Connect Effect
         url: /effects/razerconnecteffect
-      - title: PingPongEffect
+      - title: Ping Pong Effect
         url: /effects/pingpongeffect
   - title: Triggers
     children:
-      - title: AlwaysTrigger
+      - title: Always Trigger
         url: /triggers/alwaystrigger
-      - title: OneTimeTrigger
+      - title: One Time Trigger
         url: /triggers/onetimetrigger
-      - title: ProcessTrigger
+      - title: Process Trigger
         url: /triggers/processtrigger
-      - title: PulseTrigger
+      - title: Pulse Trigger
         url: /triggers/pulsetrigger
-      - title: LogicTrigger
+      - title: Logic Trigger
         url: /triggers/logictrigger
-      - title: SensorTrigger
+      - title: Sensor Trigger
         url: /triggers/sensortrigger
-      - title: ScheduleTrigger
+      - title: Schedule Trigger
         url: /triggers/scheduletrigger
