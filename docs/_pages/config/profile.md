@@ -63,7 +63,7 @@ List of [Port Identifiers]({{ "/common/port-identifier" | relative_url }}) modif
 
 List of [Speed Controllers]({{ "/common/speed-controller" | relative_url }})
 
-**Note:** The order matters because the speed controller that will be used is the first one whose [Trigger]({{ "/common/trigger" | relative_url }}) returns `true` value. This means that you always want the last speed controller in the list to have a [AlwaysTrigger]({{ "/trigger/alwaystrigger" | relative_url }}) set.
+**Note:** The order matters because the speed controller that will be used is the first one whose [Trigger]({{ "/common/trigger" | relative_url }}) returns `true` value. This means that you always want the last speed controller in the list to have a [AlwaysTrigger]({{ "/triggers/alwaystrigger" | relative_url }}) set.
 {: .notice--info}
 
 **Required:** No<br>
@@ -86,7 +86,7 @@ List of [Speed Controllers]({{ "/common/speed-controller" | relative_url }})
 
 List of [Effects]({{ "/common/effect" | relative_url }})
 
-**Note:** The order matters because the effect that will be used is the first one whose [Trigger]({{ "/common/trigger" | relative_url }}) returns `true` value. This means that you always want the last effect in the list to have a [AlwaysTrigger]({{ "/trigger/alwaystrigger" | relative_url }}) set.
+**Note:** The order matters because the effect that will be used is the first one whose [Trigger]({{ "/common/trigger" | relative_url }}) returns `true` value. This means that you always want the last effect in the list to have a [AlwaysTrigger]({{ "/triggers/alwaystrigger" | relative_url }}) set.
 {: .notice--info}
 
 **Required:** No<br>
