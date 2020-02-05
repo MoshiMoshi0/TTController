@@ -11,7 +11,7 @@ Triggers based on configured schedule on per minute, hour, day or week basis.
 {
   "Type": "ScheduleTrigger",
   "Config": {
-      "Scope": <Scope>,
+      "Scope": <enum>,
       "Value": <bool>,
       "UpdateInterval": <TimeSpan>,
       "Schedule": <Schedule>

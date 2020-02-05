@@ -13,6 +13,10 @@ docs:
         url: /config/sensor
   - title: Common
     children:
+      - title: Led Color
+        url: /common/led-color
+      - title: Color Gradient
+        url: /common/color-gradient
       - title: Port Identifier
         url: /common/port-identifier
       - title: Sensor Identifier

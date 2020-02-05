@@ -8,7 +8,6 @@ permalink: /config/profile
 ~~~
 {
   "Name": <string>,
-  "Guid": <guid>,
   "Ports": [<PortIdentifier>],
 
   "SpeedControllers": [<SpeedController>],

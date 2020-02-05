@@ -7,9 +7,9 @@ permalink: /config/computerstateprofile
 
 ~~~
 {
-  "StateType":  [<StateType>],
+  "StateType":  [<enum>],
   "Ports": [<PortIdentifier>],
-  "Speed": <byte?>,
+  "Speed": <byte>,
   "EffectType": <string>,
   "EffectColors": [<LedColor>]
   "EffectColor": <LedColor>

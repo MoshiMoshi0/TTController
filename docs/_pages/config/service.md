@@ -15,6 +15,14 @@ permalink: /config/service
   "PortConfigs":  [<PortConfig>],
   "SensorConfigs":   [<SensorConfig>],
 
+  "CpuSensorsEnabled": <bool>,
+  "GpuSensorsEnabled": <bool>,
+  "StorageSensorsEnabled": <bool>,
+  "MotherboardSensorsEnabled": <bool>,
+  "MemorySensorsEnabled": <bool>,
+  "NetworkSensorsEnabled": <bool>,
+  "ControllerSensorsEnabled": <bool>,
+
   "SensorTimerInterval ": <int>,
   "DeviceSpeedTimerInterval": <int>,
   "DeviceRgbTimerInterval": <int>,

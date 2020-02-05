@@ -11,7 +11,7 @@ Combines multiple triggers using boolean operators.
 {
   "Type": "LogicTrigger",
   "Config": {
-      "Operation": <Operation>,
+      "Operation": <enum>,
       "Negate": <bool>,
       "Triggers": [<Trigger>],
   }

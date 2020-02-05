@@ -12,9 +12,9 @@ Triggers based on configured sensor values.
   "Type": "SensorTrigger",
   "Config": {
       "Sensors": [<string>],
-      "SensorMixFunction": <SensorMixFunction>,
+      "SensorMixFunction": <enum>,
       "Value": <float>,
-      "ComparsionType": <ComparsionType>
+      "ComparsionType": <enum>
   }
 }
 ~~~

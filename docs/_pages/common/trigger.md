@@ -45,8 +45,8 @@ Config of the trigger
 **Example:**
 ~~~
 "Config": {
-    "On": 1000,
-    "Off": 1000
+    "OnTime": 1000,
+    "OffTime": 1000
 }
 ~~~
 
@@ -62,8 +62,8 @@ Config of the trigger
 {
     "Type": "PulseTrigger",
     "Config": {
-        "On": 1000,
-        "Off": 1000
+        "OnTime": 1000,
+        "OffTime": 1000
     }
 }
 ~~~

@@ -9,8 +9,8 @@ permalink: /config/sensor
 {
   "Sensors": [<SensorIdentifier>],
   "Config": {
-    "Offset": <float?>,
-    "CriticalValue": <float?>
+    "Offset": <float>,
+    "CriticalValue": <float>
   }
 }
 ~~~
