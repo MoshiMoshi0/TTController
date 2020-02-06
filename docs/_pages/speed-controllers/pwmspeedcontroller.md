@@ -1,6 +1,6 @@
 ---
 title: Pwm Speed Controller
-permalink: /triggers/pwmspeedcontroller
+permalink: /speed-controllers/pwmspeedcontroller
 ---
 
 Sets the speed based on a custom PWM curve

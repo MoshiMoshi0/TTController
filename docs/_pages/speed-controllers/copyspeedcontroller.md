@@ -1,6 +1,6 @@
 ---
 title: Copy Speed Controller
-permalink: /triggers/copyspeedcontroller
+permalink: /speed-controllers/copyspeedcontroller
 ---
 
 Copies the speed from another port

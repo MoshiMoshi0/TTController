@@ -1,6 +1,6 @@
 ---
 title: Dpsg Speed Controller
-permalink: /triggers/dpsgspeedcontroller
+permalink: /speed-controllers/dpsgspeedcontroller
 ---
 
 Sets the speed of DPSG controller to one of the internal profiles

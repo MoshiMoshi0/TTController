@@ -1,6 +1,6 @@
 ---
 title: Static Speed Controller
-permalink: /triggers/staticspeedcontroller
+permalink: /speed-controllers/staticspeedcontroller
 ---
 
 Sets the speed to a constant value
