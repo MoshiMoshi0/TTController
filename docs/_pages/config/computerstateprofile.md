@@ -121,7 +121,7 @@ List of [Led Colors]({{ "/common/led-color" | relative_url }}) used for [EffectT
 
 [Led Color]({{ "/common/led-color" | relative_url }}) used for [EffectType](#effecttype)
 
-**Note:** This color will be cloned to match device led count. If you want to use only one [Led Color]({{ "/common/led-color" | relative_url }}), see [EffectColors](#effectcolors)
+**Note:** This color will be cloned to match device led count. If you want to use only one [Led Color]({{ "/common/led-color" | relative_url }}), see [EffectColors](#effectcolors).
 {: .notice--info}
 
 **Required:** if [EffectType](#effecttype) is set, either [EffectColors](#effectcolors) or [EffectColor](#effectcolor) has to be set<br>

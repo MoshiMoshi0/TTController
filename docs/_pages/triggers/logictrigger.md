@@ -3,7 +3,7 @@ title: Logic Trigger
 permalink: /triggers/logictrigger
 ---
 
-Combines multiple triggers using boolean operators.
+Combines multiple triggers using boolean operators
 
 ## Format
 
@@ -23,7 +23,7 @@ Combines multiple triggers using boolean operators.
 ### Operation
 <div class="variable-block" markdown="block">
 
-Determines how to combine the [Triggers](#triggers).
+Determines how to combine the [Triggers](#triggers)
 
 **Allowed values:** `"And"`, `"Or"`
 {: .notice--warning}

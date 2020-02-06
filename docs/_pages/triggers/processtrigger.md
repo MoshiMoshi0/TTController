@@ -3,7 +3,7 @@ title: Process Trigger
 permalink: /triggers/processtrigger
 ---
 
-Triggers if any of the configured processes is running.
+Triggers if any of the configured processes is running
 
 ## Format
 

@@ -3,7 +3,7 @@ title: Sensor Trigger
 permalink: /triggers/sensortrigger
 ---
 
-Triggers based on configured sensor values.
+Triggers based on configured sensor values
 
 ## Format
 

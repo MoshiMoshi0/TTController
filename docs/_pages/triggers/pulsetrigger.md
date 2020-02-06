@@ -3,7 +3,7 @@ title: Pulse Trigger
 permalink: /triggers/pulsetrigger
 ---
 
-Triggers on and off based on configured timing.
+Triggers on and off based on configured timing
 
 ## Format
 

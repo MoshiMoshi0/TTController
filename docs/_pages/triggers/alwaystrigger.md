@@ -1,9 +1,17 @@
 ---
-title: AlwaysTrigger
+title: Always Trigger
 permalink: /triggers/alwaystrigger
 ---
 
-Always triggers.
+Always triggers
+
+## Format
+
+~~~
+{
+  "Type": "AlwaysTrigger"
+}
+~~~
 
 ## Example
 

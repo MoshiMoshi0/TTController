@@ -3,7 +3,7 @@ title: Schedule Trigger
 permalink: /triggers/scheduletrigger
 ---
 
-Triggers based on configured schedule on per minute, hour, day or week basis.
+Triggers based on configured schedule on per minute, hour, day or week basis
 
 ## Format
 
@@ -46,7 +46,7 @@ For example when set to `"Day"` the [Schedule](#schedule) entries will have be s
 ### Value
 <div class="variable-block" markdown="block">
 
-What value to return when current time matches the schedule. This can be used to invert the schedule.
+What value to return when current time matches the schedule. This can be used to invert the schedule
 
 **Required:** No<br>
 **Default value:**
@@ -63,7 +63,7 @@ true
 ### UpdateInterval
 <div class="variable-block" markdown="block">
 
-Determines how often to check the current time. 
+Determines how often to check the current time
 
 By default set automatically to:
 * `"00:00:01"` - when [Scope](#scope) is set to `"Minute"` 
@@ -85,7 +85,7 @@ By default set automatically to:
 ### Schedule
 <div class="variable-block" markdown="block">
 
-List of schedule entries in `"<start time> -> <end time>"` format.<br>
+List of schedule entries in `"<start time> -> <end time>"` format
 
 Allowed `<start time>` and `<end time>` formats: 
 * `"d.hh:mm"` - when [Scope](#scope) is set to `"Week"`

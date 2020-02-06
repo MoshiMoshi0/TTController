@@ -8,7 +8,7 @@ permalink: /common/effect
 ~~~
 {
   "Type": <string>,
-  "Config": <EffectConfig>,
+  "Config": <EffectConfig>
 }
 ~~~
 

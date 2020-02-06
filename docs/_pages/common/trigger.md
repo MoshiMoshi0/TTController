@@ -8,7 +8,7 @@ permalink: /common/trigger
 ~~~
 {
   "Type": <string>,
-  "Config": <TriggerConfig>,
+  "Config": <TriggerConfig>
 }
 ~~~
 
