@@ -21,7 +21,13 @@ Sets the speed to a constant value
 ### Speed
 <div class="variable-block" markdown="block">
 
-The [Port Identifier]({{ "/common/port-identifier" | relative_url }}) to copy the speed from
+Constant speed value from `0` to `100` in percent
+
+**Note:** `0` value can be used to stop the device
+{: .notice--info}
+
+**Note:** Any value beetween `1` and `19` will be raised to `20` as this is the minimum operating speed
+{: .notice--info}
 
 **Required:** No<br>
 **Default value:**
