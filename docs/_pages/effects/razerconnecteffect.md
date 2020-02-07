@@ -13,8 +13,6 @@ Receives 5 colors from razer chroma
 }
 ~~~
 
-</div>
-
 ## Example
 
 ~~~

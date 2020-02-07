@@ -98,7 +98,7 @@ FFT value scaling function
 FFT scaling scaling factor
 
 **Note:** Used for `"Linear"` and `"Sqrt"` [ScalingStrategy](#scalingstrategy)
-{: .notice--warning}
+{: .notice--info}
 
 **Required:** No<br>
 **Default value:**

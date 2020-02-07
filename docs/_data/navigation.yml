@@ -39,18 +39,18 @@ docs:
         url: /speed-controllers/dpsgspeedcontroller
   - title: Effects
     children:
-      - title: BlinkEffect
-        url: /effects/blinkeffect
       - title: PerLedColorEffect
         url: /effects/perledcoloreffect
-      - title: FlowEffect
-        url: /effects/floweffect
       - title: FullColorEffect
         url: /effects/fullcoloreffect
+      - title: BlinkEffect
+        url: /effects/blinkeffect
+      - title: FlowEffect
+        url: /effects/floweffect
       - title: PulseEffect
         url: /effects/pulseeffect
       - title: SpectrumEffect
-        url: /effects/spectrumffect
+        url: /effects/spectrumeffect
       - title: RippleEffect
         url: /effects/rippleeffect
       - title: WaveEffect

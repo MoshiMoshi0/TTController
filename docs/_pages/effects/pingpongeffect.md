@@ -107,9 +107,6 @@ A [Led Color Gradient]({{ "/common/led-color-gradient" | relative_url }}) to tra
 
 Enables smoothing of edges of the ping pong region
 
-**Note:** Value from `0.0` to `1.0`
-{: .notice--info} 
-
 **Required:** No<br>
 **Default value:**
 ~~~
