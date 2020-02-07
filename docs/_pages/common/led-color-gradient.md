@@ -1,6 +1,6 @@
 ---
-title: Color Gradient
-permalink: /common/color-gradient
+title: Led Color Gradient
+permalink: /common/led-color-gradient
 ---
 
 List of color gradient points in `[<location>, <LedColor>]` format

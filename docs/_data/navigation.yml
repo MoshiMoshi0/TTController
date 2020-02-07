@@ -15,8 +15,8 @@ docs:
     children:
       - title: Led Color
         url: /common/led-color
-      - title: Color Gradient
-        url: /common/color-gradient
+      - title: Led Color Gradient
+        url: /common/led-color-gradient
       - title: Port Identifier
         url: /common/port-identifier
       - title: Sensor Identifier
@@ -60,7 +60,7 @@ docs:
       - title: SoundEffect
         url: /effects/soundeffect
       - title: RawEffect
-        url: /effects/raweffecteffect
+        url: /effects/raweffect
       - title: RazerConnectEffect
         url: /effects/razerconnecteffect
       - title: PingPongEffect
