@@ -327,7 +327,6 @@ Determines timer delay for logging port and sensor data
   "Profiles": [
     {
       "Name": "Default",
-      "Guid": "10af9207-7e67-4581-9d13-506cad5d53c1",
       "Ports": [
         [9802, 8101, 1]
       ],

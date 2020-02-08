@@ -32,6 +32,9 @@ Welcome to the TTController documentation!
 2. Edit **config.json** file
 3. Start the service using **Manage Service** menu
 
+**Note:** See [Service Config]({{ "/config/service" | relative_url }}) as a starting point
+{: .notice--info}
+
 **Note:** You can use `Main Menu -> Debug -> Controllers` menu to find your port identifiers, and `Main Menu -> Debug -> Sensors` menu to find your sensor identifiers to be used in **config.json**.
 {: .notice--info}
 
