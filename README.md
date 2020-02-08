@@ -13,7 +13,7 @@
 This is home to TTController, a windows service for controlling various Thermaltake RGB Plus devices. 
 It works as an alternative to the official TT RGB Plus software.
 
-It allows you to fully customize your Thermaltake devices by using [_speed controllers_](https://github.com/MoshiMoshi0/TTController#speed-controllers), which control the speed, and  [_effects_](https://github.com/MoshiMoshi0/TTController#effects), which control the led colors. Each can be enabled or disabled dynamically by using [_triggers_](https://github.com/MoshiMoshi0/TTController#triggers).
+It allows you to fully customize your Thermaltake devices by using _speed controllers_, which control the speed, and  _effects_, which control the led colors. Each can be enabled or disabled dynamically by using _triggers_.
 
 <br>
 

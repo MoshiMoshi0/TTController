@@ -8,7 +8,6 @@ permalink: /config/profile
 ~~~
 {
   "Name": <string>,
-  "Guid": <guid>,
   "Ports": [<PortIdentifier>],
 
   "SpeedControllers": [<SpeedController>],
@@ -63,6 +62,9 @@ List of [Port Identifiers]({{ "/common/port-identifier" | relative_url }}) modif
 
 List of [Speed Controllers]({{ "/common/speed-controller" | relative_url }})
 
+**Note:** The order matters because the speed controller that will be used is the first one whose [Trigger]({{ "/common/trigger" | relative_url }}) returns `true` value. This means that you always want the last speed controller in the list to have a [AlwaysTrigger]({{ "/triggers/alwaystrigger" | relative_url }}) set.
+{: .notice--info}
+
 **Required:** No<br>
 **Default value:**
 ~~~
@@ -83,6 +85,9 @@ List of [Speed Controllers]({{ "/common/speed-controller" | relative_url }})
 
 List of [Effects]({{ "/common/effect" | relative_url }})
 
+**Note:** The order matters because the effect that will be used is the first one whose [Trigger]({{ "/common/trigger" | relative_url }}) returns `true` value. This means that you always want the last effect in the list to have a [AlwaysTrigger]({{ "/triggers/alwaystrigger" | relative_url }}) set.
+{: .notice--info}
+
 **Required:** No<br>
 **Default value:**
 ~~~
@@ -102,7 +107,6 @@ List of [Effects]({{ "/common/effect" | relative_url }})
 ~~~ json
 {
   "Name": "Default",
-  "Guid": "10af9207-7e67-4581-9d13-506cad5d53c1",
   "Ports": [
     [9802, 8101, 1]
   ],

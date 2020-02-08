@@ -5,7 +5,7 @@ docs:
         url: /config/service
       - title: Profiles
         url: /config/profile
-      - title: ComputerStateProfiles
+      - title: Computer State Profiles
         url: /config/computerstateprofile
       - title: Ports
         url: /config/port
@@ -13,6 +13,10 @@ docs:
         url: /config/sensor
   - title: Common
     children:
+      - title: Led Color
+        url: /common/led-color
+      - title: Led Color Gradient
+        url: /common/led-color-gradient
       - title: Port Identifier
         url: /common/port-identifier
       - title: Sensor Identifier
@@ -35,18 +39,18 @@ docs:
         url: /speed-controllers/dpsgspeedcontroller
   - title: Effects
     children:
-      - title: BlinkEffect
-        url: /effects/blinkeffect
       - title: PerLedColorEffect
         url: /effects/perledcoloreffect
-      - title: FlowEffect
-        url: /effects/floweffect
       - title: FullColorEffect
         url: /effects/fullcoloreffect
+      - title: BlinkEffect
+        url: /effects/blinkeffect
+      - title: FlowEffect
+        url: /effects/floweffect
       - title: PulseEffect
         url: /effects/pulseeffect
       - title: SpectrumEffect
-        url: /effects/spectrumffect
+        url: /effects/spectrumeffect
       - title: RippleEffect
         url: /effects/rippleeffect
       - title: WaveEffect
@@ -56,7 +60,7 @@ docs:
       - title: SoundEffect
         url: /effects/soundeffect
       - title: RawEffect
-        url: /effects/raweffecteffect
+        url: /effects/raweffect
       - title: RazerConnectEffect
         url: /effects/razerconnecteffect
       - title: PingPongEffect

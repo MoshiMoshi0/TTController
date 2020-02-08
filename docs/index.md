@@ -32,6 +32,9 @@ Welcome to the TTController documentation!
 2. Edit **config.json** file
 3. Start the service using **Manage Service** menu
 
+**Note:** See [Service Config]({{ "/config/service" | relative_url }}) as a starting point
+{: .notice--info}
+
 **Note:** You can use `Main Menu -> Debug -> Controllers` menu to find your port identifiers, and `Main Menu -> Debug -> Sensors` menu to find your sensor identifiers to be used in **config.json**.
 {: .notice--info}
 
@@ -46,7 +49,24 @@ Welcome to the TTController documentation!
 3. Unpack newest release to the same directory
 4. Start the service using **Manage Service** menu
 
-## Support matrix
+## How to read the docs
+
+This section contains some tips on the format of this documentation.
+
+### Value types
+
+| Type | Description
+|------|------------
+| `<bool>` | `true` or `false` value
+| `<byte>` | Value from `0` to `255`
+| `<float>`, `<double>` | Floating point value, e.g. `1.5`
+| `<int>` | Integer value, e.g. `42`
+| `<string>` | Text value, e.g. `"Top Fan"`
+| `<enum>` | Text value with strict allowed values
+| `<Class>` | Object value with variables, e.g.<br>`{ "Name": <string> }`<br> `Class` will be replaced with a specific type name but will always start with a captial letter
+| `[<type>]` | List of values with specific type, e.g.<br>`[<int>]` = `[10, 20, 3, 45, 100, ...]`<br>`[<string>]` = `["Top", "Bottom", "Left", "Right", ...]` 
+
+## Device support matrix
 
 | Device                      | Support            | Confirmed          | Notes
 |-----------------------------|--------------------|--------------------|-------------------------------------------

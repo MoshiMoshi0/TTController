@@ -8,7 +8,7 @@ permalink: /common/speed-controller
 ~~~
 {
   "Type": <string>,
-  "Config": <SpeedControllerConfig>,
+  "Config": <SpeedControllerConfig>
 }
 ~~~
 

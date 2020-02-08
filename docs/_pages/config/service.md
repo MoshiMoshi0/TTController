@@ -3,7 +3,7 @@ title: Service Configuration
 permalink: /config/service
 ---
 
-**Note:** The config is by default located in `config.json` file. You can modify this in `TTController.Service.exe.Config` file by changing the value of `config-file` key.
+**Note:** The config is by default located in `config.json` file. You can modify this in `TTController.Service.exe.Config` file by changing the value of `config-file` key
 {: .notice--info}
 
 ## Format
@@ -14,6 +14,14 @@ permalink: /config/service
   "ComputerStateProfiles":  [<ComputerStateProfileConfig>],
   "PortConfigs":  [<PortConfig>],
   "SensorConfigs":   [<SensorConfig>],
+
+  "CpuSensorsEnabled": <bool>,
+  "GpuSensorsEnabled": <bool>,
+  "StorageSensorsEnabled": <bool>,
+  "MotherboardSensorsEnabled": <bool>,
+  "MemorySensorsEnabled": <bool>,
+  "NetworkSensorsEnabled": <bool>,
+  "ControllerSensorsEnabled": <bool>,
 
   "SensorTimerInterval ": <int>,
   "DeviceSpeedTimerInterval": <int>,
@@ -319,7 +327,6 @@ Determines timer delay for logging port and sensor data
   "Profiles": [
     {
       "Name": "Default",
-      "Guid": "10af9207-7e67-4581-9d13-506cad5d53c1",
       "Ports": [
         [9802, 8101, 1]
       ],

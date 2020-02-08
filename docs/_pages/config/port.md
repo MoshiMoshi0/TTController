@@ -11,7 +11,7 @@ permalink: /config/port
   "Config": {
     "Name": <string>,
     "DeviceType": <string>,
-    "LedCountHandling": <LedCountHandling>,
+    "LedCountHandling": <enum>,
     "LedRotation": [<int>],
     "LedReverse": [<int>]
   }
