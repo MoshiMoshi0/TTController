@@ -3,7 +3,7 @@ title: Process Trigger
 permalink: /triggers/processtrigger
 ---
 
-Triggers if any of the configured processes is running
+Triggers if any of the configured processes is running.
 
 ## Format
 
@@ -22,7 +22,7 @@ Triggers if any of the configured processes is running
 ### Processes
 <div class="variable-block" markdown="block">
 
-List of process names
+List of process names.
 
 **Required:** **Yes**<br>
 **Default value:**
@@ -39,7 +39,7 @@ List of process names
 ### UpdateInterval
 <div class="variable-block" markdown="block">
 
-Determines how often to check the list of currently running processes
+Determines how often to check the list of currently running processes.
 
 **Note:** Value in miliseconds
 {: .notice--info}

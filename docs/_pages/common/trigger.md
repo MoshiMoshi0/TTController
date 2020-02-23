@@ -17,7 +17,7 @@ permalink: /common/trigger
 ### Type
 <div class="variable-block" markdown="block">
 
-Name of the trigger
+Name of the trigger.
 
 **Required:** **Yes**<br>
 **Default value:**
@@ -33,12 +33,12 @@ Name of the trigger
 ### Config
 <div class="variable-block" markdown="block">
 
-Config of the trigger
+Config of the trigger.
 
-**Note:** See page of the trigger you are configuring for detailed documentation
+**Note:** See page of the trigger you are configuring for detailed documentation.
 {: .notice--info}
 
-**Required:** Depends on trigger<br>
+**Required:** Depends on the trigger type.<br>
 **Default value:**
 ~~~
 ~~~

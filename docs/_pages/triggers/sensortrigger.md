@@ -3,7 +3,7 @@ title: Sensor Trigger
 permalink: /triggers/sensortrigger
 ---
 
-Triggers based on configured sensor values
+Triggers based on configured sensor values.
 
 ## Format
 
@@ -11,7 +11,7 @@ Triggers based on configured sensor values
 {
   "Type": "SensorTrigger",
   "Config": {
-      "Sensors": [<string>],
+      "Sensors": [<SensorIdentifier>],
       "SensorMixFunction": <enum>,
       "Value": <float>,
       "ComparsionType": <enum>
@@ -24,7 +24,7 @@ Triggers based on configured sensor values
 ### Sensors
 <div class="variable-block" markdown="block">
 
-List of [Sensor Identifiers]({{ "/common/sensor-identifier" | relative_url }}) to read values from
+List of [Sensor Identifiers]({{ "/common/sensor-identifier" | relative_url }}) to read values from.
 
 **Required:** **Yes**<br>
 **Default value:**
@@ -41,7 +41,7 @@ List of [Sensor Identifiers]({{ "/common/sensor-identifier" | relative_url }}) t
 ### SensorMixFunction
 <div class="variable-block" markdown="block">
 
-Determines how to combine values from [Sensors](#sensors)
+Determines how to combine values from [Sensors](#sensors).
 
 **Allowed values:** `"Maximum"`, `"Minimum"`, `"Average"`
 {: .notice--warning}
@@ -61,7 +61,7 @@ Determines how to combine values from [Sensors](#sensors)
 ### Value
 <div class="variable-block" markdown="block">
 
-Value to compare sensor values to
+Value to compare sensor values to.
 
 **Required:** **Yes**<br>
 **Default value:**
@@ -77,7 +77,7 @@ Value to compare sensor values to
 ### ComparsionType
 <div class="variable-block" markdown="block">
 
-Determines how to compare current sensor values and the configured [Value](#value)
+Determines how to compare current sensor values and the configured [Value](#value).
 
 **Allowed values:** `"Equal"`, `"Greater"`, `"GreaterOrEqual"`, `"Less"`, `"LessOrEqual"`
 {: .notice--warning}

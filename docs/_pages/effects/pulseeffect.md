@@ -21,7 +21,7 @@ permalink: /effects/pulseeffect
 ### BrightnessStep
 <div class="variable-block" markdown="block">
 
-Determines how fast the colors pulse
+Determines how fast the colors pulse.
 
 **Required:** No<br>
 **Default value:**
@@ -38,9 +38,9 @@ Determines how fast the colors pulse
 ### Colors
 <div class="variable-block" markdown="block">
 
-List of [Led Colors]({{ "/common/led-color" | relative_url }}) when the pulse is in full brightness
+List of [Led Colors]({{ "/common/led-color" | relative_url }}) when the pulse is in full brightness.
 
-**Required:** Either [Color](#color) or [Colors](#colors) is required<br>
+**Required:** Either [Color](#color) or [Colors](#colors) is required.<br>
 **Default value:**
 ~~~
 ~~~
@@ -59,9 +59,9 @@ List of [Led Colors]({{ "/common/led-color" | relative_url }}) when the pulse is
 ### Color
 <div class="variable-block" markdown="block">
 
-[Led Color]({{ "/common/led-color" | relative_url }}) to set on all leds when the pulse is in full brighness
+[Led Color]({{ "/common/led-color" | relative_url }}) to set on all leds when the pulse is in full brighness.
 
-**Required:** Either [Color](#color) or [Colors](#colors) is required<br>
+**Required:** Either [Color](#color) or [Colors](#colors) is required.<br>
 **Default value:**
 ~~~
 ~~~

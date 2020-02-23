@@ -21,9 +21,9 @@ permalink: /effects/spectrumeffect
 ### Saturation
 <div class="variable-block" markdown="block">
 
-Saturation of colors
+Saturation of colors.
 
-**Note:** Value from `0.0` to `1.0`
+**Note:** Value from `0.0` to `1.0`.
 {: .notice--info}
 
 **Required:** No<br>
@@ -41,9 +41,9 @@ Saturation of colors
 ### Brightness
 <div class="variable-block" markdown="block">
 
-Brightness of colors
+Brightness of colors.
 
-**Note:** Value from `0.0` to `1.0`
+**Note:** Value from `0.0` to `1.0`.
 {: .notice--info}
 
 **Required:** No<br>
@@ -61,7 +61,7 @@ Brightness of colors
 ### HueStep
 <div class="variable-block" markdown="block">
 
-Color hue increment each update tick
+Color hue increment each update tick.
 
 **Required:** No<br>
 **Default value:**

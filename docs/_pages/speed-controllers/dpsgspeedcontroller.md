@@ -3,9 +3,9 @@ title: Dpsg Speed Controller
 permalink: /speed-controllers/dpsgspeedcontroller
 ---
 
-Sets the speed of DPSG controller to one of the internal profiles
+Sets the speed of DPSG controller to one of the internal profiles.
 
-**Note:** Only usable with DPSG controllers
+**Important:** Only usable with DPSG controllers.
 {: .notice--warning}
 
 ## Format
@@ -24,7 +24,7 @@ Sets the speed of DPSG controller to one of the internal profiles
 ### FanMode
 <div class="variable-block" markdown="block">
 
-Internal fan mode name
+Internal fan mode name.
 
 **Allowed values:** `"Off"`, `"Silent"`, `"Performance"`
 {: .notice--warning}

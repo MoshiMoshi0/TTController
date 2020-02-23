@@ -21,7 +21,7 @@ permalink: /effects/rippleeffect
 ### Color
 <div class="variable-block" markdown="block">
 
-Ripple base [Led Color]({{ "/common/led-color" | relative_url }})
+Ripple base [Led Color]({{ "/common/led-color" | relative_url }}).
 
 **Required:** **Yes**<br>
 **Default value:**
@@ -38,7 +38,7 @@ Ripple base [Led Color]({{ "/common/led-color" | relative_url }})
 ### Length
 <div class="variable-block" markdown="block">
 
-Ripple length in number of leds
+Ripple length in number of leds.
 
 **Required:** No<br>
 **Default value:**
@@ -55,7 +55,7 @@ Ripple length in number of leds
 ### TickInterval
 <div class="variable-block" markdown="block">
 
-Number of updates before the ripple advances to the next led
+Number of updates before the ripple advances to the next led.
 
 **Required:** No<br>
 **Default value:**

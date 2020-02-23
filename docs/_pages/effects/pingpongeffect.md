@@ -23,7 +23,7 @@ permalink: /effects/pingpongeffect
 ### Step
 <div class="variable-block" markdown="block">
 
-Speed of the ping pong region
+Speed of the ping pong region.
 
 **Required:** No<br>
 **Default value:**
@@ -40,9 +40,9 @@ Speed of the ping pong region
 ### Height
 <div class="variable-block" markdown="block">
 
-Height of the ping pong region
+Height of the ping pong region.
 
-**Note:** Value from `0.0` to `1.0`
+**Note:** Value from `0.0` to `1.0`.
 {: .notice--info} 
 
 **Required:** No<br>
@@ -60,9 +60,9 @@ Height of the ping pong region
 ### Width
 <div class="variable-block" markdown="block">
 
-Width of the ping pong region
+Width of the ping pong region.
 
-**Note:** Value from `0.0` to `1.0`
+**Note:** Value from `0.0` to `1.0`.
 {: .notice--info} 
 
 **Required:** No<br>
@@ -80,9 +80,9 @@ Width of the ping pong region
 ### ColorGradient
 <div class="variable-block" markdown="block">
 
-A [Led Color Gradient]({{ "/common/led-color-gradient" | relative_url }}) to translate ping pong region to led colors
+A [Led Color Gradient]({{ "/common/led-color-gradient" | relative_url }}) to translate ping pong region to led colors.
 
-**Note:** The gradient `<location>` values are between `0.0` and `1.0` where `0.0` means bottom of first fan and `1.0` means top of last fan
+**Note:** The gradient `<location>` values are between `0.0` and `1.0` where `0.0` means bottom of first fan and `1.0` means top of last fan.
 {: .notice--info}
 
 **Required:** **Yes**<br>
@@ -105,7 +105,7 @@ A [Led Color Gradient]({{ "/common/led-color-gradient" | relative_url }}) to tra
 ### EnableSmoothing
 <div class="variable-block" markdown="block">
 
-Enables smoothing of edges of the ping pong region
+Enables smoothing of edges of the ping pong region.
 
 **Required:** No<br>
 **Default value:**

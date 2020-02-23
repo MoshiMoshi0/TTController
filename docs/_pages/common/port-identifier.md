@@ -3,9 +3,9 @@ title: Port Identifier
 permalink: /common/port-identifier
 ---
 
-Port identifiers are used to precisely specify what device and what port you want to target
+Port identifiers are used to precisely specify what device and what port you want to target.
 
-**Note:** You can use `Main Menu -> Debug -> Controllers` menu to find your port identifiers
+**Note:** You can use `Main Menu -> Debug -> Controllers` menu to find your port identifiers.
 {: .notice--info}
 
 ## Format

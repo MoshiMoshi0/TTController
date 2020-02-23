@@ -17,7 +17,7 @@ permalink: /common/effect
 ### Type
 <div class="variable-block" markdown="block">
 
-Name of the effect
+Name of the effect.
 
 **Required:** **Yes**<br>
 **Default value:**
@@ -33,12 +33,12 @@ Name of the effect
 ### Config
 <div class="variable-block" markdown="block">
 
-Config of the effect
+Config of the effect.
 
-**Note:** The config has to have a required [Trigger]({{ "/common/trigger" | relative_url }}) set to the `Trigger` variable
+**Important:** The config has to have a required [Trigger]({{ "/common/trigger" | relative_url }}) set to the `Trigger` variable.
 {: .notice--warning}
 
-**Note:** See page of the effect you are configuring for detailed documentation
+**Note:** See page of the effect you are configuring for detailed documentation.
 {: .notice--info}
 
 **Required:** **Yes**<br>

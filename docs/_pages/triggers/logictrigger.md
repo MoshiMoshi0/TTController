@@ -3,7 +3,7 @@ title: Logic Trigger
 permalink: /triggers/logictrigger
 ---
 
-Combines multiple triggers using boolean operators
+Combines multiple triggers using boolean operators.
 
 ## Format
 
@@ -23,7 +23,7 @@ Combines multiple triggers using boolean operators
 ### Operation
 <div class="variable-block" markdown="block">
 
-Determines how to combine the [Triggers](#triggers)
+Determines how to combine the [Triggers](#triggers).
 
 **Allowed values:** `"And"`, `"Or"`
 {: .notice--warning}
@@ -43,7 +43,7 @@ Determines how to combine the [Triggers](#triggers)
 ### Negate
 <div class="variable-block" markdown="block">
 
-Determines if the combined value is negated
+Determines if the combined value is negated.
 
 **Required:** No<br>
 **Default value:**
@@ -60,7 +60,7 @@ false
 ### Triggers
 <div class="variable-block" markdown="block">
 
-List of [Triggers]({{ "/common/trigger" | relative_url }}) to combine the values of
+List of [Triggers]({{ "/common/trigger" | relative_url }}) to combine the values of.
 
 **Required:** **Yes**<br>
 **Default value:**

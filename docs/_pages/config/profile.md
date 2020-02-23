@@ -11,7 +11,7 @@ permalink: /config/profile
   "Ports": [<PortIdentifier>],
 
   "SpeedControllers": [<SpeedController>],
-  "Effect": [<Effect>]
+  "Effects": [<Effect>]
 }
 ~~~
 
@@ -20,9 +20,9 @@ permalink: /config/profile
 ### Name
 <div class="variable-block" markdown="block">
 
-Name of the profile
+Name of the profile.
 
-**Note:** The name has to be unique
+**Important:** The name has to be unique.
 {: .notice--warning}
 
 **Required:** **Yes**<br>
@@ -40,7 +40,7 @@ Name of the profile
 ### Ports
 <div class="variable-block" markdown="block">
 
-List of [Port Identifiers]({{ "/common/port-identifier" | relative_url }}) modified by this config
+List of [Port Identifiers]({{ "/common/port-identifier" | relative_url }}) modified by this config.
 
 **Required:** **Yes**<br>
 **Default value:**
@@ -60,7 +60,7 @@ List of [Port Identifiers]({{ "/common/port-identifier" | relative_url }}) modif
 ### SpeedControllers
 <div class="variable-block" markdown="block">
 
-List of [Speed Controllers]({{ "/common/speed-controller" | relative_url }})
+List of [Speed Controllers]({{ "/common/speed-controller" | relative_url }}).
 
 **Note:** The order matters because the speed controller that will be used is the first one whose [Trigger]({{ "/common/trigger" | relative_url }}) returns `true` value. This means that you always want the last speed controller in the list to have a [AlwaysTrigger]({{ "/triggers/alwaystrigger" | relative_url }}) set.
 {: .notice--info}
@@ -83,7 +83,7 @@ List of [Speed Controllers]({{ "/common/speed-controller" | relative_url }})
 ### Effects
 <div class="variable-block" markdown="block">
 
-List of [Effects]({{ "/common/effect" | relative_url }})
+List of [Effects]({{ "/common/effect" | relative_url }}).
 
 **Note:** The order matters because the effect that will be used is the first one whose [Trigger]({{ "/common/trigger" | relative_url }}) returns `true` value. This means that you always want the last effect in the list to have a [AlwaysTrigger]({{ "/triggers/alwaystrigger" | relative_url }}) set.
 {: .notice--info}

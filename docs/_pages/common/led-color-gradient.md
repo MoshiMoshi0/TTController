@@ -3,9 +3,9 @@ title: Led Color Gradient
 permalink: /common/led-color-gradient
 ---
 
-List of color gradient points in `[<location>, <LedColor>]` format
+List of color gradient points in `[<location>, <LedColor>]` format.
 
-**Note:** The `<location>` values can depend on gradient use case and should be properly explained on the page where the gradient is used
+**Note:** The `<location>` values can depend on gradient use case and should be properly explained on the page where the gradient is used.
 {: .notice--info}
 
 ## Format

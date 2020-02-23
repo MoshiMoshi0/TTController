@@ -20,7 +20,7 @@ permalink: /effects/waveeffect
 ### Colors
 <div class="variable-block" markdown="block">
 
-List of [Led Colors]({{ "/common/led-color" | relative_url }}), one for each led 
+List of [Led Colors]({{ "/common/led-color" | relative_url }}), one for each led.
 
 **Required:** **Yes**<br>
 **Default value:**
@@ -42,7 +42,7 @@ List of [Led Colors]({{ "/common/led-color" | relative_url }}), one for each led
 ### TickInterval
 <div class="variable-block" markdown="block">
 
-Number of updates before the wave advances to the next led
+Number of updates before the wave advances to the next led.
 
 **Required:** No<br>
 **Default value:**

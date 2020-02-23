@@ -9,7 +9,7 @@ permalink: /effects/sensoreffect
 {
     "Type": "SensorEffect",
     "Config": {
-        "Sensors": [<string>],
+        "Sensors": [<SensorIdentifier>],
         "SensorMixFunction": <enum>,
         "SmoothingFactor": <float>,
         "ColorGradient": <LedColorGradient>
@@ -22,7 +22,7 @@ permalink: /effects/sensoreffect
 ### Sensors
 <div class="variable-block" markdown="block">
 
-List of [Sensor Identifiers]({{ "/common/sensor-identifier" | relative_url }}) to read values from
+List of [Sensor Identifiers]({{ "/common/sensor-identifier" | relative_url }}) to read values from.
 
 **Required:** **Yes**<br>
 **Default value:**
@@ -39,7 +39,7 @@ List of [Sensor Identifiers]({{ "/common/sensor-identifier" | relative_url }}) t
 ### SensorMixFunction
 <div class="variable-block" markdown="block">
 
-Determines how to combine values from [Sensors](#sensors)
+Determines how to combine values from [Sensors](#sensors).
 
 **Allowed values:** `"Maximum"`, `"Minimum"`, `"Average"`
 {: .notice--warning}
@@ -59,7 +59,7 @@ Determines how to combine values from [Sensors](#sensors)
 ### SmoothingFactor
 <div class="variable-block" markdown="block">
 
-Determines how fast should the current color blend to the target [ColorGradient](#colorgradient) color
+Determines how fast should the current color blend to the target [ColorGradient](#colorgradient) color.
 
 **Required:** No<br>
 **Default value:**
@@ -76,9 +76,9 @@ Determines how fast should the current color blend to the target [ColorGradient]
 ### ColorGradient
 <div class="variable-block" markdown="block">
 
-A [Led Color Gradient]({{ "/common/led-color-gradient" | relative_url }}) to translate [Sensors](#sensors) values to led colors
+A [Led Color Gradient]({{ "/common/led-color-gradient" | relative_url }}) to translate [Sensors](#sensors) values to led colors.
 
-**Note:** The gradient `<location>` values are calculated [Sensors](#sensors) value steps
+**Note:** The gradient `<location>` values are calculated [Sensors](#sensors) values.
 {: .notice--info}
 
 **Required:** **Yes**<br>
