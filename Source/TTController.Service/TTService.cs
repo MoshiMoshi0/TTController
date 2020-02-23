@@ -199,7 +199,7 @@ namespace TTController.Service
             _deviceManager?.Dispose();
             _configManager?.Dispose();
 
-            _pluginStore.Dispose();
+            _pluginStore?.Dispose();
             _cache?.Clear();
 
             _timerManager = null;
