@@ -2,11 +2,11 @@
 
 namespace TTController.Common
 {
-    public struct LedColor
+    public readonly struct LedColor
     {
-        public byte R { get; set; }
-        public byte G { get; set; }
-        public byte B { get; set; }
+        public byte R { get; }
+        public byte G { get; }
+        public byte B { get; }
 
         public LedColor(byte r, byte g, byte b)
         {
@@ -33,25 +33,28 @@ namespace TTController.Common
         public (double, double, double) LerpSmooth(LedColor to, double t) => LerpSmooth(t, this, to);
 
         public (double, double, double) ToHsv() => ToHsv(this);
-        public void SetHsv(double hue, double saturation, double value) => (R, G, B) = FromHsv(hue, saturation, value);
 
-        public void SetHue(double hue)
+        public LedColor SetHue(double hue)
         {
             var (_, s, v) = ToHsv();
-            (R, G, B) = FromHsv(hue, s, v);
+            return FromHsv(hue, s, v);
         }
 
-        public void SetSaturation(double saturation)
+        public LedColor SetSaturation(double saturation)
         {
             var (h, _, v) = ToHsv();
-            (R, G, B) = FromHsv(h, saturation, v);
+            return FromHsv(h, saturation, v);
         }
 
-        public void SetValue(double value)
+        public LedColor SetValue(double value)
         {
             var (h, s, _) = ToHsv();
-            (R, G, B) = FromHsv(h, s, value);
+            return FromHsv(h, s, value);
         }
+
+        public double GetHue() => ToHsv().Item1;
+        public double GetSaturation() => ToHsv().Item2;
+        public double GetValue() => ToHsv().Item3;
 
         public static LedColor Lerp(double t, LedColor from, LedColor to)
         {
@@ -115,5 +118,17 @@ namespace TTController.Common
                 default: return new LedColor(v, p, q);
             }
         }
+
+        public static LedColor Unpack(int data)
+        {
+            var r = (byte)((data >> 0) & 0xff);
+            var g = (byte)((data >> 8) & 0xff);
+            var b = (byte)((data >> 16) & 0xff);
+
+            return new LedColor(r, g, b);
+        }
+
+        public static int Pack(LedColor color)
+            => (color.R) | (color.G << 8) | (color.B << 16);
     }
 }

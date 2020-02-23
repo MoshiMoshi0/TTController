@@ -35,11 +35,7 @@ namespace TTController.Plugin.RazerConnectEffect
         private void OnColorUpdate(object sender, RzBroadcastColorChangedEventArgs e)
         {
             for (var i = 0; i < _colors.Length; i++)
-            {
-                _colors[i].R = (byte)((e.Colors[i] >> 0) & 0xff);
-                _colors[i].G = (byte)((e.Colors[i] >> 8) & 0xff);
-                _colors[i].B = (byte)((e.Colors[i] >> 16) & 0xff);
-            }
+                _colors[i] = LedColor.Unpack(e.Colors[i]);
         }
 
         private void OnConnectionUpdate(object sender, RzBroadcastConnectionChangedEventArgs e)
