@@ -18,10 +18,10 @@ namespace TTController.Plugin.SensorTrigger
 
     public class SensorTriggerConfig : TriggerConfigBase
     {
-        public List<Identifier> Sensors { get; private set; } = new List<Identifier>();
-        [DefaultValue(SensorMixFunction.Maximum)] public SensorMixFunction SensorMixFunction { get; private set; } = SensorMixFunction.Maximum;
-        [DefaultValue(float.NaN)] public float Value { get; private set; } = float.NaN;
-        [DefaultValue(ComparsionType.Greater)] public ComparsionType ComparsionType { get; private set; } = ComparsionType.Greater;
+        public List<Identifier> Sensors { get; internal set; } = new List<Identifier>();
+        [DefaultValue(SensorMixFunction.Maximum)] public SensorMixFunction SensorMixFunction { get; internal set; } = SensorMixFunction.Maximum;
+        [DefaultValue(float.NaN)] public float Value { get; internal set; } = float.NaN;
+        [DefaultValue(ComparsionType.Greater)] public ComparsionType ComparsionType { get; internal set; } = ComparsionType.Greater;
     }
 
     public class SensorTrigger : TriggerBase<SensorTriggerConfig>

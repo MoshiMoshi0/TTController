@@ -11,12 +11,12 @@ namespace TTController.Plugin.SoundEffect
 {
     public class SoundEffectConfig : EffectConfigBase
     {
-        [DefaultValue(true)] public bool UseAverage { get; private set; } = true;
-        [DefaultValue(100)] public int MinimumFrequency { get; private set; } = 100;
-        [DefaultValue(10000)] public int MaximumFrequency { get; private set; } = 10000;
-        [DefaultValue(ScalingStrategy.Sqrt)] public ScalingStrategy ScalingStrategy { get; private set; } = ScalingStrategy.Sqrt;
-        [DefaultValue(2.0)] public double ScalingFactor { get; private set; } = 2.0;
-        public LedColorGradient ColorGradient { get; private set; } = new LedColorGradient();
+        [DefaultValue(true)] public bool UseAverage { get; internal set; } = true;
+        [DefaultValue(100)] public int MinimumFrequency { get; internal set; } = 100;
+        [DefaultValue(10000)] public int MaximumFrequency { get; internal set; } = 10000;
+        [DefaultValue(ScalingStrategy.Sqrt)] public ScalingStrategy ScalingStrategy { get; internal set; } = ScalingStrategy.Sqrt;
+        [DefaultValue(2.0)] public double ScalingFactor { get; internal set; } = 2.0;
+        public LedColorGradient ColorGradient { get; internal set; } = new LedColorGradient();
     }
 
     public class SoundEffect : EffectBase<SoundEffectConfig>

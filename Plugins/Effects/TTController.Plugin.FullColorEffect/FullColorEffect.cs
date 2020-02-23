@@ -7,7 +7,7 @@ namespace TTController.Plugin.FullColorEffect
 {
     public class FullColorEffectConfig : EffectConfigBase
     {
-        public LedColor Color { get; private set; } = new LedColor(0, 0, 0);
+        public LedColor Color { get; internal set; } = new LedColor(0, 0, 0);
     }
 
     public class FullColorEffect : EffectBase<FullColorEffectConfig>

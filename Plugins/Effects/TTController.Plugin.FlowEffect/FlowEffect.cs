@@ -9,10 +9,10 @@ namespace TTController.Plugin.FlowEffect
 {
     public class FlowEffectConfig : EffectConfigBase
     {
-        [DefaultValue(0.05)] public double FillStep { get; private set; } = 0.05;
-        [DefaultValue(30)] public double HueStep { get; private set; } = 30;
-        [DefaultValue(1.0)] public double Saturation { get; private set; } = 1.0;
-        [DefaultValue(1.0)] public double Brightness { get; private set; } = 1.0;
+        [DefaultValue(0.05)] public double FillStep { get; internal set; } = 0.05;
+        [DefaultValue(30)] public double HueStep { get; internal set; } = 30;
+        [DefaultValue(1.0)] public double Saturation { get; internal set; } = 1.0;
+        [DefaultValue(1.0)] public double Brightness { get; internal set; } = 1.0;
     }
 
     public class FlowEffect : EffectBase<FlowEffectConfig>

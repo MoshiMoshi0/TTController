@@ -8,8 +8,8 @@ namespace TTController.Plugin.WaveEffect
 {
     public class WaveEffectConfig : EffectConfigBase
     {
-        public List<LedColor> Colors { get; private set; } = new List<LedColor>();
-        [DefaultValue(3)] public int TickInterval { get; private set; } = 3;
+        public List<LedColor> Colors { get; internal set; } = new List<LedColor>();
+        [DefaultValue(3)] public int TickInterval { get; internal set; } = 3;
     }
 
     public class WaveEffect : EffectBase<WaveEffectConfig>

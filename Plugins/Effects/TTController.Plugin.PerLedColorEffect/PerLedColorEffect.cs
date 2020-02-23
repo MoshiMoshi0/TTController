@@ -7,7 +7,7 @@ namespace TTController.Plugin.PerLedColorEffect
 {
     public class PerLedColorEffectConfig : EffectConfigBase
     {
-        public List<LedColor> Colors { get; private set; } = new List<LedColor>();
+        public List<LedColor> Colors { get; internal set; } = new List<LedColor>();
     }
 
     public class PerLedColorEffect : EffectBase<PerLedColorEffectConfig>

@@ -16,10 +16,10 @@ namespace TTController.Plugin.ScheduleTrigger
 
     public class ScheduleTriggerConfig : TriggerConfigBase
     {
-        [DefaultValue(ScheduleScope.Day)] public ScheduleScope Scope { get; private set; } = ScheduleScope.Day;
-        [DefaultValue(true)] public bool Value { get; private set; } = true;
-        [DefaultValue(null)] public TimeSpan? UpdateInterval { get; private set; } = null;
-        [DefaultValue(null)] public Schedule Schedule { get; private set; } = null;
+        [DefaultValue(ScheduleScope.Day)] public ScheduleScope Scope { get; internal set; } = ScheduleScope.Day;
+        [DefaultValue(true)] public bool Value { get; internal set; } = true;
+        [DefaultValue(null)] public TimeSpan? UpdateInterval { get; internal set; } = null;
+        [DefaultValue(null)] public Schedule Schedule { get; internal set; } = null;
     }
 
     public class ScheduleTrigger : TriggerBase<ScheduleTriggerConfig>

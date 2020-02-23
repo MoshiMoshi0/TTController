@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using TTController.Common;
@@ -8,7 +8,7 @@ namespace TTController.Plugin.StaticSpeedController
 {
     public class StaticSpeedControllerConfig : SpeedControllerConfigBase
     {
-        [DefaultValue(50)] public byte Speed { get; private set; } = 50;
+        [DefaultValue(50)] public byte Speed { get; internal set; } = 50;
     }
 
     public class StaticSpeedController : SpeedControllerBase<StaticSpeedControllerConfig>

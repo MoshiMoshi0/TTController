@@ -15,7 +15,7 @@ namespace TTController.Plugin.DpsgSpeedController
 
     public class DpsgSpeedControllerConfig : SpeedControllerConfigBase
     {
-        [DefaultValue(FanMode.Silent)] public FanMode FanMode { get; private set; } = FanMode.Silent;
+        [DefaultValue(FanMode.Silent)] public FanMode FanMode { get; internal set; } = FanMode.Silent;
     }
 
     public class DpsgSpeedController : SpeedControllerBase<DpsgSpeedControllerConfig>

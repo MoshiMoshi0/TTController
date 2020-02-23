@@ -8,9 +8,9 @@ namespace TTController.Plugin.PulseEffect
 {
     public class PulseEffectConfig : EffectConfigBase
     {
-        [DefaultValue(0.025)] public double BrightnessStep { get; private set; } = 0.025;
-        [DefaultValue(null)] public List<LedColor> Colors { get; private set; } = null;
-        [DefaultValue(null)] public LedColor? Color { get; private set; } = null;
+        [DefaultValue(0.025)] public double BrightnessStep { get; internal set; } = 0.025;
+        [DefaultValue(null)] public List<LedColor> Colors { get; internal set; } = null;
+        [DefaultValue(null)] public LedColor? Color { get; internal set; } = null;
     }
 
     public class PulseEffect : EffectBase<PulseEffectConfig>

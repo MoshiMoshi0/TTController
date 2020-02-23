@@ -9,12 +9,12 @@ namespace TTController.Plugin.BlinkEffect
 {
     public class BlinkEffectConfig : EffectConfigBase
     {
-        [DefaultValue(1000)] public int OnTime { get; private set; } = 1000;
-        [DefaultValue(1000)] public int OffTime { get; private set; } = 1000;
-        [DefaultValue(null)] public LedColor? OnColor { get; private set; } = null;
-        [DefaultValue(null)] public LedColor? OffColor { get; private set; } = null;
-        [DefaultValue(null)] public List<LedColor> OnColors { get; private set; } = null;
-        [DefaultValue(null)] public List<LedColor> OffColors { get; private set; } = null;
+        [DefaultValue(1000)] public int OnTime { get; internal set; } = 1000;
+        [DefaultValue(1000)] public int OffTime { get; internal set; } = 1000;
+        [DefaultValue(null)] public LedColor? OnColor { get; internal set; } = null;
+        [DefaultValue(null)] public LedColor? OffColor { get; internal set; } = null;
+        [DefaultValue(null)] public List<LedColor> OnColors { get; internal set; } = null;
+        [DefaultValue(null)] public List<LedColor> OffColors { get; internal set; } = null;
     }
 
     public class BlinkEffect : EffectBase<BlinkEffectConfig>

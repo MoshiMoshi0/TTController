@@ -8,8 +8,8 @@ namespace TTController.Plugin.RawEffect
 {
     public class RawEffectConfig : EffectConfigBase
     {
-        [DefaultValue(null)] public string EffectType { get; set; } = null;
-        public List<LedColor> Colors { get; private set; } = new List<LedColor>();
+        [DefaultValue(null)] public string EffectType { get; internal set; } = null;
+        public List<LedColor> Colors { get; internal set; } = new List<LedColor>();
     }
 
     public class RawEffect : EffectBase<RawEffectConfig>

@@ -9,11 +9,11 @@ namespace TTController.Plugin.PingPongEffect
 {
     public class PingPongEffectConfig : EffectConfigBase
     {
-        [DefaultValue(0.01f)] public float Step { get; private set; } = 0.01f;
-        [DefaultValue(0.2f)] public float Height { get; private set; } = 0.2f;
-        [DefaultValue(0.5f)] public float Width { get; private set; } = 0.5f;
-        public LedColorGradient ColorGradient { get; private set; } = new LedColorGradient();
-        [DefaultValue(true)] public bool EnableSmoothing { get; private set; } = true;
+        [DefaultValue(0.01f)] public float Step { get; internal set; } = 0.01f;
+        [DefaultValue(0.2f)] public float Height { get; internal set; } = 0.2f;
+        [DefaultValue(0.5f)] public float Width { get; internal set; } = 0.5f;
+        public LedColorGradient ColorGradient { get; internal set; } = new LedColorGradient();
+        [DefaultValue(true)] public bool EnableSmoothing { get; internal set; } = true;
     }
 
     public class PingPongEffect : EffectBase<PingPongEffectConfig>

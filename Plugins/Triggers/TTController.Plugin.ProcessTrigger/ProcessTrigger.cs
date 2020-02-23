@@ -10,8 +10,8 @@ namespace TTController.Plugin.ProcessTrigger
 {
     public class ProcessTriggerConfig : TriggerConfigBase
     {
-        public List<string> Processes { get; private set; } = new List<string>();
-        [DefaultValue(2500)] public int UpdateInterval { get; private set; } = 2500;
+        public List<string> Processes { get; internal set; } = new List<string>();
+        [DefaultValue(2500)] public int UpdateInterval { get; internal set; } = 2500;
     }
 
     public class ProcessTrigger : TriggerBase<ProcessTriggerConfig>

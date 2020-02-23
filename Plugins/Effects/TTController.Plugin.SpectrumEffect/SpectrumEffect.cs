@@ -8,9 +8,9 @@ namespace TTController.Plugin.SpectrumEffect
 {
     public class SpectrumEffectConfig : EffectConfigBase
     {
-        [DefaultValue(1.0)] public double Saturation { get; private set; } = 1.0;
-        [DefaultValue(1.0)] public double Brightness { get; private set; } = 1.0;
-        [DefaultValue(1.0)] public double HueStep { get; private set; } = 1.0;
+        [DefaultValue(1.0)] public double Saturation { get; internal set; } = 1.0;
+        [DefaultValue(1.0)] public double Brightness { get; internal set; } = 1.0;
+        [DefaultValue(1.0)] public double HueStep { get; internal set; } = 1.0;
     }
 
     public class SpectrumEffect : EffectBase<SpectrumEffectConfig>

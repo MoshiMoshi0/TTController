@@ -8,9 +8,9 @@ namespace TTController.Plugin.RippleEffect
 {
     public class RippleEffectConfig : EffectConfigBase
     {
-        public LedColor Color { get; private set; } = new LedColor(0, 0, 0);
-        [DefaultValue(5)] public int Length { get; private set; } = 5;
-        [DefaultValue(3)] public int TickInterval { get; private set; } = 3;
+        public LedColor Color { get; internal set; } = new LedColor(0, 0, 0);
+        [DefaultValue(5)] public int Length { get; internal set; } = 5;
+        [DefaultValue(3)] public int TickInterval { get; internal set; } = 3;
     }
 
     public class RippleEffect : EffectBase<RippleEffectConfig>

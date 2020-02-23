@@ -7,7 +7,7 @@ namespace TTController.Plugin.CopySpeedController
 {
     public class CopySpeedControllerConfig : SpeedControllerConfigBase
     {
-        public PortIdentifier Target { get; private set; }
+        public PortIdentifier Target { get; internal set; }
     }
 
     public class CopySpeedController : SpeedControllerBase<CopySpeedControllerConfig>

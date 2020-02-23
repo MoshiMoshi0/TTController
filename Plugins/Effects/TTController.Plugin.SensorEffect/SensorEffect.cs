@@ -9,10 +9,10 @@ namespace TTController.Plugin.SensorEffect
 {
     public class SensorEffectConfig : EffectConfigBase
     {
-        public List<Identifier> Sensors { get; private set; } = new List<Identifier>();
-        [DefaultValue(SensorMixFunction.Maximum)] public SensorMixFunction SensorMixFunction { get; private set; } = SensorMixFunction.Maximum;
-        [DefaultValue(0.05)] public double SmoothingFactor { get; private set; } = 0.05;
-        public LedColorGradient ColorGradient { get; private set; } = new LedColorGradient();
+        public List<Identifier> Sensors { get; internal set; } = new List<Identifier>();
+        [DefaultValue(SensorMixFunction.Maximum)] public SensorMixFunction SensorMixFunction { get; internal set; } = SensorMixFunction.Maximum;
+        [DefaultValue(0.05)] public double SmoothingFactor { get; internal set; } = 0.05;
+        public LedColorGradient ColorGradient { get; internal set; } = new LedColorGradient();
     }
 
     public class SensorEffect : EffectBase<SensorEffectConfig>

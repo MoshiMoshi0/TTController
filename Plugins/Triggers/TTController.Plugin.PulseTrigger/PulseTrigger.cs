@@ -7,8 +7,8 @@ namespace TTController.Plugin.PulseTrigger
 {
     public class PulseTriggerConfig : TriggerConfigBase
     {
-        [DefaultValue(1000)] public int OnTime { get; private set; } = 1000;
-        [DefaultValue(1000)] public int OffTime { get; private set; } = 1000;
+        [DefaultValue(1000)] public int OnTime { get; internal set; } = 1000;
+        [DefaultValue(1000)] public int OffTime { get; internal set; } = 1000;
     }
 
     public class PulseTrigger : TriggerBase<PulseTriggerConfig>
