@@ -11,10 +11,8 @@ namespace TTController.Plugin.BlinkEffect
     {
         [DefaultValue(1000)] public int OnTime { get; internal set; } = 1000;
         [DefaultValue(1000)] public int OffTime { get; internal set; } = 1000;
-        [DefaultValue(null)] public LedColor? OnColor { get; internal set; } = null;
-        [DefaultValue(null)] public LedColor? OffColor { get; internal set; } = null;
-        [DefaultValue(null)] public List<LedColor> OnColors { get; internal set; } = null;
-        [DefaultValue(null)] public List<LedColor> OffColors { get; internal set; } = null;
+        public LedColorProvider OnColor { get; internal set; } = new LedColorProvider();
+        public LedColorProvider OffColor { get; internal set; } = new LedColorProvider();
     }
 
     public class BlinkEffect : EffectBase<BlinkEffectConfig>
@@ -28,9 +26,6 @@ namespace TTController.Plugin.BlinkEffect
 
         public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
         {
-            List<LedColor> Clone(LedColor? color, int count)
-                => color != null ? Enumerable.Repeat(color.Value, count).ToList() : null;
-
             var current = Environment.TickCount;
             var diff = current - _ticks;
 
@@ -41,17 +36,29 @@ namespace TTController.Plugin.BlinkEffect
             }
 
             var result = new Dictionary<PortIdentifier, List<LedColor>>();
-            foreach (var port in ports)
-            {
-                var config = cache.GetPortConfig(port);
-                if (config == null)
-                    continue;
 
-                var ledCount = cache.GetDeviceConfig(port).LedCount;
-                if (_state)
-                    result.Add(port, Clone(Config.OnColor, ledCount) ?? Config.OnColors ?? Clone(new LedColor(0, 0, 0), ledCount));
-                else
-                    result.Add(port, Clone(Config.OffColor, ledCount) ?? Config.OffColors ?? Clone(new LedColor(0, 0, 0), ledCount));
+            if (Config.ColorGenerationMethod == ColorGenerationMethod.PerPort)
+            {
+                foreach (var port in ports)
+                {
+                    var ledCount = cache.GetDeviceConfig(port).LedCount;
+                    if (_state)
+                        result.Add(port, Config.OnColor.Get(ledCount).ToList());
+                    else
+                        result.Add(port, Config.OffColor.Get(ledCount).ToList());
+                }
+            }
+            else if (Config.ColorGenerationMethod == ColorGenerationMethod.SpanPorts)
+            {
+                var totalLedCount = ports.Select(p => cache.GetDeviceConfig(p).LedCount).Sum();
+                var colors = (_state ? Config.OnColor : Config.OffColor).Get(totalLedCount);
+                var offset = 0;
+                foreach (var port in ports)
+                {
+                    var ledCount = cache.GetDeviceConfig(port).LedCount;
+                    result.Add(port, colors.Skip(offset).Take(ledCount).ToList());
+                    offset += ledCount;
+                }
             }
 
             return result;

@@ -9,7 +9,7 @@ namespace TTController.Plugin.RawEffect
     public class RawEffectConfig : EffectConfigBase
     {
         [DefaultValue(null)] public string EffectType { get; internal set; } = null;
-        public List<LedColor> Colors { get; internal set; } = new List<LedColor>();
+        public LedColorProvider Color { get; internal set; } = new LedColorProvider();
     }
 
     public class RawEffect : EffectBase<RawEffectConfig>
@@ -20,7 +20,7 @@ namespace TTController.Plugin.RawEffect
 
         public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
         {
-            return ports.ToDictionary(p => p, _ => Config.Colors.ToList());
+            return ports.ToDictionary(p => p, p => Config.Color.Get(cache.GetDeviceConfig(p).LedCount).ToList());
         }
     }
 }

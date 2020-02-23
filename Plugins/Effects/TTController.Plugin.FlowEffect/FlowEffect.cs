@@ -47,10 +47,6 @@ namespace TTController.Plugin.FlowEffect
             {
                 foreach (var port in ports)
                 {
-                    var config = cache.GetPortConfig(port);
-                    if (config == null)
-                        continue;
-
                     var ledCount = cache.GetDeviceConfig(port).LedCount;
                     var colors = new List<LedColor>();
                     for (var i = 0; i < ledCount; i++)
@@ -80,10 +76,6 @@ namespace TTController.Plugin.FlowEffect
                 var offset = 0;
                 foreach (var port in ports)
                 {
-                    var config = cache.GetPortConfig(port);
-                    if (config == null)
-                        continue;
-
                     var ledCount = cache.GetDeviceConfig(port).LedCount;
                     result.Add(port, colors.Skip(offset).Take(ledCount).ToList());
                     offset += ledCount;

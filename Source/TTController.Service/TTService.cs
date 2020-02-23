@@ -244,10 +244,8 @@ namespace TTController.Service
                             controller.SetSpeed(port.Id, profile.Speed.Value);
 
                         var effectByte = controller.GetEffectByte(profile.EffectType);
-                        if (effectByte.HasValue && profile.EffectColors != null)
-                            controller.SetRgb(port.Id, effectByte.Value, profile.EffectColors);
-                        else if (effectByte.HasValue && profile.EffectColor.HasValue)
-                            controller.SetRgb(port.Id, effectByte.Value, Enumerable.Repeat(profile.EffectColor.Value, _cache.GetDeviceConfig(port).LedCount));
+                        if (effectByte.HasValue && profile.Color != null)
+                            controller.SetRgb(port.Id, effectByte.Value, profile.Color.Get(_cache.GetDeviceConfig(port).LedCount));
 
                         if (state == ComputerStateType.Boot && (profile.Speed.HasValue || effectByte.HasValue))
                             dirtyControllers.Add(controller);
