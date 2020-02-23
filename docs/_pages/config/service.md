@@ -3,7 +3,7 @@ title: Service Configuration
 permalink: /config/service
 ---
 
-**Note:** The config is by default located in `config.json` file. You can modify this in `TTController.Service.exe.Config` file by changing the value of `config-file` key
+**Note:** The config is located in `config.json` file.
 {: .notice--info}
 
 ## Format

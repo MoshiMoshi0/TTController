@@ -43,11 +43,7 @@ namespace TTController.Service
             Logger.Info("Initializing...");
             PluginLoader.LoadAll(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Plugins"));
 
-            const string key = "config-file";
-            if (string.IsNullOrEmpty(AppSettingsHelper.ReadValue(key)))
-                AppSettingsHelper.WriteValue(key, "config.json");
-
-            _configManager = new ConfigManager(AppSettingsHelper.ReadValue(key));
+            _configManager = new ConfigManager("config.json");
             if (!_configManager.LoadOrCreateConfig())
                 return false;
 

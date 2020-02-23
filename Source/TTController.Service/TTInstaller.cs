@@ -4,27 +4,22 @@ using System.ComponentModel;
 using System.Configuration.Install;
 using System.Management;
 using System.ServiceProcess;
-using TTController.Service.Utils;
 
 namespace TTController.Service
 {
     [RunInstaller(true)]
     public class TTInstaller : Installer
     {
-        public static readonly string ServiceName = "TTController";
-        public static readonly string DisplayName = "Thermaltake Controller";
-        public static readonly string Description = "This service is used to control Thermaltake devices";
-
-        private readonly ServiceAccount _serviceAccount;
+        internal static readonly string ServiceName = "TTController";
+        internal static readonly string DisplayName = "Thermaltake Controller";
+        internal static readonly string Description = "This service is used to control Thermaltake devices";
+        internal static readonly ServiceAccount ServiceAccount = ServiceAccount.LocalSystem;
 
         public TTInstaller()
         {
-            if (!Enum.TryParse(AppSettingsHelper.ReadValue("service-install-as"), true, out _serviceAccount))
-                _serviceAccount = ServiceAccount.LocalSystem;
-
             var process = new ServiceProcessInstaller
             {
-                Account = _serviceAccount
+                Account = ServiceAccount
             };
             var service = new ServiceInstaller
             {
@@ -42,14 +37,11 @@ namespace TTController.Service
         {
             base.OnAfterInstall(savedState);
 
-            if (_serviceAccount == ServiceAccount.LocalSystem)
+            using (var service = new ManagementObject($"WIN32_Service.Name='{ServiceName}'"))
             {
-                using (var service = new ManagementObject($"WIN32_Service.Name='{ServiceName}'"))
-                {
-                    var paramList = new object[11];
-                    paramList[5] = true;
-                    service.InvokeMethod("Change", paramList);
-                }
+                var paramList = new object[11];
+                paramList[5] = true;
+                service.InvokeMethod("Change", paramList);
             }
         }
 
