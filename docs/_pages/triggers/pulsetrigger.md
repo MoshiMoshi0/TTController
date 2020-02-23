@@ -3,7 +3,7 @@ title: Pulse Trigger
 permalink: /triggers/pulsetrigger
 ---
 
-Triggers on and off based on configured timing
+Triggers on and off based on configured timing.
 
 ## Format
 
@@ -22,9 +22,9 @@ Triggers on and off based on configured timing
 ### OnTime
 <div class="variable-block" markdown="block">
 
-Trigger on time
+Trigger on time.
 
-**Note:** Value in miliseconds
+**Note:** Value in miliseconds.
 {: .notice--info}
 
 **Required:** No<br>
@@ -42,9 +42,9 @@ Trigger on time
 ### OffTime
 <div class="variable-block" markdown="block">
 
-Trigger off time
+Trigger off time.
 
-**Note:** Value in miliseconds
+**Note:** Value in miliseconds.
 {: .notice--info}
 
 **Required:** No<br>

@@ -3,7 +3,7 @@ title: Static Speed Controller
 permalink: /speed-controllers/staticspeedcontroller
 ---
 
-Sets the speed to a constant value
+Sets the speed to a constant value.
 
 ## Format
 
@@ -21,12 +21,12 @@ Sets the speed to a constant value
 ### Speed
 <div class="variable-block" markdown="block">
 
-Constant speed value from `0` to `100` in percent
+Constant speed value from `0` to `100` in percent.
 
-**Note:** `0` value can be used to stop the device
+**Note:** To stop the device set the value to `0`.
 {: .notice--info}
 
-**Note:** Any value beetween `1` and `19` will be raised to `20` as this is the minimum operating speed
+**Note:** Any value beetween `1` and `19` will be forced to `20` as this is the minimum operating speed.
 {: .notice--info}
 
 **Required:** No<br>

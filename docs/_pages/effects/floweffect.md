@@ -22,7 +22,7 @@ permalink: /effects/floweffect
 ### FillStep
 <div class="variable-block" markdown="block">
 
-Determines how fast the colors fill the device
+Determines how fast the colors fill the device.
 
 **Required:** No<br>
 **Default value:**
@@ -39,7 +39,7 @@ Determines how fast the colors fill the device
 ### HueStep
 <div class="variable-block" markdown="block">
 
-Determines color hue increment when the device gets completly filled
+Determines color hue increment when the device gets completly filled.
 
 **Required:** No<br>
 **Default value:**
@@ -56,9 +56,9 @@ Determines color hue increment when the device gets completly filled
 ### Saturation
 <div class="variable-block" markdown="block">
 
-Saturation of colors
+Saturation of colors.
 
-**Note:** Value from `0.0` to `1.0`
+**Note:** Value from `0.0` to `1.0`.
 {: .notice--info}
 
 **Required:** No<br>
@@ -76,9 +76,9 @@ Saturation of colors
 ### Brightness
 <div class="variable-block" markdown="block">
 
-Brightness of colors
+Brightness of colors.
 
-**Note:** Value from `0.0` to `1.0`
+**Note:** Value from `0.0` to `1.0`.
 {: .notice--info}
 
 **Required:** No<br>

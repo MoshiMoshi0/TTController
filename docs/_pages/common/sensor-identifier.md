@@ -3,9 +3,9 @@ title: Sensor Identifier
 permalink: /common/sensor-identifier
 ---
 
-Sensor identifiers are used to precisely specify what device and what sensor you want to target
+Sensor identifiers are used to precisely specify what device and what sensor you want to target.
 
-**Note:** You can use `Main Menu -> Debug -> Sensors` menu to find your sensor identifiers
+**Note:** You can use `Main Menu -> Debug -> Sensors` menu to find your sensor identifiers.
 {: .notice--info}
 
 ## Format

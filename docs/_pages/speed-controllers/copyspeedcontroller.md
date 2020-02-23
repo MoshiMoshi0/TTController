@@ -3,9 +3,9 @@ title: Copy Speed Controller
 permalink: /speed-controllers/copyspeedcontroller
 ---
 
-Copies the speed from another port
+Copies the speed from another port.
 
-**Note:** In some cases the copied speed can lag behind the [Target](#target) port one update tick
+**Note:** In some cases the copied speed can lag behind the [Target](#target) port one update tick.
 {: .notice--info}
 
 ## Format
@@ -24,7 +24,7 @@ Copies the speed from another port
 ### Target
 <div class="variable-block" markdown="block">
 
-The [Port Identifier]({{ "/common/port-identifier" | relative_url }}) to copy the speed from
+The [Port Identifier]({{ "/common/port-identifier" | relative_url }}) to copy the speed from.
 
 **Required:** **Yes**<br>
 **Default value:**

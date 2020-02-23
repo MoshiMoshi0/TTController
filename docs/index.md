@@ -4,50 +4,51 @@ title: Home
 
 Welcome to the TTController documentation!
 
-**Note:** This documentation might not apply to develop builds!
-{: .notice--warning}
-
 **Note:** This documentation is still Work-in-Progress, if you have problems with configuring the service please make a new [<i class="fab fa-github"/> issue](https://github.com/MoshiMoshi0/TTController/issues/new/choose).
 {: .notice--info}
+
+**Important:** This documentation might not apply to development builds.
+{: .notice--warning}
 
 ## Quick start
 
 ### Installing the service
 
-1. Unpack all files to a desired directory
-2. Run **TTController.Service.exe**
-3. Select **Manage Service** from the menu and install the service
+1. Unpack all files to the desired directory.
+2. Run **TTController.Service.exe**.
+3. Select **Manage Service** from the menu and select **Install** option to install the service.
 
 **Note:** The service will start automatically and will create a default empty config. See [Configuring the service](#configuring-the-service) section on how to configure it.
 {: .notice--info}
 
 **Note:** A quick test to see if the service is working property is to run debug report found in `Main Menu -> Debug -> Report` menu. It should list all detected controllers, sensors and plugins.
+{: .notice--info}
 
 **Note:** The service is by default installed to run as **LocalSystem** account, to change this edit `service-install-as` in `TTController.Service.exe.Config` file.
 {: .notice--info}
 
 ### Configuring the service
 
-1. If the service is running, stop it using **Manage Service** menu
-2. Edit **config.json** file
-3. Start the service using **Manage Service** menu
+1. If the service is running, stop it using **Manage Service** menu.
+2. Edit **config.json** file.
+3. Start the service using **Manage Service** menu.
 
-**Note:** See [Service Config]({{ "/config/service" | relative_url }}) as a starting point
+**Note:** See [Service Config]({{ "/config/service" | relative_url }}) as a starting point.
 {: .notice--info}
 
-**Note:** You can use `Main Menu -> Debug -> Controllers` menu to find your port identifiers, and `Main Menu -> Debug -> Sensors` menu to find your sensor identifiers to be used in **config.json**.
+**Note:** You can use `Main Menu -> Debug -> Controllers` menu to find your port identifiers and `Main Menu -> Debug -> Sensors` menu to find your sensor identifiers to be used in **config.json**.
 {: .notice--info}
 
 ### Uninstalling the service
-1. Run **TTController.Service.exe**
-2. Uninstall the service from **Manage Service** menu
-3. Remove the folder containing service files
+1. Run **TTController.Service.exe**.
+2. Uninstall the service from **Manage Service** menu.
+3. Remove the folder containing service files.
 
 ### Updating the service
-1. If the service is running, stop it using **Manage Service** menu
-2. Remove all files except **config.json**
-3. Unpack newest release to the same directory
-4. Start the service using **Manage Service** menu
+1. If the service is running, stop it using **Manage Service** menu.
+2. Remove all files except **config.json**.
+3. Unpack newest release to the same directory.
+4. Start the service using **Manage Service** menu.
 
 ## How to read the docs
 

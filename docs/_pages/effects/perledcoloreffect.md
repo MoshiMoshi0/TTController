@@ -19,7 +19,7 @@ permalink: /effects/perledcoloreffect
 ### Colors
 <div class="variable-block" markdown="block">
 
-List of [Led Colors]({{ "/common/led-color" | relative_url }}), one for each led 
+List of [Led Colors]({{ "/common/led-color" | relative_url }}), one for each led.
 
 **Required:** **Yes**<br>
 **Default value:**

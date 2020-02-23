@@ -35,7 +35,7 @@ permalink: /config/service
 ### Profiles
 <div class="variable-block" markdown="block">
 
-List of [Profile Configs]({{ "/config/profile" | relative_url }})
+List of [Profile Configs]({{ "/config/profile" | relative_url }}).
 
 **Required:** **Yes**<br>
 **Default value:**
@@ -55,7 +55,7 @@ List of [Profile Configs]({{ "/config/profile" | relative_url }})
 ### ComputerStateProfiles
 <div class="variable-block" markdown="block">
 
-List of [ComputerStateProfile Configs]({{ "/config/computerstateprofile" | relative_url }})
+List of [ComputerStateProfile Configs]({{ "/config/computerstateprofile" | relative_url }}).
 
 **Required:** No<br>
 **Default value:**
@@ -75,9 +75,9 @@ List of [ComputerStateProfile Configs]({{ "/config/computerstateprofile" | relat
 ### PortConfigs 
 <div class="variable-block" markdown="block">
 
-List of [Port Configs]({{ "/config/port" | relative_url }})
+List of [Port Configs]({{ "/config/port" | relative_url }}).
 
-**Note:** If [Port Config]({{ "/config/port" | relative_url }}) is not configured for a port, a default [Port Config]({{ "/config/port" | relative_url }}) will be used
+**Note:** If [Port Config]({{ "/config/port" | relative_url }}) is not configured for a port, a default [Port Config]({{ "/config/port" | relative_url }}) will be used.
 {: .notice--info}
 
 **Required:** No<br>
@@ -98,9 +98,9 @@ List of [Port Configs]({{ "/config/port" | relative_url }})
 ### SensorConfigs
 <div class="variable-block" markdown="block">
 
-List of [Sensor Configs]({{ "/config/sensor" | relative_url }})
+List of [Sensor Configs]({{ "/config/sensor" | relative_url }}).
 
-**Note:** If [Sensor Config]({{ "/config/sensor" | relative_url }}) is not configured for a sensor, a default [Sensor Config]({{ "/config/sensor" | relative_url }}) will be used
+**Note:** If [Sensor Config]({{ "/config/sensor" | relative_url }}) is not configured for a sensor, a default [Sensor Config]({{ "/config/sensor" | relative_url }}) will be used.
 {: .notice--info}
 
 **Required:** No<br>
@@ -121,7 +121,7 @@ List of [Sensor Configs]({{ "/config/sensor" | relative_url }})
 ### CpuSensorsEnabled
 <div class="variable-block" markdown="block">
 
-Enables support for CPU sensors
+Enables support for CPU sensors.
 
 **Required:** No<br>
 **Default value:**
@@ -138,7 +138,7 @@ true
 ### GpuSensorsEnabled
 <div class="variable-block" markdown="block">
 
-Enables support for GPU sensors
+Enables support for GPU sensors.
 
 **Required:** No<br>
 **Default value:**
@@ -155,7 +155,7 @@ true
 ### StorageSensorsEnabled
 <div class="variable-block" markdown="block">
 
-Enables support for HDD/SDD sensors
+Enables support for HDD/SDD sensors.
 
 **Required:** No<br>
 **Default value:**
@@ -172,7 +172,7 @@ false
 ### MotherboardSensorsEnabled
 <div class="variable-block" markdown="block">
 
-Enables support for Motherboard sensors
+Enables support for Motherboard sensors.
 
 **Required:** No<br>
 **Default value:**
@@ -189,7 +189,7 @@ false
 ### MemorySensorsEnabled
 <div class="variable-block" markdown="block">
 
-Enables support for RAM sensors
+Enables support for RAM sensors.
 
 **Required:** No<br>
 **Default value:**
@@ -206,7 +206,7 @@ false
 ### NetworkSensorsEnabled
 <div class="variable-block" markdown="block">
 
-Enables support for NIC sensors
+Enables support for NIC sensors.
 
 **Required:** No<br>
 **Default value:**
@@ -223,7 +223,7 @@ false
 ### ControllerSensorsEnabled
 <div class="variable-block" markdown="block">
 
-Enables support for hid fan controller/pump sensors  
+Enables support for hid fan controller/pump sensors.
 
 **Required:** No<br>
 **Default value:**
@@ -240,9 +240,9 @@ false
 ### SensorTimerInterval 
 <div class="variable-block" markdown="block">
 
-Determines timer delay for updating sensor values
+Determines timer delay for updating sensor values.
 
-**Note:** Value in miliseconds
+**Note:** Value in miliseconds.
 {: .notice--info}
 
 **Required:** No<br>
@@ -260,9 +260,9 @@ Determines timer delay for updating sensor values
 ### DeviceSpeedTimerInterval
 <div class="variable-block" markdown="block">
 
-Determines timer delay for updating speed of devices
+Determines timer delay for updating speed of devices.
 
-**Note:** Value in miliseconds
+**Note:** Value in miliseconds.
 {: .notice--info}
 
 **Required:** No<br>
@@ -280,9 +280,9 @@ Determines timer delay for updating speed of devices
 ### DeviceRgbTimerInterval
 <div class="variable-block" markdown="block">
 
-Determines timer delay for updating led colors
+Determines timer delay for updating led colors.
 
-**Note:** Value in miliseconds
+**Note:** Value in miliseconds.
 {: .notice--info}
 
 **Required:** No<br>
@@ -300,12 +300,12 @@ Determines timer delay for updating led colors
 ### LoggingTimerInterval
 <div class="variable-block" markdown="block">
 
-Determines timer delay for logging port and sensor data
+Determines timer delay for logging port and sensor data.
 
-**Note:** Used only in **console mode**
+**Note:** Used only in **console mode**.
 {: .notice--info}
 
-**Note:** Value in miliseconds
+**Note:** Value in miliseconds.
 {: .notice--info}
 
 **Required:** No<br>

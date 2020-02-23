@@ -20,7 +20,7 @@ permalink: /config/sensor
 ### Sensors
 <div class="variable-block" markdown="block">
 
-List of [Sensor Identifiers]({{ "/common/sensor-identifier" | relative_url }}) modified by this config
+List of [Sensor Identifiers]({{ "/common/sensor-identifier" | relative_url }}) modified by this config.
 
 **Required:** **Yes**<br>
 **Default value:**
@@ -37,7 +37,7 @@ List of [Sensor Identifiers]({{ "/common/sensor-identifier" | relative_url }}) m
 ### Offset
 <div class="variable-block" markdown="block">
 
-Sensor value offset
+Sensor value offset.
 
 **Required:** No<br>
 **Default value:**
@@ -53,7 +53,7 @@ Sensor value offset
 ### CriticalValue
 <div class="variable-block" markdown="block">
 
-If any sensor exceeds this value, all devices will be set to 100% speed
+If any sensor exceeds this value, all devices will be set to 100% speed.
 
 **Required:** No<br>
 **Default value:**

@@ -3,7 +3,7 @@ title: Raw Effect
 permalink: /effects/raweffect
 ---
 
-Allows usage of effects saved on the controller box 
+Allows usage of effects saved on the controller box.
 
 ## Format
 
@@ -22,9 +22,9 @@ Allows usage of effects saved on the controller box
 ### EffectType
 <div class="variable-block" markdown="block">
 
-Effect type name
+Effect type name.
 
-**Note:** Supported effect type names are listed in the `Main Menu -> Debug -> Controllers` menu
+**Note:** Supported effect type names are listed in the `Main Menu -> Debug -> Controllers` menu.
 {: .notice--info}
 
 **Required:** No<br>
@@ -42,7 +42,7 @@ Effect type name
 ### Colors
 <div class="variable-block" markdown="block">
 
-List of [Led Colors]({{ "/common/led-color" | relative_url }}), one for each led 
+List of [Led Colors]({{ "/common/led-color" | relative_url }}), one for each led.
 
 **Required:** **Yes**<br>
 **Default value:**

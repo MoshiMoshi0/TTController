@@ -24,9 +24,9 @@ permalink: /effects/blinkeffect
 ### OnTime
 <div class="variable-block" markdown="block">
 
-Effect "on" state time
+Effect "on" state time.
 
-**Note:** Value in miliseconds
+**Note:** Value in miliseconds.
 {: .notice--info}
 
 **Required:** No<br>
@@ -44,9 +44,9 @@ Effect "on" state time
 ### OffTime
 <div class="variable-block" markdown="block">
 
-Effect "off" state time
+Effect "off" state time.
 
-**Note:** Value in miliseconds
+**Note:** Value in miliseconds.
 {: .notice--info}
 
 **Required:** No<br>
@@ -64,9 +64,9 @@ Effect "off" state time
 ### OnColor
 <div class="variable-block" markdown="block">
 
-[Led Color]({{ "/common/led-color" | relative_url }}) to set on all leds when the effect is in "on" state  
+[Led Color]({{ "/common/led-color" | relative_url }}) to set on all leds when the effect is in "on" state. 
 
-**Required:** Either [OnColor](#oncolor) or [OnColors](#oncolors) is required<br>
+**Required:** Either [OnColor](#oncolor) or [OnColors](#oncolors) is required.<br>
 **Default value:**
 ~~~
 ~~~
@@ -80,9 +80,9 @@ Effect "off" state time
 ### OffColor
 <div class="variable-block" markdown="block">
 
-[Led Color]({{ "/common/led-color" | relative_url }}) to set on all leds when the effect is in "off" state  
+[Led Color]({{ "/common/led-color" | relative_url }}) to set on all leds when the effect is in "off" state.  
 
-**Required:** Either [OffColor](#offcolor) or [OffColors](#offcolors) is required<br>
+**Required:** Either [OffColor](#offcolor) or [OffColors](#offcolors) is required.<br>
 **Default value:**
 ~~~
 ~~~
@@ -96,9 +96,9 @@ Effect "off" state time
 ### OnColors
 <div class="variable-block" markdown="block">
 
-List of [Led Colors]({{ "/common/led-color" | relative_url }}) to set on the device when the effect is in "on" state 
+List of [Led Colors]({{ "/common/led-color" | relative_url }}) to set on the device when the effect is in "on" state.
 
-**Required:** Either [OnColor](#oncolor) or [OnColors](#oncolors) is required<br>
+**Required:** Either [OnColor](#oncolor) or [OnColors](#oncolors) is required.<br>
 **Default value:**
 ~~~
 ~~~
@@ -117,9 +117,9 @@ List of [Led Colors]({{ "/common/led-color" | relative_url }}) to set on the dev
 ### OffColors
 <div class="variable-block" markdown="block">
 
-List of [Led Colors]({{ "/common/led-color" | relative_url }}) to set on the device when the effect is in "off" state 
+List of [Led Colors]({{ "/common/led-color" | relative_url }}) to set on the device when the effect is in "off" state.
 
-**Required:** Either [OffColor](#offcolor) or [OffColors](#offcolors) is required<br>
+**Required:** Either [OffColor](#offcolor) or [OffColors](#offcolors) is required.<br>
 **Default value:**
 ~~~
 ~~~

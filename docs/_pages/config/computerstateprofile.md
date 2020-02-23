@@ -21,12 +21,12 @@ permalink: /config/computerstateprofile
 ### StateType
 <div class="variable-block" markdown="block">
 
-Determines computer state that enables this profile
+Determines computer state that enables this profile.
 
 **Allowed values:** `"Boot"`, `"Shutdown"`, `"Suspend"`
 {: .notice--warning}
 
-**Note:** If you want to update or add more profiles with **Boot** type, you need to modify `TTController.Service.exe.Config` file and remove `<add key="boot-profile-saved" value="true" />` line if its present or change its `value` to `false` and restart the service. This is done to save **Boot** profiles only once, otherwise the service will initialize slower and they will cause leds to briefly flash on boot.
+**Important:** If you want to update or add more profiles with **Boot** type, you need to modify `TTController.Service.exe.Config` file and remove `<add key="boot-profile-saved" value="true" />` line if its present or change its `value` to `false` and restart the service. This is done to save **Boot** profiles only once, otherwise the service will initialize slower and they will cause leds to briefly flash on boot.
 {: .notice--warning}
 
 **Required:** **Yes**<br>
@@ -44,7 +44,7 @@ Determines computer state that enables this profile
 ### Ports
 <div class="variable-block" markdown="block">
 
-List of [Port Identifiers]({{ "/common/port-identifier" | relative_url }}) modified by this config
+List of [Port Identifiers]({{ "/common/port-identifier" | relative_url }}) modified by this config.
 
 **Required:** **Yes**<br>
 **Default value:**
@@ -64,7 +64,7 @@ List of [Port Identifiers]({{ "/common/port-identifier" | relative_url }}) modif
 ### Speed
 <div class="variable-block" markdown="block">
 
-Speed to set the devices to when the profile is enabled
+Speed to set the devices to when the profile is enabled.
 
 **Required:** No<br>
 **Default value:**
@@ -80,9 +80,9 @@ Speed to set the devices to when the profile is enabled
 ### EffectType
 <div class="variable-block" markdown="block">
 
-Effect type to set the devices to when the profile is enabled
+Effect type to set the devices to when the profile is enabled.
 
-**Note:** Supported effect types are different for each controller. You can use `Main Menu -> Debug -> Controllers` menu to find what types are supported. 
+**Note:** Supported effect types are different for each controller. You can use `Main Menu -> Debug -> Controllers` menu to find what types are supported.
 {: .notice--info}
 
 **Required:** No<br>
@@ -99,9 +99,9 @@ Effect type to set the devices to when the profile is enabled
 ### EffectColors
 <div class="variable-block" markdown="block">
 
-List of [Led Colors]({{ "/common/led-color" | relative_url }}) used for [EffectType](#effecttype)
+List of [Led Colors]({{ "/common/led-color" | relative_url }}) used for [EffectType](#effecttype).
 
-**Required:** if [EffectType](#effecttype) is set, either [EffectColors](#effectcolors) or [EffectColor](#effectcolor) has to be set<br>
+**Required:** if [EffectType](#effecttype) is set, either [EffectColors](#effectcolors) or [EffectColor](#effectcolor) has to be set.<br>
 **Default value:**
 ~~~
 ~~~
@@ -119,12 +119,12 @@ List of [Led Colors]({{ "/common/led-color" | relative_url }}) used for [EffectT
 ### EffectColor
 <div class="variable-block" markdown="block">
 
-[Led Color]({{ "/common/led-color" | relative_url }}) used for [EffectType](#effecttype)
+[Led Color]({{ "/common/led-color" | relative_url }}) used for [EffectType](#effecttype).
 
 **Note:** This color will be cloned to match device led count. If you want to use only one [Led Color]({{ "/common/led-color" | relative_url }}), see [EffectColors](#effectcolors).
 {: .notice--info}
 
-**Required:** if [EffectType](#effecttype) is set, either [EffectColors](#effectcolors) or [EffectColor](#effectcolor) has to be set<br>
+**Required:** if [EffectType](#effecttype) is set, either [EffectColors](#effectcolors) or [EffectColor](#effectcolor) has to be set.<br>
 **Default value:**
 ~~~
 ~~~

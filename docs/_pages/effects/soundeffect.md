@@ -24,7 +24,7 @@ permalink: /effects/soundeffect
 ### UseAverage
 <div class="variable-block" markdown="block">
 
-Determines if FFT values are averaged
+Determines if FFT values are averaged.
 
 **Required:** No<br>
 **Default value:**
@@ -41,7 +41,7 @@ true
 ### MinimumFrequency
 <div class="variable-block" markdown="block">
 
-Mimimum frequency for FFT
+Mimimum frequency for FFT.
 
 **Required:** No<br>
 **Default value:**
@@ -58,7 +58,7 @@ Mimimum frequency for FFT
 ### MaximumFrequency
 <div class="variable-block" markdown="block">
 
-Maximum frequency for FFT
+Maximum frequency for FFT.
 
 **Required:** No<br>
 **Default value:**
@@ -75,7 +75,7 @@ Maximum frequency for FFT
 ### ScalingStrategy
 <div class="variable-block" markdown="block">
 
-FFT value scaling function
+FFT value scaling function.
 
 **Allowed values:** `"Decibel"`, `"Linear"`, `"Sqrt"`
 {: .notice--warning}
@@ -95,9 +95,9 @@ FFT value scaling function
 ### ScalingFactor
 <div class="variable-block" markdown="block">
 
-FFT scaling scaling factor
+FFT scaling scaling factor.
 
-**Note:** Used for `"Linear"` and `"Sqrt"` [ScalingStrategy](#scalingstrategy)
+**Note:** Used for `"Linear"` and `"Sqrt"` [ScalingStrategy](#scalingstrategy).
 {: .notice--info}
 
 **Required:** No<br>
@@ -115,9 +115,9 @@ FFT scaling scaling factor
 ### ColorGradient
 <div class="variable-block" markdown="block">
 
-A [Led Color Gradient]({{ "/common/led-color-gradient" | relative_url }}) to translate FFT values to led colors
+A [Led Color Gradient]({{ "/common/led-color-gradient" | relative_url }}) to translate FFT values to led colors.
 
-**Note:** The gradient `<location>` values are FFT values from `0.0` to `1.0`
+**Note:** The gradient `<location>` values are FFT values from `0.0` to `1.0`.
 {: .notice--info}
 
 **Required:** **Yes**<br>

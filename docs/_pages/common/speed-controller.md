@@ -17,7 +17,7 @@ permalink: /common/speed-controller
 ### Type
 <div class="variable-block" markdown="block">
 
-Name of the speed controller
+Name of the speed controller.
 
 **Required:** **Yes**<br>
 **Default value:**
@@ -33,12 +33,12 @@ Name of the speed controller
 ### Config
 <div class="variable-block" markdown="block">
 
-Config of the speed controller
+Config of the speed controller.
 
-**Note:** The config has to have a required [Trigger]({{ "/common/trigger" | relative_url }}) set to the `Trigger` variable
+**Important:** The config has to have a required [Trigger]({{ "/common/trigger" | relative_url }}) set to the `Trigger` variable.
 {: .notice--warning}
 
-**Note:** See page of the speed controller you are configuring for detailed documentation
+**Note:** See page of the speed controller you are configuring for detailed documentation.
 {: .notice--info}
 
 **Required:** **Yes**<br>

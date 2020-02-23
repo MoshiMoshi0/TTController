@@ -19,7 +19,7 @@ permalink: /effects/fullcoloreffect
 ### Colors
 <div class="variable-block" markdown="block">
 
-Static [Led Color]({{ "/common/led-color" | relative_url }}) to set on all leds
+Static [Led Color]({{ "/common/led-color" | relative_url }}) to set on all leds.
 
 **Required:** **Yes**<br>
 **Default value:**
