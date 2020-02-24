@@ -39,10 +39,8 @@ docs:
         url: /speed-controllers/dpsgspeedcontroller
   - title: Effects
     children:
-      - title: PerLedColorEffect
-        url: /effects/perledcoloreffect
-      - title: FullColorEffect
-        url: /effects/fullcoloreffect
+      - title: StaticColorEffect
+        url: /effects/staticcoloreffect
       - title: BlinkEffect
         url: /effects/blinkeffect
       - title: FlowEffect
