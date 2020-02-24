@@ -42,9 +42,10 @@ namespace TTController.Plugin.FlowEffect
             var lastColor = LedColor.FromHsv(_lastHue, Config.Saturation, Config.Brightness);
             var currentColor = LedColor.FromHsv(_currentHue, Config.Saturation, Config.Brightness);
 
-            var result = new Dictionary<PortIdentifier, List<LedColor>>();
             if(Config.ColorGenerationMethod == ColorGenerationMethod.PerPort)
             {
+                var result = new Dictionary<PortIdentifier, List<LedColor>>();
+
                 foreach (var port in ports)
                 {
                     var ledCount = cache.GetDeviceConfig(port).LedCount;
@@ -59,9 +60,12 @@ namespace TTController.Plugin.FlowEffect
 
                     result.Add(port, colors);
                 }
+
+                return result;
             }
             else if(Config.ColorGenerationMethod == ColorGenerationMethod.SpanPorts)
             {
+                var result = new Dictionary<PortIdentifier, List<LedColor>>();
                 var totalLedCount = ports.Select(p => cache.GetDeviceConfig(p).LedCount).Sum();
 
                 var colors = new List<LedColor>();
@@ -80,9 +84,11 @@ namespace TTController.Plugin.FlowEffect
                     result.Add(port, colors.Skip(offset).Take(ledCount).ToList());
                     offset += ledCount;
                 }
+
+                return result;
             }
 
-            return result;
+            return null;
         }
     }
 }

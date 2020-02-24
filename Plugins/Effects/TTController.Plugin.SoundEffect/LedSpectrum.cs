@@ -20,10 +20,11 @@ namespace TTController.Plugin.SoundEffect
             List<PortIdentifier> ports, ICacheProvider cache, float[] fftBuffer)
         {
             var points = CalculateSpectrumPoints(1.0, fftBuffer);
-            var result = new Dictionary<PortIdentifier, List<LedColor>>();
 
             if (generationMethod == ColorGenerationMethod.PerPort)
             {
+                var result = new Dictionary<PortIdentifier, List<LedColor>>();
+
                 foreach (var port in ports)
                 {
                     var config = cache.GetPortConfig(port);
@@ -35,6 +36,7 @@ namespace TTController.Plugin.SoundEffect
             }
             else if (generationMethod == ColorGenerationMethod.SpanPorts)
             {
+                var result = new Dictionary<PortIdentifier, List<LedColor>>();
                 var totalLedCount = ports.Select(p => cache.GetDeviceConfig(p).LedCount).Sum();
                 var colors = GenerateColorSpectrum(totalLedCount, points);
 

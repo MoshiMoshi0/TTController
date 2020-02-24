@@ -32,19 +32,22 @@ namespace TTController.Plugin.WaveEffect
                 _rotation++;
             }
 
-            var result = new Dictionary<PortIdentifier, List<LedColor>>();
-
             if (Config.ColorGenerationMethod == ColorGenerationMethod.PerPort)
             {
+                var result = new Dictionary<PortIdentifier, List<LedColor>>();
+
                 foreach (var port in ports)
                 {
                     var ledCount = cache.GetDeviceConfig(port).LedCount;
                     var colors = Config.Color.Get(ledCount).RotateRight(_rotation % cache.GetDeviceConfig(port).LedCount).ToList();
                     result.Add(port, colors);
                 }
+
+                return result;
             }
             else if (Config.ColorGenerationMethod == ColorGenerationMethod.SpanPorts)
             {
+                var result = new Dictionary<PortIdentifier, List<LedColor>>();
                 var totalLedCount = ports.Select(p => cache.GetDeviceConfig(p).LedCount).Sum();
                 var colors = Config.Color.Get(totalLedCount).RotateRight(_rotation % totalLedCount);
 
@@ -55,9 +58,11 @@ namespace TTController.Plugin.WaveEffect
                     result.Add(port, colors.Skip(offset).Take(ledCount).ToList());
                     offset += ledCount;
                 }
+
+                return result;
             }
 
-            return result;
+            return null;
         }
     }
 }
