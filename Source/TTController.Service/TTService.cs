@@ -106,7 +106,7 @@ namespace TTController.Service
             _timerManager.RegisterTimer(_config.DeviceSpeedTimerInterval, DeviceSpeedTimerCallback);
             _timerManager.RegisterTimer(_config.DeviceRgbTimerInterval, DeviceRgbTimerCallback);
             if(LogManager.Configuration.LoggingRules.Any(r => r.IsLoggingEnabledForLevel(LogLevel.Debug)))
-                _timerManager.RegisterTimer(_config.LoggingTimerInterval, LoggingTimerCallback);
+                _timerManager.RegisterTimer(_config.DebugTimerInterval, DebugTimerCallback);
 
             _timerManager.Start();
 
@@ -486,7 +486,7 @@ namespace TTController.Service
             return true;
         }
 
-        public bool LoggingTimerCallback()
+        public bool DebugTimerCallback()
         {
             foreach (var profile in _config.Profiles)
             {
