@@ -49,7 +49,9 @@ namespace TTController.Plugin.RazerConnectEffect
 
         public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
         {
-            return ports.ToDictionary(p => p, _ => _colors.ToList());
+            // The first LED can/should be ignored in devices with more than one LED, 
+            // which is the case for ThermalTake products.
+            return ports.ToDictionary(p => p, _ => _colors.Skip(1).ToList());
         }
 
         protected override void Dispose(bool disposing)
