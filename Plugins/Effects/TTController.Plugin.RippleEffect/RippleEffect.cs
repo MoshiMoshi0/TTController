@@ -10,7 +10,8 @@ namespace TTController.Plugin.RippleEffect
     {
         [DefaultValue(5)] public int Length { get; internal set; } = 5;
         [DefaultValue(3)] public int TickInterval { get; internal set; } = 3;
-        public LedColorProvider Color { get; internal set; } = new LedColorProvider();
+        public LedColorProvider RippleColor { get; internal set; } = new LedColorProvider();
+        public LedColorProvider BackgroundColor { get; internal set; } = new LedColorProvider();
     }
 
     public class RippleEffect : EffectBase<RippleEffectConfig>
@@ -53,12 +54,19 @@ namespace TTController.Plugin.RippleEffect
                 var colors = GenerateColors(totalLedCount);
 
                 var offset = 0;
-                foreach (var port in ports)
+                for (var i = 0; i < ports.Count; i++)
                 {
+                    var port = ports[i];
                     var ledCount = cache.GetDeviceConfig(port).LedCount;
-                    result.Add(port, colors.Skip(offset).Take(ledCount).ToList());
-                    offset += ledCount;
+                    var halfLedCount = ledCount / 2;
+
+                    var topColors = colors.Skip(offset).Take(halfLedCount);
+                    var bottomColors = colors.Skip(colors.Count - offset - halfLedCount).Take(halfLedCount);
+                    result.Add(port, topColors.Concat(bottomColors).ToList());
+
+                    offset += halfLedCount;
                 }
+
 
                 return result;
             }
@@ -70,14 +78,11 @@ namespace TTController.Plugin.RippleEffect
         {
             int Wrap(int a, int b) => (a % b + b) % b;
 
-            var off = new LedColor(0, 0, 0);
-
-            var colors = Enumerable.Range(0, size).Select(_ => off).ToList();
+            var colors = Config.BackgroundColor.Get(size).ToList();
             for (var i = 0; i < Config.Length; i++)
             {
                 var idx = Wrap(_rotation - i, size);
-                var color = Config.Color.Get(idx, size);
-                colors[idx] = color.SetValue(color.GetValue() * (Config.Length - i - 1) / (Config.Length - 1));
+                colors[idx] = Config.RippleColor.Get(i, Config.Length);
             }
 
             return colors;
