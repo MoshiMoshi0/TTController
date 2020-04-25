@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration.Install;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.ServiceProcess;
 using LibreHardwareMonitor.Hardware;
+using Microsoft.Win32;
 using NLog;
 using TTController.Common;
 using TTController.Common.Plugin;
@@ -190,6 +192,23 @@ namespace TTController.Service
                 Console.ReadKey();
             }
 
+            void ListInfo()
+            {
+                WriteHeader("Info");
+                WriteProperty(0, "");
+
+                var osName = Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion", "ProductName", null)?.ToString() ?? string.Empty;
+                var osReleaseId = Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion", "ReleaseId", null)?.ToString() ?? string.Empty;
+                var osBuild = Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion", "BuildLabEx", null)?.ToString() ?? string.Empty;
+                var appVersion = FileVersionInfo.GetVersionInfo(Assembly.GetCallingAssembly().Location)?.ProductVersion;
+
+                WriteProperty(1, "OS: ", $"{osName} {osReleaseId} [{osBuild}]");
+                WriteProperty(1, "Build: ", appVersion);
+
+                WriteProperty(0, "");
+                WriteFooter();
+            }
+
             void ListControllers()
             {
                 WriteHeader("Controllers");
@@ -289,6 +308,7 @@ namespace TTController.Service
             var menu = new MenuPage("Main Menu > Debug");
             menu.Add("Report", () => {
                 Console.Clear();
+                ListInfo();
                 ListControllers();
                 ListSensors(SensorType.Temperature);
                 WaitForInput();
