@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace TTController.Common
@@ -31,7 +32,7 @@ namespace TTController.Common
         public LedColor GetColor(double location)
         {
             var (r, g, b) = GetColorSmooth(location);
-            return new LedColor((byte)r, (byte)g, (byte)b);
+            return new LedColor((byte)Math.Round(r), (byte)Math.Round(g), (byte)Math.Round(b));
         }
 
         public (double, double, double) GetColorSmooth(double location)

@@ -59,7 +59,7 @@ namespace TTController.Common
         public static LedColor Lerp(double t, LedColor from, LedColor to)
         {
             var (r, g, b) = LerpSmooth(t, from, to);
-            return new LedColor((byte)r, (byte)g, (byte)b);
+            return new LedColor((byte)Math.Round(r), (byte)Math.Round(b), (byte)Math.Round(b));
         }
 
         public static (double, double, double) LerpSmooth(double t, LedColor from, LedColor to)
@@ -103,10 +103,10 @@ namespace TTController.Common
             var f = hue / 60 - Math.Floor(hue / 60);
 
             value *= 255;
-            var v = (byte) (value);
-            var p = (byte) (value * (1 - saturation));
-            var q = (byte) (value * (1 - f * saturation));
-            var t = (byte) (value * (1 - (1 - f) * saturation));
+            var v = (byte) Math.Round((value));
+            var p = (byte) Math.Round((value * (1 - saturation)));
+            var q = (byte) Math.Round((value * (1 - f * saturation)));
+            var t = (byte) Math.Round((value * (1 - (1 - f) * saturation)));
 
             switch (hi)
             {
