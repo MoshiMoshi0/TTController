@@ -10,41 +10,24 @@ namespace TTController.Plugin.AuroraEffect
 {
     public class AuroraEffectConfig : EffectConfigBase
     {
-        [DefaultValue(3)] public int TickInterval { get; internal set; } = 1;
-        [DefaultValue(32)] public int Length { get; internal set; } = 64;
+        [DefaultValue(0.003f)] public float Step { get; internal set; } = 0.003f;
+        [DefaultValue(64)] public int Length { get; internal set; } = 64;
+        [DefaultValue(false)] public bool Mirror { get; internal set; } = false;
+        [DefaultValue(1)] public float Brightness { get; internal set; } = 1;
+        [DefaultValue(1)] public float Saturation { get; internal set; } = 1;
         [DefaultValue(null)] public LedColorGradient Gradient { get; internal set; } = null;
     }
 
     public class AuroraEffect : EffectBase<AuroraEffectConfig>
     {
-        private int _tick;
-        private int _rotation;
+        private float _rotation;
 
         public AuroraEffect(AuroraEffectConfig config) : base(config)
         {
             if (Config.Gradient == null)
             {
-                LedColor GetColor(int index)
-                {
-                    var normalizedIndex = index / (float)Config.Length;
-                    var component = (int) Math.Floor(normalizedIndex * 6);
-                    var value = (normalizedIndex - component / 6f) * 6;
-
-                    if (component % 2 == 1)
-                        value = 1 - value;
-
-                    var byteValue = (byte)Math.Round(value * 255);
-                    if (component == 0) return new LedColor(255, byteValue, 0);
-                    else if (component == 1) return new LedColor(byteValue, 255, 0);
-                    else if (component == 2) return new LedColor(0, 255, byteValue);
-                    else if (component == 3) return new LedColor(0, byteValue, 255);
-                    else if (component == 4) return new LedColor(byteValue, 0, 255);
-                    else if (component == 5) return new LedColor(255, 0, byteValue);
-
-                    return new LedColor();
-                }
-
-                var colors = Enumerable.Range(0, Config.Length).Select(GetColor);
+                var colors = Enumerable.Range(0, Config.Length)
+                    .Select(x => LedColor.FromHsv(x / (Config.Length - 1f) * 360, Config.Saturation, Config.Brightness));
                 Config.Gradient = new LedColorGradient(colors);
             }
         }
@@ -53,19 +36,7 @@ namespace TTController.Plugin.AuroraEffect
 
         public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
         {
-            int Wrap(int a, int b) => (a % b + b) % b;
-            List<LedColor> CalculateColors(int length) =>
-                Enumerable.Range(-length / 2, length)
-                        .Select(x => Wrap(x + _rotation, Config.Length))
-                        .Select(x => Config.Gradient.GetColor((float)x / Config.Length))
-                        .ToList();
-
-            if (_tick++ >= Config.TickInterval)
-            {
-                _tick = 0;
-                _rotation++;
-            }
-
+            _rotation += Config.Step;
             if (Config.ColorGenerationMethod == ColorGenerationMethod.PerPort)
             {
                 var result = new Dictionary<PortIdentifier, List<LedColor>>();
@@ -73,7 +44,8 @@ namespace TTController.Plugin.AuroraEffect
                 foreach (var port in ports)
                 {
                     var ledCount = cache.GetDeviceConfig(port).LedCount;
-                    result.Add(port, CalculateColors(ledCount));
+                    var colors = GenerateColors(ledCount, 0);
+                    result.Add(port, colors);
                 }
 
                 return result;
@@ -81,21 +53,49 @@ namespace TTController.Plugin.AuroraEffect
             else if (Config.ColorGenerationMethod == ColorGenerationMethod.SpanPorts)
             {
                 var result = new Dictionary<PortIdentifier, List<LedColor>>();
-                var totalLedCount = ports.Select(p => cache.GetDeviceConfig(p).LedCount).Sum();
-                var colors = CalculateColors(totalLedCount);
 
                 var offset = 0;
                 foreach (var port in ports)
                 {
                     var ledCount = cache.GetDeviceConfig(port).LedCount;
-                    result.Add(port, colors.Skip(offset).Take(ledCount).ToList());
-                    offset += ledCount;
+                    var colors = GenerateColors(ledCount, offset);
+                    result.Add(port, colors);
+                    offset += Config.Mirror ? ledCount / 2 : ledCount;
                 }
 
                 return result;
             }
 
             return null;
+        }
+
+        private List<LedColor> GenerateColors(int ledCount, int offset, bool oddDivide = true)
+        {
+            float Wrap(float a, float b) => (a % b + b) % b;
+            LedColor GetColor(int i) => Config.Gradient.GetColor(Wrap((float)(offset + i) / Config.Length + _rotation, 1));
+
+            if (Config.Mirror)
+            {
+                var colors = Enumerable.Range(0, ledCount).Select(_ => new LedColor()).ToList();
+                var isOdd = ledCount % 2 != 0;
+                var halfCount = ledCount / 2 + (oddDivide || isOdd ? 0 : -1);
+                for (var i = 0; i <= halfCount; i++)
+                {
+                    var color = GetColor(i);
+                    colors[i] = color;
+                    if (!oddDivide && !isOdd)
+                        colors[ledCount - i - 1] = color;
+                    else if (i != 0 && (i != ledCount / 2 || isOdd))
+                        colors[ledCount - i] = color;
+                }
+
+                return colors;
+            }
+            else
+            {
+                return Enumerable.Range(0, ledCount).Select(GetColor).ToList();
+            }
+
         }
     }
 }
