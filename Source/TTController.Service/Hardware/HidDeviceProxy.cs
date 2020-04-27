@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using HidLibrary;
+using HidSharp;
 using NLog;
 using TTController.Common;
 
@@ -12,26 +12,40 @@ namespace TTController.Service.Hardware
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly HidDevice _device;
+        private readonly HidStream _stream;
+        private bool _opened;
 
-        public int VendorId => _device.Attributes.VendorId;
-        public int ProductId => _device.Attributes.ProductId;
+        public int VendorId => _device.VendorID;
+        public int ProductId => _device.ProductID;
 
         public HidDeviceProxy(HidDevice device)
         {
             _device = device;
+            _opened = device.TryOpen(out _stream);
+
+            _stream.ReadTimeout = 1000;
+            _stream.WriteTimeout = 1000;
         }
 
         public bool WriteBytes(params byte[] bytes)
         {
-            if (bytes.Length == 0)
+            if (!_opened || bytes.Length == 0)
                 return false;
 
-            var data = new byte[_device.Capabilities.OutputReportByteLength];
-            Array.Copy(bytes, 0, data, 1, Math.Min(bytes.Length, _device.Capabilities.OutputReportByteLength - 1));
+            var data = new byte[_device.GetMaxOutputReportLength()];
+            Array.Copy(bytes, 0, data, 1, Math.Min(bytes.Length, _device.GetMaxOutputReportLength() - 1));
 
-            Logger.Trace("W[{vid}, {pid}] {data:X2}", _device.Attributes.VendorId, _device.Attributes.ProductId, data);
-
-            return _device.Write(data, 1000);
+            try
+            {
+                _stream.Write(data);
+                Logger.Trace("W[{vid}, {pid}] {data:X2}", VendorId, ProductId, data);
+                return true;
+            }
+            catch (Exception e)
+            {
+                Logger.Fatal(e, "Failed to write to [{0}, {1}]!", VendorId, ProductId);
+                return false;
+            }
         }
 
         public bool WriteBytes(IEnumerable<byte> bytes) =>
@@ -39,15 +53,20 @@ namespace TTController.Service.Hardware
 
         public byte[] ReadBytes()
         {
-            var data = _device.Read(1000);
-            if (data.Status != HidDeviceData.ReadStatus.Success) {
-                Logger.Warn("Read from [{0}, {1}] failed with status \"{2}\"!", _device.Attributes.VendorId, _device.Attributes.ProductId, data.Status);
+            if (!_opened)
+                return null;
+
+            try
+            {
+                var data = _stream.Read();
+                Logger.Trace("R[{vid}, {pid}] {data:X2}", VendorId, ProductId, data);
+                return data;
+            }
+            catch (Exception e)
+            {
+                Logger.Fatal(e, "Failed to read from [{0}, {1}]!", VendorId, ProductId);
                 return null;
             }
-
-            Logger.Trace("R[{vid}, {pid}] {data:X2}", _device.Attributes.VendorId, _device.Attributes.ProductId, data.Data);
-
-            return data.Data;
         }
 
         public byte[] WriteReadBytes(params byte[] bytes)
@@ -60,18 +79,10 @@ namespace TTController.Service.Hardware
         public byte[] WriteReadBytes(IEnumerable<byte> bytes) =>
             WriteReadBytes(bytes.ToArray());
 
-        public byte[] ReadReport(byte reportId)
+        protected virtual void Dispose(bool disposing)
         {
-            var report = _device.ReadReportSync(reportId);
-            if (report.ReadStatus != HidDeviceData.ReadStatus.Success)
-                return null;
-
-            return report.Data;
-        }
-
-        protected virtual void Dispose(bool disposing) 
-        {
-            _device?.Dispose();
+            _stream?.Dispose();
+            _opened = false;
         }
 
         public void Dispose()

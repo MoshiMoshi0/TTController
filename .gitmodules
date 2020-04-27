@@ -1,7 +1,3 @@
-[submodule "HidLibrary"]
-	path = ThirdParty/HidLibrary
-	url = https://github.com/MoshiMoshi0/HidLibrary.git
-	branch = develop
 [submodule "LibreHardwareMonitor"]
 	path = ThirdParty/LibreHardwareMonitor
 	url = https://github.com/MoshiMoshi0/LibreHardwareMonitor.git

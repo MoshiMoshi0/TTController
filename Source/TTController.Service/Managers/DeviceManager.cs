@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using HidLibrary;
+using HidSharp;
 using NLog;
 using TTController.Common;
 using TTController.Common.Plugin;
@@ -32,16 +32,16 @@ namespace TTController.Service.Managers
             foreach (var definition in definitions)
             {
                 Logger.Debug("Searching for \"{0}\" controllers", definition.Name);
-                var detectedDevices = HidDevices.Enumerate(definition.VendorId, definition.ProductIds.ToArray());
+                var detectedDevices = DeviceList.Local.GetHidDevices().Where(d => d.VendorID == definition.VendorId && definition.ProductIds.Contains(d.ProductID));
                 var detectedCount = detectedDevices.Count();
 
                 if (detectedCount == 0)
                     continue;
 
                 if (detectedCount == 1)
-                    Logger.Trace("Found 1 controller [{vid}, {pid}]", definition.VendorId, detectedDevices.Select(d => d.Attributes.ProductId).First());
+                    Logger.Trace("Found 1 controller [{vid}, {pid}]", definition.VendorId, detectedDevices.Select(d => d.ProductID).First());
                 else
-                    Logger.Trace("Found {count} controllers [{vid}, [{pids}]]", detectedCount, definition.VendorId, detectedDevices.Select(d => d.Attributes.ProductId));
+                    Logger.Trace("Found {count} controllers [{vid}, [{pids}]]", detectedCount, definition.VendorId, detectedDevices.Select(d => d.ProductID));
 
                 foreach (var device in detectedDevices)
                 {
@@ -49,13 +49,13 @@ namespace TTController.Service.Managers
                     var controller = (IControllerProxy)Activator.CreateInstance(definition.ControllerProxyType, deviceProxy, definition);
                     if (!controller.Init())
                     {
-                        Logger.Warn("Failed to initialize \"{0}\" controller! [{1}, {2}]", definition.Name, device.Attributes.VendorHexId, device.Attributes.ProductHexId);
+                        Logger.Warn("Failed to initialize \"{0}\" controller! [{1}, {2}]", definition.Name, device.VendorID, device.ProductID);
 
                         deviceProxy.Dispose();
                         continue;
                     }
 
-                    Logger.Info("Initialized \"{0}\" controller [{1}, {2}]", definition.Name, device.Attributes.VendorHexId, device.Attributes.ProductHexId);
+                    Logger.Info("Initialized \"{0}\" controller [{1}, {2}]", definition.Name, device.VendorID, device.ProductID);
 
                     devices.Add(deviceProxy);
                     controllers.Add(controller);
