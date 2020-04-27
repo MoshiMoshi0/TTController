@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -10,7 +9,6 @@ using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.GitVersion;
-using Nuke.Common.Tools.MSBuild;
 using Nuke.Common.Utilities.Collections;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
@@ -72,8 +70,8 @@ class Build : NukeBuild
             DotNetBuild(s => s
                 .SetProjectFile(Solution)
                 .SetConfiguration(Configuration)
-                .SetAssemblyVersion(GitVersion.GetNormalizedAssemblyVersion())
-                .SetFileVersion(GitVersion.GetNormalizedFileVersion())
+                .SetAssemblyVersion(GitVersion.AssemblySemVer)
+                .SetFileVersion(GitVersion.AssemblySemFileVer)
                 .SetInformationalVersion(GitVersion.InformationalVersion)
                 .EnableNoRestore());
 
@@ -91,7 +89,7 @@ class Build : NukeBuild
                                              f => fileBlacklist.Contains(Path.GetFileNameWithoutExtension(f.Name)) || !extensionWhitelist.Contains(Path.GetExtension(f.Name)));
                 });
 
-            CopyDirectoryRecursively(PluginsDirectory / "Devices", ServiceBinPath / "Plugins" / "Devices", DirectoryExistsPolicy.Merge, FileExistsPolicy.OverwriteIfNewer); 
+            CopyDirectoryRecursively(PluginsDirectory / "Devices", ServiceBinPath / "Plugins" / "Devices", DirectoryExistsPolicy.Merge, FileExistsPolicy.OverwriteIfNewer);
         });
 
     Target Pack => _ => _
@@ -112,7 +110,7 @@ class Build : NukeBuild
     private static void ZipFiles(string outFile, string workingDirectory, IEnumerable<string> files)
     {
         using (var zip = ZipFile.Open(outFile, ZipArchiveMode.Create))
-            foreach(var file in files)
+            foreach (var file in files)
                 zip.CreateEntryFromFile(file, Path.GetRelativePath(workingDirectory, file), CompressionLevel.Optimal);
     }
 }
