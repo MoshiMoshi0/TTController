@@ -1,4 +1,4 @@
 [submodule "LibreHardwareMonitor"]
 	path = ThirdParty/LibreHardwareMonitor
-	url = https://github.com/MoshiMoshi0/LibreHardwareMonitor.git
+	url = https://github.com/LibreHardwareMonitor/LibreHardwareMonitor.git
 	branch = develop
