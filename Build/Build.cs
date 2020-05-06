@@ -76,7 +76,7 @@ class Build : NukeBuild
                 .EnableNoRestore());
 
             // Copy plugin files to service bin path      
-            var fileBlacklist = new[] { "TTController.Common", "LibreHardwareMonitorLib", "HidLibrary", "Newtonsoft.Json" };
+            var fileBlacklist = new[] { "TTController.Common", "LibreHardwareMonitorLib", "HidSharp", "Newtonsoft.Json" };
             var extensionWhitelist = Configuration == Configuration.Debug ? new[] { ".pdb", ".dll" } : new[] { ".dll" };
             Solution.GetProjects("TTController.Plugin.*")
                 .ForEach(p =>
