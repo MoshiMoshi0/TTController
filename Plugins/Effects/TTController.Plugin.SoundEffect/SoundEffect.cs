@@ -49,8 +49,11 @@ namespace TTController.Plugin.SoundEffect
             }
             catch (Exception e)
             {
+                Logger.Debug(e, "Failed to initialize WasapiLoopbackCapture!");
                 return false;
             }
+
+            Logger.Debug($"Initialized WasapiLoopbackCapture on \"{_soundIn.Device.FriendlyName}\"");
 
             var soundInSource = new SoundInSource(_soundIn);
             var sampleSource = soundInSource.ToSampleSource();
