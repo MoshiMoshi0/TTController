@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -95,7 +94,6 @@ namespace TTController.Plugin.AuroraEffect
             {
                 return Enumerable.Range(0, ledCount).Select(GetColor).ToList();
             }
-
         }
     }
 }

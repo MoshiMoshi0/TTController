@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace TTController.Common
 {
@@ -103,10 +103,10 @@ namespace TTController.Common
             var f = hue / 60 - Math.Floor(hue / 60);
 
             value *= 255;
-            var v = (byte) Math.Round((value));
-            var p = (byte) Math.Round((value * (1 - saturation)));
-            var q = (byte) Math.Round((value * (1 - f * saturation)));
-            var t = (byte) Math.Round((value * (1 - (1 - f) * saturation)));
+            var v = (byte) Math.Round(value);
+            var p = (byte) Math.Round(value * (1 - saturation));
+            var q = (byte) Math.Round(value * (1 - f * saturation));
+            var t = (byte) Math.Round(value * (1 - (1 - f) * saturation));
 
             switch (hi)
             {

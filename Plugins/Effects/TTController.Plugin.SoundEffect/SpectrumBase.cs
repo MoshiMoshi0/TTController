@@ -119,8 +119,8 @@ namespace TTController.Plugin.SoundEffect
 
         protected struct SpectrumPointData
         {
-            public int SpectrumPointIndex { get; private set; }
-            public double Value { get; private set; }
+            public int SpectrumPointIndex { get; }
+            public double Value { get; }
 
             public SpectrumPointData(int spectrumPointIndex, double value)
             {
