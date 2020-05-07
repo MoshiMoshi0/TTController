@@ -86,11 +86,8 @@ namespace TTController.Service.Managers
             var alpha = Math.Exp(-_config.SensorTimerInterval / (double)_config.DeviceSpeedTimerInterval);
             sensorValueProvider = new MovingAverageSensorValueDecorator(sensorValueProvider, alpha);
 
-            if (_sensorConfigs.TryGetValue(sensor.Identifier, out var config))
-            {
-                if (config.Offset.HasValue)
-                    sensorValueProvider = new OffsetSensorValueDecorator(sensorValueProvider, config.Offset.Value);
-            }
+            if (_sensorConfigs.TryGetValue(sensor.Identifier, out var config) && config.Offset.HasValue)
+                sensorValueProvider = new OffsetSensorValueDecorator(sensorValueProvider, config.Offset.Value);
 
             return sensorValueProvider;
         }
