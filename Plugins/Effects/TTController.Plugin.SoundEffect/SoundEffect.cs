@@ -69,7 +69,7 @@ namespace TTController.Plugin.SoundEffect
             var buffer = new byte[waveSource.WaveFormat.BytesPerSecond / 2];
             soundInSource.DataAvailable += (s, e) => { while (waveSource.Read(buffer, 0, buffer.Length) > 0) ; };
 
-            _spectrum = new LedSpectrum(GenerateColor)
+            _spectrum = new LedSpectrum(Config.ColorGradient)
             {
                 FftSize = fftSize,
                 SpectrumProvider = _spectrumProvider,
@@ -78,11 +78,9 @@ namespace TTController.Plugin.SoundEffect
                 MaximumFrequency = Config.MaximumFrequency,
                 ScalingStrategy = Config.ScalingStrategy,
                 ScalingFactor = Config.ScalingFactor,
-                IsXLogScale = false,
-                SpectrumResolution = (int)fftSize
+                IsXLogScale = false
             };
 
-            _spectrum.UpdateFrequencyMapping();
             _soundIn.Start();
 
             _initialized = true;
@@ -96,9 +94,6 @@ namespace TTController.Plugin.SoundEffect
 
             return _spectrum.GenerateColors(Config.ColorGenerationMethod, ports, cache, _fftBuffer);
         }
-
-        public LedColor GenerateColor(double fftValue) =>
-            Config.ColorGradient.GetColor(fftValue);
 
         protected override void Dispose(bool disposing)
         {
