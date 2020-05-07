@@ -37,4 +37,9 @@
     <ProjectReference Include="..\..\ThirdParty\LibreHardwareMonitor\LibreHardwareMonitorLib\LibreHardwareMonitorLib.csproj" />
     <ProjectReference Include="..\TTController.Common\TTController.Common.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update="App.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>
