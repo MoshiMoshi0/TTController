@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using LibreHardwareMonitor.Hardware;
+using NLog;
 
 namespace TTController.Common.Plugin
 {
     public abstract class EffectBase<T> : IEffectBase where T : EffectConfigBase
     {
+        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         protected T Config { get; private set; }
         public IEnumerable<Identifier> UsedSensors { get; private set; }
 
