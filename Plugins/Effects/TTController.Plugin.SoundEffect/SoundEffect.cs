@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using CSCore;
 using CSCore.DSP;
@@ -21,15 +22,35 @@ namespace TTController.Plugin.SoundEffect
 
     public class SoundEffect : EffectBase<SoundEffectConfig>
     {
-        private readonly float[] _fftBuffer;
-        private readonly SpectrumProvider _spectrumProvider;
-        private readonly WasapiLoopbackCapture _soundIn;
-        private readonly LedSpectrum _spectrum;
+        private float[] _fftBuffer;
+        private SpectrumProvider _spectrumProvider;
+        private WasapiLoopbackCapture _soundIn;
+        private LedSpectrum _spectrum;
+        private bool _initialized;
 
         public SoundEffect(SoundEffectConfig config) : base(config)
         {
-            _soundIn = new WasapiLoopbackCapture();
-            _soundIn.Initialize();
+            _initialized = false;
+            Initialize();
+        }
+
+        public override string EffectType => "PerLed";
+        public override bool IsEnabled(ICacheProvider cache) => Initialize() && base.IsEnabled(cache);
+
+        private bool Initialize()
+        {
+            if (_initialized)
+                return true;
+
+            try
+            {
+                _soundIn = new WasapiLoopbackCapture();
+                _soundIn.Initialize();
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
 
             var soundInSource = new SoundInSource(_soundIn);
             var sampleSource = soundInSource.ToSampleSource();
@@ -55,14 +76,15 @@ namespace TTController.Plugin.SoundEffect
                 ScalingStrategy = Config.ScalingStrategy,
                 ScalingFactor = Config.ScalingFactor,
                 IsXLogScale = false,
-                SpectrumResolution = (int) fftSize
+                SpectrumResolution = (int)fftSize
             };
 
             _spectrum.UpdateFrequencyMapping();
             _soundIn.Start();
-        }
 
-        public override string EffectType => "PerLed";
+            _initialized = true;
+            return true;
+        }
 
         public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
         {
