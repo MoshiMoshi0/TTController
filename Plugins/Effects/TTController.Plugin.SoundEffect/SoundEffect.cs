@@ -27,6 +27,7 @@ namespace TTController.Plugin.SoundEffect
         private WasapiLoopbackCapture _soundIn;
         private LedSpectrum _spectrum;
         private bool _initialized;
+        private int _lastInitializeTickCount;
 
         public SoundEffect(SoundEffectConfig config) : base(config)
         {
@@ -41,6 +42,11 @@ namespace TTController.Plugin.SoundEffect
         {
             if (_initialized)
                 return true;
+
+            var currentTicks = Environment.TickCount;
+            if (currentTicks - _lastInitializeTickCount < 1000)
+                return false;
+            _lastInitializeTickCount = currentTicks;
 
             try
             {
