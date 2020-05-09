@@ -34,20 +34,29 @@ namespace TTController.Plugin.RazerConnectEffect
 
         private void OnColorUpdate(object sender, RzBroadcastColorChangedEventArgs e)
         {
+            Logger.Trace("Razer broadcast colors updated");
             for (var i = 0; i < _colors.Length; i++)
                 _colors[i] = LedColor.Unpack(e.Colors[i]);
         }
 
         private void OnConnectionUpdate(object sender, RzBroadcastConnectionChangedEventArgs e)
         {
+            Logger.Trace("Razer broadcast connection changed: {0}", e.Connected);
             _connected = e.Connected;
         }
 
         public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
         {
-            // The first LED can/should be ignored in devices with more than one LED, 
-            // which is the case for ThermalTake products.
-            return ports.ToDictionary(p => p, _ => _colors.Skip(1).ToList());
+            var result = new Dictionary<PortIdentifier, List<LedColor>>();
+            foreach(var port in ports)
+            {
+                if (cache.GetDeviceConfig(port).LedCount == 1)
+                    result.Add(port, _colors.Take(1).ToList());
+                else
+                    result.Add(port, _colors.Skip(1).ToList());
+            }
+
+            return result;
         }
 
         protected override void Dispose(bool disposing)
