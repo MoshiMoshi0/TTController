@@ -101,7 +101,7 @@ Effect type to set the devices to when the profile is enabled.
 
 A [Led Color Provider]({{ "/common/led-color-provider" | relative_url }}) object.
 
-**Required:** **Yes**<br>
+**Required:** **Yes** if [EffectType](#effecttype) is set<br>
 **Default value:**
 ~~~
 ~~~

@@ -80,7 +80,7 @@ A [Led Color Provider]({{ "/common/led-color-provider" | relative_url }}) object
 
 A [Led Color Provider]({{ "/common/led-color-provider" | relative_url }}) object for the background.
 
-**Required:** **Yes**<br>
+**Required:** No<br>
 **Default value:**
 ~~~
 ~~~
