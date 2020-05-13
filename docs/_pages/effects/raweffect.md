@@ -50,7 +50,7 @@ A [Led Color Provider]({{ "/common/led-color-provider" | relative_url }}) object
 ~~~
 **Example:**
 ~~~
-"Color": {
+{
     "Gradient": [
         [0, [255, 0, 0]],
         [0.5, [0, 255, 0]],
