@@ -7,7 +7,10 @@ permalink: /effects/staticcoloreffect
 
 ~~~
 {
-    "Color": <LedColorProvider>
+    "Type": "StaticColorEffect",
+    "Config": {
+        "Color": <LedColorProvider>
+    }
 }
 ~~~
 
