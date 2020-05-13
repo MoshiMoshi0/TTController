@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TTController.Common;
+using TTController.Common.Plugin;
 
 namespace TTController.Plugin.SoundEffect
 {
@@ -40,22 +41,12 @@ namespace TTController.Plugin.SoundEffect
             }
             else if (generationMethod == ColorGenerationMethod.SpanPorts)
             {
-                var result = new Dictionary<PortIdentifier, List<LedColor>>();
                 var totalLedCount = ports.Select(p => cache.GetDeviceConfig(p).LedCount).Sum();
 
                 UpdateFrequencyMappingIfNecessary(totalLedCount);
                 var points = CalculateSpectrumPoints(1.0, fftBuffer);
                 var colors = GenerateColors(points);
-
-                var sliceOffset = 0;
-                foreach (var port in ports)
-                {
-                    var ledCount = cache.GetDeviceConfig(port).LedCount;
-                    result.Add(port, colors.GetRange(sliceOffset, ledCount));
-                    sliceOffset += ledCount;
-                }
-
-                return result;
+                return EffectUtils.SplitColorsPerPort(colors, ports, cache);
             }
 
             return null;

@@ -34,32 +34,15 @@ namespace TTController.Plugin.WaveEffect
 
             if (Config.ColorGenerationMethod == ColorGenerationMethod.PerPort)
             {
-                var result = new Dictionary<PortIdentifier, List<LedColor>>();
-
-                foreach (var port in ports)
-                {
-                    var ledCount = cache.GetDeviceConfig(port).LedCount;
-                    var colors = Config.Color.Get(ledCount).RotateRight(_rotation % cache.GetDeviceConfig(port).LedCount).ToList();
-                    result.Add(port, colors);
-                }
-
-                return result;
+                return EffectUtils.GenerateColorsPerPort(ports, cache,
+                    (port, ledCount) => Config.Color.Get(ledCount).RotateRight(_rotation % ledCount).ToList()
+                );
             }
             else if (Config.ColorGenerationMethod == ColorGenerationMethod.SpanPorts)
             {
-                var result = new Dictionary<PortIdentifier, List<LedColor>>();
                 var totalLedCount = ports.Select(p => cache.GetDeviceConfig(p).LedCount).Sum();
-                var colors = Config.Color.Get(totalLedCount).RotateRight(_rotation % totalLedCount);
-
-                var offset = 0;
-                foreach (var port in ports)
-                {
-                    var ledCount = cache.GetDeviceConfig(port).LedCount;
-                    result.Add(port, colors.Skip(offset).Take(ledCount).ToList());
-                    offset += ledCount;
-                }
-
-                return result;
+                var colors = Config.Color.Get(totalLedCount).RotateRight(_rotation % totalLedCount).ToList();
+                return EffectUtils.SplitColorsPerPort(colors, ports, cache);
             }
 
             return null;

@@ -35,33 +35,20 @@ namespace TTController.Plugin.BlinkEffect
                 _state = !_state;
             }
 
-            var result = new Dictionary<PortIdentifier, List<LedColor>>();
-
             if (Config.ColorGenerationMethod == ColorGenerationMethod.PerPort)
             {
-                foreach (var port in ports)
-                {
-                    var ledCount = cache.GetDeviceConfig(port).LedCount;
-                    if (_state)
-                        result.Add(port, Config.OnColor.Get(ledCount).ToList());
-                    else
-                        result.Add(port, Config.OffColor.Get(ledCount).ToList());
-                }
+                return EffectUtils.GenerateColorsPerPort(ports, cache,
+                    (port, ledCount) => (_state ? Config.OnColor : Config.OffColor).Get(ledCount).ToList()
+                );
             }
             else if (Config.ColorGenerationMethod == ColorGenerationMethod.SpanPorts)
             {
                 var totalLedCount = ports.Select(p => cache.GetDeviceConfig(p).LedCount).Sum();
-                var colors = (_state ? Config.OnColor : Config.OffColor).Get(totalLedCount);
-                var offset = 0;
-                foreach (var port in ports)
-                {
-                    var ledCount = cache.GetDeviceConfig(port).LedCount;
-                    result.Add(port, colors.Skip(offset).Take(ledCount).ToList());
-                    offset += ledCount;
-                }
+                var colors = (_state ? Config.OnColor : Config.OffColor).Get(totalLedCount).ToList();
+                return EffectUtils.SplitColorsPerPort(colors, ports, cache);
             }
 
-            return result;
+            return null;
         }
     }
 }

@@ -30,31 +30,13 @@ namespace TTController.Common
         }
 
         public LedColor Lerp(LedColor to, double t) => Lerp(t, this, to);
-        public (double, double, double) LerpSmooth(LedColor to, double t) => LerpSmooth(t, this, to);
+        public (double r, double g, double b) LerpSmooth(LedColor to, double t) => LerpSmooth(t, this, to);
 
-        public (double, double, double) ToHsv() => ToHsv(this);
+        public (double hue, double saturation, double value) ToHsv() => ToHsv(this);
 
-        public LedColor SetHue(double hue)
-        {
-            var (_, s, v) = ToHsv();
-            return FromHsv(hue, s, v);
-        }
-
-        public LedColor SetSaturation(double saturation)
-        {
-            var (h, _, v) = ToHsv();
-            return FromHsv(h, saturation, v);
-        }
-
-        public LedColor SetValue(double value)
-        {
-            var (h, s, _) = ToHsv();
-            return FromHsv(h, s, value);
-        }
-
-        public double GetHue() => ToHsv().Item1;
-        public double GetSaturation() => ToHsv().Item2;
-        public double GetValue() => ToHsv().Item3;
+        public double GetHue() => ToHsv().hue;
+        public double GetSaturation() => ToHsv().saturation;
+        public double GetValue() => ToHsv().value;
 
         public static LedColor Lerp(double t, LedColor from, LedColor to)
         {
@@ -117,6 +99,24 @@ namespace TTController.Common
                 case 4: return new LedColor(t, p, v);
                 default: return new LedColor(v, p, q);
             }
+        }
+
+        public static LedColor ChangeHue(LedColor color, double hue)
+        {
+            var (_, s, v) = color.ToHsv();
+            return FromHsv(hue, s, v);
+        }
+
+        public static LedColor ChangeSaturation(LedColor color, double saturation)
+        {
+            var (h, _, v) = color.ToHsv();
+            return FromHsv(h, saturation, v);
+        }
+
+        public static LedColor ChangeValue(LedColor color, double value)
+        {
+            var (h, s, _) = color.ToHsv();
+            return FromHsv(h, s, value);
         }
 
         public static LedColor Unpack(int data)

@@ -37,15 +37,7 @@ namespace TTController.Plugin.RippleEffect
 
             if (Config.ColorGenerationMethod == ColorGenerationMethod.PerPort)
             {
-                var result = new Dictionary<PortIdentifier, List<LedColor>>();
-
-                foreach (var port in ports)
-                {
-                    var ledCount = cache.GetDeviceConfig(port).LedCount;
-                    result.Add(port, GenerateColors(ledCount));
-                }
-
-                return result;
+                return EffectUtils.GenerateColorsPerPort(ports, cache, (port, ledCount) => GenerateColors(ledCount));
             }
             else if (Config.ColorGenerationMethod == ColorGenerationMethod.SpanPorts)
             {
@@ -54,14 +46,13 @@ namespace TTController.Plugin.RippleEffect
                 var colors = GenerateColors(totalLedCount);
 
                 var offset = 0;
-                for (var i = 0; i < ports.Count; i++)
+                foreach (var port in ports)
                 {
-                    var port = ports[i];
                     var ledCount = cache.GetDeviceConfig(port).LedCount;
                     var halfLedCount = ledCount / 2;
 
-                    var topColors = colors.Skip(offset).Take(halfLedCount);
-                    var bottomColors = colors.Skip(colors.Count - offset - halfLedCount).Take(halfLedCount);
+                    var topColors = colors.GetRange(offset, halfLedCount);
+                    var bottomColors = colors.GetRange(colors.Count - offset - halfLedCount, halfLedCount);
                     result.Add(port, topColors.Concat(bottomColors).ToList());
 
                     offset += halfLedCount;

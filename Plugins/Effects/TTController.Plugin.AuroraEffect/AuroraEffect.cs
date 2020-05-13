@@ -38,16 +38,7 @@ namespace TTController.Plugin.AuroraEffect
             _rotation += Config.Step;
             if (Config.ColorGenerationMethod == ColorGenerationMethod.PerPort)
             {
-                var result = new Dictionary<PortIdentifier, List<LedColor>>();
-
-                foreach (var port in ports)
-                {
-                    var ledCount = cache.GetDeviceConfig(port).LedCount;
-                    var colors = GenerateColors(ledCount, 0);
-                    result.Add(port, colors);
-                }
-
-                return result;
+                return EffectUtils.GenerateColorsPerPort(ports, cache, (port, ledCount) => GenerateColors(ledCount, 0));
             }
             else if (Config.ColorGenerationMethod == ColorGenerationMethod.SpanPorts)
             {

@@ -21,23 +21,13 @@ namespace TTController.Plugin.StaticColorEffect
         {
             if (Config.ColorGenerationMethod == ColorGenerationMethod.PerPort)
             {
-                return ports.ToDictionary(p => p, p => Config.Color.Get(cache.GetDeviceConfig(p).LedCount).ToList()); ;
+                return EffectUtils.GenerateColorsPerPort(ports, cache, (port, ledCount) => Config.Color.Get(ledCount).ToList());
             }
             else if (Config.ColorGenerationMethod == ColorGenerationMethod.SpanPorts)
             {
-                var result = new Dictionary<PortIdentifier, List<LedColor>>();
                 var totalLedCount = ports.Select(p => cache.GetDeviceConfig(p).LedCount).Sum();
-                var colors = Config.Color.Get(totalLedCount);
-
-                var offset = 0;
-                foreach (var port in ports)
-                {
-                    var ledCount = cache.GetDeviceConfig(port).LedCount;
-                    result.Add(port, colors.Skip(offset).Take(ledCount).ToList());
-                    offset += ledCount;
-                }
-
-                return result;
+                var colors = Config.Color.Get(totalLedCount).ToList();
+                return EffectUtils.SplitColorsPerPort(colors, ports, cache);
             }
 
             return null;

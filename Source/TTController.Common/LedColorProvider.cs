@@ -13,8 +13,8 @@ namespace TTController.Common
 
         public LedColor Get(int index, int size)
         {
-            if (Full.HasValue) return Full.Value;
-            if (index < PerLed?.Count) return PerLed[index];
+            if (Full != null) return Full.Value;
+            if (PerLed != null && index < PerLed.Count) return PerLed[index];
             if (Gradient != null) return Gradient.GetColor(index / (size - 1d));
 
             return new LedColor(0, 0, 0);
@@ -22,8 +22,8 @@ namespace TTController.Common
 
         public IEnumerable<LedColor> Get(int size)
         {
-            if (Full.HasValue) return Enumerable.Repeat(Full.Value, size);
-            if (PerLed != null) return PerLed;
+            if (Full != null) return Enumerable.Repeat(Full.Value, size);
+            if (PerLed != null) return size <= PerLed.Count ? PerLed : PerLed.Concat(Enumerable.Repeat(new LedColor(0, 0, 0), size - PerLed.Count));
             if (Gradient != null) return Enumerable.Range(0, size).Select(x => Gradient.GetColor(x / (size - 1d)));
 
             return Enumerable.Repeat(new LedColor(0, 0, 0), size);

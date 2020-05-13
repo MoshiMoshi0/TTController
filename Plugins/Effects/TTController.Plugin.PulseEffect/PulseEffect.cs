@@ -33,32 +33,16 @@ namespace TTController.Plugin.PulseEffect
 
             if (Config.ColorGenerationMethod == ColorGenerationMethod.PerPort)
             {
-                var result = new Dictionary<PortIdentifier, List<LedColor>>();
-
-                foreach (var port in ports)
-                {
-                    var ledCount = cache.GetDeviceConfig(port).LedCount;
-                    result.Add(port, Config.Color.Get(ledCount).Select(c => c.SetValue(c.GetValue() * _t)).ToList());
-                }
-
-                return result;
+                return EffectUtils.GenerateColorsPerPort(ports, cache,
+                    (port, ledCount) => Config.Color.Get(ledCount).Select(c => LedColor.ChangeValue(c, c.GetValue() * _t)).ToList()
+                );
             }
 
             if (Config.ColorGenerationMethod == ColorGenerationMethod.SpanPorts)
             {
-                var result = new Dictionary<PortIdentifier, List<LedColor>>();
                 var totalLedCount = ports.Sum(p => cache.GetDeviceConfig(p).LedCount);
-                var colors = Config.Color.Get(totalLedCount);
-
-                var offset = 0;
-                foreach (var port in ports)
-                {
-                    var ledCount = cache.GetDeviceConfig(port).LedCount;
-                    result.Add(port, colors.Skip(offset).Take(ledCount).Select(c => c.SetValue(c.GetValue() * _t)).ToList());
-                    offset += ledCount;
-                }
-
-                return result;
+                var colors = Config.Color.Get(totalLedCount).Select(c => LedColor.ChangeValue(c, c.GetValue() * _t)).ToList();
+                return EffectUtils.SplitColorsPerPort(colors, ports, cache);
             }
 
             return null;
