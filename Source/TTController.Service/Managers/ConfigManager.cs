@@ -38,8 +38,7 @@ namespace TTController.Service.Managers
             jsonSettings.Error += (sender, args) => { };
 
             var converters = typeof(JsonConverter).FindImplementations()
-                    .Where(t => t.Namespace?.StartsWith("TTController") ?? false)
-                    .Where(t => !t.IsGenericType && !t.IsAbstract)
+                    .Where(t => (t.Namespace?.StartsWith("TTController") ?? false) && !t.IsGenericType && !t.IsAbstract)
                     .Select(t => (JsonConverter)Activator.CreateInstance(t));
 
             jsonSettings.Converters.Add(new StringEnumConverter());
@@ -90,8 +89,10 @@ namespace TTController.Service.Managers
                         .Select(f =>
                         {
                             using (var reader = new StreamReader(f))
+                            {
                                 return (Name: Path.GetFileNameWithoutExtension(f),
                                         Config: JsonConvert.DeserializeObject<DeviceConfig>(reader.ReadToEnd()));
+                            }
                         })
                         .Where(x => x != default)
                         .ToDictionary(x => x.Name, x => x.Config);

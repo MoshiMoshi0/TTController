@@ -8,16 +8,18 @@ namespace TTController.Plugin.StaticSpeedController
 {
     public class StaticSpeedControllerConfig : SpeedControllerConfigBase
     {
-        [DefaultValue(50)] public byte Speed { get; private set; } = 50;
+        [DefaultValue(50)] public byte Speed { get; internal set; } = 50;
     }
 
     public class StaticSpeedController : SpeedControllerBase<StaticSpeedControllerConfig>
     {
-        public StaticSpeedController(StaticSpeedControllerConfig config) : base(config) {}
+        public StaticSpeedController(StaticSpeedControllerConfig config) : base(config)
+        {
+            if(Config.Speed != 0 && Config.Speed < 20)
+                Config.Speed = 20;
+        }
 
         public override IDictionary<PortIdentifier, byte> GenerateSpeeds(List<PortIdentifier> ports, ICacheProvider cache)
-        {
-            return ports.ToDictionary(p => p, _ => Config.Speed);
-        }
+            => ports.ToDictionary(p => p, _ => Config.Speed);
     }
 }

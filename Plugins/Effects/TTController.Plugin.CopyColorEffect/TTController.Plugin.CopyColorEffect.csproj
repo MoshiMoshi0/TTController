@@ -1,17 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
-    <AssemblyTitle>TTController.Plugin.PwmSpeedController</AssemblyTitle>
-    <Product>TTController.Plugin.PwmSpeedController</Product>
-    <Copyright>Copyright ©  2019</Copyright>
+    <AssemblyTitle>TTController.Plugin.CopyColorEffect</AssemblyTitle>
+    <Product>TTController.Plugin.CopyColorEffect</Product>
+    <Copyright>Copyright ©  2020</Copyright>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\..\Source\TTController.Common\TTController.Common.csproj" />
-    <ProjectReference Include="..\..\..\ThirdParty\LibreHardwareMonitor\LibreHardwareMonitorLib\LibreHardwareMonitorLib.csproj" />
   </ItemGroup>
 </Project>

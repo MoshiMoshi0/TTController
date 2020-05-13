@@ -24,9 +24,6 @@ Welcome to the TTController documentation!
 **Note:** A quick test to see if the service is working property is to run debug report found in `Main Menu -> Debug -> Report` menu. It should list all detected controllers, sensors and plugins.
 {: .notice--info}
 
-**Note:** The service is by default installed to run as **LocalSystem** account, to change this edit `service-install-as` in `TTController.Service.exe.Config` file.
-{: .notice--info}
-
 ### Configuring the service
 
 1. If the service is running, stop it using **Manage Service** menu.

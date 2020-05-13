@@ -14,9 +14,9 @@ namespace TTController.Plugin.LogicTrigger
 
     public class LogicTriggerConfig : TriggerConfigBase
     {
-        [DefaultValue(LogicOperation.And)] public LogicOperation Operation { get; private set; } = LogicOperation.And;
-        [DefaultValue(false)] public bool Negate { get; private set; } = false;
-        public List<ITriggerBase> Triggers { get; private set; } = new List<ITriggerBase>();
+        [DefaultValue(LogicOperation.And)] public LogicOperation Operation { get; internal set; } = LogicOperation.And;
+        [DefaultValue(false)] public bool Negate { get; internal set; } = false;
+        public List<ITriggerBase> Triggers { get; internal set; } = new List<ITriggerBase>();
     }
 
     public class LogicTrigger : TriggerBase<LogicTriggerConfig>

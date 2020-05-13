@@ -43,11 +43,7 @@ namespace TTController.Service
             Logger.Info("Initializing...");
             PluginLoader.LoadAll(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Plugins"));
 
-            const string key = "config-file";
-            if (string.IsNullOrEmpty(AppSettingsHelper.ReadValue(key)))
-                AppSettingsHelper.WriteValue(key, "config.json");
-
-            _configManager = new ConfigManager(AppSettingsHelper.ReadValue(key));
+            _configManager = new ConfigManager("config.json");
             if (!_configManager.LoadOrCreateConfig())
                 return false;
 
@@ -110,7 +106,7 @@ namespace TTController.Service
             _timerManager.RegisterTimer(_config.DeviceSpeedTimerInterval, DeviceSpeedTimerCallback);
             _timerManager.RegisterTimer(_config.DeviceRgbTimerInterval, DeviceRgbTimerCallback);
             if(LogManager.Configuration.LoggingRules.Any(r => r.IsLoggingEnabledForLevel(LogLevel.Debug)))
-                _timerManager.RegisterTimer(_config.LoggingTimerInterval, LoggingTimerCallback);
+                _timerManager.RegisterTimer(_config.DebugTimerInterval, DebugTimerCallback);
 
             _timerManager.Start();
 
@@ -203,7 +199,7 @@ namespace TTController.Service
             _deviceManager?.Dispose();
             _configManager?.Dispose();
 
-            _pluginStore.Dispose();
+            _pluginStore?.Dispose();
             _cache?.Clear();
 
             _timerManager = null;
@@ -248,10 +244,8 @@ namespace TTController.Service
                             controller.SetSpeed(port.Id, profile.Speed.Value);
 
                         var effectByte = controller.GetEffectByte(profile.EffectType);
-                        if (effectByte.HasValue && profile.EffectColors != null)
-                            controller.SetRgb(port.Id, effectByte.Value, profile.EffectColors);
-                        else if (effectByte.HasValue && profile.EffectColor.HasValue)
-                            controller.SetRgb(port.Id, effectByte.Value, Enumerable.Repeat(profile.EffectColor.Value, _cache.GetDeviceConfig(port).LedCount));
+                        if (effectByte.HasValue && profile.Color != null)
+                            controller.SetRgb(port.Id, effectByte.Value, profile.Color.Get(_cache.GetDeviceConfig(port).LedCount));
 
                         if (state == ComputerStateType.Boot && (profile.Speed.HasValue || effectByte.HasValue))
                             dirtyControllers.Add(controller);
@@ -492,7 +486,7 @@ namespace TTController.Service
             return true;
         }
 
-        public bool LoggingTimerCallback()
+        public bool DebugTimerCallback()
         {
             foreach (var profile in _config.Profiles)
             {

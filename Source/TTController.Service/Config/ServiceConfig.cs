@@ -23,7 +23,7 @@ namespace TTController.Service.Config
         [DefaultValue(250)] public int SensorTimerInterval { get; private set; } = 250;
         [DefaultValue(2500)] public int DeviceSpeedTimerInterval { get; private set; } = 2500;
         [DefaultValue(32)] public int DeviceRgbTimerInterval { get; private set; } = 32;
-        [DefaultValue(5000)] public int LoggingTimerInterval { get; private set; } = 5000;
+        [DefaultValue(5000)] public int DebugTimerInterval { get; private set; } = 5000;
 
         public static ServiceConfig CreateDefault()
         {

@@ -16,8 +16,7 @@ namespace TTController.Service.Config
         [DefaultValue(ComputerStateType.Shutdown)] public ComputerStateType StateType { get; private set; } = ComputerStateType.Shutdown;
         public List<PortIdentifier> Ports { get; private set; } = new List<PortIdentifier>();
         [DefaultValue(null)] public byte? Speed { get; private set; } = null;
-        [DefaultValue(null)] public string EffectType { get; private set; } = null;
-        public List<LedColor> EffectColors { get; private set; } = null;
-        [DefaultValue(null)] public LedColor? EffectColor { get; private set; } = null;
+        [DefaultValue(null)] public LedColorProvider Color { get; private set; } = null;
+        [DefaultValue("PerLed")] public string EffectType { get; private set; } = "PerLed";
     }
 }

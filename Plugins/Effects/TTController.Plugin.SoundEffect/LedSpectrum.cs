@@ -2,33 +2,39 @@
 using System.Collections.Generic;
 using System.Linq;
 using TTController.Common;
+using TTController.Common.Plugin;
 
 namespace TTController.Plugin.SoundEffect
 {
     public class LedSpectrum : SpectrumBase
     {
-        public delegate LedColor LedColorGenerator(double fftValue);
+        private readonly LedColorGradient _colorGradient;
 
-        private readonly LedColorGenerator _colorGenerator;
-
-        public LedSpectrum(LedColorGenerator colorGenerator)
+        public LedSpectrum(LedColorGradient colorGradient)
         {
-            _colorGenerator = colorGenerator;
+            _colorGradient = colorGradient;
         }
 
         public IDictionary<PortIdentifier, List<LedColor>> GenerateColors(ColorGenerationMethod generationMethod,
             List<PortIdentifier> ports, ICacheProvider cache, float[] fftBuffer)
         {
-            var points = CalculateSpectrumPoints(1.0, fftBuffer);
-            var result = new Dictionary<PortIdentifier, List<LedColor>>();
-
             if (generationMethod == ColorGenerationMethod.PerPort)
             {
+                var result = new Dictionary<PortIdentifier, List<LedColor>>();
+
+                List<LedColor> colors = null;
+                List<SpectrumPointData> points = null;
                 foreach (var port in ports)
                 {
-                    var config = cache.GetPortConfig(port);
-                    var colors = GenerateColorSpectrum(cache.GetDeviceConfig(port).LedCount, points);
-                    result.Add(port, colors);
+                    var ledCount = cache.GetDeviceConfig(port).LedCount;
+
+                    if (UpdateFrequencyMappingIfNecessary(ledCount) || points == null)
+                    {
+                        points = CalculateSpectrumPoints(1.0, fftBuffer);
+                        colors = GenerateColors(points);
+                    }
+
+                    result.Add(port, colors.ToList());
                 }
 
                 return result;
@@ -36,41 +42,29 @@ namespace TTController.Plugin.SoundEffect
             else if (generationMethod == ColorGenerationMethod.SpanPorts)
             {
                 var totalLedCount = ports.Select(p => cache.GetDeviceConfig(p).LedCount).Sum();
-                var colors = GenerateColorSpectrum(totalLedCount, points);
 
-                var sliceOffset = 0;
-                foreach (var port in ports)
-                {
-                    var ledCount = cache.GetDeviceConfig(port).LedCount;
-                    result.Add(port, colors.GetRange(sliceOffset, ledCount));
-                    sliceOffset += ledCount;
-                }
-
-                return result;
+                UpdateFrequencyMappingIfNecessary(totalLedCount);
+                var points = CalculateSpectrumPoints(1.0, fftBuffer);
+                var colors = GenerateColors(points);
+                return EffectUtils.SplitColorsPerPort(colors, ports, cache);
             }
 
             return null;
         }
 
-        protected List<LedColor> GenerateColorSpectrum(int ledCount, List<SpectrumPointData> points)
+        protected bool UpdateFrequencyMappingIfNecessary(int ledCount)
         {
-            var bucketSize = Math.Round(points.Count / (double)ledCount, 3);
-
-            var colors = new List<LedColor>();
-            for (var i = 0; i < ledCount; i++)
+            if(ledCount != SpectrumResolution)
             {
-                var startIndex = (int)(i * bucketSize);
-                var endIndex = (int)((i + 1) * bucketSize);
-
-                var value = 0.0;
-                for (var j = startIndex; j < endIndex; j++)
-                    value += points[j].Value;
-                value /= (endIndex - startIndex);
-
-                colors.Add(_colorGenerator(value));
+                SpectrumResolution = ledCount;
+                UpdateFrequencyMapping();
+                return true;
             }
 
-            return colors;
+            return false;
         }
+
+        protected List<LedColor> GenerateColors(List<SpectrumPointData> points)
+            => points.Select(p => _colorGradient.GetColor(p.Value)).ToList();
     }
 }

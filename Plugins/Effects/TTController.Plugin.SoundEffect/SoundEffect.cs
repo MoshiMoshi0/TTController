@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using CSCore;
 using CSCore.DSP;
@@ -11,25 +12,54 @@ namespace TTController.Plugin.SoundEffect
 {
     public class SoundEffectConfig : EffectConfigBase
     {
-        [DefaultValue(true)] public bool UseAverage { get; private set; } = true;
-        [DefaultValue(100)] public int MinimumFrequency { get; private set; } = 100;
-        [DefaultValue(10000)] public int MaximumFrequency { get; private set; } = 10000;
-        [DefaultValue(ScalingStrategy.Sqrt)] public ScalingStrategy ScalingStrategy { get; private set; } = ScalingStrategy.Sqrt;
-        [DefaultValue(2.0)] public double ScalingFactor { get; private set; } = 2.0;
-        public LedColorGradient ColorGradient { get; private set; } = new LedColorGradient();
+        [DefaultValue(true)] public bool UseAverage { get; internal set; } = true;
+        [DefaultValue(100)] public int MinimumFrequency { get; internal set; } = 100;
+        [DefaultValue(10000)] public int MaximumFrequency { get; internal set; } = 10000;
+        [DefaultValue(ScalingStrategy.Sqrt)] public ScalingStrategy ScalingStrategy { get; internal set; } = ScalingStrategy.Sqrt;
+        [DefaultValue(2.0)] public double ScalingFactor { get; internal set; } = 2.0;
+        public LedColorGradient ColorGradient { get; internal set; } = new LedColorGradient();
     }
 
     public class SoundEffect : EffectBase<SoundEffectConfig>
     {
-        private readonly float[] _fftBuffer;
-        private readonly SpectrumProvider _spectrumProvider;
-        private readonly WasapiLoopbackCapture _soundIn;
-        private readonly LedSpectrum _spectrum;
+        private float[] _fftBuffer;
+        private SpectrumProvider _spectrumProvider;
+        private WasapiLoopbackCapture _soundIn;
+        private LedSpectrum _spectrum;
+        private bool _initialized;
+        private int _lastInitializeTickCount;
 
         public SoundEffect(SoundEffectConfig config) : base(config)
         {
-            _soundIn = new WasapiLoopbackCapture();
-            _soundIn.Initialize();
+            _initialized = false;
+            Initialize();
+        }
+
+        public override string EffectType => "PerLed";
+        public override bool IsEnabled(ICacheProvider cache) => Initialize() && base.IsEnabled(cache);
+
+        private bool Initialize()
+        {
+            if (_initialized)
+                return true;
+
+            var currentTicks = Environment.TickCount;
+            if (currentTicks - _lastInitializeTickCount < 1000)
+                return false;
+            _lastInitializeTickCount = currentTicks;
+
+            try
+            {
+                _soundIn = new WasapiLoopbackCapture();
+                _soundIn.Initialize();
+            }
+            catch (Exception e)
+            {
+                Logger.Debug(e, "Failed to initialize WasapiLoopbackCapture!");
+                return false;
+            }
+
+            Logger.Debug($"Initialized WasapiLoopbackCapture on \"{_soundIn.Device.FriendlyName}\"");
 
             var soundInSource = new SoundInSource(_soundIn);
             var sampleSource = soundInSource.ToSampleSource();
@@ -45,7 +75,7 @@ namespace TTController.Plugin.SoundEffect
             var buffer = new byte[waveSource.WaveFormat.BytesPerSecond / 2];
             soundInSource.DataAvailable += (s, e) => { while (waveSource.Read(buffer, 0, buffer.Length) > 0) ; };
 
-            _spectrum = new LedSpectrum(GenerateColor)
+            _spectrum = new LedSpectrum(Config.ColorGradient)
             {
                 FftSize = fftSize,
                 SpectrumProvider = _spectrumProvider,
@@ -54,15 +84,14 @@ namespace TTController.Plugin.SoundEffect
                 MaximumFrequency = Config.MaximumFrequency,
                 ScalingStrategy = Config.ScalingStrategy,
                 ScalingFactor = Config.ScalingFactor,
-                IsXLogScale = false,
-                SpectrumResolution = (int) fftSize
+                IsXLogScale = false
             };
 
-            _spectrum.UpdateFrequencyMapping();
             _soundIn.Start();
-        }
 
-        public override string EffectType => "PerLed";
+            _initialized = true;
+            return true;
+        }
 
         public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
         {
@@ -71,9 +100,6 @@ namespace TTController.Plugin.SoundEffect
 
             return _spectrum.GenerateColors(Config.ColorGenerationMethod, ports, cache, _fftBuffer);
         }
-
-        public LedColor GenerateColor(double fftValue) =>
-            Config.ColorGradient.GetColor(fftValue);
 
         protected override void Dispose(bool disposing)
         {

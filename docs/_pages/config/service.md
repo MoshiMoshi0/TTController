@@ -3,7 +3,7 @@ title: Service Configuration
 permalink: /config/service
 ---
 
-**Note:** The config is by default located in `config.json` file. You can modify this in `TTController.Service.exe.Config` file by changing the value of `config-file` key
+**Note:** The config is located in `config.json` file.
 {: .notice--info}
 
 ## Format
@@ -26,7 +26,7 @@ permalink: /config/service
   "SensorTimerInterval ": <int>,
   "DeviceSpeedTimerInterval": <int>,
   "DeviceRgbTimerInterval": <int>,
-  "LoggingTimerInterval": <int>
+  "DebugTimerInterval": <int>
 }
 ~~~
 
@@ -297,10 +297,10 @@ Determines timer delay for updating led colors.
 
 </div>
 
-### LoggingTimerInterval
+### DebugTimerInterval
 <div class="variable-block" markdown="block">
 
-Determines timer delay for logging port and sensor data.
+Determines timer delay for logging debug data.
 
 **Note:** Used only in **console mode**.
 {: .notice--info}
@@ -315,7 +315,7 @@ Determines timer delay for logging port and sensor data.
 ~~~
 **Example:**
 ~~~
-"LoggingTimerInterval": 1000
+"DebugTimerInterval": 1000
 ~~~
 
 </div>

@@ -5,7 +5,7 @@ permalink: /speed-controllers/copyspeedcontroller
 
 Copies the speed from another port.
 
-**Note:** In some cases the copied speed can lag behind the [Target](#target) port one update tick.
+**Note:** In some cases the copied speed can lag behind the [Target](#target) port one update tick. Put the profiles that use this speed controller as last in the list to prevent that.
 {: .notice--info}
 
 ## Format

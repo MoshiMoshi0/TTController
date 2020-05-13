@@ -34,22 +34,29 @@ namespace TTController.Plugin.RazerConnectEffect
 
         private void OnColorUpdate(object sender, RzBroadcastColorChangedEventArgs e)
         {
+            Logger.Trace("Razer broadcast colors updated");
             for (var i = 0; i < _colors.Length; i++)
-            {
-                _colors[i].R = (byte)((e.Colors[i] >> 0) & 0xff);
-                _colors[i].G = (byte)((e.Colors[i] >> 8) & 0xff);
-                _colors[i].B = (byte)((e.Colors[i] >> 16) & 0xff);
-            }
+                _colors[i] = LedColor.Unpack(e.Colors[i]);
         }
 
         private void OnConnectionUpdate(object sender, RzBroadcastConnectionChangedEventArgs e)
         {
+            Logger.Trace("Razer broadcast connection changed: {0}", e.Connected);
             _connected = e.Connected;
         }
 
         public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
         {
-            return ports.ToDictionary(p => p, _ => _colors.ToList());
+            var result = new Dictionary<PortIdentifier, List<LedColor>>();
+            foreach(var port in ports)
+            {
+                if (cache.GetDeviceConfig(port).LedCount == 1)
+                    result.Add(port, _colors.Take(1).ToList());
+                else
+                    result.Add(port, _colors.Skip(1).ToList());
+            }
+
+            return result;
         }
 
         protected override void Dispose(bool disposing)

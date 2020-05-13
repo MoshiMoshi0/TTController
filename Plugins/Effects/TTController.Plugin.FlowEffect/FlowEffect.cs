@@ -9,10 +9,10 @@ namespace TTController.Plugin.FlowEffect
 {
     public class FlowEffectConfig : EffectConfigBase
     {
-        [DefaultValue(0.05)] public double FillStep { get; private set; } = 0.05;
-        [DefaultValue(30)] public double HueStep { get; private set; } = 30;
-        [DefaultValue(1.0)] public double Saturation { get; private set; } = 1.0;
-        [DefaultValue(1.0)] public double Brightness { get; private set; } = 1.0;
+        [DefaultValue(0.05)] public double FillStep { get; internal set; } = 0.05;
+        [DefaultValue(30)] public double HueStep { get; internal set; } = 30;
+        [DefaultValue(1.0)] public double Saturation { get; internal set; } = 1.0;
+        [DefaultValue(1.0)] public double Brightness { get; internal set; } = 1.0;
     }
 
     public class FlowEffect : EffectBase<FlowEffectConfig>
@@ -41,56 +41,28 @@ namespace TTController.Plugin.FlowEffect
 
             var lastColor = LedColor.FromHsv(_lastHue, Config.Saturation, Config.Brightness);
             var currentColor = LedColor.FromHsv(_currentHue, Config.Saturation, Config.Brightness);
-
-            var result = new Dictionary<PortIdentifier, List<LedColor>>();
-            if(Config.ColorGenerationMethod == ColorGenerationMethod.PerPort)
+            if (Config.ColorGenerationMethod == ColorGenerationMethod.PerPort)
             {
-                foreach (var port in ports)
-                {
-                    var config = cache.GetPortConfig(port);
-                    if (config == null)
-                        continue;
-
-                    var ledCount = cache.GetDeviceConfig(port).LedCount;
-                    var colors = new List<LedColor>();
-                    for (var i = 0; i < ledCount; i++)
-                    {
-                        if (i < (int)Math.Round(ledCount * _fill))
-                            colors.Add(currentColor);
-                        else
-                            colors.Add(lastColor);
-                    }
-
-                    result.Add(port, colors);
-                }
+                return EffectUtils.GenerateColorsPerPort(ports, cache, (port, ledCount) => GenerateColors(ledCount, currentColor, lastColor));
             }
             else if(Config.ColorGenerationMethod == ColorGenerationMethod.SpanPorts)
             {
                 var totalLedCount = ports.Select(p => cache.GetDeviceConfig(p).LedCount).Sum();
-
-                var colors = new List<LedColor>();
-                for (var i = 0; i < totalLedCount; i++)
-                {
-                    if (i < (int)Math.Round(totalLedCount * _fill))
-                        colors.Add(currentColor);
-                    else
-                        colors.Add(lastColor);
-                }
-
-                var offset = 0;
-                foreach (var port in ports)
-                {
-                    var config = cache.GetPortConfig(port);
-                    if (config == null)
-                        continue;
-
-                    var ledCount = cache.GetDeviceConfig(port).LedCount;
-                    result.Add(port, colors.Skip(offset).Take(ledCount).ToList());
-                    offset += ledCount;
-                }
+                var colors = GenerateColors(totalLedCount, currentColor, lastColor);
+                return EffectUtils.SplitColorsPerPort(colors, ports, cache);
             }
 
-            return result;
+            return null;
+        }
+
+        private List<LedColor> GenerateColors(int ledCount, LedColor currentColor, LedColor lastColor)
+        {
+            var fillIndex = (int)Math.Round(ledCount * _fill);
+            var colors = new List<LedColor>();
+            for (var i = 0; i < ledCount; i++)
+                colors.Add((i < fillIndex) ? currentColor : lastColor);
+
+            return colors;
         }
     }
 }

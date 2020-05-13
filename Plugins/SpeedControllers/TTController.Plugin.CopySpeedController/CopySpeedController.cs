@@ -7,7 +7,7 @@ namespace TTController.Plugin.CopySpeedController
 {
     public class CopySpeedControllerConfig : SpeedControllerConfigBase
     {
-        public PortIdentifier Target { get; private set; }
+        public PortIdentifier Target { get; internal set; }
     }
 
     public class CopySpeedController : SpeedControllerBase<CopySpeedControllerConfig>
@@ -16,11 +16,11 @@ namespace TTController.Plugin.CopySpeedController
 
         public override IDictionary<PortIdentifier, byte> GenerateSpeeds(List<PortIdentifier> ports, ICacheProvider cache)
         {
-            var data = cache.GetPortData(Config.Target);
-            if (data?.Speed == null)
+            var speed = cache.GetPortSpeed(Config.Target);
+            if (!speed.HasValue)
                 return null;
 
-            return ports.ToDictionary(p => p, _ => data.Speed.Value);
+            return ports.ToDictionary(p => p, _ => speed.Value);
         }
     }
 }

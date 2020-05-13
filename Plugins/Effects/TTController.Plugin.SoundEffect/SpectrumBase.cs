@@ -13,10 +13,11 @@ namespace TTController.Plugin.SoundEffect
         private int _minimumFrequencyIndex;
         private int[] _spectrumIndexMax;
 
+        protected int SpectrumResolution { get; set; }
+
         public int MinDbValue { get; set; } = -90;
         public int MaxDbValue { get; set; } = 0;
         public int DbScale => MaxDbValue - MinDbValue;
-        public int SpectrumResolution { get; set; }
         public double ScalingFactor { get; set; } = 2.0;
         public int MaximumFrequency { get; set; } = 20000;
         public int MinimumFrequency { get; set; } = 20;
@@ -37,7 +38,7 @@ namespace TTController.Plugin.SoundEffect
 
         protected SpectrumBase() { }
 
-        public virtual void UpdateFrequencyMapping()
+        protected virtual void UpdateFrequencyMapping()
         {
             _maximumFrequencyIndex = Math.Min(SpectrumProvider.GetFftBandIndex(MaximumFrequency) + 1, _maxFftIndex);
             _minimumFrequencyIndex = Math.Min(SpectrumProvider.GetFftBandIndex(MinimumFrequency), _maxFftIndex);
@@ -46,7 +47,7 @@ namespace TTController.Plugin.SoundEffect
             var indexCount = _maximumFrequencyIndex - _minimumFrequencyIndex;
             var linearIndexBucketSize = Math.Round(indexCount / (double)actualResolution, 3);
 
-            _spectrumIndexMax = _spectrumIndexMax.CheckBuffer(actualResolution, true);
+            _spectrumIndexMax = _spectrumIndexMax.CheckBuffer(actualResolution, false);
             for (var i = 1; i < actualResolution; i++)
             {
                 if (!IsXLogScale)
@@ -94,7 +95,7 @@ namespace TTController.Plugin.SoundEffect
                 var recalc = true;
                 value = Math.Max(0, Math.Max(value0, value));
 
-                while (spectrumPointIndex <= _spectrumIndexMax.Length - 1 && i == _spectrumIndexMax[spectrumPointIndex])
+                while (spectrumPointIndex <= SpectrumResolution - 1 && i == _spectrumIndexMax[spectrumPointIndex])
                 {
                     if (!recalc)
                         value = lastValue;
@@ -116,24 +117,5 @@ namespace TTController.Plugin.SoundEffect
 
             return dataPoints;
         }
-
-        protected struct SpectrumPointData
-        {
-            public int SpectrumPointIndex { get; private set; }
-            public double Value { get; private set; }
-
-            public SpectrumPointData(int spectrumPointIndex, double value)
-            {
-                SpectrumPointIndex = spectrumPointIndex;
-                Value = value;
-            }
-        }
-    }
-
-    public enum ScalingStrategy
-    {
-        Decibel,
-        Linear,
-        Sqrt
     }
 }

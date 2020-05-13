@@ -1,9 +1,9 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
-    <AssemblyTitle>TTController.Plugin.FullColorEffect</AssemblyTitle>
-    <Product>TTController.Plugin.FullColorEffect</Product>
-    <Copyright>Copyright ©  2019</Copyright>
+    <AssemblyTitle>TTController.Plugin.AuroraEffect</AssemblyTitle>
+    <Product>TTController.Plugin.AuroraEffect</Product>
+    <Copyright>Copyright ©  2020</Copyright>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
   </PropertyGroup>

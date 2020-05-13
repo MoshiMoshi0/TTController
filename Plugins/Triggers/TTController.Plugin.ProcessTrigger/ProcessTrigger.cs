@@ -10,25 +10,25 @@ namespace TTController.Plugin.ProcessTrigger
 {
     public class ProcessTriggerConfig : TriggerConfigBase
     {
-        public List<string> Processes { get; private set; } = new List<string>();
-        [DefaultValue(2500)] public int UpdateInterval { get; private set; } = 2500;
+        public List<string> Processes { get; internal set; } = new List<string>();
+        [DefaultValue(2500)] public int UpdateInterval { get; internal set; } = 2500;
     }
 
     public class ProcessTrigger : TriggerBase<ProcessTriggerConfig>
     {
-        private long _ticks;
+        private long _lastTickCount;
         private bool _needsUpdate;
 
         public ProcessTrigger(ProcessTriggerConfig config) : base(config)
         {
-            _ticks = Environment.TickCount;
+            _lastTickCount = Environment.TickCount;
         }
 
         public override bool Value(ICacheProvider cache)
         {
-            if (Environment.TickCount - _ticks >= Config.UpdateInterval)
+            if (Environment.TickCount - _lastTickCount >= Config.UpdateInterval)
             {
-                _ticks = Environment.TickCount;
+                _lastTickCount = Environment.TickCount;
 
                 _needsUpdate = Config.Processes.Any(p => Process.GetProcessesByName(p).Length > 0);
             }
