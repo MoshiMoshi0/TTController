@@ -12,7 +12,7 @@ Allows usage of effects saved on the controller box.
     "Type": "RawEffect",
     "Config": {
         "EffectType": <string>,
-        "Colors": [<LedColor>]
+        "Color": <LedColorProvider>
     }
 }
 ~~~
@@ -39,24 +39,24 @@ Effect type name.
 
 </div>
 
-### Colors
+### Color
 <div class="variable-block" markdown="block">
 
-List of [Led Colors]({{ "/common/led-color" | relative_url }}), one for each led.
+A [Led Color Provider]({{ "/common/led-color-provider" | relative_url }}) object.
 
 **Required:** **Yes**<br>
 **Default value:**
 ~~~
-[]
 ~~~
 **Example:**
 ~~~
-"Colors": [
-    [255, 0, 0],
-    [0, 255, 0],
-    [0, 0, 255],
-    ...
-]
+{
+    "Gradient": [
+        [0, [255, 0, 0]],
+        [0.5, [0, 255, 0]],
+        [1.0 [255, 0, 0]]
+    ]
+}
 ~~~
 
 </div>
