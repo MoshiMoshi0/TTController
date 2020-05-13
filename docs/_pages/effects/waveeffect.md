@@ -9,35 +9,13 @@ permalink: /effects/waveeffect
 {
     "Type": "WaveEffect",
     "Config": {
-        "Colors": [<LedColor>],
-        "TickInterval": <int>
+        "TickInterval": <int>,
+        "Color": <LedColorProvider>,
     }
 }
 ~~~
 
 ## Variables
-
-### Colors
-<div class="variable-block" markdown="block">
-
-List of [Led Colors]({{ "/common/led-color" | relative_url }}), one for each led.
-
-**Required:** **Yes**<br>
-**Default value:**
-~~~
-[]
-~~~
-**Example:**
-~~~
-"Colors": [
-    [255, 0, 0],
-    [0, 255, 0],
-    [0, 0, 255],
-    ...
-]
-~~~
-
-</div>
 
 ### TickInterval
 <div class="variable-block" markdown="block">
@@ -52,6 +30,28 @@ Number of updates before the wave advances to the next led.
 **Example:**
 ~~~
 "TickInterval": 2
+~~~
+
+</div>
+
+### Color
+<div class="variable-block" markdown="block">
+
+A [Led Color Provider]({{ "/common/led-color-provider" | relative_url }}) object.
+
+**Required:** **Yes**<br>
+**Default value:**
+~~~
+~~~
+**Example:**
+~~~
+"Color": {
+    "Gradient": [
+        [0, [255, 0, 0]],
+        [0.5, [0, 255, 0]],
+        [1.0 [255, 0, 0]]
+    ]
+}
 ~~~
 
 </div>

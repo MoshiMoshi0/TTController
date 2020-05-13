@@ -11,8 +11,7 @@ permalink: /config/computerstateprofile
   "Ports": [<PortIdentifier>],
   "Speed": <byte>,
   "EffectType": <string>,
-  "EffectColors": [<LedColor>]
-  "EffectColor": <LedColor>
+  "EffectColor": <LedColorProvider>
 }
 ~~~
 
@@ -88,6 +87,7 @@ Effect type to set the devices to when the profile is enabled.
 **Required:** No<br>
 **Default value:**
 ~~~
+"PerLed"
 ~~~
 **Example:**
 ~~~
@@ -96,41 +96,24 @@ Effect type to set the devices to when the profile is enabled.
 
 </div>
 
-### EffectColors
-<div class="variable-block" markdown="block">
-
-List of [Led Colors]({{ "/common/led-color" | relative_url }}) used for [EffectType](#effecttype).
-
-**Required:** if [EffectType](#effecttype) is set, either [EffectColors](#effectcolors) or [EffectColor](#effectcolor) has to be set.<br>
-**Default value:**
-~~~
-~~~
-**Example:**
-~~~
-"EffectColors": [
-    [255, 0, 0],
-    [255, 0, 0],
-    ...
-]
-~~~
-
-</div>
-
 ### EffectColor
 <div class="variable-block" markdown="block">
 
-[Led Color]({{ "/common/led-color" | relative_url }}) used for [EffectType](#effecttype).
+A [Led Color Provider]({{ "/common/led-color-provider" | relative_url }}) object.
 
-**Note:** This color will be cloned to match device led count. If you want to use only one [Led Color]({{ "/common/led-color" | relative_url }}), see [EffectColors](#effectcolors).
-{: .notice--info}
-
-**Required:** if [EffectType](#effecttype) is set, either [EffectColors](#effectcolors) or [EffectColor](#effectcolor) has to be set.<br>
+**Required:** **Yes**<br>
 **Default value:**
 ~~~
 ~~~
 **Example:**
 ~~~
-"EffectColor": [255, 0, 0]
+"Color": {
+    "Gradient": [
+        [0, [255, 0, 0]],
+        [0.5, [0, 255, 0]],
+        [1.0 [255, 0, 0]]
+    ]
+}
 ~~~
 
 </div>
@@ -144,9 +127,9 @@ List of [Led Colors]({{ "/common/led-color" | relative_url }}) used for [EffectT
   ],
   "Speed": 35,
   "EffectType": "Full",
-  "EffectColors": [
-    [255, 0, 0]
-  ]
+  "EffectColor": {
+    "Full": [255, 0, 0]
+  }
 }
 ~~~
 ~~~ json
@@ -157,6 +140,8 @@ List of [Led Colors]({{ "/common/led-color" | relative_url }}) used for [EffectT
     [9802, 8101, 3]
   ],
   "EffectType": "Pulse_Fast",
-  "EffectColor": [50, 0, 0]
+  "EffectColor": {
+    "Full": [50, 0, 0]
+  }
 }
 ~~~

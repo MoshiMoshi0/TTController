@@ -10,8 +10,7 @@ permalink: /effects/pulseeffect
     "Type": "PulseEffect",
     "Config": {
         "BrightnessStep": <float>
-        "Colors": <[LedColor]>
-        "Color": <LedColor>
+        "Color": <LedColorProvider>
     }
 }
 ~~~
@@ -35,39 +34,24 @@ Determines how fast the colors pulse.
 
 </div>
 
-### Colors
-<div class="variable-block" markdown="block">
-
-List of [Led Colors]({{ "/common/led-color" | relative_url }}) when the pulse is in full brightness.
-
-**Required:** Either [Color](#color) or [Colors](#colors) is required.<br>
-**Default value:**
-~~~
-~~~
-**Example:**
-~~~
-"Colors": [
-    [255, 0, 0],
-    [0, 255, 0],
-    [0, 0, 255],
-    ...
-]
-~~~
-
-</div>
-
 ### Color
 <div class="variable-block" markdown="block">
 
-[Led Color]({{ "/common/led-color" | relative_url }}) to set on all leds when the pulse is in full brighness.
+A [Led Color Provider]({{ "/common/led-color-provider" | relative_url }}) object with colors when the pulse is in full brightness.
 
-**Required:** Either [Color](#color) or [Colors](#colors) is required.<br>
+**Required:** **Yes**<br>
 **Default value:**
 ~~~
 ~~~
 **Example:**
 ~~~
-"Color": [255, 0, 0]
+"Color": {
+    "Gradient": [
+        [0, [255, 0, 0]],
+        [0.5, [0, 255, 0]],
+        [1.0 [255, 0, 0]]
+    ]
+}
 ~~~
 
 </div>

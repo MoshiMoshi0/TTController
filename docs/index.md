@@ -21,7 +21,7 @@ Welcome to the TTController documentation!
 **Note:** The service will start automatically and will create a default empty config. See [Configuring the service](#configuring-the-service) section on how to configure it.
 {: .notice--info}
 
-**Note:** A quick test to see if the service is working property is to run debug report found in `Main Menu -> Debug -> Report` menu. It should list all detected controllers, sensors and plugins.
+**Note:** A quick test to see if the service will work properly is to run debug report found in `Main Menu -> Debug -> Report` menu. It should list all detected controllers, sensors and plugins.
 {: .notice--info}
 
 ### Configuring the service

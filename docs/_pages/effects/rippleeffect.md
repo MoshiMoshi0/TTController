@@ -9,31 +9,15 @@ permalink: /effects/rippleeffect
 {
     "Type": "RippleEffect",
     "Config": {
-        "Color": <LedColor>,
         "Length": <int>,
-        "TickInterval": <int>
+        "TickInterval": <int>,
+        "RippleColor": <LedColorProvider>,
+        "BackgroundColor": <LedColorProvider>
     }
 }
 ~~~
 
 ## Variables
-
-### Color
-<div class="variable-block" markdown="block">
-
-Ripple base [Led Color]({{ "/common/led-color" | relative_url }}).
-
-**Required:** **Yes**<br>
-**Default value:**
-~~~
-[0, 0, 0]
-~~~
-**Example:**
-~~~
-"Color": [255, 0, 0]
-~~~
-
-</div>
 
 ### Length
 <div class="variable-block" markdown="block">
@@ -65,6 +49,50 @@ Number of updates before the ripple advances to the next led.
 **Example:**
 ~~~
 "TickInterval": 2
+~~~
+
+</div>
+
+### RippleColor
+<div class="variable-block" markdown="block">
+
+A [Led Color Provider]({{ "/common/led-color-provider" | relative_url }}) object for the ripple.
+
+**Required:** **Yes**<br>
+**Default value:**
+~~~
+~~~
+**Example:**
+~~~
+"Color": {
+    "Gradient": [
+        [0, [255, 0, 0]],
+        [0.5, [0, 255, 0]],
+        [1.0 [255, 0, 0]]
+    ]
+}
+~~~
+
+</div>
+
+### BackgroundColor
+<div class="variable-block" markdown="block">
+
+A [Led Color Provider]({{ "/common/led-color-provider" | relative_url }}) object for the background.
+
+**Required:** **Yes**<br>
+**Default value:**
+~~~
+~~~
+**Example:**
+~~~
+"Color": {
+    "Gradient": [
+        [0, [255, 0, 0]],
+        [0.5, [0, 255, 0]],
+        [1.0 [255, 0, 0]]
+    ]
+}
 ~~~
 
 </div>

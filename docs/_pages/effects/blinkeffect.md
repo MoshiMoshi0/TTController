@@ -11,10 +11,8 @@ permalink: /effects/blinkeffect
     "Config": {
         "OnTime": <int>,
         "OffTime": <int>,
-        "OnColor": <LedColor>,
-        "OffColor": <LedColor>,
-        "OnColors": [<LedColor>],
-        "OffColors": [<LedColor>],
+        "OnColor": <LedColorProvider>,
+        "OffColor": <LedColorProvider>,
     }
 }
 ~~~
@@ -64,15 +62,21 @@ Effect "off" state time.
 ### OnColor
 <div class="variable-block" markdown="block">
 
-[Led Color]({{ "/common/led-color" | relative_url }}) to set on all leds when the effect is in "on" state. 
+A [Led Color Provider]({{ "/common/led-color-provider" | relative_url }}) object used when the effect is in "on" state.
 
-**Required:** Either [OnColor](#oncolor) or [OnColors](#oncolors) is required.<br>
+**Required:** **Yes**<br>
 **Default value:**
 ~~~
 ~~~
 **Example:**
 ~~~
-"OnColor": [255, 0, 0]
+"Color": {
+    "Gradient": [
+        [0, [255, 0, 0]],
+        [0.5, [0, 255, 0]],
+        [1.0 [255, 0, 0]]
+    ]
+}
 ~~~
 
 </div>
@@ -80,57 +84,21 @@ Effect "off" state time.
 ### OffColor
 <div class="variable-block" markdown="block">
 
-[Led Color]({{ "/common/led-color" | relative_url }}) to set on all leds when the effect is in "off" state.  
+A [Led Color Provider]({{ "/common/led-color-provider" | relative_url }}) object used when the effect is in "off" state.
 
-**Required:** Either [OffColor](#offcolor) or [OffColors](#offcolors) is required.<br>
+**Required:** **Yes**<br>
 **Default value:**
 ~~~
 ~~~
 **Example:**
 ~~~
-"OffColor": [255, 0, 0]
-~~~
-
-</div>
-
-### OnColors
-<div class="variable-block" markdown="block">
-
-List of [Led Colors]({{ "/common/led-color" | relative_url }}) to set on the device when the effect is in "on" state.
-
-**Required:** Either [OnColor](#oncolor) or [OnColors](#oncolors) is required.<br>
-**Default value:**
-~~~
-~~~
-**Example:**
-~~~
-"OnColors": [
-    [255, 0, 0],
-    [0, 255, 0],
-    [0, 0, 255],
-    ...
-]
-~~~
-
-</div>
-
-### OffColors
-<div class="variable-block" markdown="block">
-
-List of [Led Colors]({{ "/common/led-color" | relative_url }}) to set on the device when the effect is in "off" state.
-
-**Required:** Either [OffColor](#offcolor) or [OffColors](#offcolors) is required.<br>
-**Default value:**
-~~~
-~~~
-**Example:**
-~~~
-"OffColors": [
-    [255, 0, 0],
-    [0, 255, 0],
-    [0, 0, 255],
-    ...
-]
+"Color": {
+    "Gradient": [
+        [0, [255, 0, 0]],
+        [0.5, [0, 255, 0]],
+        [1.0 [255, 0, 0]]
+    ]
+}
 ~~~
 
 </div>
