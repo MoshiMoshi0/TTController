@@ -18,6 +18,9 @@ Welcome to the TTController documentation!
 2. Run **TTController.Service.exe**.
 3. Select **Manage Service** from the menu and select **Install** option to install the service.
 
+**Important:** If you can'f find the **TTController.Service.exe** file you propably downloaded the source code. Check the [<i class="fab fa-github"/> releases](https://github.com/MoshiMoshi0/TTController/releases) tab for all released builds.
+{: .notice--warning}
+
 **Note:** The service will start automatically and will create a default empty config. See [Configuring the service](#configuring-the-service) section on how to configure it.
 {: .notice--info}
 
