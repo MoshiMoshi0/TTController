@@ -80,6 +80,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Devices", "Devices", "{A1AD8FD0-8BA7-4278-B7A8-2E3EF9D13579}"
 	ProjectSection(SolutionItems) = preProject
 		Plugins\Devices\FloeRiing.json = Plugins\Devices\FloeRiing.json
+		Plugins\Devices\Level20Desk.json = Plugins\Devices\Level20Desk.json
 		Plugins\Devices\PurePlus.json = Plugins\Devices\PurePlus.json
 		Plugins\Devices\RiingDuo.json = Plugins\Devices\RiingDuo.json
 		Plugins\Devices\RiingTrio.json = Plugins\Devices\RiingTrio.json
@@ -90,6 +91,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.StaticColorEffect", "Plugins\Effects\TTController.Plugin.StaticColorEffect\TTController.Plugin.StaticColorEffect.csproj", "{1E34411E-9B43-4530-85DC-E1DDDF2F769D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.AuroraEffect", "Plugins\Effects\TTController.Plugin.AuroraEffect\TTController.Plugin.AuroraEffect.csproj", "{D93E7E14-0A8E-41B4-874C-D415492448DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.Level20DeskController", "Plugins\Controllers\TTController.Plugin.Level20DeskController\TTController.Plugin.Level20DeskController.csproj", "{54B9EA84-DC91-40A5-887E-A6A79DD62AD0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -227,6 +230,10 @@ Global
 		{D93E7E14-0A8E-41B4-874C-D415492448DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D93E7E14-0A8E-41B4-874C-D415492448DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D93E7E14-0A8E-41B4-874C-D415492448DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54B9EA84-DC91-40A5-887E-A6A79DD62AD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54B9EA84-DC91-40A5-887E-A6A79DD62AD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54B9EA84-DC91-40A5-887E-A6A79DD62AD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54B9EA84-DC91-40A5-887E-A6A79DD62AD0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -269,6 +276,7 @@ Global
 		{7CD00102-32DA-4664-83EB-7FDDCE5B9129} = {521264D1-73FB-44B3-8243-CB3C95AFB179}
 		{1E34411E-9B43-4530-85DC-E1DDDF2F769D} = {521264D1-73FB-44B3-8243-CB3C95AFB179}
 		{D93E7E14-0A8E-41B4-874C-D415492448DC} = {521264D1-73FB-44B3-8243-CB3C95AFB179}
+		{54B9EA84-DC91-40A5-887E-A6A79DD62AD0} = {72415EA8-F57C-4F2C-9B6C-167BF94FE3F8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9B8A6C39-77D8-476B-B89B-C39D2AF3D3B9}
