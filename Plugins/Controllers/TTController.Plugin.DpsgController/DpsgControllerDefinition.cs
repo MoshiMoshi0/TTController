@@ -8,7 +8,7 @@ namespace TTController.Plugin.DpsgController
     {
         public string Name => "Dpsg";
         public int VendorId => 0x264a;
-        public IEnumerable<int> ProductIds { get { yield return 0x2329; } }
+        public IEnumerable<int> ProductIds => new[] { 0x2329 };
         public int PortCount => 0;
         public Type ControllerProxyType => typeof(DpsgControllerProxy);
     }

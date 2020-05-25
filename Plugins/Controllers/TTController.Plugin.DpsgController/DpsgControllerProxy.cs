@@ -44,12 +44,7 @@ namespace TTController.Plugin.DpsgController
         }
 
         public override IEnumerable<PortIdentifier> Ports
-        {
-            get
-            {
-                yield return new PortIdentifier(Device.VendorId, Device.ProductId, 0);
-            }
-        }
+            => new[] { new PortIdentifier(Device.VendorId, Device.ProductId, 0) };
 
         public override IEnumerable<string> EffectTypes => _availableEffects.Keys;
 

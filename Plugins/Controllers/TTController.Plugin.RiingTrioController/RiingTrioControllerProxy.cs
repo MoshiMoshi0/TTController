@@ -23,7 +23,6 @@ namespace TTController.Plugin.RiingTrioController
 
         public override IEnumerable<string> EffectTypes => _availableEffects.Keys;
 
-
         public override bool SetRgb(byte port, byte mode, IEnumerable<LedColor> colors)
         {
             bool WriteChunk(byte chunkId)
@@ -46,7 +45,6 @@ namespace TTController.Plugin.RiingTrioController
 
             return result;
         }
-
 
         public override bool SetSpeed(byte port, byte speed) =>
             Device.WriteReadBytes(0x32, 0x51, port, 0x01, speed)?[3] == 0xfc;
@@ -89,6 +87,5 @@ namespace TTController.Plugin.RiingTrioController
             && port.ControllerVendorId == Device.VendorId
             && port.Id >= 1
             && port.Id <= Definition.PortCount;
-
     }
 }

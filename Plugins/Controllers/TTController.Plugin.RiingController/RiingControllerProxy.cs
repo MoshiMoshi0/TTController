@@ -40,7 +40,6 @@ namespace TTController.Plugin.RiingController
         public override bool SetSpeed(byte port, byte speed) =>
             Device.WriteReadBytes(0x32, 0x51, port, 0x03, speed)?[3] == 0xfc;
 
-
         public override PortData GetPortData(byte port)
         {
             var result = Device.WriteReadBytes(0x33, 0x51, port);
