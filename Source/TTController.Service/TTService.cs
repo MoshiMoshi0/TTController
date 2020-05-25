@@ -322,7 +322,7 @@ namespace TTController.Service
                 {
                     foreach (var (port, speed) in speedMap)
                     {
-                        if (speed == _cache.GetPortSpeed(port))
+                        if (!_cache.GetPortConfig(port).IgnoreSpeedCache && speed == _cache.GetPortSpeed(port))
                             continue;
 
                         var controller = _deviceManager.GetController(port);
@@ -469,7 +469,7 @@ namespace TTController.Service
                         if (colors == null)
                             continue;
 
-                        if (colors.ContentsEqual(_cache.GetPortColors(port)))
+                        if (!_cache.GetPortConfig(port).IgnoreColorCache && colors.ContentsEqual(_cache.GetPortColors(port)))
                             continue;
 
                         var controller = _deviceManager.GetController(port);
