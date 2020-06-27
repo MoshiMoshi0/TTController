@@ -45,6 +45,8 @@ docs:
         url: /effects/auroraeffect
       - title: BlinkEffect
         url: /effects/blinkeffect
+      - title: CopyColorEffect
+        url: /effects/copycoloreffect
       - title: FlowEffect
         url: /effects/floweffect
       - title: PingPongEffect

@@ -96,12 +96,12 @@ Effect type to set the devices to when the profile is enabled.
 
 </div>
 
-### EffectColor
+### Color
 <div class="variable-block" markdown="block">
 
 A [Led Color Provider]({{ "/common/led-color-provider" | relative_url }}) object.
 
-**Required:** **Yes** if [EffectType](#effecttype) is set<br>
+**Required:** No<br>
 **Default value:**
 ~~~
 ~~~
@@ -126,8 +126,7 @@ A [Led Color Provider]({{ "/common/led-color-provider" | relative_url }}) object
     [9802, 8101, 1]
   ],
   "Speed": 35,
-  "EffectType": "Full",
-  "EffectColor": {
+  "Color": {
     "Full": [255, 0, 0]
   }
 }
@@ -139,9 +138,12 @@ A [Led Color Provider]({{ "/common/led-color-provider" | relative_url }}) object
     [9802, 8101, 1],
     [9802, 8101, 3]
   ],
-  "EffectType": "Pulse_Fast",
-  "EffectColor": {
-    "Full": [50, 0, 0]
+  "Color": {
+    "Gradient": [
+      [0, [0, 0, 0]],
+      [0.5, [255, 0, 0]],
+      [1, [0, 0, 0]]
+    ]
   }
 }
 ~~~

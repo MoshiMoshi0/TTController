@@ -23,7 +23,7 @@ permalink: /config/service
   "NetworkSensorsEnabled": <bool>,
   "ControllerSensorsEnabled": <bool>,
 
-  "SensorTimerInterval ": <int>,
+  "SensorTimerInterval": <int>,
   "DeviceSpeedTimerInterval": <int>,
   "DeviceRgbTimerInterval": <int>,
   "DebugTimerInterval": <int>
@@ -237,7 +237,7 @@ false
 
 </div>
 
-### SensorTimerInterval 
+### SensorTimerInterval
 <div class="variable-block" markdown="block">
 
 Determines timer delay for updating sensor values.
@@ -373,10 +373,9 @@ Determines timer delay for logging debug data.
         [9802, 8101, 1]
       ],
       "Speed": 35,
-      "EffectType": "Full",
-      "EffectColors": [
-        [255, 0, 0]
-      ]
+      "Colors": {
+        "Full": [255, 0, 0]
+      }
     }
   ],
   "PortConfigs": [
