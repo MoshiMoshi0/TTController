@@ -292,27 +292,27 @@ namespace TTController.Service
                 }
 
                 IDictionary<PortIdentifier, byte> speedMap;
-                if (criticalState)
+                try
                 {
-                    speedMap = profile.Ports.ToDictionary(p => p, _ => (byte)100);
-                }
-                else
-                {
-                    var speedController = _pluginStore
-                        .Get<ISpeedControllerBase>(profile)
-                        .FirstOrDefault(c => c.IsEnabled(_cache.AsReadOnly()));
-                    if (speedController == null)
-                        continue;
-
-                    try
+                    if (criticalState)
                     {
-                        speedMap = speedController.GenerateSpeeds(profile.Ports, _cache.AsReadOnly());
-                    }
-                    catch(Exception e)
-                    {
-                        Logger.Fatal("{0} failed with {1}", speedController.GetType().Name, e);
                         speedMap = profile.Ports.ToDictionary(p => p, _ => (byte)100);
                     }
+                    else
+                    {
+                        var speedController = _pluginStore
+                            .Get<ISpeedControllerBase>(profile)
+                            .FirstOrDefault(c => c.IsEnabled(_cache.AsReadOnly()));
+                        if (speedController == null)
+                            continue;
+
+                        speedMap = speedController.GenerateSpeeds(profile.Ports, _cache.AsReadOnly());
+                    }
+                }
+                catch(Exception e)
+                {
+                    Logger.Fatal(e);
+                    speedMap = profile.Ports.ToDictionary(p => p, _ => (byte)100);
                 }
 
                 if (speedMap == null)
@@ -436,23 +436,22 @@ namespace TTController.Service
 
             foreach (var profile in _config.Profiles)
             {
-                var effect = _pluginStore
-                    .Get<IEffectBase>(profile)
-                    .FirstOrDefault(e => e.IsEnabled(_cache.AsReadOnly()));
-                if (effect == null)
-                    continue;
-
                 IDictionary<PortIdentifier, List<LedColor>> colorMap;
                 string effectType;
-
                 try
                 {
+                    var effect = _pluginStore
+                       .Get<IEffectBase>(profile)
+                       .FirstOrDefault(e => e.IsEnabled(_cache.AsReadOnly()));
+                    if (effect == null)
+                        continue;
+
                     colorMap = effect.GenerateColors(profile.Ports, _cache.AsReadOnly());
                     effectType = effect.EffectType;
                 }
                 catch (Exception e)
                 {
-                    Logger.Fatal("{0} failed with {1}", effect.GetType().Name, e);
+                    Logger.Fatal(e);
                     colorMap = profile.Ports.ToDictionary(p => p, _ => new List<LedColor>() { new LedColor(255, 0, 0) });
                     effectType = "Full";
                 }
