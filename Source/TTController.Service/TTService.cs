@@ -57,6 +57,7 @@ namespace TTController.Service
             _sensorManager.EnableSensors(_config.SensorConfigs.SelectMany(x => x.Sensors));
             foreach (var profile in _config.Profiles)
             {
+                Logger.Info("Processing profile \"{0}\"", profile.Name);
                 if (_pluginStore.Get(profile).Any())
                 {
                     Logger.Fatal("Duplicate profile \"{0}\" found!", profile.Name);
@@ -75,14 +76,14 @@ namespace TTController.Service
                     _sensorManager.EnableSensors(speedController.UsedSensors);
                 }
 
-                profile.Ports.RemoveAll(p =>
+                foreach(var port in profile.Ports)
                 {
-                    var portExists = _deviceManager.Controllers.SelectMany(c => c.Ports).Contains(p);
-                    if (!portExists)
-                        Logger.Warn("Removing invalid port: {0}", p);
+                    _cache.StorePortConfig(port, PortConfig.Default);
+                    _cache.StoreDeviceConfig(port, DeviceConfig.Default);
 
-                    return !portExists;
-                });
+                    if (!_deviceManager.Controllers.SelectMany(c => c.Ports).Contains(port))
+                        Logger.Warn("Could not find matching controller for port {0}!", port);
+                }
             }
 
             foreach (var sensor in _sensorManager.EnabledSensors)
@@ -453,7 +454,7 @@ namespace TTController.Service
                 {
                     Logger.Fatal(e);
                     colorMap = profile.Ports.ToDictionary(p => p, _ => new List<LedColor>() { new LedColor(255, 0, 0) });
-                    effectType = "Full";
+                    effectType = "PerLed";
                 }
 
                 if (colorMap == null)

@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace TTController.Common.Plugin
 {
-    public interface IControllerProxy
+    public interface IControllerProxy : IDisposable
     {
         string Name { get; }
         int VendorId { get; }

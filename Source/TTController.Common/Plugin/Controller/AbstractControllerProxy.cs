@@ -41,5 +41,16 @@ namespace TTController.Common.Plugin
             hashCode = hashCode * -1521134295 + ProductId.GetHashCode();
             return hashCode;
         }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            Device.Dispose();
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            System.GC.SuppressFinalize(this);
+        }
     }
 }
