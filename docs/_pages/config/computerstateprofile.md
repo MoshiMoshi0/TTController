@@ -11,7 +11,7 @@ permalink: /config/computerstateprofile
   "Ports": [<PortIdentifier>],
   "Speed": <byte>,
   "EffectType": <string>,
-  "EffectColor": <LedColorProvider>
+  "Color": <LedColorProvider>
 }
 ~~~
 
