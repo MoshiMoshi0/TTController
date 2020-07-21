@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TTController.Common
 {
@@ -42,6 +43,28 @@ namespace TTController.Common
         {
             var (r, g, b) = LerpSmooth(t, from, to);
             return new LedColor((byte)Math.Round(r), (byte)Math.Round(g), (byte)Math.Round(b));
+        }
+
+        public static IEnumerable<LedColor> Lerp(double t, IEnumerable<LedColor> from, IEnumerable<LedColor> to)
+        {
+            var fromEnumerator = from.GetEnumerator();
+            var toEnumerator = to.GetEnumerator();
+
+            var fromHasValue = fromEnumerator.MoveNext();
+            var toHasValue = toEnumerator.MoveNext();
+
+            while(fromHasValue || toHasValue)
+            {
+                if (fromHasValue && !toHasValue)
+                    yield return fromEnumerator.Current;
+                else if (!fromHasValue && toHasValue)
+                    yield return toEnumerator.Current;
+                else
+                    yield return Lerp(t, fromEnumerator.Current, toEnumerator.Current);
+
+                if(fromHasValue) fromHasValue = fromEnumerator.MoveNext();
+                if(toHasValue) toHasValue = toEnumerator.MoveNext();
+            }
         }
 
         public static (double, double, double) LerpSmooth(double t, LedColor from, LedColor to)
