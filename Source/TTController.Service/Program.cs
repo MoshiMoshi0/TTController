@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.ServiceProcess;
+using HidSharp;
 using LibreHardwareMonitor.Hardware;
 using Microsoft.Win32;
 using NLog;
@@ -209,6 +210,40 @@ namespace TTController.Service
                 WriteFooter();
             }
 
+            void ListApplications()
+            {
+                WriteHeader("Applications");
+                WriteProperty(0, "");
+
+
+                var thermaltakeExecutables = new[]
+                {
+                    "TT RGB Plus",
+                    "ThermaltakeUpdate",
+                    "Thermaltake DPS POWER",
+                    "NeonMaker Light Editing Software"
+                };
+
+                foreach (var process in Process.GetProcesses())
+                    if(thermaltakeExecutables.Any(e => string.CompareOrdinal(process.ProcessName, e) == 0))
+                        WriteProperty(0, $"{Path.GetFileName(process.ProcessName)}.exe ", process.Id);
+
+                WriteProperty(0, "");
+                WriteFooter();
+            }
+
+            void ListHid()
+            {
+                WriteHeader("HID");
+                WriteProperty(0, "");
+
+                foreach(var device in DeviceList.Local.GetHidDevices(vendorID: 0x264a))
+                    WriteProperty(0, $"[0x{device.VendorID:x}, 0x{device.ProductID:x}]: ", device.DevicePath);
+
+                WriteProperty(0, "");
+                WriteFooter();
+            }
+
             void ListControllers()
             {
                 WriteHeader("Controllers");
@@ -309,6 +344,8 @@ namespace TTController.Service
             menu.Add("Report", () => {
                 Console.Clear();
                 ListInfo();
+                ListApplications();
+                ListHid();
                 ListControllers();
                 ListSensors(SensorType.Temperature);
                 WaitForInput();
@@ -316,6 +353,7 @@ namespace TTController.Service
             }, () => enabled);
             menu.Add("Controllers", () => {
                 Console.Clear();
+                ListHid();
                 ListControllers();
                 WaitForInput();
                 return false;
