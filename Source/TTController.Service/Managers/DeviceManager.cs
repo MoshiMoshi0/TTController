@@ -82,7 +82,7 @@ namespace TTController.Service.Managers
                             continue;
                         }
 
-                        Logger.Info("Initialized \"{0}\" controller [{1}, {2}]", definition.Name, device.VendorID, device.ProductID);
+                        Logger.Info("Initialized \"{0}\" controller [{1}, {2}], version: \"{3}\"", definition.Name, device.VendorID, device.ProductID, controller.Version);
                         _controllers.Add(controller);
                     }
                 }

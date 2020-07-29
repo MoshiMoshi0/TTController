@@ -21,6 +21,18 @@ namespace TTController.Plugin.Level20DeskController
             };
         }
 
+        public override Version Version
+        {
+            get
+            {
+                var bytes = Device.WriteReadBytes(0x33, 0x50);
+                if (bytes == null)
+                    return new Version();
+
+                return new Version(bytes[3], bytes[4], bytes[5]);
+            }
+        }
+
         public override IEnumerable<PortIdentifier> Ports
             => new[] { new PortIdentifier(Device.VendorId, Device.ProductId, 0) };
 

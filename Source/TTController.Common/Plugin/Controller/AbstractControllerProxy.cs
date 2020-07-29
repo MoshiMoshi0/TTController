@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace TTController.Common.Plugin
 {
@@ -17,6 +18,7 @@ namespace TTController.Common.Plugin
         public int VendorId => Device.VendorId;
         public int ProductId => Device.ProductId;
 
+        public abstract Version Version { get; }
         public abstract IEnumerable<PortIdentifier> Ports { get; }
         public abstract IEnumerable<string> EffectTypes { get; }
         public abstract bool SetRgb(byte port, byte mode, IEnumerable<LedColor> colors);

@@ -8,6 +8,7 @@ namespace TTController.Common.Plugin
         string Name { get; }
         int VendorId { get; }
         int ProductId { get; }
+        Version Version { get; }
         IEnumerable<PortIdentifier> Ports { get; }
         IEnumerable<string> EffectTypes { get; }
 

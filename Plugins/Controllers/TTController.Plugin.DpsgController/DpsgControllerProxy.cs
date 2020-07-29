@@ -43,6 +43,8 @@ namespace TTController.Plugin.DpsgController
             _availableEffects = result;
         }
 
+        public override Version Version => new Version();
+
         public override IEnumerable<PortIdentifier> Ports
             => new[] { new PortIdentifier(Device.VendorId, Device.ProductId, 0) };
 

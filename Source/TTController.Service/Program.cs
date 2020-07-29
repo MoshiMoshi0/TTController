@@ -257,13 +257,13 @@ namespace TTController.Service
                         WriteProperty(0, "Name: ", controller.Name);
                         WriteProperty(1, "VendorId: ", controller.VendorId);
                         WriteProperty(1, "ProductId: ", controller.ProductId);
+                        WriteProperty(1, "Version: ", controller.Version);
                         WriteProperty(1, "Ports: ");
 
                         foreach (var port in controller.Ports)
                         {
-                            var data = controller.GetPortData(port.Id);
                             WriteProperty(2, $"{port.Id}: ");
-                            WriteProperty(3, "Data: ", data);
+                            WriteProperty(3, "Data: ", controller.GetPortData(port.Id));
                             WriteProperty(3, "Identifier: ", port);
                         }
 

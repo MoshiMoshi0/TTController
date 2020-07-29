@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using TTController.Common;
 using TTController.Common.Plugin;
@@ -39,6 +40,18 @@ namespace TTController.Plugin.RiingPlusController
             result.Add("Full", 0x19);
 
             _availableEffects = result;
+        }
+
+        public override Version Version
+        {
+            get
+            {
+                var bytes = Device.WriteReadBytes(0x33, 0x50);
+                if (bytes == null)
+                    return new Version();
+
+                return new Version(bytes[3], bytes[4], bytes[5]);
+            }
         }
 
         public override IEnumerable<PortIdentifier> Ports => Enumerable.Range(1, Definition.PortCount)
