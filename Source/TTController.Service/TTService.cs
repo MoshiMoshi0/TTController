@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.ServiceProcess;
 using NLog;
 using TTController.Common;
@@ -40,7 +42,7 @@ namespace TTController.Service
         public bool Initialize()
         {
             Logger.Info($"{new string('=', 64)}");
-            Logger.Info("Initializing...");
+            Logger.Info("Initializing service, version \"{0}\"", FileVersionInfo.GetVersionInfo(Assembly.GetCallingAssembly().Location)?.ProductVersion);
             PluginLoader.LoadAll(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Plugins"));
 
             _configManager = new ConfigManager("config.json");
