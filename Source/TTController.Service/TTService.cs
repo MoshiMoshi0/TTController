@@ -243,14 +243,14 @@ namespace TTController.Service
                         if (controller == null)
                             continue;
 
-                        if(profile.Speed.HasValue)
-                            controller.SetSpeed(port.Id, profile.Speed.Value);
+                        var isDirty = false;
+                        if (profile.Speed.HasValue)
+                            isDirty |= controller.SetSpeed(port.Id, profile.Speed.Value);
 
-                        var effectByte = controller.GetEffectByte(profile.EffectType);
-                        if (effectByte.HasValue && profile.Color != null)
-                            controller.SetRgb(port.Id, effectByte.Value, profile.Color.Get(_cache.GetDeviceConfig(port).LedCount));
+                        if (profile.EffectType != null && profile.Color != null)
+                            isDirty |= controller.SetRgb(port.Id, profile.EffectType, profile.Color.Get(_cache.GetDeviceConfig(port).LedCount));
 
-                        if (state == ComputerStateType.Boot && (profile.Speed.HasValue || effectByte.HasValue))
+                        if (state == ComputerStateType.Boot && isDirty)
                             dirtyControllers.Add(controller);
                     }
                 }
@@ -474,13 +474,12 @@ namespace TTController.Service
                         if (!_cache.GetPortConfig(port).IgnoreColorCache && colors.ContentsEqual(_cache.GetPortColors(port)))
                             continue;
 
-                        var controller = _deviceManager.GetController(port);
-                        var effectByte = controller?.GetEffectByte(effectType);
-                        if (effectByte == null)
+                        if (effectType == null)
                             continue;
 
+                        var controller = _deviceManager.GetController(port);
+                        controller.SetRgb(port.Id, effectType, colors);
                         _cache.StorePortColors(port, colors);
-                        controller.SetRgb(port.Id, effectByte.Value, colors);
                     }
                 }
             }

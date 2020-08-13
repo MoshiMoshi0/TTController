@@ -37,8 +37,11 @@ namespace TTController.Plugin.RiingController
 
         public override IEnumerable<string> EffectTypes => _availableEffects.Keys;
 
-        public override bool SetRgb(byte port, byte mode, IEnumerable<LedColor> colors)
+        public override bool SetRgb(byte port, string effectType, IEnumerable<LedColor> colors)
         {
+            if (!_availableEffects.TryGetValue(effectType, out var mode))
+                return false;
+
             var bytes = new List<byte> { 0x32, 0x52, port, mode };
             foreach (var color in colors)
             {
@@ -72,13 +75,6 @@ namespace TTController.Plugin.RiingController
             };
 
             return data;
-        }
-
-        public override byte? GetEffectByte(string effectType)
-        {
-            if (effectType == null)
-                return null;
-            return _availableEffects.TryGetValue(effectType, out var value) ? value : (byte?)null;
         }
 
         public override void SaveProfile() =>
