@@ -16,7 +16,8 @@ namespace TTController.Plugin.RiingController
             _availableEffects = new Dictionary<string, byte>()
             {
                 ["Flow"] = 0x01,
-                ["Full"] = 0x00
+                ["Full"] = 0x00,
+                ["PerLed"] = 0x00
             };
         }
 
@@ -42,13 +43,8 @@ namespace TTController.Plugin.RiingController
             if (!_availableEffects.TryGetValue(effectType, out var mode))
                 return false;
 
-            var bytes = new List<byte> { 0x32, 0x52, port, mode };
-            foreach (var color in colors)
-            {
-                bytes.Add(color.R);
-                bytes.Add(color.G);
-                bytes.Add(color.B);
-            }
+            var color = colors.FirstOrDefault();
+            var bytes = new List<byte> { 0x32, 0x52, port, mode, color.R, color.G, color.B };
 
             var result = Device.WriteReadBytes(bytes)?[3] ?? -1;
             return result == 0xfe || result == 0x00;

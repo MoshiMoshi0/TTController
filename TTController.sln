@@ -82,6 +82,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Devices", "Devices", "{A1AD
 		Plugins\Devices\FloeRiing.json = Plugins\Devices\FloeRiing.json
 		Plugins\Devices\Level20Desk.json = Plugins\Devices\Level20Desk.json
 		Plugins\Devices\PurePlus.json = Plugins\Devices\PurePlus.json
+		Plugins\Devices\Riing.json = Plugins\Devices\Riing.json
 		Plugins\Devices\RiingDuo.json = Plugins\Devices\RiingDuo.json
 		Plugins\Devices\RiingQuad.json = Plugins\Devices\RiingQuad.json
 		Plugins\Devices\RiingTrio.json = Plugins\Devices\RiingTrio.json
