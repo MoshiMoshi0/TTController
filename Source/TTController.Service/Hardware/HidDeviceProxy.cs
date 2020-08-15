@@ -21,8 +21,8 @@ namespace TTController.Service.Hardware
         public HidDeviceProxy(HidDevice device)
         {
             _device = device;
-            _opened = device.TryOpen(out _stream);
 
+            _stream = device.Open();
             _stream.ReadTimeout = 1000;
             _stream.WriteTimeout = 1000;
         }
