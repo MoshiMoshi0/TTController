@@ -13,7 +13,8 @@ namespace TTController.Service.Hardware
 
         private readonly HidDevice _device;
         private readonly HidStream _stream;
-        private bool _opened;
+        private readonly byte[] _writeBuffer;
+        private readonly byte[] _readBuffer;
 
         public int VendorId => _device.VendorID;
         public int ProductId => _device.ProductID;
@@ -25,20 +26,23 @@ namespace TTController.Service.Hardware
             _stream = device.Open();
             _stream.ReadTimeout = 1000;
             _stream.WriteTimeout = 1000;
+
+            _writeBuffer = new byte[_device.GetMaxOutputReportLength()];
+            _readBuffer = new byte[_device.GetMaxInputReportLength()];
         }
 
         public bool WriteBytes(params byte[] bytes)
         {
-            if (!_opened || bytes.Length == 0)
+            if (bytes.Length == 0)
                 return false;
 
-            var data = new byte[_device.GetMaxOutputReportLength()];
-            Array.Copy(bytes, 0, data, 1, Math.Min(bytes.Length, _device.GetMaxOutputReportLength() - 1));
+            Array.Clear(_writeBuffer, 0, _writeBuffer.Length);
+            Array.Copy(bytes, 0, _writeBuffer, 1, Math.Min(bytes.Length, _device.GetMaxOutputReportLength() - 1));
 
             try
             {
-                _stream.Write(data);
-                Logger.Trace("W[{vid}, {pid}] {data:X2}", VendorId, ProductId, data);
+                _stream.Write(_writeBuffer);
+                Logger.Trace("W[{vid}, {pid}] {data:X2}", VendorId, ProductId, _writeBuffer);
                 return true;
             }
             catch (Exception e)
@@ -53,14 +57,12 @@ namespace TTController.Service.Hardware
 
         public byte[] ReadBytes()
         {
-            if (!_opened)
-                return null;
-
             try
             {
-                var data = _stream.Read();
-                Logger.Trace("R[{vid}, {pid}] {data:X2}", VendorId, ProductId, data);
-                return data;
+                Array.Clear(_readBuffer, 0, _readBuffer.Length);
+                var read = _stream.Read(_readBuffer, 0, _readBuffer.Length);
+                Logger.Trace("R[{vid}, {pid}] {data:X2}", VendorId, ProductId, _readBuffer);
+                return _readBuffer;
             }
             catch (Exception e)
             {
@@ -82,7 +84,6 @@ namespace TTController.Service.Hardware
         protected virtual void Dispose(bool disposing)
         {
             _stream?.Dispose();
-            _opened = false;
         }
 
         public void Dispose()
