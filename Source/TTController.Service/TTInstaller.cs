@@ -46,6 +46,7 @@ namespace TTController.Service
             }
 
             Sc($"failure {ServiceName} reset= 300 actions= restart/10000/restart/20000/restart/60000");
+            Sc($"failureflag {ServiceName} 1");
         }
 
         protected override void OnBeforeUninstall(IDictionary savedState)
