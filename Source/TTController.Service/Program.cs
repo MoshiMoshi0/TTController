@@ -42,10 +42,22 @@ namespace TTController.Service
             menu.Add("Run in console", () => {
                 Console.Clear();
                 Console.ResetColor();
-                var service = new TTService();
-                service.Initialize();
-                Console.ReadKey(true);
-                service.Finalize(ComputerStateType.Shutdown);
+
+                try
+                {
+                    var service = new TTService();
+                    service.Initialize();
+                    Console.ReadKey(true);
+                    service.Finalize(ComputerStateType.Shutdown);
+                }
+                catch(Exception e)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Service failed with unhandled exception:");
+                    Console.ResetColor();
+                    Console.WriteLine(e.ToString());
+                }
+
                 Console.WriteLine("Press any key to return to the menu...");
                 Console.ReadKey(true);
                 return false;
