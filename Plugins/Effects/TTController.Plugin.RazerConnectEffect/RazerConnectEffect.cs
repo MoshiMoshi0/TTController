@@ -1,11 +1,22 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using TTController.Common;
 using TTController.Common.Plugin;
 
 namespace TTController.Plugin.RazerConnectEffect
 {
-    public class RazerConnectEffectConfig : EffectConfigBase { }
+    public enum RazerConnectLayer
+    {
+        Base,
+        Custom,
+        Both
+    }
+
+    public class RazerConnectEffectConfig : EffectConfigBase 
+    {
+        [DefaultValue(RazerConnectLayer.Custom)] public RazerConnectLayer Layer { get; internal set; } = RazerConnectLayer.Custom;
+    }
 
     public class RazerConnectEffect : EffectBase<RazerConnectEffectConfig>
     {
@@ -50,10 +61,12 @@ namespace TTController.Plugin.RazerConnectEffect
             var result = new Dictionary<PortIdentifier, List<LedColor>>();
             foreach(var port in ports)
             {
-                if (cache.GetDeviceConfig(port).LedCount == 1)
+                if (Config.Layer == RazerConnectLayer.Base)
                     result.Add(port, _colors.Take(1).ToList());
-                else
+                else if(Config.Layer == RazerConnectLayer.Custom)
                     result.Add(port, _colors.Skip(1).ToList());
+                else if(Config.Layer == RazerConnectLayer.Both)
+                    result.Add(port, _colors.ToList());
             }
 
             return result;
