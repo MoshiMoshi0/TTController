@@ -19,7 +19,17 @@ namespace TTController.Plugin.RiingQuadController
             };
         }
 
-        public override Version Version => throw new NotImplementedException();
+        public override Version Version
+        {
+            get
+            {
+                var bytes = Device.WriteReadBytes(0x33, 0x50);
+                if (bytes == null)
+                    return new Version();
+
+                return new Version(bytes[3], bytes[4], bytes[5]);
+            }
+        }
 
         public override IEnumerable<PortIdentifier> Ports => Enumerable.Range(1, Definition.PortCount)
             .Select(x => new PortIdentifier(Device.VendorId, Device.ProductId, (byte)x));
