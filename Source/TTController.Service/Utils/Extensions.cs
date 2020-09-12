@@ -12,10 +12,12 @@ namespace TTController.Service.Utils
                 .SelectMany(a => a.GetTypes())
                 .Where(t => t.IsClass && !t.IsAbstract);
 
-            if (type.IsInterface)
-                return types.Where(t => type.IsAssignableFrom(t));
-            else
-                return types.Where(t => t.IsSubclassOf(type));
+            return types.Where(t => type.IsAssignableOrSubclass(t));
         }
+
+        public static bool IsAssignableOrSubclass(this Type type, Type c)
+            => type.IsInterface
+                ? type.IsAssignableFrom(c)
+                : c.IsSubclassOf(type) || type == c;
     }
 }

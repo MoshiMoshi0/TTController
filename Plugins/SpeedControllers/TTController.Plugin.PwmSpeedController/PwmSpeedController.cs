@@ -19,7 +19,7 @@ namespace TTController.Plugin.PwmSpeedController
 
     public class PwmSpeedController : SpeedControllerBase<PwmSpeedControllerConfig>
     {
-        public PwmSpeedController(PwmSpeedControllerConfig config) : base(config, config.Sensors) { }
+        public PwmSpeedController(PwmSpeedControllerConfig config) : base(config) { }
 
         public override IDictionary<PortIdentifier, byte> GenerateSpeeds(List<PortIdentifier> ports, ICacheProvider cache)
         {

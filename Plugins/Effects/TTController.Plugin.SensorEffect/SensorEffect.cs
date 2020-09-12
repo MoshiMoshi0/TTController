@@ -22,7 +22,7 @@ namespace TTController.Plugin.SensorEffect
 
         public override string EffectType => "PerLed";
 
-        public SensorEffect(SensorEffectConfig config) : base(config, config.Sensors)
+        public SensorEffect(SensorEffectConfig config) : base(config)
         {
             _r = config.ColorGradient.Start.Color.R;
             _g = config.ColorGradient.Start.Color.G;

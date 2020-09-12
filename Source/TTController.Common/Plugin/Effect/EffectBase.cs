@@ -11,16 +11,10 @@ namespace TTController.Common.Plugin
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         protected T Config { get; private set; }
-        public IEnumerable<Identifier> UsedSensors { get; private set; }
 
-        protected EffectBase(T config) : this(config, Enumerable.Empty<Identifier>()) { }
-
-        protected EffectBase(T config, IEnumerable<Identifier> usedSensors)
+        protected EffectBase(T config)
         {
             Config = config;
-            UsedSensors = usedSensors
-                .Union(config?.Trigger?.UsedSensors ?? Enumerable.Empty<Identifier>())
-                .ToList();
         }
 
         public void Dispose()
@@ -34,7 +28,6 @@ namespace TTController.Common.Plugin
         protected virtual void Dispose(bool disposing)
         {
             Config = null;
-            UsedSensors = null;
         }
 
         public abstract string EffectType { get; }

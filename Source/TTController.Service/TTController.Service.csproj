@@ -17,6 +17,7 @@
     <PackageReference Include="HidSharp" Version="2.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="NLog" Version="4.7.0" />
+    <PackageReference Include="System.Threading.Channels" Version="4.7.1" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Configuration.Install" />

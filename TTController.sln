@@ -100,6 +100,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.ColorSe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.RiingQuadController", "Plugins\Controllers\TTController.Plugin.RiingQuadController\TTController.Plugin.RiingQuadController.csproj", "{17BB2D55-A581-4C30-8B60-DA3F50E60099}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.IpcTrigger", "Plugins\Triggers\TTController.Plugin.IpcTrigger\TTController.Plugin.IpcTrigger.csproj", "{9E38C287-5FB3-4003-A3D0-960D94E6913D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -248,6 +250,10 @@ Global
 		{17BB2D55-A581-4C30-8B60-DA3F50E60099}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17BB2D55-A581-4C30-8B60-DA3F50E60099}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17BB2D55-A581-4C30-8B60-DA3F50E60099}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E38C287-5FB3-4003-A3D0-960D94E6913D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E38C287-5FB3-4003-A3D0-960D94E6913D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E38C287-5FB3-4003-A3D0-960D94E6913D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E38C287-5FB3-4003-A3D0-960D94E6913D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -293,6 +299,7 @@ Global
 		{54B9EA84-DC91-40A5-887E-A6A79DD62AD0} = {72415EA8-F57C-4F2C-9B6C-167BF94FE3F8}
 		{1F747B67-FD48-4FF6-9FDC-FDC784F6585E} = {521264D1-73FB-44B3-8243-CB3C95AFB179}
 		{17BB2D55-A581-4C30-8B60-DA3F50E60099} = {72415EA8-F57C-4F2C-9B6C-167BF94FE3F8}
+		{9E38C287-5FB3-4003-A3D0-960D94E6913D} = {B69E5A42-8845-4081-92DD-95D2D10D7B3E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9B8A6C39-77D8-476B-B89B-C39D2AF3D3B9}

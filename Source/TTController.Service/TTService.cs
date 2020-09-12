@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.ServiceProcess;
+using System.Threading.Channels;
+using LibreHardwareMonitor.Hardware;
 using NLog;
 using TTController.Common;
 using TTController.Common.Plugin;
@@ -22,6 +25,7 @@ namespace TTController.Service
         private ConfigManager _configManager;
         private SensorManager _sensorManager;
         private TimerManager _timerManager;
+        private WebSocketServer _webSocketServer;
 
         private PluginStore _pluginStore;
         private DataCache _cache;
@@ -45,7 +49,11 @@ namespace TTController.Service
             Logger.Info("Initializing service, version \"{0}\"", FileVersionInfo.GetVersionInfo(Assembly.GetCallingAssembly().Location)?.ProductVersion);
             PluginLoader.LoadAll(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Plugins"));
 
-            _configManager = new ConfigManager("config.json");
+            var serializationContext = new TrackingSerializationContext();
+            serializationContext.Track(typeof(IIpcClient));
+            serializationContext.Track(typeof(Identifier));
+
+            _configManager = new ConfigManager("config.json", serializationContext);
             if (!_configManager.LoadOrCreateConfig())
                 return false;
 
@@ -67,16 +75,10 @@ namespace TTController.Service
                 }
 
                 foreach (var effect in profile.Effects)
-                {
                     _pluginStore.Add(profile, effect);
-                    _sensorManager.EnableSensors(effect.UsedSensors);
-                }
 
                 foreach (var speedController in profile.SpeedControllers)
-                {
                     _pluginStore.Add(profile, speedController);
-                    _sensorManager.EnableSensors(speedController.UsedSensors);
-                }
 
                 foreach(var port in profile.Ports)
                 {
@@ -88,6 +90,7 @@ namespace TTController.Service
                 }
             }
 
+            _sensorManager.EnableSensors(serializationContext.Get<Identifier>());
             foreach (var sensor in _sensorManager.EnabledSensors)
                 _cache.StoreSensorConfig(sensor, SensorConfig.Default);
 
@@ -103,6 +106,12 @@ namespace TTController.Service
             _configManager.Accept(_cache.AsWriteOnly());
 
             ApplyComputerStateProfile(ComputerStateType.Boot);
+
+            _webSocketServer = new WebSocketServer(IPAddress.Loopback, 8888);
+            foreach (var plugin in serializationContext.Get<IIpcClient>())
+                _webSocketServer.RegisterClient(plugin);
+
+            _webSocketServer.Start();
 
             _timerManager = new TimerManager();
             _timerManager.RegisterTimer(_config.SensorTimerInterval, SensorTimerCallback);
@@ -204,6 +213,8 @@ namespace TTController.Service
 
             _pluginStore?.Dispose();
             _cache?.Clear();
+
+            _webSocketServer?.Dispose();
 
             _timerManager = null;
             _sensorManager = null;
