@@ -363,6 +363,9 @@ namespace TTController.Service
                         continue;
 
                     var colors = colorMap[port];
+                    if (colors == null)
+                        continue;
+
                     var ledCount = _cache.GetDeviceConfig(port).LedCount;
                     var zones = _cache.GetDeviceConfig(port).Zones;
 
