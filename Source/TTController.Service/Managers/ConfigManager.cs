@@ -128,6 +128,7 @@ namespace TTController.Service.Managers
         {
             Logger.Info("Disposing Config Manager...");
 
+            CurrentConfig?.IpcServer?.Dispose();
             CurrentConfig = null;
         }
 

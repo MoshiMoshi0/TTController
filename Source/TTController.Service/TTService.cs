@@ -25,7 +25,6 @@ namespace TTController.Service
         private ConfigManager _configManager;
         private SensorManager _sensorManager;
         private TimerManager _timerManager;
-        private WebSocketServer _webSocketServer;
 
         private PluginStore _pluginStore;
         private DataCache _cache;
@@ -105,13 +104,14 @@ namespace TTController.Service
 
             _configManager.Accept(_cache.AsWriteOnly());
 
+            if (_config.IpcServerEnabled && _config.IpcServer != null)
+            {
+                foreach (var plugin in serializationContext.Get<IIpcClient>())
+                    _config.IpcServer.RegisterClient(plugin);
+                _config.IpcServer.Start();
+            }
+
             ApplyComputerStateProfile(ComputerStateType.Boot);
-
-            _webSocketServer = new WebSocketServer(IPAddress.Loopback, 8888);
-            foreach (var plugin in serializationContext.Get<IIpcClient>())
-                _webSocketServer.RegisterClient(plugin);
-
-            _webSocketServer.Start();
 
             _timerManager = new TimerManager();
             _timerManager.RegisterTimer(_config.SensorTimerInterval, SensorTimerCallback);
@@ -213,8 +213,6 @@ namespace TTController.Service
 
             _pluginStore?.Dispose();
             _cache?.Clear();
-
-            _webSocketServer?.Dispose();
 
             _timerManager = null;
             _sensorManager = null;

@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using LibreHardwareMonitor.Hardware;
 using TTController.Common;
+using TTController.Common.Plugin;
 
 namespace TTController.Service.Config
 {
@@ -11,6 +12,9 @@ namespace TTController.Service.Config
         public List<ComputerStateProfileConfig> ComputerStateProfiles { get; private set; } = new List<ComputerStateProfileConfig>();
         public List<(List<PortIdentifier> Ports, PortConfig Config)> PortConfigs { get; private set; } = new List<(List<PortIdentifier> Ports, PortConfig Config)>();
         public List<(List<Identifier> Sensors, SensorConfig Config)> SensorConfigs { get; private set; } = new List<(List<Identifier> Sensors, SensorConfig Config)>();
+
+        [DefaultValue(null)] public IIpcServer IpcServer { get; private set; } = null;
+        [DefaultValue(false)] public bool IpcServerEnabled { get; private set; } = false;
 
         [DefaultValue(true)] public bool CpuSensorsEnabled { get; private set; } = true;
         [DefaultValue(true)] public bool GpuSensorsEnabled { get; private set; } = true;
