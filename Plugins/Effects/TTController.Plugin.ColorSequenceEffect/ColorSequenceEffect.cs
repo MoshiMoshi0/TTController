@@ -42,7 +42,6 @@ namespace TTController.Plugin.ColorSequenceEffect
 
         public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
         {
-
             UpdateState();
 
             var current = Config.Sequence[_sequenceIndex];

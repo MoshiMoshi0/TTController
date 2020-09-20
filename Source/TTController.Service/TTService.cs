@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.ServiceProcess;
+using System.Threading.Channels;
+using LibreHardwareMonitor.Hardware;
 using NLog;
 using TTController.Common;
 using TTController.Common.Plugin;
@@ -27,6 +30,8 @@ namespace TTController.Service
         private DataCache _cache;
         private ServiceConfig _config;
 
+        private ServiceIpcClient _ipcClient;
+
         protected bool IsDisposed;
 
         public TTService()
@@ -45,13 +50,17 @@ namespace TTController.Service
             Logger.Info("Initializing service, version \"{0}\"", FileVersionInfo.GetVersionInfo(Assembly.GetCallingAssembly().Location)?.ProductVersion);
             PluginLoader.LoadAll(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Plugins"));
 
-            _configManager = new ConfigManager("config.json");
+            var serializationContext = new TrackingSerializationContext();
+            serializationContext.Track(typeof(IPlugin));
+            serializationContext.Track(typeof(Identifier));
+
+            _configManager = new ConfigManager("config.json", serializationContext);
             if (!_configManager.LoadOrCreateConfig())
                 return false;
 
             _config = _configManager.CurrentConfig;
             _cache = new DataCache();
-            _pluginStore = new PluginStore();
+            _pluginStore = new PluginStore(serializationContext.Get<IPlugin>());
 
             _sensorManager = new SensorManager(_config);
             _deviceManager = new DeviceManager();
@@ -67,16 +76,10 @@ namespace TTController.Service
                 }
 
                 foreach (var effect in profile.Effects)
-                {
-                    _pluginStore.Add(profile, effect);
-                    _sensorManager.EnableSensors(effect.UsedSensors);
-                }
+                    _pluginStore.Assign(effect, profile);
 
                 foreach (var speedController in profile.SpeedControllers)
-                {
-                    _pluginStore.Add(profile, speedController);
-                    _sensorManager.EnableSensors(speedController.UsedSensors);
-                }
+                    _pluginStore.Assign(speedController, profile);
 
                 foreach(var port in profile.Ports)
                 {
@@ -88,6 +91,7 @@ namespace TTController.Service
                 }
             }
 
+            _sensorManager.EnableSensors(serializationContext.Get<Identifier>());
             foreach (var sensor in _sensorManager.EnabledSensors)
                 _cache.StoreSensorConfig(sensor, SensorConfig.Default);
 
@@ -102,12 +106,26 @@ namespace TTController.Service
 
             _configManager.Accept(_cache.AsWriteOnly());
 
+            if (_config.IpcServerEnabled && _config.IpcServer != null)
+            {
+                _ipcClient = new ServiceIpcClient();
+                _pluginStore.Add(_ipcClient);
+                _config.IpcServer.RegisterClient(_ipcClient);
+
+                foreach (var plugin in serializationContext.Get<IIpcClient>())
+                    _config.IpcServer.RegisterClient(plugin);
+                _config.IpcServer.Start();
+            }
+
             ApplyComputerStateProfile(ComputerStateType.Boot);
 
             _timerManager = new TimerManager();
             _timerManager.RegisterTimer(_config.SensorTimerInterval, SensorTimerCallback);
             _timerManager.RegisterTimer(_config.DeviceSpeedTimerInterval, DeviceSpeedTimerCallback);
             _timerManager.RegisterTimer(_config.DeviceRgbTimerInterval, DeviceRgbTimerCallback);
+
+            if (_config.IpcClientTimerInterval > 0)
+                _timerManager.RegisterTimer(_config.IpcClientTimerInterval, IpcClientTimerCallback);
             if(LogManager.Configuration.LoggingRules.Any(r => r.IsLoggingEnabledForLevel(LogLevel.Debug)))
                 _timerManager.RegisterTimer(_config.DebugTimerInterval, DebugTimerCallback);
 
@@ -352,6 +370,9 @@ namespace TTController.Service
                         continue;
 
                     var colors = colorMap[port];
+                    if (colors == null)
+                        continue;
+
                     var ledCount = _cache.GetDeviceConfig(port).LedCount;
                     var zones = _cache.GetDeviceConfig(port).Zones;
 
@@ -484,6 +505,15 @@ namespace TTController.Service
                 }
             }
 
+            return true;
+        }
+
+        public bool IpcClientTimerCallback()
+        {
+            if (_ipcClient == null)
+                return false;
+
+            _ipcClient.Update(_config.Profiles.SelectMany(p => p.Ports), _cache.AsReadOnly());
             return true;
         }
 

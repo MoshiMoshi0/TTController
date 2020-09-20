@@ -26,7 +26,7 @@ namespace TTController.Plugin.SensorTrigger
 
     public class SensorTrigger : TriggerBase<SensorTriggerConfig>
     {
-        public SensorTrigger(SensorTriggerConfig config) : base(config, config.Sensors) { }
+        public SensorTrigger(SensorTriggerConfig config) : base(config) { }
 
         public override bool Value(ICacheProvider cache)
         {
