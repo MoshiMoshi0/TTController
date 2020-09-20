@@ -104,6 +104,8 @@ namespace TTController.Service.Ipc
                         continue;
 
                     await client.ReceiveChannel.Writer.WriteAsync(result, cancellationToken);
+                    if (webSocket.State != WebSocketState.Open)
+                        break;
                 }
             }
             catch (OperationCanceledException) { }
@@ -117,6 +119,8 @@ namespace TTController.Service.Ipc
                 while (!cancellationToken.IsCancellationRequested && webSocket.State == WebSocketState.Open)
                 {
                     var result = await client.SendChannel.Reader.ReadAsync(cancellationToken);
+                    if (webSocket.State != WebSocketState.Open)
+                        break;
 
                     Logger.Debug("\"{0}\" sent data: \"{1}\"", client.IpcName, result);
                     if (string.IsNullOrWhiteSpace(result))
@@ -156,7 +160,6 @@ namespace TTController.Service.Ipc
 
         protected override void Dispose(bool disposing)
         {
-            Logger.Info("Disposing WebSocketIpcServer...");
             base.Dispose(disposing);
 
             _cancellationSource.Cancel();

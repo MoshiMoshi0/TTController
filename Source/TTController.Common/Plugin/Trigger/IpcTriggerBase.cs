@@ -35,6 +35,7 @@ namespace TTController.Common.Plugin
 
             _cancellationSource.Cancel();
             _receiveTask.Wait();
+            _cancellationSource.Dispose();
         }
 
         private async void ReceiveAsync(CancellationToken cancellationToken)
