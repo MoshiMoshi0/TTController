@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Reflection;
 using System.ServiceProcess;
-using System.Threading.Channels;
 using LibreHardwareMonitor.Hardware;
 using NLog;
 using TTController.Common;
@@ -250,17 +248,16 @@ namespace TTController.Service
             }
 
             Logger.Info("Applying computer state profile: {0}", state);
-            lock (_deviceManager)
+            foreach (var profile in _config.ComputerStateProfiles.Where(p => p.StateType == state))
             {
-                var dirtyControllers = new HashSet<IControllerProxy>();
-                foreach (var profile in _config.ComputerStateProfiles.Where(p => p.StateType == state))
+                foreach (var port in profile.Ports)
                 {
-                    foreach (var port in profile.Ports)
-                    {
-                        var controller = _deviceManager.GetController(port);
-                        if (controller == null)
-                            continue;
+                    var controller = _deviceManager.GetController(port);
+                    if (controller == null)
+                        continue;
 
+                    lock (controller)
+                    {
                         var isDirty = false;
                         if (profile.Speed.HasValue)
                             isDirty |= controller.SetSpeed(port.Id, profile.Speed.Value);
@@ -269,12 +266,9 @@ namespace TTController.Service
                             isDirty |= controller.SetRgb(port.Id, profile.EffectType, profile.Color.Get(_cache.GetDeviceConfig(port).LedCount));
 
                         if (state == ComputerStateType.Boot && isDirty)
-                            dirtyControllers.Add(controller);
+                            controller.SaveProfile();
                     }
                 }
-
-                foreach(var controller in dirtyControllers)
-                    controller.SaveProfile();
             }
         }
 
@@ -302,11 +296,14 @@ namespace TTController.Service
 
             foreach (var profile in _config.Profiles)
             {
-                lock (_deviceManager)
+                foreach (var port in profile.Ports)
                 {
-                    foreach (var port in profile.Ports)
+                    var controller = _deviceManager.GetController(port);
+                    if (controller == null)
+                        continue;
+
+                    lock (controller)
                     {
-                        var controller = _deviceManager.GetController(port);
                         var data = controller?.GetPortData(port.Id);
                         _cache.StorePortData(port, data);
                     }
@@ -339,19 +336,19 @@ namespace TTController.Service
                 if (speedMap == null)
                     continue;
 
-                lock (_deviceManager)
+                foreach (var (port, speed) in speedMap)
                 {
-                    foreach (var (port, speed) in speedMap)
+                    if (!_cache.GetPortConfig(port).IgnoreSpeedCache && speed == _cache.GetPortSpeed(port))
+                        continue;
+
+                    var controller = _deviceManager.GetController(port);
+                    if (controller == null)
+                        continue;
+
+                    lock (controller)
                     {
-                        if (!_cache.GetPortConfig(port).IgnoreSpeedCache && speed == _cache.GetPortSpeed(port))
-                            continue;
-
-                        var controller = _deviceManager.GetController(port);
-                        if (controller == null)
-                            continue;
-
-                        _cache.StorePortSpeed(port, speed);
                         controller.SetSpeed(port.Id, speed);
+                        _cache.StorePortSpeed(port, speed);
                     }
                 }
             }
@@ -485,21 +482,24 @@ namespace TTController.Service
 
                 ApplyConfig(colorMap);
 
-                lock (_deviceManager)
+                foreach (var (port, colors) in colorMap)
                 {
-                    foreach (var (port, colors) in colorMap)
+                    if (colors == null)
+                        continue;
+
+                    if (!_cache.GetPortConfig(port).IgnoreColorCache && colors.ContentsEqual(_cache.GetPortColors(port)))
+                        continue;
+
+                    if (effectType == null)
+                        continue;
+
+                    var controller = _deviceManager.GetController(port);
+                    if (controller == null)
+                        continue;
+
+                    lock (controller)
                     {
-                        if (colors == null)
-                            continue;
-
-                        if (!_cache.GetPortConfig(port).IgnoreColorCache && colors.ContentsEqual(_cache.GetPortColors(port)))
-                            continue;
-
-                        if (effectType == null)
-                            continue;
-
-                        var controller = _deviceManager.GetController(port);
-                        controller?.SetRgb(port.Id, effectType, colors);
+                        controller.SetRgb(port.Id, effectType, colors);
                         _cache.StorePortColors(port, colors);
                     }
                 }
@@ -531,15 +531,12 @@ namespace TTController.Service
                 }
             }
 
-            lock (_sensorManager)
+            foreach (var identifier in _sensorManager.EnabledSensors)
             {
-                foreach (var identifier in _sensorManager.EnabledSensors)
-                {
-                    var value = _sensorManager.GetSensorValue(identifier);
-                    if (float.IsNaN(value))
-                        continue;
-                    Logger.Debug("Sensor \"{0}\" value: {1}", identifier, value);
-                }
+                var value = _sensorManager.GetSensorValue(identifier);
+                if (float.IsNaN(value))
+                    continue;
+                Logger.Debug("Sensor \"{0}\" value: {1}", identifier, value);
             }
 
             return true;

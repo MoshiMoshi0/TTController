@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using HidSharp;
 using NLog;
 using TTController.Common;
@@ -14,10 +15,11 @@ namespace TTController.Service.Managers
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly List<IControllerProxy> _controllers;
+        private readonly object _searchLock = new object();
         private readonly IReadOnlyList<IControllerDefinition> _definitions;
+        private List<IControllerProxy> _controllers;
 
-        public IReadOnlyList<IControllerProxy> Controllers => _controllers;
+        public IEnumerable<IControllerProxy> Controllers => _controllers;
 
         public DeviceManager()
         {
@@ -34,65 +36,70 @@ namespace TTController.Service.Managers
         }
 
         public IControllerProxy GetController(PortIdentifier port) =>
-            Controllers.FirstOrDefault(c => c.IsValidPort(port));
+            Controllers?.FirstOrDefault(c => c.IsValidPort(port)) ?? null;
 
         private void SearchForControllers()
         {
-            lock (this)
+            var controllersCopy = new List<IControllerProxy>(_controllers);
+
+            Logger.Info("Searching for controller changes");
+            foreach (var definition in _definitions)
             {
-                Logger.Info("Searching for controller changes");
-                foreach (var definition in _definitions)
+                Logger.Debug("Searching for \"{0}\" controllers", definition.Name);
+                var detectedDevices = DeviceList.Local.GetHidDevices().Where(d => d.VendorID == definition.VendorId && definition.ProductIds.Contains(d.ProductID));
+                var detectedCount = detectedDevices.Count();
+
+                if (detectedCount == 0)
                 {
-                    Logger.Debug("Searching for \"{0}\" controllers", definition.Name);
-                    var detectedDevices = DeviceList.Local.GetHidDevices().Where(d => d.VendorID == definition.VendorId && definition.ProductIds.Contains(d.ProductID));
-                    var detectedCount = detectedDevices.Count();
+                    var removedControllers = controllersCopy.RemoveAll(controller => {
+                        if(definition.ProductIds.Contains(controller.ProductId) && controller.VendorId == definition.VendorId)
+                        {
+                            controller.Dispose();
+                            Logger.Info("Removed missing \"{0}\" controller [{1}, {2}]", controller.Name, controller.ProductId, controller.VendorId);
+                            return true;
+                        }
+                        return false;
+                    });
 
-                    if (detectedCount == 0)
+                    continue;
+                }
+
+                if (detectedCount == 1)
+                    Logger.Trace("Found 1 new controller [{vid}, {pid}]", definition.VendorId, detectedDevices.Select(d => d.ProductID).First());
+                else
+                    Logger.Trace("Found {count} new controllers [{vid}, [{pids}]]", detectedCount, definition.VendorId, detectedDevices.Select(d => d.ProductID));
+
+                foreach (var device in detectedDevices)
+                {
+                    if (controllersCopy.Any(c => c.ProductId == device.ProductID && c.VendorId == device.VendorID))
+                        continue;
+
+                    var deviceProxy = new HidDeviceProxy(device);
+                    var controller = (IControllerProxy)Activator.CreateInstance(definition.ControllerProxyType, deviceProxy, definition);
+                    if (!controller.Init())
                     {
-                        var removedControllers = _controllers.RemoveAll(controller => {
-                            if(definition.ProductIds.Contains(controller.ProductId) && controller.VendorId == definition.VendorId)
-                            {
-                                controller.Dispose();
-                                Logger.Info("Removed missing \"{0}\" controller [{1}, {2}]", controller.Name, controller.ProductId, controller.VendorId);
-                                return true;
-                            }
-                            return false;
-                        });
+                        Logger.Warn("Failed to initialize \"{0}\" controller! [{1}, {2}]", definition.Name, device.VendorID, device.ProductID);
 
+                        deviceProxy.Dispose();
                         continue;
                     }
 
-                    if (detectedCount == 1)
-                        Logger.Trace("Found 1 new controller [{vid}, {pid}]", definition.VendorId, detectedDevices.Select(d => d.ProductID).First());
-                    else
-                        Logger.Trace("Found {count} new controllers [{vid}, [{pids}]]", detectedCount, definition.VendorId, detectedDevices.Select(d => d.ProductID));
-
-                    foreach (var device in detectedDevices)
-                    {
-                        if (_controllers.Any(c => c.ProductId == device.ProductID && c.VendorId == device.VendorID))
-                            continue;
-
-                        var deviceProxy = new HidDeviceProxy(device);
-                        var controller = (IControllerProxy)Activator.CreateInstance(definition.ControllerProxyType, deviceProxy, definition);
-                        if (!controller.Init())
-                        {
-                            Logger.Warn("Failed to initialize \"{0}\" controller! [{1}, {2}]", definition.Name, device.VendorID, device.ProductID);
-
-                            deviceProxy.Dispose();
-                            continue;
-                        }
-
-                        Logger.Info("Initialized \"{0}\" controller [{1}, {2}], version: \"{3}\"", definition.Name, device.VendorID, device.ProductID, controller.Version);
-                        _controllers.Add(controller);
-                    }
+                    Logger.Info("Initialized \"{0}\" controller [{1}, {2}], version: \"{3}\"", definition.Name, device.VendorID, device.ProductID, controller.Version);
+                    controllersCopy.Add(controller);
                 }
             }
+
+            if(!controllersCopy.ContentsEqual(_controllers))
+                Interlocked.Exchange(ref _controllers, controllersCopy);
         }
 
         private void DeviceListChanged(object sender, DeviceListChangedEventArgs e)
         {
-            Logger.Info("Device list changed!");
-            SearchForControllers();
+            lock (_searchLock)
+            {
+                Logger.Info("Device list changed!");
+                SearchForControllers();
+            }
         }
 
         public void Dispose()
