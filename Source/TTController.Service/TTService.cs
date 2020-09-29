@@ -499,7 +499,7 @@ namespace TTController.Service
                             continue;
 
                         var controller = _deviceManager.GetController(port);
-                        controller.SetRgb(port.Id, effectType, colors);
+                        controller?.SetRgb(port.Id, effectType, colors);
                         _cache.StorePortColors(port, colors);
                     }
                 }
