@@ -22,8 +22,8 @@ namespace TTController.Plugin.SoundEffect
             {
                 var result = new Dictionary<PortIdentifier, List<LedColor>>();
 
-                List<LedColor> colors = null;
-                List<SpectrumPointData> points = null;
+                var colors = default(List<LedColor>);
+                var points = default(List<SpectrumPointData>);
                 foreach (var port in ports)
                 {
                     var ledCount = cache.GetDeviceConfig(port).LedCount;
@@ -50,6 +50,13 @@ namespace TTController.Plugin.SoundEffect
             }
 
             return null;
+        }
+
+        public List<LedColor> GenerateColors(int count, ICacheProvider cache, float[] fftBuffer)
+        {
+            UpdateFrequencyMappingIfNecessary(count);
+            var points = CalculateSpectrumPoints(1.0, fftBuffer);
+            return GenerateColors(points);
         }
 
         protected bool UpdateFrequencyMappingIfNecessary(int ledCount)

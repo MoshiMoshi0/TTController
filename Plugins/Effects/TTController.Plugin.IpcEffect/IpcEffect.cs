@@ -50,5 +50,8 @@ namespace TTController.Plugin.IpcEffect
 
         public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
             => ports.ToDictionary(p => p, p => _colorMap.ContainsKey(p) ? _colorMap[p].ToList() : null);
+
+        public override List<LedColor> GenerateColors(int count, ICacheProvider cache)
+            => throw new NotImplementedException();
     }
 }

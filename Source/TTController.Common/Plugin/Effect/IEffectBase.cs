@@ -8,6 +8,9 @@ namespace TTController.Common.Plugin
     {
         bool IsEnabled(ICacheProvider cache);
         string EffectType { get; }
+
+        void Update(ICacheProvider cache);
         IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache);
+        List<LedColor> GenerateColors(int count, ICacheProvider cache);
     }
 }
