@@ -21,16 +21,18 @@ namespace TTController.Plugin.StaticColorEffect
         {
             if (Config.ColorGenerationMethod == ColorGenerationMethod.PerPort)
             {
-                return EffectUtils.GenerateColorsPerPort(ports, cache, (port, ledCount) => Config.Color.Get(ledCount).ToList());
+                return EffectUtils.GenerateColorsPerPort(ports, cache, (port, ledCount) => GenerateColors(ledCount, cache));
             }
             else if (Config.ColorGenerationMethod == ColorGenerationMethod.SpanPorts)
             {
                 var totalLedCount = ports.Select(p => cache.GetDeviceConfig(p).LedCount).Sum();
-                var colors = Config.Color.Get(totalLedCount).ToList();
-                return EffectUtils.SplitColorsPerPort(colors, ports, cache);
+                return EffectUtils.SplitColorsPerPort(GenerateColors(totalLedCount, cache), ports, cache);
             }
 
             return null;
         }
+
+        public override List<LedColor> GenerateColors(int count, ICacheProvider cache)
+            => Config.Color.Get(count).ToList();
     }
 }

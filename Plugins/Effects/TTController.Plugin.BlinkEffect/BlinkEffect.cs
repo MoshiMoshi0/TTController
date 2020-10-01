@@ -24,7 +24,7 @@ namespace TTController.Plugin.BlinkEffect
 
         public override string EffectType => "PerLed";
 
-        public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
+        public override void Update(ICacheProvider cache)
         {
             var current = Environment.TickCount;
             var diff = current - _ticks;
@@ -34,21 +34,24 @@ namespace TTController.Plugin.BlinkEffect
                 _ticks = current;
                 _state = !_state;
             }
+        }
 
+        public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
+        {
             if (Config.ColorGenerationMethod == ColorGenerationMethod.PerPort)
             {
-                return EffectUtils.GenerateColorsPerPort(ports, cache,
-                    (port, ledCount) => (_state ? Config.OnColor : Config.OffColor).Get(ledCount).ToList()
-                );
+                return EffectUtils.GenerateColorsPerPort(ports, cache, (port, ledCount) => GenerateColors(ledCount, cache) );
             }
             else if (Config.ColorGenerationMethod == ColorGenerationMethod.SpanPorts)
             {
                 var totalLedCount = ports.Select(p => cache.GetDeviceConfig(p).LedCount).Sum();
-                var colors = (_state ? Config.OnColor : Config.OffColor).Get(totalLedCount).ToList();
-                return EffectUtils.SplitColorsPerPort(colors, ports, cache);
+                return EffectUtils.SplitColorsPerPort(GenerateColors(totalLedCount, cache), ports, cache);
             }
 
             return null;
         }
+
+        public override List<LedColor> GenerateColors(int count, ICacheProvider cache)
+            => (_state ? Config.OnColor : Config.OffColor).Get(count).ToList();
     }
 }

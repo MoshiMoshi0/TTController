@@ -24,6 +24,7 @@ namespace TTController.Common.Plugin
         }
 
         public virtual bool IsEnabled(ICacheProvider cache) => Config.Trigger?.Value(cache) ?? false;
+        public virtual void Update(ICacheProvider cache) { }
 
         protected virtual void Dispose(bool disposing)
         {
@@ -32,5 +33,6 @@ namespace TTController.Common.Plugin
 
         public abstract string EffectType { get; }
         public abstract IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache);
+        public abstract List<LedColor> GenerateColors(int count, ICacheProvider cache);
     }
 }

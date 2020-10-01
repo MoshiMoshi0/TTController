@@ -467,6 +467,7 @@ namespace TTController.Service
                     if (effect == null)
                         continue;
 
+                    effect.Update(_cache.AsReadOnly());
                     colorMap = effect.GenerateColors(profile.Ports, _cache.AsReadOnly());
                     effectType = effect.EffectType;
                 }

@@ -126,5 +126,8 @@ namespace TTController.Plugin.PingPongEffect
 
             return colors;
         }
+
+        public override List<LedColor> GenerateColors(int count, ICacheProvider cache)
+            => throw new NotImplementedException();
     }
 }

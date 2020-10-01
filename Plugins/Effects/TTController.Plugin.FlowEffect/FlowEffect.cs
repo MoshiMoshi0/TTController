@@ -29,7 +29,7 @@ namespace TTController.Plugin.FlowEffect
 
         public override string EffectType => "PerLed";
 
-        public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
+        public override void Update(ICacheProvider cache)
         {
             _fill += Config.FillStep;
             if (_fill >= 1)
@@ -38,28 +38,32 @@ namespace TTController.Plugin.FlowEffect
                 _lastHue = _currentHue;
                 _currentHue = ((_currentHue + Config.HueStep) % 360 + 360) % 360;
             }
+        }
 
-            var lastColor = LedColor.FromHsv(_lastHue, Config.Saturation, Config.Brightness);
-            var currentColor = LedColor.FromHsv(_currentHue, Config.Saturation, Config.Brightness);
+        public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
+        {
             if (Config.ColorGenerationMethod == ColorGenerationMethod.PerPort)
             {
-                return EffectUtils.GenerateColorsPerPort(ports, cache, (port, ledCount) => GenerateColors(ledCount, currentColor, lastColor));
+                return EffectUtils.GenerateColorsPerPort(ports, cache, (port, ledCount) => GenerateColors(ledCount, cache));
             }
             else if(Config.ColorGenerationMethod == ColorGenerationMethod.SpanPorts)
             {
                 var totalLedCount = ports.Select(p => cache.GetDeviceConfig(p).LedCount).Sum();
-                var colors = GenerateColors(totalLedCount, currentColor, lastColor);
+                var colors = GenerateColors(totalLedCount, cache);
                 return EffectUtils.SplitColorsPerPort(colors, ports, cache);
             }
 
             return null;
         }
 
-        private List<LedColor> GenerateColors(int ledCount, LedColor currentColor, LedColor lastColor)
+        public override List<LedColor> GenerateColors(int count, ICacheProvider cache)
         {
-            var fillIndex = (int)Math.Round(ledCount * _fill);
+            var lastColor = LedColor.FromHsv(_lastHue, Config.Saturation, Config.Brightness);
+            var currentColor = LedColor.FromHsv(_currentHue, Config.Saturation, Config.Brightness);
+
+            var fillIndex = (int)Math.Round(count * _fill);
             var colors = new List<LedColor>();
-            for (var i = 0; i < ledCount; i++)
+            for (var i = 0; i < count; i++)
                 colors.Add((i < fillIndex) ? currentColor : lastColor);
 
             return colors;

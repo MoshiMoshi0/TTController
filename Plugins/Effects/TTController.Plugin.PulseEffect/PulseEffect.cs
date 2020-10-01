@@ -25,27 +25,29 @@ namespace TTController.Plugin.PulseEffect
 
         public override string EffectType => "PerLed";
 
-        public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
+        public override void Update(ICacheProvider cache)
         {
             _t += Config.BrightnessStep * _direction;
             if (_t < 0 || _t > 1)
                 _direction = -_direction;
+        }
 
+        public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
+        {
             if (Config.ColorGenerationMethod == ColorGenerationMethod.PerPort)
             {
-                return EffectUtils.GenerateColorsPerPort(ports, cache,
-                    (port, ledCount) => Config.Color.Get(ledCount).Select(c => LedColor.ChangeValue(c, c.GetValue() * _t)).ToList()
-                );
+                return EffectUtils.GenerateColorsPerPort(ports, cache, (port, ledCount) => GenerateColors(ledCount, cache) );
             }
-
-            if (Config.ColorGenerationMethod == ColorGenerationMethod.SpanPorts)
+            else if (Config.ColorGenerationMethod == ColorGenerationMethod.SpanPorts)
             {
                 var totalLedCount = ports.Sum(p => cache.GetDeviceConfig(p).LedCount);
-                var colors = Config.Color.Get(totalLedCount).Select(c => LedColor.ChangeValue(c, c.GetValue() * _t)).ToList();
-                return EffectUtils.SplitColorsPerPort(colors, ports, cache);
+                return EffectUtils.SplitColorsPerPort(GenerateColors(totalLedCount, cache), ports, cache);
             }
 
             return null;
         }
+
+        public override List<LedColor> GenerateColors(int count, ICacheProvider cache)
+            => Config.Color.Get(count).Select(c => LedColor.ChangeValue(c, c.GetValue() * _t)).ToList();
     }
 }

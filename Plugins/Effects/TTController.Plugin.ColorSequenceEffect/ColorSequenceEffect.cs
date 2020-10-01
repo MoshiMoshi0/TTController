@@ -40,22 +40,25 @@ namespace TTController.Plugin.ColorSequenceEffect
 
         public override string EffectType => "PerLed";
 
-        public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
-        {
-            UpdateState();
+        public override void Update(ICacheProvider cache) => UpdateState();
 
+        public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
+            => EffectUtils.GenerateColorsPerPort(ports, cache, (port, ledCount) => GenerateColors(ledCount, cache));
+
+        public override List<LedColor> GenerateColors(int count, ICacheProvider cache)
+        {
             var current = Config.Sequence[_sequenceIndex];
             if (_state == SequenceState.Hold)
             {
-                return EffectUtils.GenerateColorsPerPort(ports, cache, (port, ledCount) => current.Color.Get(ledCount).ToList());
+                return current.Color.Get(count).ToList();
             }
-            else if(_state == SequenceState.Transition)
+            else if (_state == SequenceState.Transition)
             {
                 int Wrap(int a, int b) => (a % b + b) % b;
 
                 var prev = Config.Sequence[Wrap(_sequenceIndex - 1, Config.Sequence.Count)];
-                var t = (Environment.TickCount - _stateStart) / (float) current.TransitionTime;
-                return EffectUtils.GenerateColorsPerPort(ports, cache, (port, ledCount) => LedColor.Lerp(t, prev.Color.Get(ledCount), current.Color.Get(ledCount)).ToList());
+                var t = (Environment.TickCount - _stateStart) / (float)current.TransitionTime;
+                return LedColor.Lerp(t, prev.Color.Get(count), current.Color.Get(count)).ToList();
             }
 
             return null;

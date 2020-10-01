@@ -26,24 +26,26 @@ namespace TTController.Plugin.RippleEffect
 
         public override string EffectType => "PerLed";
 
-        public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
+        public override void Update(ICacheProvider cache)
         {
-
             if (_tick++ >= Config.TickInterval)
             {
                 _tick = 0;
                 _rotation++;
             }
+        }
 
+        public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
+        {
             if (Config.ColorGenerationMethod == ColorGenerationMethod.PerPort)
             {
-                return EffectUtils.GenerateColorsPerPort(ports, cache, (port, ledCount) => GenerateColors(ledCount));
+                return EffectUtils.GenerateColorsPerPort(ports, cache, (port, ledCount) => GenerateColors(ledCount, cache));
             }
             else if (Config.ColorGenerationMethod == ColorGenerationMethod.SpanPorts)
             {
                 var result = new Dictionary<PortIdentifier, List<LedColor>>();
                 var totalLedCount = ports.Select(p => cache.GetDeviceConfig(p).LedCount).Sum();
-                var colors = GenerateColors(totalLedCount);
+                var colors = GenerateColors(totalLedCount, cache);
 
                 var offset = 0;
                 foreach (var port in ports)
@@ -65,14 +67,14 @@ namespace TTController.Plugin.RippleEffect
             return null;
         }
 
-        private List<LedColor> GenerateColors(int size)
+        public override List<LedColor> GenerateColors(int count, ICacheProvider cache)
         {
             int Wrap(int a, int b) => (a % b + b) % b;
 
-            var colors = Config.BackgroundColor.Get(size).ToList();
+            var colors = Config.BackgroundColor.Get(count).ToList();
             for (var i = 0; i < Config.Length; i++)
             {
-                var idx = Wrap(_rotation - i, size);
+                var idx = Wrap(_rotation - i, count);
                 colors[idx] = Config.RippleColor.Get(i, Config.Length);
             }
 

@@ -57,19 +57,18 @@ namespace TTController.Plugin.RazerConnectEffect
         }
 
         public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
-        {
-            var result = new Dictionary<PortIdentifier, List<LedColor>>();
-            foreach(var port in ports)
-            {
-                if (Config.Layer == RazerConnectLayer.Base)
-                    result.Add(port, _colors.Take(1).ToList());
-                else if(Config.Layer == RazerConnectLayer.Custom)
-                    result.Add(port, _colors.Skip(1).ToList());
-                else if(Config.Layer == RazerConnectLayer.Both)
-                    result.Add(port, _colors.ToList());
-            }
+            => ports.ToDictionary(p => p, p => GenerateColors(0, cache));
 
-            return result;
+        public override List<LedColor> GenerateColors(int count, ICacheProvider cache)
+        {
+            if (Config.Layer == RazerConnectLayer.Base)
+                return _colors.Take(1).ToList();
+            else if (Config.Layer == RazerConnectLayer.Custom)
+                return _colors.Skip(1).ToList();
+            else if (Config.Layer == RazerConnectLayer.Both)
+                return _colors.ToList();
+
+            return null;
         }
 
         protected override void Dispose(bool disposing)
