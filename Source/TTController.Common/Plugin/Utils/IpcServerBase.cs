@@ -12,7 +12,7 @@ namespace TTController.Common.Plugin
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         public T Config { get; private set; }
-        protected List<IIpcClient> Clients { get; private set; }
+        protected List<IIpcClient> Clients { get; }
 
         protected IpcServerBase(T config)
         {

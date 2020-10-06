@@ -13,15 +13,15 @@ namespace TTController.Service.Utils
 {
     public class ServiceIpcClient : IIpcClient
     {
-        private Task _sendTask;
-        private CancellationTokenSource _cancellationSource;
-        private EventWaitHandle _dirtyWaitHandle;
-        private List<ServiceIpcDataItem> _ipcData;
+        private readonly Task _sendTask;
+        private readonly  CancellationTokenSource _cancellationSource;
+        private readonly EventWaitHandle _dirtyWaitHandle;
+        private readonly List<ServiceIpcDataItem> _ipcData;
 
         public string IpcName => "service";
 
-        public Channel<string> SendChannel { get; private set; }
-        public Channel<string> ReceiveChannel { get; private set; }
+        public Channel<string> SendChannel { get; }
+        public Channel<string> ReceiveChannel { get; }
 
         public ServiceIpcClient()
         {
@@ -79,6 +79,7 @@ namespace TTController.Service.Utils
             _cancellationSource.Cancel();
             _sendTask.Wait();
             _cancellationSource.Dispose();
+            _dirtyWaitHandle.Dispose();
         }
 
         private class ServiceIpcDataItem

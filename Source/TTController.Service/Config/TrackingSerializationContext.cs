@@ -9,7 +9,7 @@ namespace TTController.Service.Config
 {
     public class TrackingSerializationContext
     {
-        private Dictionary<Type, List<object>> _objects;
+        private readonly Dictionary<Type, List<object>> _objects;
 
         public TrackingSerializationContext()
         {

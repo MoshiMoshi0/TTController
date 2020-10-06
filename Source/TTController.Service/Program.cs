@@ -227,7 +227,6 @@ namespace TTController.Service
                 WriteHeader("Applications");
                 WriteProperty(0, "");
 
-
                 var thermaltakeExecutables = new[]
                 {
                     "TT RGB Plus",
@@ -317,7 +316,7 @@ namespace TTController.Service
 
                 using (var _libreHardwareMonitorFacade = new LibreHardwareMonitorFacade())
                 {
-                    var availableSensors = _libreHardwareMonitorFacade.Sensors.Where(s => types.Length > 0 ? types.Contains(s.SensorType) : true);
+                    var availableSensors = _libreHardwareMonitorFacade.Sensors.Where(s => types.Length == 0 || types.Contains(s.SensorType));
                     foreach (var (hardware, sensors) in availableSensors.GroupBy(s => s.Hardware))
                     {
                         WriteProperty(0, $"{hardware.Name}:");

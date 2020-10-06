@@ -74,9 +74,8 @@ namespace TTController.Service.Hardware
             {
                 _callback = callback;
             }
-            
-            public void VisitSensor(ISensor sensor) => _callback?.Invoke(sensor);
 
+            public void VisitSensor(ISensor sensor) => _callback?.Invoke(sensor);
             public void VisitComputer(IComputer computer) => computer.Traverse(this);
 
             public void VisitHardware(IHardware hardware)

@@ -10,12 +10,12 @@ namespace TTController.Common.Plugin
 {
     public abstract class IpcSpeedControllerBase<T> : SpeedControllerBase<T>, IIpcClient where T : SpeedControllerConfigBase
     {
-        private Task _receiveTask;
-        private CancellationTokenSource _cancellationSource;
+        private readonly CancellationTokenSource _cancellationSource;
+        private readonly Task _receiveTask;
 
         public abstract string IpcName { get; }
-        public Channel<string> SendChannel { get; private set; }
-        public Channel<string> ReceiveChannel { get; private set; }
+        public Channel<string> SendChannel { get; }
+        public Channel<string> ReceiveChannel { get; }
 
         protected IpcSpeedControllerBase(T config) : base(config)
         {

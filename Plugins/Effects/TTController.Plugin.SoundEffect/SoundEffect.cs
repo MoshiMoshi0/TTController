@@ -95,13 +95,13 @@ namespace TTController.Plugin.SoundEffect
 
         public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
         {
-            var isDirty = _spectrumProvider.GetFftData(_fftBuffer, this);
+            _ = _spectrumProvider.GetFftData(_fftBuffer, this);
             return _spectrum.GenerateColors(Config.ColorGenerationMethod, ports, cache, _fftBuffer);
         }
 
         public override List<LedColor> GenerateColors(int count, ICacheProvider cache)
         {
-            var isDirty = _spectrumProvider.GetFftData(_fftBuffer, this);
+            _ = _spectrumProvider.GetFftData(_fftBuffer, this);
             return _spectrum.GenerateColors(count, cache, _fftBuffer);
         }
 

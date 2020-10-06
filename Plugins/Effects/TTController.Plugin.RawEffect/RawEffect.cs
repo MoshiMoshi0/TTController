@@ -22,7 +22,7 @@ namespace TTController.Plugin.RawEffect
         public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
             => ports.ToDictionary(p => p, p => Config.Color.Get(cache.GetDeviceConfig(p).LedCount).ToList());
 
-        public override List<LedColor> GenerateColors(int count, ICacheProvider cache) 
+        public override List<LedColor> GenerateColors(int count, ICacheProvider cache)
             => throw new NotImplementedException();
     }
 }

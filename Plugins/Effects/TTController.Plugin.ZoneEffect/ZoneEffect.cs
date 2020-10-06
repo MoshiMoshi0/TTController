@@ -8,7 +8,7 @@ using TTController.Common.Plugin;
 
 namespace TTController.Plugin.ZoneEffect
 {
-    public class ZoneEffectConfig : EffectConfigBase 
+    public class ZoneEffectConfig : EffectConfigBase
     {
         [DefaultValue(null)] public List<IEffectBase> Effects { get; internal set; } = null;
     }

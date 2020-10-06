@@ -21,7 +21,7 @@ namespace TTController.Plugin.StaticColorEffect
         {
             if (Config.ColorGenerationMethod == ColorGenerationMethod.PerPort)
             {
-                return EffectUtils.GenerateColorsPerPort(ports, cache, (port, ledCount) => GenerateColors(ledCount, cache));
+                return EffectUtils.GenerateColorsPerPort(ports, cache, (_, ledCount) => GenerateColors(ledCount, cache));
             }
             else if (Config.ColorGenerationMethod == ColorGenerationMethod.SpanPorts)
             {

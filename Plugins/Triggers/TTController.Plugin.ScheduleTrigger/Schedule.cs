@@ -15,8 +15,8 @@ namespace TTController.Plugin.ScheduleTrigger
 
         public bool Contains(TimeSpan time)
         {
-            foreach (var entry in Entries)
-                if (time >= entry.Start && time <= entry.End)
+            foreach (var (start, end) in Entries)
+                if (time >= start && time <= end)
                     return true;
 
             return false;

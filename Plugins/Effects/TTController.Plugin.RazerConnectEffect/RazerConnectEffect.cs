@@ -13,7 +13,7 @@ namespace TTController.Plugin.RazerConnectEffect
         Both
     }
 
-    public class RazerConnectEffectConfig : EffectConfigBase 
+    public class RazerConnectEffectConfig : EffectConfigBase
     {
         [DefaultValue(RazerConnectLayer.Custom)] public RazerConnectLayer Layer { get; internal set; } = RazerConnectLayer.Custom;
     }
@@ -36,7 +36,7 @@ namespace TTController.Plugin.RazerConnectEffect
                 _manager = new RzChromaBroadcastManager();
 
             _colors = new LedColor[RzChromaBroadcastNative.BroadcastColorCount];
-            if (_manager != null && _manager.Initialized)
+            if (_manager?.Initialized == true)
             {
                 _manager.ColorChanged += OnColorUpdate;
                 _manager.ConnectionChanged += OnConnectionUpdate;
@@ -57,7 +57,7 @@ namespace TTController.Plugin.RazerConnectEffect
         }
 
         public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
-            => ports.ToDictionary(p => p, p => GenerateColors(0, cache));
+            => ports.ToDictionary(p => p, _ => GenerateColors(0, cache));
 
         public override List<LedColor> GenerateColors(int count, ICacheProvider cache)
         {

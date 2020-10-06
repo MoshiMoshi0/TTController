@@ -16,7 +16,7 @@ namespace TTController.Plugin.IpcEffect
 
     public class IpcEffect : IpcEffectBase<IpcEffectConfig>
     {
-        private Dictionary<PortIdentifier, List<LedColor>> _colorMap;
+        private readonly Dictionary<PortIdentifier, List<LedColor>> _colorMap;
 
         public override string IpcName => Config.IpcName;
         public override string EffectType => "PerLed";
@@ -37,12 +37,7 @@ namespace TTController.Plugin.IpcEffect
                 foreach (var child in document.Children())
                 {
                     var port = child["Port"].ToObject<PortIdentifier>();
-                    var colors = child["Colors"].ToObject<List<LedColor>>();
-
-                    if (_colorMap.ContainsKey(port))
-                        _colorMap[port] = colors;
-                    else
-                        _colorMap.Add(port, colors);
+                    _colorMap[port] = child["Colors"].ToObject<List<LedColor>>();
                 }
             }
             catch (JsonReaderException) { }

@@ -65,7 +65,7 @@ namespace TTController.Plugin.SensorEffect
         }
 
         public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
-            => EffectUtils.GenerateColorsPerPort(ports, cache, (port, ledCount) => GenerateColors(ledCount, cache));
+            => EffectUtils.GenerateColorsPerPort(ports, cache, (_, ledCount) => GenerateColors(ledCount, cache));
 
         public override List<LedColor> GenerateColors(int count, ICacheProvider cache)
         {

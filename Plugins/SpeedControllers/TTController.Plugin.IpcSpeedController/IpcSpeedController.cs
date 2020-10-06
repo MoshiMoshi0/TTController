@@ -17,7 +17,7 @@ namespace TTController.Plugin.IpcSpeedController
 
     public class IpcSpeedController : IpcSpeedControllerBase<IpcSpeedControllerConfig>
     {
-        private Dictionary<PortIdentifier, byte> _speedMap;
+        private readonly Dictionary<PortIdentifier, byte> _speedMap;
 
         public override string IpcName => Config.IpcName;
 
@@ -37,12 +37,7 @@ namespace TTController.Plugin.IpcSpeedController
                 foreach(var child in document.Children())
                 {
                     var port = child["Port"].ToObject<PortIdentifier>();
-                    var speed = child["Speed"].ToObject<byte>();
-
-                    if (_speedMap.ContainsKey(port))
-                        _speedMap[port] = speed;
-                    else
-                        _speedMap.Add(port, speed);
+                    _speedMap[port] = child["Speed"].ToObject<byte>();
                 }
             }
             catch (JsonReaderException) { }
