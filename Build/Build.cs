@@ -76,18 +76,11 @@ class Build : NukeBuild
                 .EnableNoRestore());
 
             // Copy plugin files to service bin path      
-            var fileBlacklist = new[] {
-                "TTController.Common",
-                "LibreHardwareMonitorLib",
-                "NLog",
-                "HidSharp",
-                "Newtonsoft.Json",
-                "System.Runtime.CompilerServices.Unsafe",
-                "System.Threading.Channels",
-                "System.Threading.Tasks.Extensions"
-            };
+            var sharedAssemblies = ServiceBinPath.GlobFiles("*.dll")
+                .NotEmpty()
+                .Select(f => Path.GetFileName(f))
+                .ToList();
 
-            var extensionWhitelist = Configuration == Configuration.Debug ? new[] { ".pdb", ".dll" } : new[] { ".dll" };
             Solution.GetProjects("TTController.Plugin.*")
                 .ForEach(p =>
                 {
@@ -96,7 +89,7 @@ class Build : NukeBuild
                                              DirectoryExistsPolicy.Merge,
                                              FileExistsPolicy.OverwriteIfNewer,
                                              null,
-                                             f => fileBlacklist.Contains(Path.GetFileNameWithoutExtension(f.Name)) || !extensionWhitelist.Contains(Path.GetExtension(f.Name)));
+                                             f => sharedAssemblies.Contains(f.Name) || (Configuration == Configuration.Debug && Path.GetExtension(f.Name) == ".pdb") );
                 });
 
             CopyDirectoryRecursively(PluginsDirectory / "Devices", ServiceBinPath / "Plugins" / "Devices", DirectoryExistsPolicy.Merge, FileExistsPolicy.OverwriteIfNewer);

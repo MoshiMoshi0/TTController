@@ -110,7 +110,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utils", "Utils", "{96409697
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.WebSocketIpcServer", "Plugins\Utils\TTController.Plugin.WebSocketIpcServer\TTController.Plugin.WebSocketIpcServer.csproj", "{BA136865-F5E9-4846-A380-B5328340B477}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.ZoneEffect", "Plugins\Effects\TTController.Plugin.ZoneEffect\TTController.Plugin.ZoneEffect.csproj", "{CB558CB5-BBDC-4736-AE88-42B2E9145EDD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.ZoneEffect", "Plugins\Effects\TTController.Plugin.ZoneEffect\TTController.Plugin.ZoneEffect.csproj", "{CB558CB5-BBDC-4736-AE88-42B2E9145EDD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
