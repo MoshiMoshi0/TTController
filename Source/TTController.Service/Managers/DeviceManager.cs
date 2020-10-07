@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -32,7 +32,8 @@ namespace TTController.Service.Managers
 
             DeviceList.Local.Changed += DeviceListChanged;
 
-            SearchForControllers();
+            lock (_searchLock)
+                SearchForControllers();
         }
 
         public IControllerProxy GetController(PortIdentifier port) =>
