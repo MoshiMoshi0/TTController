@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -50,20 +50,20 @@ namespace TTController.Service.Managers
                 var detectedDevices = DeviceList.Local.GetHidDevices().Where(d => d.VendorID == definition.VendorId && definition.ProductIds.Contains(d.ProductID));
                 var detectedCount = detectedDevices.Count();
 
-                if (detectedCount == 0)
-                {
-                    var removedControllers = controllersCopy.RemoveAll(controller => {
-                        if(definition.ProductIds.Contains(controller.ProductId) && controller.VendorId == definition.VendorId)
-                        {
-                            controller.Dispose();
-                            Logger.Info("Removed missing \"{0}\" controller [{1}, {2}]", controller.Name, controller.ProductId, controller.VendorId);
-                            return true;
-                        }
+                _ = controllersCopy.RemoveAll(controller => {
+                    if (detectedDevices.Any(d => d.VendorID == controller.VendorId && d.ProductID == controller.ProductId))
                         return false;
-                    });
 
+                    if (controller.VendorId != definition.VendorId || !definition.ProductIds.Contains(controller.ProductId))
+                        return false;
+
+                    Logger.Info("Removing missing \"{0}\" controller [{1}, {2}]", controller.Name, controller.ProductId, controller.VendorId);
+                    controller.Dispose();
+                    return true;
+                });
+
+                if (detectedCount == 0)
                     continue;
-                }
 
                 if (detectedCount == 1)
                     Logger.Trace("Found 1 new controller [{vid}, {pid}]", definition.VendorId, detectedDevices.Select(d => d.ProductID).First());
