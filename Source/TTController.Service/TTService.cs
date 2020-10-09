@@ -358,103 +358,6 @@ namespace TTController.Service
 
         public bool DeviceRgbTimerCallback()
         {
-            void ApplyConfig(IDictionary<PortIdentifier, List<LedColor>> colorMap)
-            {
-                foreach (var port in colorMap.Keys.ToList())
-                {
-                    var config = _cache.GetPortConfig(port);
-                    if (config == null)
-                        continue;
-
-                    var colors = colorMap[port];
-                    if (colors == null)
-                        continue;
-
-                    var ledCount = _cache.GetDeviceConfig(port).LedCount;
-                    var zones = _cache.GetDeviceConfig(port).Zones;
-
-                    switch (config.LedCountHandling)
-                    {
-                        case LedCountHandling.Lerp:
-                            {
-                                if (ledCount == colors.Count)
-                                    break;
-
-                                var newColors = new List<LedColor>();
-                                var gradient = new LedColorGradient(colors, ledCount - 1);
-
-                                for (var i = 0; i < ledCount; i++)
-                                    newColors.Add(gradient.GetColor(i));
-
-                                colors = newColors;
-                                break;
-                            }
-                        case LedCountHandling.Nearest:
-                            {
-                                if (ledCount == colors.Count)
-                                    break;
-
-                                var newColors = new List<LedColor>();
-                                for (var i = 0; i < ledCount; i++) {
-                                    var idx = (int)Math.Round((i / (ledCount - 1d)) * (colors.Count - 1d));
-                                    newColors.Add(colors[idx]);
-                                }
-
-                                colors = newColors;
-                                break;
-                            }
-                        case LedCountHandling.Wrap:
-                            if (colors.Count <= ledCount)
-                                break;
-
-                            var wrapCount = (int)Math.Floor(colors.Count / (double)ledCount);
-                            var startOffset = (wrapCount - 1) * ledCount;
-                            var remainder = colors.Count - wrapCount * ledCount;
-
-                            colors = colors.Skip(colors.Count - remainder)
-                                .Concat(colors.Skip(startOffset + remainder).Take(ledCount - remainder))
-                                .ToList();
-                            break;
-                        case LedCountHandling.Trim:
-                            if (ledCount < colors.Count)
-                                colors.RemoveRange(ledCount, colors.Count - ledCount);
-                            break;
-                        case LedCountHandling.Copy:
-                            while (ledCount > colors.Count)
-                                colors.AddRange(colors.Take(ledCount - colors.Count).ToList());
-                            break;
-                        case LedCountHandling.DoNothing:
-                        default:
-                            break;
-                    }
-
-                    if (config.LedRotation != null || config.LedReverse != null)
-                    {
-                        var offset = 0;
-                        var newColors = new List<LedColor>();
-                        for (int i = 0; i < zones.Length; i++)
-                        {
-                            var zoneColors = colors.Skip(offset).Take(zones[i]);
-
-                            if (i < config.LedRotation?.Length && config.LedRotation[i] > 0)
-                                zoneColors = zoneColors.RotateLeft(config.LedRotation[i]);
-                            if (i < config.LedReverse?.Length && config.LedReverse[i])
-                                zoneColors = zoneColors.Reverse();
-
-                            offset += zones[i];
-                            newColors.AddRange(zoneColors);
-                        }
-
-                        if (newColors.Count < colors.Count)
-                            newColors.AddRange(colors.Skip(offset));
-
-                        colors = newColors;
-                    }
-
-                    colorMap[port] = colors;
-                }
-            }
-
             foreach (var profile in _config.Profiles)
             {
                 IDictionary<PortIdentifier, List<LedColor>> colorMap;
@@ -481,14 +384,14 @@ namespace TTController.Service
                 if (colorMap == null)
                     continue;
 
-                ApplyConfig(colorMap);
-
-                foreach (var (port, colors) in colorMap)
+                foreach (var (port, _) in colorMap)
                 {
+                    var colors = colorMap[port];
                     if (colors == null)
                         continue;
 
-                    if (!_cache.GetPortConfig(port).IgnoreColorCache && colors.ContentsEqual(_cache.GetPortColors(port)))
+                    var config = _cache.GetPortConfig(port);
+                    if (!config.IgnoreColorCache && colors.ContentsEqual(_cache.GetPortColors(port)))
                         continue;
 
                     if (effectType == null)
@@ -497,6 +400,9 @@ namespace TTController.Service
                     var controller = _deviceManager.GetController(port);
                     if (controller == null)
                         continue;
+
+                    foreach (var modifier in config.ColorModifiers)
+                        modifier.Apply(ref colors, port, _cache.AsReadOnly());
 
                     lock (controller)
                     {

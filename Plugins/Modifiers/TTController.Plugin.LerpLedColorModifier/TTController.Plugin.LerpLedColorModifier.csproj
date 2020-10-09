@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <AssemblyTitle>TTController.Plugin.LerpLedColorModifier</AssemblyTitle>
+    <Product>TTController.Plugin.LerpLedColorModifier</Product>
+    <Copyright>Copyright ©  2020</Copyright>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Source\TTController.Common\TTController.Common.csproj" />
+  </ItemGroup>
+</Project>
