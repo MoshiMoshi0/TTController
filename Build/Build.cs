@@ -28,7 +28,6 @@ class Build : NukeBuild
 
     AbsolutePath SourceDirectory => RootDirectory / "Source";
     AbsolutePath PluginsDirectory => RootDirectory / "Plugins";
-    AbsolutePath ThirdPartyDirectory => RootDirectory / "ThirdParty";
     AbsolutePath ArtifactsDirectory => RootDirectory / "Build" / "artifacts";
 
     AbsolutePath ServiceBinPath => SourceDirectory / "TTController.Service" / "bin" / Configuration;
@@ -44,7 +43,6 @@ class Build : NukeBuild
                 .ForEach(DeleteDirectory);
 
             PluginsDirectory.GlobDirectories("**/bin", "**/obj").ForEach(DeleteDirectory);
-            ThirdPartyDirectory.GlobDirectories("**/bin", "**/obj").ForEach(DeleteDirectory);
 
             // Clean service bin path but leave 'config.json' file
             if (Directory.Exists(ServiceBinPath))
