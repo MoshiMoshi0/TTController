@@ -13,16 +13,6 @@
         Average
     }
 
-    public enum LedCountHandling
-    {
-        DoNothing,
-        Lerp,
-        Nearest,
-        Wrap,
-        Trim,
-        Copy
-    }
-
     public enum DeviceType
     {
         Default,
