@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 using NLog;
 using TTController.Common;
 using TTController.Service.Config;
@@ -21,7 +23,7 @@ namespace TTController.Service.Managers
 
         public ServiceConfig CurrentConfig { get; private set; }
 
-        public ConfigManager(string filename)
+        public ConfigManager(string filename, object context)
         {
             Logger.Info("Creating Config Manager...");
             _filename = filename;
@@ -33,6 +35,7 @@ namespace TTController.Service.Managers
                 DefaultValueHandling = DefaultValueHandling.Ignore,
                 Formatting = Formatting.Indented,
                 Culture = CultureInfo.InvariantCulture,
+                Context = new StreamingContext(StreamingContextStates.All, context),
                 ContractResolver = new ContractResolver()
             };
             jsonSettings.Error += (sender, args) => { };
@@ -124,7 +127,6 @@ namespace TTController.Service.Managers
         private void Dispose(bool disposing)
         {
             Logger.Info("Disposing Config Manager...");
-
             CurrentConfig = null;
         }
 

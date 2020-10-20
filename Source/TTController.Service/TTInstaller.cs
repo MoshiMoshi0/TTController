@@ -2,6 +2,7 @@
 using System.Collections;
 using System.ComponentModel;
 using System.Configuration.Install;
+using System.Diagnostics;
 using System.Management;
 using System.ServiceProcess;
 
@@ -43,21 +44,49 @@ namespace TTController.Service
                 paramList[5] = true;
                 service.InvokeMethod("Change", paramList);
             }
+
+            Sc($"failure {ServiceName} reset= 300 actions= restart/10000/restart/20000/restart/60000");
+            Sc($"failureflag {ServiceName} 1");
         }
 
         protected override void OnBeforeUninstall(IDictionary savedState)
         {
-            using (var sc = new ServiceController(ServiceName))
+            using (var controller = new ServiceController(ServiceName))
             {
-                if (sc.Status != ServiceControllerStatus.Stopped)
+                if (controller.Status != ServiceControllerStatus.Stopped)
                 {
                     Console.WriteLine("Shutting down the service...");
-                    sc.Stop();
-                    sc.WaitForStatus(ServiceControllerStatus.Stopped);
+                    controller.Stop();
+                    controller.WaitForStatus(ServiceControllerStatus.Stopped);
                 }
             }
 
             base.OnBeforeUninstall(savedState);
+        }
+
+        private void Sc(string args)
+        {
+            var process = new Process()
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "sc",
+                    Arguments = args,
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    CreateNoWindow = true,
+                }
+            };
+
+            Console.WriteLine($"Executing: \"{process.StartInfo.FileName} {process.StartInfo.Arguments}\"");
+            process.OutputDataReceived += (s, e) => { if (!e.Data?.StartsWith("\n") ?? false) Console.WriteLine(e.Data); };
+            process.ErrorDataReceived += (s, e) => { if (!e.Data?.StartsWith("\n") ?? false) Console.WriteLine(e.Data); };
+
+            process.Start();
+            process.BeginOutputReadLine();
+            process.BeginErrorReadLine();
+            process.WaitForExit();
         }
     }
 }

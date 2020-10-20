@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.ServiceProcess;
+using HidSharp;
 using LibreHardwareMonitor.Hardware;
 using Microsoft.Win32;
 using NLog;
@@ -41,10 +42,22 @@ namespace TTController.Service
             menu.Add("Run in console", () => {
                 Console.Clear();
                 Console.ResetColor();
-                var service = new TTService();
-                service.Initialize();
-                Console.ReadKey(true);
-                service.Finalize(ComputerStateType.Shutdown);
+
+                try
+                {
+                    var service = new TTService();
+                    service.Initialize();
+                    Console.ReadKey(true);
+                    service.Finalize(ComputerStateType.Shutdown);
+                }
+                catch(Exception e)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Service failed with unhandled exception:");
+                    Console.ResetColor();
+                    Console.WriteLine(e.ToString());
+                }
+
                 Console.WriteLine("Press any key to return to the menu...");
                 Console.ReadKey(true);
                 return false;
@@ -209,6 +222,39 @@ namespace TTController.Service
                 WriteFooter();
             }
 
+            void ListApplications()
+            {
+                WriteHeader("Applications");
+                WriteProperty(0, "");
+
+                var thermaltakeExecutables = new[]
+                {
+                    "TT RGB Plus",
+                    "ThermaltakeUpdate",
+                    "Thermaltake DPS POWER",
+                    "NeonMaker Light Editing Software"
+                };
+
+                foreach (var process in Process.GetProcesses())
+                    if(thermaltakeExecutables.Any(e => string.CompareOrdinal(process.ProcessName, e) == 0))
+                        WriteProperty(0, $"{Path.GetFileName(process.ProcessName)}.exe ", process.Id);
+
+                WriteProperty(0, "");
+                WriteFooter();
+            }
+
+            void ListHid()
+            {
+                WriteHeader("HID");
+                WriteProperty(0, "");
+
+                foreach(var device in DeviceList.Local.GetHidDevices(vendorID: 0x264a))
+                    WriteProperty(0, $"[0x{device.VendorID:x}, 0x{device.ProductID:x}]: ", device.DevicePath);
+
+                WriteProperty(0, "");
+                WriteFooter();
+            }
+
             void ListControllers()
             {
                 WriteHeader("Controllers");
@@ -222,13 +268,13 @@ namespace TTController.Service
                         WriteProperty(0, "Name: ", controller.Name);
                         WriteProperty(1, "VendorId: ", controller.VendorId);
                         WriteProperty(1, "ProductId: ", controller.ProductId);
+                        WriteProperty(1, "Version: ", controller.Version);
                         WriteProperty(1, "Ports: ");
 
                         foreach (var port in controller.Ports)
                         {
-                            var data = controller.GetPortData(port.Id);
                             WriteProperty(2, $"{port.Id}: ");
-                            WriteProperty(3, "Data: ", data);
+                            WriteProperty(3, "Data: ", controller.GetPortData(port.Id));
                             WriteProperty(3, "Identifier: ", port);
                         }
 
@@ -270,7 +316,7 @@ namespace TTController.Service
 
                 using (var _libreHardwareMonitorFacade = new LibreHardwareMonitorFacade())
                 {
-                    var availableSensors = _libreHardwareMonitorFacade.Sensors.Where(s => types.Length > 0 ? types.Contains(s.SensorType) : true);
+                    var availableSensors = _libreHardwareMonitorFacade.Sensors.Where(s => types.Length == 0 || types.Contains(s.SensorType));
                     foreach (var (hardware, sensors) in availableSensors.GroupBy(s => s.Hardware))
                     {
                         WriteProperty(0, $"{hardware.Name}:");
@@ -309,6 +355,8 @@ namespace TTController.Service
             menu.Add("Report", () => {
                 Console.Clear();
                 ListInfo();
+                ListApplications();
+                ListHid();
                 ListControllers();
                 ListSensors(SensorType.Temperature);
                 WaitForInput();
@@ -316,6 +364,7 @@ namespace TTController.Service
             }, () => enabled);
             menu.Add("Controllers", () => {
                 Console.Clear();
+                ListHid();
                 ListControllers();
                 WaitForInput();
                 return false;

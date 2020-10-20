@@ -7,10 +7,10 @@ namespace TTController.Service.Config
 {
     public class ProfileConfig
     {
-        public string Name { get; private set; } = "Default";
-        public List<PortIdentifier> Ports { get; private set; } = new List<PortIdentifier>();
+        public string Name { get; internal set; } = "Default";
+        public List<PortIdentifier> Ports { get; internal set; } = new List<PortIdentifier>();
 
-        public List<ISpeedControllerBase> SpeedControllers { get; private set; } = new List<ISpeedControllerBase>();
-        public List<IEffectBase> Effects { get; private set; } = new List<IEffectBase>();
+        public List<ISpeedControllerBase> SpeedControllers { get; internal set; } = new List<ISpeedControllerBase>();
+        public List<IEffectBase> Effects { get; internal set; } = new List<IEffectBase>();
     }
 }

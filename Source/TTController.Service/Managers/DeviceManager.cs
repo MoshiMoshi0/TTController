@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using HidSharp;
 using NLog;
 using TTController.Common;
@@ -14,37 +15,66 @@ namespace TTController.Service.Managers
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly List<IHidDeviceProxy> _deviceProxies;
-        private readonly List<IControllerProxy> _controllers;
+        private readonly object _searchLock = new object();
+        private readonly IReadOnlyList<IControllerDefinition> _definitions;
+        private List<IControllerProxy> _controllers;
 
-        public IReadOnlyList<IControllerProxy> Controllers => _controllers;
+        public IEnumerable<IControllerProxy> Controllers => _controllers;
 
         public DeviceManager()
         {
             Logger.Info("Creating Device Manager...");
 
-            var definitions = typeof(IControllerDefinition).FindImplementations()
+            _controllers = new List<IControllerProxy>();
+            _definitions = typeof(IControllerDefinition).FindImplementations()
                 .Select(t => (IControllerDefinition)Activator.CreateInstance(t))
                 .ToList();
 
-            var devices = new List<IHidDeviceProxy>();
-            var controllers = new List<IControllerProxy>();
-            foreach (var definition in definitions)
+            DeviceList.Local.Changed += DeviceListChanged;
+
+            lock (_searchLock)
+                SearchForControllers();
+        }
+
+        public IControllerProxy GetController(PortIdentifier port) =>
+            Controllers?.FirstOrDefault(c => c.IsValidPort(port)) ?? null;
+
+        private void SearchForControllers()
+        {
+            var controllersCopy = new List<IControllerProxy>(_controllers);
+
+            Logger.Info("Searching for controller changes");
+            foreach (var definition in _definitions)
             {
                 Logger.Debug("Searching for \"{0}\" controllers", definition.Name);
                 var detectedDevices = DeviceList.Local.GetHidDevices().Where(d => d.VendorID == definition.VendorId && definition.ProductIds.Contains(d.ProductID));
                 var detectedCount = detectedDevices.Count();
 
+                _ = controllersCopy.RemoveAll(controller => {
+                    if (detectedDevices.Any(d => d.VendorID == controller.VendorId && d.ProductID == controller.ProductId))
+                        return false;
+
+                    if (controller.VendorId != definition.VendorId || !definition.ProductIds.Contains(controller.ProductId))
+                        return false;
+
+                    Logger.Info("Removing missing \"{0}\" controller [{1}, {2}]", controller.Name, controller.ProductId, controller.VendorId);
+                    controller.Dispose();
+                    return true;
+                });
+
                 if (detectedCount == 0)
                     continue;
 
                 if (detectedCount == 1)
-                    Logger.Trace("Found 1 controller [{vid}, {pid}]", definition.VendorId, detectedDevices.Select(d => d.ProductID).First());
+                    Logger.Trace("Found 1 new controller [{vid}, {pid}]", definition.VendorId, detectedDevices.Select(d => d.ProductID).First());
                 else
-                    Logger.Trace("Found {count} controllers [{vid}, [{pids}]]", detectedCount, definition.VendorId, detectedDevices.Select(d => d.ProductID));
+                    Logger.Trace("Found {count} new controllers [{vid}, [{pids}]]", detectedCount, definition.VendorId, detectedDevices.Select(d => d.ProductID));
 
                 foreach (var device in detectedDevices)
                 {
+                    if (controllersCopy.Any(c => c.ProductId == device.ProductID && c.VendorId == device.VendorID))
+                        continue;
+
                     var deviceProxy = new HidDeviceProxy(device);
                     var controller = (IControllerProxy)Activator.CreateInstance(definition.ControllerProxyType, deviceProxy, definition);
                     if (!controller.Init())
@@ -55,19 +85,23 @@ namespace TTController.Service.Managers
                         continue;
                     }
 
-                    Logger.Info("Initialized \"{0}\" controller [{1}, {2}]", definition.Name, device.VendorID, device.ProductID);
-
-                    devices.Add(deviceProxy);
-                    controllers.Add(controller);
+                    Logger.Info("Initialized \"{0}\" controller [{1}, {2}], version: \"{3}\"", definition.Name, device.VendorID, device.ProductID, controller.Version);
+                    controllersCopy.Add(controller);
                 }
             }
 
-            _deviceProxies = devices;
-            _controllers = controllers;
+            if(!controllersCopy.ContentsEqual(_controllers))
+                Interlocked.Exchange(ref _controllers, controllersCopy);
         }
 
-        public IControllerProxy GetController(PortIdentifier port) =>
-            Controllers.FirstOrDefault(c => c.IsValidPort(port));
+        private void DeviceListChanged(object sender, DeviceListChangedEventArgs e)
+        {
+            lock (_searchLock)
+            {
+                Logger.Info("Device list changed!");
+                SearchForControllers();
+            }
+        }
 
         public void Dispose()
         {
@@ -79,11 +113,13 @@ namespace TTController.Service.Managers
         {
             Logger.Info("Disposing Device Manager...");
 
-            var count = _deviceProxies.Count;
-            foreach (var deviceProxy in _deviceProxies)
-                deviceProxy.Dispose();
+            DeviceList.Local.Changed -= DeviceListChanged;
 
-            Logger.Debug("Disposed devices: {0}", count);
+            var count = _controllers.Count;
+            foreach (var controller in _controllers)
+                controller.Dispose();
+
+            Logger.Debug("Disposed controllers: {0}", count);
         }
     }
 }

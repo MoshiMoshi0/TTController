@@ -28,7 +28,6 @@ class Build : NukeBuild
 
     AbsolutePath SourceDirectory => RootDirectory / "Source";
     AbsolutePath PluginsDirectory => RootDirectory / "Plugins";
-    AbsolutePath ThirdPartyDirectory => RootDirectory / "ThirdParty";
     AbsolutePath ArtifactsDirectory => RootDirectory / "Build" / "artifacts";
 
     AbsolutePath ServiceBinPath => SourceDirectory / "TTController.Service" / "bin" / Configuration;
@@ -44,7 +43,6 @@ class Build : NukeBuild
                 .ForEach(DeleteDirectory);
 
             PluginsDirectory.GlobDirectories("**/bin", "**/obj").ForEach(DeleteDirectory);
-            ThirdPartyDirectory.GlobDirectories("**/bin", "**/obj").ForEach(DeleteDirectory);
 
             // Clean service bin path but leave 'config.json' file
             if (Directory.Exists(ServiceBinPath))
@@ -76,8 +74,11 @@ class Build : NukeBuild
                 .EnableNoRestore());
 
             // Copy plugin files to service bin path      
-            var fileBlacklist = new[] { "TTController.Common", "LibreHardwareMonitorLib", "NLog", "HidSharp", "Newtonsoft.Json" };
-            var extensionWhitelist = Configuration == Configuration.Debug ? new[] { ".pdb", ".dll" } : new[] { ".dll" };
+            var sharedAssemblies = ServiceBinPath.GlobFiles("*.dll")
+                .NotEmpty()
+                .Select(f => Path.GetFileName(f))
+                .ToList();
+
             Solution.GetProjects("TTController.Plugin.*")
                 .ForEach(p =>
                 {
@@ -86,7 +87,7 @@ class Build : NukeBuild
                                              DirectoryExistsPolicy.Merge,
                                              FileExistsPolicy.OverwriteIfNewer,
                                              null,
-                                             f => fileBlacklist.Contains(Path.GetFileNameWithoutExtension(f.Name)) || !extensionWhitelist.Contains(Path.GetExtension(f.Name)));
+                                             f => sharedAssemblies.Contains(f.Name) || (Configuration == Configuration.Debug && Path.GetExtension(f.Name) == ".pdb") );
                 });
 
             CopyDirectoryRecursively(PluginsDirectory / "Devices", ServiceBinPath / "Plugins" / "Devices", DirectoryExistsPolicy.Merge, FileExistsPolicy.OverwriteIfNewer);

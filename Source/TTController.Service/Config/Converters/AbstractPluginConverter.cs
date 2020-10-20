@@ -33,10 +33,17 @@ namespace TTController.Service.Config.Converters
             }
 
             var configType = pluginType.BaseType.GetGenericArguments().First();
-            var configJson = configProperty != null ? configProperty.ToString() : "";
-            var config = (TConfig)JsonConvert.DeserializeObject(configJson, configType);
+            var configJson = configProperty?.ToString();
+            var config = string.IsNullOrEmpty(configJson)
+                ? (TConfig)Activator.CreateInstance(configType)
+                : (TConfig)JsonConvert.DeserializeObject(configJson, configType);
 
-            return (TPlugin)Activator.CreateInstance(pluginType, config);
+            var result = (TPlugin)Activator.CreateInstance(pluginType, config);
+            var contract = serializer.ContractResolver.ResolveContract(pluginType);
+            foreach (var callback in contract.OnDeserializedCallbacks)
+                callback(result, serializer.Context);
+
+            return result;
         }
 
         public override void WriteJson(JsonWriter writer, TPlugin value, JsonSerializer serializer)

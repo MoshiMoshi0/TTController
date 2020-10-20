@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using TTController.Common;
 using TTController.Common.Plugin;
@@ -15,23 +16,35 @@ namespace TTController.Plugin.RiingController
             _availableEffects = new Dictionary<string, byte>()
             {
                 ["Flow"] = 0x01,
-                ["Full"] = 0x00
+                ["Full"] = 0x00,
+                ["PerLed"] = 0x00
             };
         }
+
+        public override Version Version
+        {
+            get
+            {
+                var bytes = Device.WriteReadBytes(0x33, 0x50);
+                if (bytes == null)
+                    return new Version();
+
+                return new Version(bytes[3], bytes[4], bytes[5]);
+            }
+        }
+
         public override IEnumerable<PortIdentifier> Ports => Enumerable.Range(1, Definition.PortCount)
             .Select(x => new PortIdentifier(Device.VendorId, Device.ProductId, (byte)x));
 
         public override IEnumerable<string> EffectTypes => _availableEffects.Keys;
 
-        public override bool SetRgb(byte port, byte mode, IEnumerable<LedColor> colors)
+        public override bool SetRgb(byte port, string effectType, IEnumerable<LedColor> colors)
         {
-            var bytes = new List<byte> { 0x32, 0x52, port, mode };
-            foreach (var color in colors)
-            {
-                bytes.Add(color.R);
-                bytes.Add(color.G);
-                bytes.Add(color.B);
-            }
+            if (!_availableEffects.TryGetValue(effectType, out var mode))
+                return false;
+
+            var color = colors.FirstOrDefault();
+            var bytes = new List<byte> { 0x32, 0x52, port, mode, color.R, color.G, color.B };
 
             var result = Device.WriteReadBytes(bytes)?[3] ?? -1;
             return result == 0xfe || result == 0x00;
@@ -39,7 +52,6 @@ namespace TTController.Plugin.RiingController
 
         public override bool SetSpeed(byte port, byte speed) =>
             Device.WriteReadBytes(0x32, 0x51, port, 0x03, speed)?[3] == 0xfc;
-
 
         public override PortData GetPortData(byte port)
         {
@@ -59,13 +71,6 @@ namespace TTController.Plugin.RiingController
             };
 
             return data;
-        }
-
-        public override byte? GetEffectByte(string effectType)
-        {
-            if (effectType == null)
-                return null;
-            return _availableEffects.TryGetValue(effectType, out var value) ? value : (byte?)null;
         }
 
         public override void SaveProfile() =>

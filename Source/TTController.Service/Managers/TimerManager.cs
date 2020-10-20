@@ -67,12 +67,12 @@ namespace TTController.Service.Managers
         #region Timer
         /// <summary>
         /// Hight precision non overlapping timer
-        /// Came from 
+        /// Came from
         /// https://stackoverflow.com/a/41697139/548894
         /// </summary>
         /// <remarks>
-        /// This implementation guaranteed that Elapsed events 
-        /// are not overlapped with different threads. 
+        /// This implementation guaranteed that Elapsed events
+        /// are not overlapped with different threads.
         /// Which is important, because a state of the event handler attached to  Elapsed,
         /// may be left unprotected of multi threaded access
         /// </remarks>
@@ -155,7 +155,7 @@ namespace TTController.Service.Managers
             /// (works after the next Start())
             /// </summary>
             /// <remarks>
-            /// It might help in some cases and get things worse in others. 
+            /// It might help in some cases and get things worse in others.
             /// It suggested that you do some studies if you apply
             /// </remarks>
             public bool UseHighPriorityThread { get; set; } = false;

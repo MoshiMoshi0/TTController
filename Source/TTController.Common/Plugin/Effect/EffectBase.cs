@@ -11,16 +11,10 @@ namespace TTController.Common.Plugin
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         protected T Config { get; private set; }
-        public IEnumerable<Identifier> UsedSensors { get; private set; }
 
-        protected EffectBase(T config) : this(config, Enumerable.Empty<Identifier>()) { }
-
-        protected EffectBase(T config, IEnumerable<Identifier> usedSensors)
+        protected EffectBase(T config)
         {
             Config = config;
-            UsedSensors = usedSensors
-                .Union(config?.Trigger?.UsedSensors ?? Enumerable.Empty<Identifier>())
-                .ToList();
         }
 
         public void Dispose()
@@ -30,14 +24,15 @@ namespace TTController.Common.Plugin
         }
 
         public virtual bool IsEnabled(ICacheProvider cache) => Config.Trigger?.Value(cache) ?? false;
+        public virtual void Update(ICacheProvider cache) { }
 
         protected virtual void Dispose(bool disposing)
         {
             Config = null;
-            UsedSensors = null;
         }
 
         public abstract string EffectType { get; }
         public abstract IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache);
+        public abstract List<LedColor> GenerateColors(int count, ICacheProvider cache);
     }
 }

@@ -43,18 +43,18 @@ namespace TTController.Plugin.DpsgController
             _availableEffects = result;
         }
 
+        public override Version Version => new Version();
+
         public override IEnumerable<PortIdentifier> Ports
-        {
-            get
-            {
-                yield return new PortIdentifier(Device.VendorId, Device.ProductId, 0);
-            }
-        }
+            => new[] { new PortIdentifier(Device.VendorId, Device.ProductId, 0) };
 
         public override IEnumerable<string> EffectTypes => _availableEffects.Keys;
 
-        public override bool SetRgb(byte port, byte mode, IEnumerable<LedColor> colors)
+        public override bool SetRgb(byte port, string effectType, IEnumerable<LedColor> colors)
         {
+            if (!_availableEffects.TryGetValue(effectType, out var mode))
+                return false;
+
             var bytes = new List<byte> { 0x30, 0x42, mode };
             foreach (var color in colors)
             {
@@ -125,13 +125,6 @@ namespace TTController.Plugin.DpsgController
             };
 
             return data;
-        }
-
-        public override byte? GetEffectByte(string effectType)
-        {
-            if (effectType == null)
-                return null;
-            return _availableEffects.TryGetValue(effectType, out var value) ? value : (byte?)null;
         }
 
         public override void SaveProfile()

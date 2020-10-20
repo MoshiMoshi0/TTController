@@ -71,7 +71,10 @@ namespace TTController.Service.Managers
 
             var sensor = _libreHardwareMonitorFacade.Sensors.FirstOrDefault(s => s.Identifier == identifier);
             if (sensor == null)
+            {
+                Logger.Warn("Could not find \"{0}\" sensor identifier!", identifier);
                 return;
+            }
 
             Logger.Info("Enabling sensor: {0}", sensor.Identifier);
 

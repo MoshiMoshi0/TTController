@@ -11,7 +11,15 @@ namespace TTController.Service.Config.Converters
             writer.WriteValue(value.ToString());
 
         public override Identifier ReadJson(JsonReader reader, Type objectType, Identifier existingValue, bool hasExistingValue,
-            JsonSerializer serializer) =>
-            new Identifier(JToken.ReadFrom(reader).Value<string>().Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries));
+            JsonSerializer serializer)
+        {
+            var result = new Identifier(JToken.ReadFrom(reader).Value<string>().Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries));
+
+            var contract = serializer.ContractResolver.ResolveContract(objectType);
+            foreach (var callback in contract.OnDeserializedCallbacks)
+                callback(result, serializer.Context);
+
+            return result;
+        }
     }
 }

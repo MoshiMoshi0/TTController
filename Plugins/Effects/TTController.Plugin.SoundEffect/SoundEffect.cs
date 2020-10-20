@@ -95,10 +95,14 @@ namespace TTController.Plugin.SoundEffect
 
         public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
         {
-            if (!_spectrumProvider.GetFftData(_fftBuffer, this))
-                return null;
-
+            _ = _spectrumProvider.GetFftData(_fftBuffer, this);
             return _spectrum.GenerateColors(Config.ColorGenerationMethod, ports, cache, _fftBuffer);
+        }
+
+        public override List<LedColor> GenerateColors(int count, ICacheProvider cache)
+        {
+            _ = _spectrumProvider.GetFftData(_fftBuffer, this);
+            return _spectrum.GenerateColors(count, cache, _fftBuffer);
         }
 
         protected override void Dispose(bool disposing)

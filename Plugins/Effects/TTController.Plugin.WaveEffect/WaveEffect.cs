@@ -24,28 +24,31 @@ namespace TTController.Plugin.WaveEffect
 
         public override string EffectType => "PerLed";
 
-        public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
+        public override void Update(ICacheProvider cache)
         {
             if (_tick++ >= Config.TickInterval)
             {
                 _tick = 0;
                 _rotation++;
             }
+        }
 
+        public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
+        {
             if (Config.ColorGenerationMethod == ColorGenerationMethod.PerPort)
             {
-                return EffectUtils.GenerateColorsPerPort(ports, cache,
-                    (port, ledCount) => Config.Color.Get(ledCount).RotateRight(_rotation % ledCount).ToList()
-                );
+                return EffectUtils.GenerateColorsPerPort(ports, cache, (_, ledCount) => GenerateColors(ledCount, cache) );
             }
             else if (Config.ColorGenerationMethod == ColorGenerationMethod.SpanPorts)
             {
                 var totalLedCount = ports.Select(p => cache.GetDeviceConfig(p).LedCount).Sum();
-                var colors = Config.Color.Get(totalLedCount).RotateRight(_rotation % totalLedCount).ToList();
-                return EffectUtils.SplitColorsPerPort(colors, ports, cache);
+                return EffectUtils.SplitColorsPerPort(GenerateColors(totalLedCount, cache), ports, cache);
             }
 
             return null;
         }
+
+        public override List<LedColor> GenerateColors(int count, ICacheProvider cache)
+            => Config.Color.Get(count).RotateRight(_rotation % count).ToList();
     }
 }

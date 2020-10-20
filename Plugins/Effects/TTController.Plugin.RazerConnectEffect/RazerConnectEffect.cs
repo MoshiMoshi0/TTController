@@ -1,11 +1,22 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using TTController.Common;
 using TTController.Common.Plugin;
 
 namespace TTController.Plugin.RazerConnectEffect
 {
-    public class RazerConnectEffectConfig : EffectConfigBase { }
+    public enum RazerConnectLayer
+    {
+        Base,
+        Custom,
+        Both
+    }
+
+    public class RazerConnectEffectConfig : EffectConfigBase
+    {
+        [DefaultValue(RazerConnectLayer.Custom)] public RazerConnectLayer Layer { get; internal set; } = RazerConnectLayer.Custom;
+    }
 
     public class RazerConnectEffect : EffectBase<RazerConnectEffectConfig>
     {
@@ -25,7 +36,7 @@ namespace TTController.Plugin.RazerConnectEffect
                 _manager = new RzChromaBroadcastManager();
 
             _colors = new LedColor[RzChromaBroadcastNative.BroadcastColorCount];
-            if (_manager != null && _manager.Initialized)
+            if (_manager?.Initialized == true)
             {
                 _manager.ColorChanged += OnColorUpdate;
                 _manager.ConnectionChanged += OnConnectionUpdate;
@@ -46,17 +57,18 @@ namespace TTController.Plugin.RazerConnectEffect
         }
 
         public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
-        {
-            var result = new Dictionary<PortIdentifier, List<LedColor>>();
-            foreach(var port in ports)
-            {
-                if (cache.GetDeviceConfig(port).LedCount == 1)
-                    result.Add(port, _colors.Take(1).ToList());
-                else
-                    result.Add(port, _colors.Skip(1).ToList());
-            }
+            => ports.ToDictionary(p => p, _ => GenerateColors(0, cache));
 
-            return result;
+        public override List<LedColor> GenerateColors(int count, ICacheProvider cache)
+        {
+            if (Config.Layer == RazerConnectLayer.Base)
+                return _colors.Take(1).ToList();
+            else if (Config.Layer == RazerConnectLayer.Custom)
+                return _colors.Skip(1).ToList();
+            else if (Config.Layer == RazerConnectLayer.Both)
+                return _colors.ToList();
+
+            return null;
         }
 
         protected override void Dispose(bool disposing)

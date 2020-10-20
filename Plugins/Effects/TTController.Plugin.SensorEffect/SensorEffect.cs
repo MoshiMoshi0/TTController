@@ -17,12 +17,12 @@ namespace TTController.Plugin.SensorEffect
 
     public class SensorEffect : EffectBase<SensorEffectConfig>
     {
-        private double _r, _g, _b;
         private readonly float _minValue, _maxValue;
+        private double _r, _g, _b;
 
         public override string EffectType => "PerLed";
 
-        public SensorEffect(SensorEffectConfig config) : base(config, config.Sensors)
+        public SensorEffect(SensorEffectConfig config) : base(config)
         {
             _r = config.ColorGradient.Start.Color.R;
             _g = config.ColorGradient.Start.Color.G;
@@ -32,7 +32,7 @@ namespace TTController.Plugin.SensorEffect
             _maxValue = (float)config.ColorGradient.End.Location;
         }
 
-        public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
+        public override void Update(ICacheProvider cache)
         {
             var values = Config.Sensors.Select(cache.GetSensorValue);
             var value = float.NaN;
@@ -62,9 +62,15 @@ namespace TTController.Plugin.SensorEffect
                 _g = _g * (1 - Config.SmoothingFactor) + gg * Config.SmoothingFactor;
                 _b = _b * (1 - Config.SmoothingFactor) + bb * Config.SmoothingFactor;
             }
+        }
 
+        public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
+            => EffectUtils.GenerateColorsPerPort(ports, cache, (_, ledCount) => GenerateColors(ledCount, cache));
+
+        public override List<LedColor> GenerateColors(int count, ICacheProvider cache)
+        {
             var color = new LedColor((byte)_r, (byte)_g, (byte)_b);
-            return EffectUtils.GenerateColorsPerPort(ports, cache, (port, ledCount) => Enumerable.Repeat(color, ledCount).ToList());
+            return Enumerable.Repeat(color, count).ToList();
         }
     }
 }

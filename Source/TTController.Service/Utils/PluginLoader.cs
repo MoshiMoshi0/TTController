@@ -49,7 +49,7 @@ namespace TTController.Service.Utils
 
         private IEnumerable<Assembly> Search(string path, Type type)
         {
-            AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += (s, e) =>
+            AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += (_, e) =>
                 Assembly.ReflectionOnlyLoad(e.Name);
 
             var contractType = GetLoadFromContractType(type);

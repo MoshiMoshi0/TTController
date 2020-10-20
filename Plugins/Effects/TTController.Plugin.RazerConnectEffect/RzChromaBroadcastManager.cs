@@ -50,8 +50,8 @@ namespace TTController.Plugin.RazerConnectEffect
 
         protected virtual void Dispose(bool disposing)
         {
-            var unRegister = RzChromaBroadcastNative.UnregisterEventNotification();
-            var unInit = RzChromaBroadcastNative.UnInit();
+            _ = RzChromaBroadcastNative.UnregisterEventNotification();
+            _ = RzChromaBroadcastNative.UnInit();
             RzChromaBroadcastNative.UnLoad();
 
             Initialized = false;

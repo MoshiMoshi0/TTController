@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.ServiceProcess;
+using LibreHardwareMonitor.Hardware;
 using NLog;
 using TTController.Common;
 using TTController.Common.Plugin;
@@ -25,6 +28,8 @@ namespace TTController.Service
         private DataCache _cache;
         private ServiceConfig _config;
 
+        private ServiceIpcClient _ipcClient;
+
         protected bool IsDisposed;
 
         public TTService()
@@ -40,16 +45,20 @@ namespace TTController.Service
         public bool Initialize()
         {
             Logger.Info($"{new string('=', 64)}");
-            Logger.Info("Initializing...");
+            Logger.Info("Initializing service, version \"{0}\"", FileVersionInfo.GetVersionInfo(Assembly.GetCallingAssembly().Location)?.ProductVersion);
             PluginLoader.LoadAll(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Plugins"));
 
-            _configManager = new ConfigManager("config.json");
+            var serializationContext = new TrackingSerializationContext();
+            serializationContext.Track(typeof(IPlugin));
+            serializationContext.Track(typeof(Identifier));
+
+            _configManager = new ConfigManager("config.json", serializationContext);
             if (!_configManager.LoadOrCreateConfig())
                 return false;
 
             _config = _configManager.CurrentConfig;
             _cache = new DataCache();
-            _pluginStore = new PluginStore();
+            _pluginStore = new PluginStore(serializationContext.Get<IPlugin>());
 
             _sensorManager = new SensorManager(_config);
             _deviceManager = new DeviceManager();
@@ -57,6 +66,7 @@ namespace TTController.Service
             _sensorManager.EnableSensors(_config.SensorConfigs.SelectMany(x => x.Sensors));
             foreach (var profile in _config.Profiles)
             {
+                Logger.Info("Processing profile \"{0}\"", profile.Name);
                 if (_pluginStore.Get(profile).Any())
                 {
                     Logger.Fatal("Duplicate profile \"{0}\" found!", profile.Name);
@@ -64,27 +74,22 @@ namespace TTController.Service
                 }
 
                 foreach (var effect in profile.Effects)
-                {
-                    _pluginStore.Add(profile, effect);
-                    _sensorManager.EnableSensors(effect.UsedSensors);
-                }
+                    _pluginStore.Assign(effect, profile);
 
                 foreach (var speedController in profile.SpeedControllers)
+                    _pluginStore.Assign(speedController, profile);
+
+                foreach(var port in profile.Ports)
                 {
-                    _pluginStore.Add(profile, speedController);
-                    _sensorManager.EnableSensors(speedController.UsedSensors);
+                    _cache.StorePortConfig(port, PortConfig.Default);
+                    _cache.StoreDeviceConfig(port, DeviceConfig.Default);
+
+                    if (!_deviceManager.Controllers.SelectMany(c => c.Ports).Contains(port))
+                        Logger.Warn("Could not find matching controller for port {0}!", port);
                 }
-
-                profile.Ports.RemoveAll(p =>
-                {
-                    var portExists = _deviceManager.Controllers.SelectMany(c => c.Ports).Contains(p);
-                    if (!portExists)
-                        Logger.Warn("Removing invalid port: {0}", p);
-
-                    return !portExists;
-                });
             }
 
+            _sensorManager.EnableSensors(serializationContext.Get<Identifier>());
             foreach (var sensor in _sensorManager.EnabledSensors)
                 _cache.StoreSensorConfig(sensor, SensorConfig.Default);
 
@@ -99,12 +104,26 @@ namespace TTController.Service
 
             _configManager.Accept(_cache.AsWriteOnly());
 
+            if (_config.IpcServerEnabled && _config.IpcServer != null)
+            {
+                _ipcClient = new ServiceIpcClient();
+                _pluginStore.Add(_ipcClient);
+                _config.IpcServer.RegisterClient(_ipcClient);
+
+                foreach (var plugin in serializationContext.Get<IIpcClient>())
+                    _config.IpcServer.RegisterClient(plugin);
+                _config.IpcServer.Start();
+            }
+
             ApplyComputerStateProfile(ComputerStateType.Boot);
 
             _timerManager = new TimerManager();
             _timerManager.RegisterTimer(_config.SensorTimerInterval, SensorTimerCallback);
             _timerManager.RegisterTimer(_config.DeviceSpeedTimerInterval, DeviceSpeedTimerCallback);
             _timerManager.RegisterTimer(_config.DeviceRgbTimerInterval, DeviceRgbTimerCallback);
+
+            if (_config.IpcClientTimerInterval > 0)
+                _timerManager.RegisterTimer(_config.IpcClientTimerInterval, IpcClientTimerCallback);
             if(LogManager.Configuration.LoggingRules.Any(r => r.IsLoggingEnabledForLevel(LogLevel.Debug)))
                 _timerManager.RegisterTimer(_config.DebugTimerInterval, DebugTimerCallback);
 
@@ -229,31 +248,27 @@ namespace TTController.Service
             }
 
             Logger.Info("Applying computer state profile: {0}", state);
-            lock (_deviceManager)
+            foreach (var profile in _config.ComputerStateProfiles.Where(p => p.StateType == state))
             {
-                var dirtyControllers = new HashSet<IControllerProxy>();
-                foreach (var profile in _config.ComputerStateProfiles.Where(p => p.StateType == state))
+                foreach (var port in profile.Ports)
                 {
-                    foreach (var port in profile.Ports)
+                    var controller = _deviceManager.GetController(port);
+                    if (controller == null)
+                        continue;
+
+                    lock (controller)
                     {
-                        var controller = _deviceManager.GetController(port);
-                        if (controller == null)
-                            continue;
+                        var isDirty = false;
+                        if (profile.Speed.HasValue)
+                            isDirty |= controller.SetSpeed(port.Id, profile.Speed.Value);
 
-                        if(profile.Speed.HasValue)
-                            controller.SetSpeed(port.Id, profile.Speed.Value);
+                        if (profile.EffectType != null && profile.Color != null)
+                            isDirty |= controller.SetRgb(port.Id, profile.EffectType, profile.Color.Get(_cache.GetDeviceConfig(port).LedCount));
 
-                        var effectByte = controller.GetEffectByte(profile.EffectType);
-                        if (effectByte.HasValue && profile.Color != null)
-                            controller.SetRgb(port.Id, effectByte.Value, profile.Color.Get(_cache.GetDeviceConfig(port).LedCount));
-
-                        if (state == ComputerStateType.Boot && (profile.Speed.HasValue || effectByte.HasValue))
-                            dirtyControllers.Add(controller);
+                        if (state == ComputerStateType.Boot && isDirty)
+                            controller.SaveProfile();
                     }
                 }
-
-                foreach(var controller in dirtyControllers)
-                    controller.SaveProfile();
             }
         }
 
@@ -281,56 +296,59 @@ namespace TTController.Service
 
             foreach (var profile in _config.Profiles)
             {
-                lock (_deviceManager)
+                foreach (var port in profile.Ports)
                 {
-                    foreach (var port in profile.Ports)
+                    var controller = _deviceManager.GetController(port);
+                    if (controller == null)
+                        continue;
+
+                    lock (controller)
                     {
-                        var controller = _deviceManager.GetController(port);
                         var data = controller?.GetPortData(port.Id);
                         _cache.StorePortData(port, data);
                     }
                 }
 
                 IDictionary<PortIdentifier, byte> speedMap;
-                if (criticalState)
+                try
                 {
-                    speedMap = profile.Ports.ToDictionary(p => p, _ => (byte)100);
-                }
-                else
-                {
-                    var speedController = _pluginStore
-                        .Get<ISpeedControllerBase>(profile)
-                        .FirstOrDefault(c => c.IsEnabled(_cache.AsReadOnly()));
-                    if (speedController == null)
-                        continue;
-
-                    try
+                    if (criticalState)
                     {
-                        speedMap = speedController.GenerateSpeeds(profile.Ports, _cache.AsReadOnly());
-                    }
-                    catch(Exception e)
-                    {
-                        Logger.Fatal("{0} failed with {1}", speedController.GetType().Name, e);
                         speedMap = profile.Ports.ToDictionary(p => p, _ => (byte)100);
                     }
+                    else
+                    {
+                        var speedController = _pluginStore
+                            .Get<ISpeedControllerBase>(profile)
+                            .FirstOrDefault(c => c.IsEnabled(_cache.AsReadOnly()));
+                        if (speedController == null)
+                            continue;
+
+                        speedMap = speedController.GenerateSpeeds(profile.Ports, _cache.AsReadOnly());
+                    }
+                }
+                catch(Exception e)
+                {
+                    Logger.Fatal(e);
+                    speedMap = profile.Ports.ToDictionary(p => p, _ => (byte)100);
                 }
 
                 if (speedMap == null)
                     continue;
 
-                lock (_deviceManager)
+                foreach (var (port, speed) in speedMap)
                 {
-                    foreach (var (port, speed) in speedMap)
+                    if (!_cache.GetPortConfig(port).IgnoreSpeedCache && speed == _cache.GetPortSpeed(port))
+                        continue;
+
+                    var controller = _deviceManager.GetController(port);
+                    if (controller == null)
+                        continue;
+
+                    lock (controller)
                     {
-                        if (speed == _cache.GetPortSpeed(port))
-                            continue;
-
-                        var controller = _deviceManager.GetController(port);
-                        if (controller == null)
-                            continue;
-
-                        _cache.StorePortSpeed(port, speed);
                         controller.SetSpeed(port.Id, speed);
+                        _cache.StorePortSpeed(port, speed);
                     }
                 }
             }
@@ -340,149 +358,69 @@ namespace TTController.Service
 
         public bool DeviceRgbTimerCallback()
         {
-            void ApplyConfig(IDictionary<PortIdentifier, List<LedColor>> colorMap)
-            {
-                foreach (var port in colorMap.Keys.ToList())
-                {
-                    var config = _cache.GetPortConfig(port);
-                    if (config == null)
-                        continue;
-
-                    var colors = colorMap[port];
-                    var ledCount = _cache.GetDeviceConfig(port).LedCount;
-                    var zones = _cache.GetDeviceConfig(port).Zones;
-
-                    switch (config.LedCountHandling)
-                    {
-                        case LedCountHandling.Lerp:
-                            {
-                                if (ledCount == colors.Count)
-                                    break;
-
-                                var newColors = new List<LedColor>();
-                                var gradient = new LedColorGradient(colors, ledCount - 1);
-
-                                for (var i = 0; i < ledCount; i++)
-                                    newColors.Add(gradient.GetColor(i));
-
-                                colors = newColors;
-                                break;
-                            }
-                        case LedCountHandling.Nearest:
-                            {
-                                if (ledCount == colors.Count)
-                                    break;
-
-                                var newColors = new List<LedColor>();
-                                for (var i = 0; i < ledCount; i++) {
-                                    var idx = (int)Math.Round((i / (ledCount - 1d)) * (colors.Count - 1d));
-                                    newColors.Add(colors[idx]);
-                                }
-
-                                colors = newColors;
-                                break;
-                            }
-                        case LedCountHandling.Wrap:
-                            if (colors.Count <= ledCount)
-                                break;
-
-                            var wrapCount = (int)Math.Floor(colors.Count / (double)ledCount);
-                            var startOffset = (wrapCount - 1) * ledCount;
-                            var remainder = colors.Count - wrapCount * ledCount;
-
-                            colors = colors.Skip(colors.Count - remainder)
-                                .Concat(colors.Skip(startOffset + remainder).Take(ledCount - remainder))
-                                .ToList();
-                            break;
-                        case LedCountHandling.Trim:
-                            if (ledCount < colors.Count)
-                                colors.RemoveRange(ledCount, colors.Count - ledCount);
-                            break;
-                        case LedCountHandling.Copy:
-                            while (ledCount > colors.Count)
-                                colors.AddRange(colors.Take(ledCount - colors.Count).ToList());
-                            break;
-                        case LedCountHandling.DoNothing:
-                        default:
-                            break;
-                    }
-
-                    if (config.LedRotation != null || config.LedReverse != null)
-                    {
-                        var offset = 0;
-                        var newColors = new List<LedColor>();
-                        for (int i = 0; i < zones.Length; i++)
-                        {
-                            var zoneColors = colors.Skip(offset).Take(zones[i]);
-
-                            if (i < config.LedRotation?.Length && config.LedRotation[i] > 0)
-                                zoneColors = zoneColors.RotateLeft(config.LedRotation[i]);
-                            if (i < config.LedReverse?.Length && config.LedReverse[i])
-                                zoneColors = zoneColors.Reverse();
-
-                            offset += zones[i];
-                            newColors.AddRange(zoneColors);
-                        }
-
-                        if (newColors.Count < colors.Count)
-                            newColors.AddRange(colors.Skip(offset));
-
-                        colors = newColors;
-                    }
-
-                    colorMap[port] = colors;
-                }
-            }
-
             foreach (var profile in _config.Profiles)
             {
-                var effect = _pluginStore
-                    .Get<IEffectBase>(profile)
-                    .FirstOrDefault(e => e.IsEnabled(_cache.AsReadOnly()));
-                if (effect == null)
-                    continue;
-
                 IDictionary<PortIdentifier, List<LedColor>> colorMap;
                 string effectType;
-
                 try
                 {
+                    var effect = _pluginStore
+                       .Get<IEffectBase>(profile)
+                       .FirstOrDefault(e => e.IsEnabled(_cache.AsReadOnly()));
+                    if (effect == null)
+                        continue;
+
+                    effect.Update(_cache.AsReadOnly());
                     colorMap = effect.GenerateColors(profile.Ports, _cache.AsReadOnly());
                     effectType = effect.EffectType;
                 }
                 catch (Exception e)
                 {
-                    Logger.Fatal("{0} failed with {1}", effect.GetType().Name, e);
+                    Logger.Fatal(e);
                     colorMap = profile.Ports.ToDictionary(p => p, _ => new List<LedColor>() { new LedColor(255, 0, 0) });
-                    effectType = "Full";
+                    effectType = "PerLed";
                 }
 
                 if (colorMap == null)
                     continue;
 
-                ApplyConfig(colorMap);
-
-                lock (_deviceManager)
+                foreach (var (port, _) in colorMap)
                 {
-                    foreach (var (port, colors) in colorMap)
+                    var colors = colorMap[port];
+                    if (colors == null)
+                        continue;
+
+                    var config = _cache.GetPortConfig(port);
+                    if (!config.IgnoreColorCache && colors.ContentsEqual(_cache.GetPortColors(port)))
+                        continue;
+
+                    if (effectType == null)
+                        continue;
+
+                    var controller = _deviceManager.GetController(port);
+                    if (controller == null)
+                        continue;
+
+                    foreach (var modifier in config.ColorModifiers)
+                        modifier.Apply(ref colors, port, _cache.AsReadOnly());
+
+                    lock (controller)
                     {
-                        if (colors == null)
-                            continue;
-
-                        if (colors.ContentsEqual(_cache.GetPortColors(port)))
-                            continue;
-
-                        var controller = _deviceManager.GetController(port);
-                        var effectByte = controller?.GetEffectByte(effectType);
-                        if (effectByte == null)
-                            continue;
-
+                        controller.SetRgb(port.Id, effectType, colors);
                         _cache.StorePortColors(port, colors);
-                        controller.SetRgb(port.Id, effectByte.Value, colors);
                     }
                 }
             }
 
+            return true;
+        }
+
+        public bool IpcClientTimerCallback()
+        {
+            if (_ipcClient == null)
+                return false;
+
+            _ipcClient.Update(_config.Profiles.SelectMany(p => p.Ports), _cache.AsReadOnly());
             return true;
         }
 
@@ -500,15 +438,12 @@ namespace TTController.Service
                 }
             }
 
-            lock (_sensorManager)
+            foreach (var identifier in _sensorManager.EnabledSensors)
             {
-                foreach (var identifier in _sensorManager.EnabledSensors)
-                {
-                    var value = _sensorManager.GetSensorValue(identifier);
-                    if (float.IsNaN(value))
-                        continue;
-                    Logger.Debug("Sensor \"{0}\" value: {1}", identifier, value);
-                }
+                var value = _sensorManager.GetSensorValue(identifier);
+                if (float.IsNaN(value))
+                    continue;
+                Logger.Debug("Sensor \"{0}\" value: {1}", identifier, value);
             }
 
             return true;

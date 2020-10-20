@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace TTController.Common.Plugin
 {
@@ -17,12 +18,12 @@ namespace TTController.Common.Plugin
         public int VendorId => Device.VendorId;
         public int ProductId => Device.ProductId;
 
+        public abstract Version Version { get; }
         public abstract IEnumerable<PortIdentifier> Ports { get; }
         public abstract IEnumerable<string> EffectTypes { get; }
-        public abstract bool SetRgb(byte port, byte mode, IEnumerable<LedColor> colors);
+        public abstract bool SetRgb(byte port, string effectType, IEnumerable<LedColor> colors);
         public abstract bool SetSpeed(byte port, byte speed);
         public abstract PortData GetPortData(byte port);
-        public abstract byte? GetEffectByte(string effectType);
         public abstract void SaveProfile();
         public abstract bool Init();
         public abstract bool IsValidPort(PortIdentifier port);
@@ -40,6 +41,17 @@ namespace TTController.Common.Plugin
             hashCode = hashCode * -1521134295 + VendorId.GetHashCode();
             hashCode = hashCode * -1521134295 + ProductId.GetHashCode();
             return hashCode;
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            Device.Dispose();
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            System.GC.SuppressFinalize(this);
         }
     }
 }

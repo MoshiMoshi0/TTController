@@ -4,6 +4,6 @@ namespace TTController.Common.Plugin
 {
     public abstract class SpeedControllerConfigBase
     {
-        [DefaultValue(null)] public ITriggerBase Trigger { get; private set; } = null;
+        [DefaultValue(null)] public ITriggerBase Trigger { get; internal set; } = null;
     }
 }

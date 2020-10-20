@@ -25,5 +25,8 @@ namespace TTController.Plugin.CopyColorEffect
 
             return ports.ToDictionary(p => p, _ => colors);
         }
+
+        public override List<LedColor> GenerateColors(int count, ICacheProvider cache)
+            => cache.GetPortColors(Config.Target).ToList();
     }
 }

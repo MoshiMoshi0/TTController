@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using TTController.Common;
@@ -19,8 +20,9 @@ namespace TTController.Plugin.RawEffect
         public RawEffect(RawEffectConfig config) : base(config) { }
 
         public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
-        {
-            return ports.ToDictionary(p => p, p => Config.Color.Get(cache.GetDeviceConfig(p).LedCount).ToList());
-        }
+            => ports.ToDictionary(p => p, p => Config.Color.Get(cache.GetDeviceConfig(p).LedCount).ToList());
+
+        public override List<LedColor> GenerateColors(int count, ICacheProvider cache)
+            => throw new NotImplementedException();
     }
 }
