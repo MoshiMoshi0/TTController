@@ -100,16 +100,16 @@ docs:
       - title: ScheduleTrigger
         url: /plugins/triggers/scheduletrigger
   - title: "Plugins: Modifiers"
-      children:
-        - title: LerpLedColorModifier
-          url: /plugins/modifiers/lerpledcolormodifier
-        - title: ReverseLedColorModifier
-          url: /plugins/modifiers/reverseledcolormodifier
-        - title: RotateLedColorModifier
-          url: /plugins/modifiers/rotateledcolormodifier
-        - title: TrimLedColorModifier
-          url: /plugins/modifiers/trimledcolormodifier
+    children:
+      - title: LerpLedColorModifier
+        url: /plugins/modifiers/lerpledcolormodifier
+      - title: ReverseLedColorModifier
+        url: /plugins/modifiers/reverseledcolormodifier
+      - title: RotateLedColorModifier
+        url: /plugins/modifiers/rotateledcolormodifier
+      - title: TrimLedColorModifier
+        url: /plugins/modifiers/trimledcolormodifier
   - title: "Plugins: Utils"
-      children:
-        - title: WebSocketIpcServer
-          utl: /plugins/utils/websocketipcserver 
+    children:
+      - title: WebSocketIpcServer
+        utl: /plugins/utils/websocketipcserver 
