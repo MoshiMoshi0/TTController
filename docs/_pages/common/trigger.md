@@ -1,7 +1,9 @@
 ---
-title: Trigger
+title: Trigger Plugin
 permalink: /common/trigger
 ---
+
+Triggers cause other plugins to be enabled or disabled dynamically.
 
 ## Format
 

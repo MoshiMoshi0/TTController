@@ -1,5 +1,5 @@
 docs:
-  - title: Configuration
+  - title: "General: Configuration"
     children:
       - title: Service
         url: /config/service
@@ -11,7 +11,7 @@ docs:
         url: /config/port
       - title: Sensors
         url: /config/sensor
-  - title: Common
+  - title: "General: Common"
     children:
       - title: Led Color
         url: /common/led-color
@@ -23,65 +23,93 @@ docs:
         url: /common/port-identifier
       - title: Sensor Identifier
         url: /common/sensor-identifier
-      - title: Speed Controller
-        url: /common/speed-controller
-      - title: Effect
-        url: /common/effect
-      - title: Trigger
-        url: /common/trigger
-  - title: Speed Controllers
+  - title: "Plugins: Common"
     children:
-      - title: PwmSpeedController
-        url: /speed-controllers/pwmspeedcontroller
-      - title: StaticSpeedController
-        url: /speed-controllers/staticspeedcontroller
+      - title: Speed Controller Plugin
+        url: /common/speed-controller
+      - title: Effect Plugin
+        url: /common/effect
+      - title: Trigger Plugin
+        url: /common/trigger
+      - title: Led Color Modifier Plugin
+        url: /common/led-color-modifier
+      - title: Ipc Server Plugin
+        url: /common/ipc-server
+  - title: "Plugins: Speed Controllers"
+    children:
       - title: CopySpeedController
-        url: /speed-controllers/copyspeedcontroller
+        url: /plugins/speed-controllers/copyspeedcontroller
       - title: DpsgSpeedController
-        url: /speed-controllers/dpsgspeedcontroller
-  - title: Effects
+        url: /plugins/speed-controllers/dpsgspeedcontroller
+      - title: IpcSpeedController
+        url: /plugins/speed-controllers/ipcspeedcontroller
+      - title: PwmSpeedController
+        url: /plugins/speed-controllers/pwmspeedcontroller
+      - title: StaticSpeedController
+        url: /plugins/speed-controllers/staticspeedcontroller
+  - title: "Plugins: Effects"
     children:
       - title: AuroraEffect
-        url: /effects/auroraeffect
+        url: /plugins/effects/auroraeffect
       - title: BlinkEffect
-        url: /effects/blinkeffect
+        url: /plugins/effects/blinkeffect
+      - title: ColorSequenceEffect
+        url: /plugins/effects/colorsequenceeffect
       - title: CopyColorEffect
-        url: /effects/copycoloreffect
+        url: /plugins/effects/copycoloreffect
       - title: FlowEffect
-        url: /effects/floweffect
+        url: /plugins/effects/floweffect
+      - title: IpcEffect
+        url: /plugins/effects/ipceffect
       - title: PingPongEffect
-        url: /effects/pingpongeffect
+        url: /plugins/effects/pingpongeffect
       - title: PulseEffect
-        url: /effects/pulseeffect
+        url: /plugins/effects/pulseeffect
       - title: RawEffect
-        url: /effects/raweffect
+        url: /plugins/effects/raweffect
       - title: RazerConnectEffect
-        url: /effects/razerconnecteffect
+        url: /plugins/effects/razerconnecteffect
       - title: RippleEffect
-        url: /effects/rippleeffect
+        url: /plugins/effects/rippleeffect
       - title: SensorEffect
-        url: /effects/sensoreffect
+        url: /plugins/effects/sensoreffect
       - title: SoundEffect
-        url: /effects/soundeffect
+        url: /plugins/effects/soundeffect
       - title: SpectrumEffect
-        url: /effects/spectrumeffect
+        url: /plugins/effects/spectrumeffect
       - title: StaticColorEffect
-        url: /effects/staticcoloreffect
+        url: /plugins/effects/staticcoloreffect
       - title: WaveEffect
-        url: /effects/waveeffect
-  - title: Triggers
+        url: /plugins/effects/waveeffect
+  - title: "Plugins: Triggers"
     children:
       - title: AlwaysTrigger
-        url: /triggers/alwaystrigger
+        url: /plugins/triggers/alwaystrigger
+      - title: IpcTrigger
+        url: /plugins/triggers/ipctrigger
       - title: OneTimeTrigger
-        url: /triggers/onetimetrigger
+        url: /plugins/triggers/onetimetrigger
       - title: ProcessTrigger
-        url: /triggers/processtrigger
+        url: /plugins/triggers/processtrigger
       - title: PulseTrigger
-        url: /triggers/pulsetrigger
+        url: /plugins/triggers/pulsetrigger
       - title: LogicTrigger
-        url: /triggers/logictrigger
+        url: /plugins/triggers/logictrigger
       - title: SensorTrigger
-        url: /triggers/sensortrigger
+        url: /plugins/triggers/sensortrigger
       - title: ScheduleTrigger
-        url: /triggers/scheduletrigger
+        url: /plugins/triggers/scheduletrigger
+  - title: "Plugins: Modifiers"
+      children:
+        - title: LerpLedColorModifier
+          url: /plugins/modifiers/lerpledcolormodifier
+        - title: ReverseLedColorModifier
+          url: /plugins/modifiers/reverseledcolormodifier
+        - title: RotateLedColorModifier
+          url: /plugins/modifiers/rotateledcolormodifier
+        - title: TrimLedColorModifier
+          url: /plugins/modifiers/trimledcolormodifier
+  - title: "Plugins: Utils"
+      children:
+        - title: WebSocketIpcServer
+          utl: /plugins/utils/websocketipcserver 

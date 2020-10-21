@@ -1,7 +1,9 @@
 ---
-title: Effect
+title: Effect Plugin
 permalink: /common/effect
 ---
+
+Effects generate list of [Led Color]({{ "/common/led-color" | relative_url }}).
 
 ## Format
 

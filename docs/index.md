@@ -72,26 +72,27 @@ This section contains some tips on the format of this documentation.
 | Device                      | Support            | Confirmed          | Notes
 |-----------------------------|--------------------|--------------------|-------------------------------------------
 | Riing controller            | :heavy_check_mark: | :heavy_check_mark: |
-| Riing Plus controller       | :heavy_check_mark: | :heavy_check_mark: |
+| Riing Quad controller       | :heavy_minus_sign: | :heavy_minus_sign: |
 | Riing Trio controller       | :heavy_check_mark: | :heavy_check_mark: |
+| Riing Plus controller       | :heavy_check_mark: | :heavy_check_mark: |
 | Dpsg controller             | :heavy_minus_sign: | :heavy_minus_sign: | not fully implemented
-| Riing Quad controller       | :x:                |                    |
+| Level20 Desk controller     | :heavy_minus_sign: | :heavy_minus_sign: |
 |                             |                    |                    |
 | Riing Plus 12/14/20         | :heavy_check_mark: | :heavy_check_mark: |
+| Riing Quad 12/14            | :heavy_check_mark: | :heavy_check_mark: |
 | Riing Trio 12/14            | :heavy_check_mark: | :heavy_check_mark: |
+| Riing Duo 12/14             | :heavy_check_mark: | :heavy_check_mark: |
 | Pure Plus 12/14             | :heavy_check_mark: | :heavy_check_mark: |
 | Floe Riing RGB 240/280/360  | :heavy_check_mark: | :heavy_check_mark: |
 | Pacific PR22-D5 Plus        | :heavy_check_mark: | :heavy_check_mark: |
 | Pacific W4                  | :heavy_check_mark: | :heavy_check_mark: |
 | Razer Connect               | :heavy_check_mark: | :heavy_check_mark: |
-| Riing Duo 12/14             | :heavy_check_mark: | :heavy_check_mark: |
 | WaterRam RGB                | :heavy_check_mark: | :x:                |
 | Pacific CL360/RL360         | :heavy_check_mark: | :x:                |
 | Pacific V-GTX/V-RTX         | :heavy_check_mark: | :x:                |
 | Pacific Lumi/Rad/R1/Fitting | :heavy_check_mark: | :x:                |
 | Toughpower iRGB PLUS        | :heavy_minus_sign: | :heavy_minus_sign: | controller not fully implemented
 | Pacific W5/W6               | :heavy_minus_sign: | :x:                | temperature sensor unsupported
-| Riing Quad 12/14            | :x:                | :x:                |
 
 ## Menu tree
 

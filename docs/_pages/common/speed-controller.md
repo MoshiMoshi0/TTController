@@ -1,7 +1,9 @@
 ---
-title: Speed Controller
+title: Speed Controller Plugin
 permalink: /common/speed-controller
 ---
+
+Speed controllers generate speed values for specific ports.
 
 ## Format
 

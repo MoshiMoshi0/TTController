@@ -15,6 +15,9 @@ permalink: /config/service
   "PortConfigs":  [<PortConfig>],
   "SensorConfigs":   [<SensorConfig>],
 
+  "IpcServer": <IpcServer>,
+  "IpcServerEnabled": <bool>,
+
   "CpuSensorsEnabled": <bool>,
   "GpuSensorsEnabled": <bool>,
   "StorageSensorsEnabled": <bool>,
@@ -26,6 +29,7 @@ permalink: /config/service
   "SensorTimerInterval": <int>,
   "DeviceSpeedTimerInterval": <int>,
   "DeviceRgbTimerInterval": <int>,
+  "IpcClientTimerInterval": <int>,
   "DebugTimerInterval": <int>
 }
 ~~~
@@ -114,6 +118,45 @@ List of [Sensor Configs]({{ "/config/sensor" | relative_url }}).
     {...},
     {...}
 ]
+~~~
+
+</div>
+
+### IpcServer
+<div class="variable-block" markdown="block">
+
+Intance of [Ipc Server]({{ "/common/ipc-server" | relative_url }}) to use for ipc.
+
+**Required:** No<br>
+**Default value:**
+~~~
+~~~
+**Example:**
+~~~
+{
+  "Type": "WebSocketIpcServer",
+  "Config": {
+    "Address": "127.0.0.1",
+    "Port": 8888
+  }
+}
+~~~
+
+</div>
+
+### IpcServerEnabled
+<div class="variable-block" markdown="block">
+
+Enables [IpcServer](#ipcenabled) instance.
+
+**Required:** No<br>
+**Default value:**
+~~~
+false
+~~~
+**Example:**
+~~~
+"IpcServerEnabled": true
 ~~~
 
 </div>
@@ -297,6 +340,29 @@ Determines timer delay for updating led colors.
 
 </div>
 
+### IpcClientTimerInterval
+<div class="variable-block" markdown="block">
+
+Determines timer delay for updating the internal ipc service client.
+
+**Note:** Valid only if [IpcServerEnabled](#ipcenabled) is set to `true` and [IpcServer](#ipcenabled) is set to a [IpcServer]({{ "/common/ipc-server" | relative_url }}) instance.
+{: .notice--info}
+
+**Note:** Value in miliseconds.
+{: .notice--info}
+
+**Required:** No<br>
+**Default value:**
+~~~
+0
+~~~
+**Example:**
+~~~
+"IpcClientTimerInterval": 1000
+~~~
+
+</div>
+
 ### DebugTimerInterval
 <div class="variable-block" markdown="block">
 
@@ -383,8 +449,20 @@ Determines timer delay for logging debug data.
       "Ports": [[9802, 8101, 1]],
       "Config": {
         "Name": "Top Fan",
-        "LedRotation": [11],
-        "LedReverse": [false]
+        "ColorModifiers": [
+          {
+            "Type": "RotateLedColorModifier",
+            "Config": {
+              "Rotation": 11
+            }
+          },
+          {
+            "Type": "ReverseLedColorModifier",
+            "Config": {
+              "Reverse": true
+            }
+          }
+        ]
       }
     }
   ],
