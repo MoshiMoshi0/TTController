@@ -112,4 +112,4 @@ docs:
   - title: "Plugins: Utils"
     children:
       - title: WebSocketIpcServer
-        utl: /plugins/utils/websocketipcserver 
+        url: /plugins/utils/websocketipcserver
