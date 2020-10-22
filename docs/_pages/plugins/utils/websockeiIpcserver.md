@@ -3,7 +3,7 @@ title: Web Socket Ipc Server
 permalink: /plugins/utils/websocketipcserver
 ---
 
-A [Ipc Server]({{ "/common/ipc-server" | relative_url }}) using websockets for communicating between other processes.
+A [Ipc Server]({{ "/plugins/ipc-server" | relative_url }}) using websockets for communicating between other processes.
 
 ## Format
 

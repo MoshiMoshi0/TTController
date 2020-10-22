@@ -60,7 +60,7 @@ false
 ### Triggers
 <div class="variable-block" markdown="block">
 
-List of [Triggers]({{ "/common/trigger" | relative_url }}) to combine the values of.
+List of [Triggers]({{ "/plugins/trigger" | relative_url }}) to combine the values of.
 
 **Required:** **Yes**<br>
 **Default value:**

@@ -17,7 +17,7 @@ permalink: /plugins/speed-controllers/ipcspeedcontroller
 
 ## Data Format
 
-The plugin expects data sent to the [Ipc Server]({{ "/common/ipc-server" | relative_url }}) in this format.
+The plugin expects data sent to the [Ipc Server]({{ "/plugins/ipc-server" | relative_url }}) in this format.
 
 ~~~
 [
@@ -33,7 +33,7 @@ The plugin expects data sent to the [Ipc Server]({{ "/common/ipc-server" | relat
 ### IpcName
 <div class="variable-block" markdown="block">
 
-Client name that will be used when sending data to the [Ipc Server]({{ "/common/ipc-server" | relative_url }}).
+Client name that will be used when sending data to the [Ipc Server]({{ "/plugins/ipc-server" | relative_url }}).
 
 **Allowed values:** Value must be unique from all plugins using ipc.
 {: .notice--warning}

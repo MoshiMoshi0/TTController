@@ -125,7 +125,7 @@ List of [Sensor Configs]({{ "/config/sensor" | relative_url }}).
 ### IpcServer
 <div class="variable-block" markdown="block">
 
-Intance of [Ipc Server]({{ "/common/ipc-server" | relative_url }}) to use for ipc.
+Intance of [Ipc Server]({{ "/plugins/ipc-server" | relative_url }}) to use for ipc.
 
 **Required:** No<br>
 **Default value:**
@@ -345,7 +345,7 @@ Determines timer delay for updating led colors.
 
 Determines timer delay for updating the internal ipc service client.
 
-**Note:** Valid only if [IpcServerEnabled](#ipcenabled) is set to `true` and [IpcServer](#ipcenabled) is set to a [IpcServer]({{ "/common/ipc-server" | relative_url }}) instance.
+**Note:** Valid only if [IpcServerEnabled](#ipcenabled) is set to `true` and [IpcServer](#ipcenabled) is set to a [IpcServer]({{ "/plugins/ipc-server" | relative_url }}) instance.
 {: .notice--info}
 
 **Note:** Value in miliseconds.

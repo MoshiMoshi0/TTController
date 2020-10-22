@@ -16,7 +16,7 @@ permalink: /plugins/effects/zoneeffect
 ### Effects
 <div class="variable-block" markdown="block">
 
-List of [Effect]({{ "/common/effect" | relative_url }}) objects.
+List of [Effect]({{ "/plugins/effect" | relative_url }}) objects.
 
 **Allowed values:** Each effect will be matched to the device zone.
 {: .notice--info}
