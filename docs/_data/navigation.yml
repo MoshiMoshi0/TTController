@@ -1,5 +1,5 @@
 docs:
-  - title: "General: Configuration"
+  - title: "Configuration"
     children:
       - title: Service
         url: /config/service
@@ -11,7 +11,7 @@ docs:
         url: /config/port
       - title: Sensors
         url: /config/sensor
-  - title: "General: Common"
+  - title: "Common"
     children:
       - title: Led Color
         url: /common/led-color
@@ -23,93 +23,15 @@ docs:
         url: /common/port-identifier
       - title: Sensor Identifier
         url: /common/sensor-identifier
-  - title: "Plugins: Common"
+  - title: "Plugins"
     children:
       - title: Speed Controller Plugin
-        url: /common/speed-controller
+        url: /plugins/speed-controller
       - title: Effect Plugin
-        url: /common/effect
+        url: /plugins/effect
       - title: Trigger Plugin
-        url: /common/trigger
+        url: /plugins/trigger
       - title: Led Color Modifier Plugin
-        url: /common/led-color-modifier
+        url: /plugins/led-color-modifier
       - title: Ipc Server Plugin
-        url: /common/ipc-server
-  - title: "Plugins: Speed Controllers"
-    children:
-      - title: CopySpeedController
-        url: /plugins/speed-controllers/copyspeedcontroller
-      - title: DpsgSpeedController
-        url: /plugins/speed-controllers/dpsgspeedcontroller
-      - title: IpcSpeedController
-        url: /plugins/speed-controllers/ipcspeedcontroller
-      - title: PwmSpeedController
-        url: /plugins/speed-controllers/pwmspeedcontroller
-      - title: StaticSpeedController
-        url: /plugins/speed-controllers/staticspeedcontroller
-  - title: "Plugins: Effects"
-    children:
-      - title: AuroraEffect
-        url: /plugins/effects/auroraeffect
-      - title: BlinkEffect
-        url: /plugins/effects/blinkeffect
-      - title: ColorSequenceEffect
-        url: /plugins/effects/colorsequenceeffect
-      - title: CopyColorEffect
-        url: /plugins/effects/copycoloreffect
-      - title: FlowEffect
-        url: /plugins/effects/floweffect
-      - title: IpcEffect
-        url: /plugins/effects/ipceffect
-      - title: PingPongEffect
-        url: /plugins/effects/pingpongeffect
-      - title: PulseEffect
-        url: /plugins/effects/pulseeffect
-      - title: RawEffect
-        url: /plugins/effects/raweffect
-      - title: RazerConnectEffect
-        url: /plugins/effects/razerconnecteffect
-      - title: RippleEffect
-        url: /plugins/effects/rippleeffect
-      - title: SensorEffect
-        url: /plugins/effects/sensoreffect
-      - title: SoundEffect
-        url: /plugins/effects/soundeffect
-      - title: SpectrumEffect
-        url: /plugins/effects/spectrumeffect
-      - title: StaticColorEffect
-        url: /plugins/effects/staticcoloreffect
-      - title: WaveEffect
-        url: /plugins/effects/waveeffect
-  - title: "Plugins: Triggers"
-    children:
-      - title: AlwaysTrigger
-        url: /plugins/triggers/alwaystrigger
-      - title: IpcTrigger
-        url: /plugins/triggers/ipctrigger
-      - title: OneTimeTrigger
-        url: /plugins/triggers/onetimetrigger
-      - title: ProcessTrigger
-        url: /plugins/triggers/processtrigger
-      - title: PulseTrigger
-        url: /plugins/triggers/pulsetrigger
-      - title: LogicTrigger
-        url: /plugins/triggers/logictrigger
-      - title: SensorTrigger
-        url: /plugins/triggers/sensortrigger
-      - title: ScheduleTrigger
-        url: /plugins/triggers/scheduletrigger
-  - title: "Plugins: Modifiers"
-    children:
-      - title: LerpLedColorModifier
-        url: /plugins/modifiers/lerpledcolormodifier
-      - title: ReverseLedColorModifier
-        url: /plugins/modifiers/reverseledcolormodifier
-      - title: RotateLedColorModifier
-        url: /plugins/modifiers/rotateledcolormodifier
-      - title: TrimLedColorModifier
-        url: /plugins/modifiers/trimledcolormodifier
-  - title: "Plugins: Utils"
-    children:
-      - title: WebSocketIpcServer
-        url: /plugins/utils/websocketipcserver
+        url: /plugins/ipc-server
