@@ -72,9 +72,9 @@ This section contains some tips on the format of this documentation.
 | Device                      | Support            | Confirmed          | Notes
 |-----------------------------|--------------------|--------------------|-------------------------------------------
 | Riing controller            | :heavy_check_mark: | :heavy_check_mark: |
-| Riing Quad controller       | :heavy_minus_sign: | :heavy_minus_sign: |
-| Riing Trio controller       | :heavy_check_mark: | :heavy_check_mark: |
 | Riing Plus controller       | :heavy_check_mark: | :heavy_check_mark: |
+| Riing Trio controller       | :heavy_check_mark: | :heavy_check_mark: |
+| Riing Quad controller       | :heavy_check_mark: | :heavy_check_mark: |
 | Dpsg controller             | :heavy_minus_sign: | :heavy_minus_sign: | not fully implemented
 | Level20 Desk controller     | :heavy_minus_sign: | :heavy_minus_sign: |
 |                             |                    |                    |
