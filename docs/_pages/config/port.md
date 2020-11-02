@@ -60,7 +60,7 @@ Name of this port config.
 
 </div>
 
-### ColorModifiers
+### DeviceType
 <div class="variable-block" markdown="block">
 
 Used by effects to know exact led count and zones of each device<br>This ensures that the colors are generated properly.
@@ -80,7 +80,7 @@ Used by effects to know exact led count and zones of each device<br>This ensures
 
 </div>
 
-### DeviceType
+### ColorModifiers
 <div class="variable-block" markdown="block">
 
 List of [Led Color Modifier]({{ "/common/led-color-modifier" | relative_url }}) objects to use for modifying colors before they are set on [Ports](#ports).
