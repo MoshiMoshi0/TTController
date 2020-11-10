@@ -32,3 +32,4 @@ Effects generate list of [Led Color]({{ "/common/led-color" | relative_url }}).
 * [SpectrumEffect]({{ "/plugins/effects/spectrumeffect" | relative_url}})
 * [StaticColorEffect]({{ "/plugins/effects/staticcoloreffect" | relative_url}})
 * [WaveEffect]({{ "/plugins/effects/waveeffect" | relative_url}})
+* [ZoneEffect]({{ "/plugins/effects/zoneeffect" | relative_url}})
