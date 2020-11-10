@@ -41,7 +41,7 @@ namespace TTController.Plugin.RiingQuadController
             if (!_availableEffects.TryGetValue(effectType, out var mode))
                 return false;
 
-            var bytes = new List<byte> { 0x32, 0x52, port, mode, 0x00 };
+            var bytes = new List<byte> { 0x32, 0x52, port, mode };
             foreach (var color in colors)
             {
                 bytes.Add(color.G);
