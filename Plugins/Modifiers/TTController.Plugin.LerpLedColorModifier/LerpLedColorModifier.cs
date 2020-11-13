@@ -19,7 +19,7 @@ namespace TTController.Plugin.LerpLedColorModifier
 
     public class LerpLedColorModifier : LedColorModifierBase<LerpLedColorModifierConfig>
     {
-        protected LerpLedColorModifier(LerpLedColorModifierConfig config) : base(config) { }
+        public LerpLedColorModifier(LerpLedColorModifierConfig config) : base(config) { }
 
         public override void Apply(ref List<LedColor> colors) => throw new NotImplementedException();
         public override void Apply(ref List<LedColor> colors, PortIdentifier port, ICacheProvider cache)

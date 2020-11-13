@@ -15,7 +15,7 @@ namespace TTController.Plugin.RotateLedColorModifier
 
     public class RotateLedColorModifier : LedColorModifierBase<RotateLedColorModifierConfig>
     {
-        protected RotateLedColorModifier(RotateLedColorModifierConfig config) : base(config) { }
+        public RotateLedColorModifier(RotateLedColorModifierConfig config) : base(config) { }
 
         public override void Apply(ref List<LedColor> colors)
         {

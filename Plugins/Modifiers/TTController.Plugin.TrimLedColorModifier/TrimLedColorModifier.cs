@@ -14,7 +14,7 @@ namespace TTController.Plugin.TrimLedColorModifier
 
     public class TrimLedColorModifier : LedColorModifierBase<TrimLedColorModifierConfig>
     {
-        protected TrimLedColorModifier(TrimLedColorModifierConfig config) : base(config) { }
+        public TrimLedColorModifier(TrimLedColorModifierConfig config) : base(config) { }
 
         public override void Apply(ref List<LedColor> colors) => throw new NotImplementedException();
         public override void Apply(ref List<LedColor> colors, PortIdentifier port, ICacheProvider cache)
