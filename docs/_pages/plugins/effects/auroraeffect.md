@@ -14,7 +14,10 @@ permalink: /plugins/effects/auroraeffect
         "Mirror": <bool>,
         "Brightness": <float>,
         "Saturation": <float>,
-        "Gradient": <LedColorGradient>
+        "Gradient": <LedColorGradient>,
+
+        "ColorGenerationMethod": <enum>,
+        "Trigger": <Trigger>
     }
 }
 ~~~
@@ -140,6 +143,10 @@ A [Led Color Gradient]({{ "/common/led-color-gradient" | relative_url }}).
 ~~~
 
 </div>
+
+{% include variables/colorgenerationmethod.md %}
+
+{% include variables/trigger.md %}
 
 ## Example
 
