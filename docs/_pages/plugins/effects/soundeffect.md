@@ -14,7 +14,10 @@ permalink: /plugins/effects/soundeffect
         "MaximumFrequency": <int>,
         "ScalingStrategy": <enum>,
         "ScalingFactor": <float>,
-        "ColorGradient": <LedColorGradient>
+        "ColorGradient": <LedColorGradient>,
+
+        "ColorGenerationMethod": <enum>,
+        "Trigger": <Trigger>
     }
 }
 ~~~
@@ -135,6 +138,10 @@ A [Led Color Gradient]({{ "/common/led-color-gradient" | relative_url }}) to tra
 ~~~
 
 </div>
+
+{% include variables/colorgenerationmethod.md %}
+
+{% include variables/trigger.md %}
 
 ## Example
 

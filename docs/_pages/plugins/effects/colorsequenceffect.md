@@ -7,10 +7,13 @@ permalink: /plugins/effects/colorsequenceeffect
 
 ~~~
 {
-  "Type": "ColorSequenceEffect",
-  "Config": {
-    "Sequence": [<ColorSequenceEntry>]
-  }
+    "Type": "ColorSequenceEffect",
+    "Config": {
+        "Sequence": [<ColorSequenceEntry>],
+
+        "ColorGenerationMethod": <enum>,
+        "Trigger": <Trigger>
+    }
 }
 ~~~
 
@@ -87,6 +90,10 @@ A [Led Color Provider]({{ "/common/led-color-provider" | relative_url }}) object
 ~~~
 
 </div>
+
+{% include variables/colorgenerationmethod.md %}
+
+{% include variables/trigger.md %}
 
 ## Example
 

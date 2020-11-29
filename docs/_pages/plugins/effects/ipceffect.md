@@ -7,10 +7,13 @@ permalink: /plugins/effects/ipceffect
 
 ~~~
 {
-  "Type": "IpcEffect",
-  "Config": {
-    "IpcName": <string>
-  }
+    "Type": "IpcEffect",
+    "Config": {
+        "IpcName": <string>,
+        
+        "ColorGenerationMethod": <enum>,
+        "Trigger": <Trigger>
+    }
 }
 ~~~
 
@@ -20,10 +23,10 @@ The plugin expects data sent to the [Ipc Server]({{ "/plugins/ipc-server" | rela
 
 ~~~
 [
-  {
-    "Port": <PortIdentifier>,
-    "Colors": [<LedColor>]
-  }
+    {
+        "Port": <PortIdentifier>,
+        "Colors": [<LedColor>]
+    }
 ]
 ~~~
 
@@ -47,6 +50,10 @@ Client name that will be used when sending data to the [Ipc Server]({{ "/plugins
 ~~~
 
 </div>
+
+{% include variables/colorgenerationmethod.md %}
+
+{% include variables/trigger.md %}
 
 ## Example
 

@@ -9,10 +9,10 @@ Modifies colors to match the desired length using interpolation.
 
 ~~~
 {
-  "Type": LerpLedColorModifier",
-  "Config": {
-    "LerpType": <enum>
-  }
+    "Type": LerpLedColorModifier",
+    "Config": {
+        "LerpType": <enum>
+    }
 }
 ~~~
 

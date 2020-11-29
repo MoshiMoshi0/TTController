@@ -12,7 +12,10 @@ permalink: /plugins/effects/floweffect
         "FillStep": <float>,
         "HueStep": <int>,
         "Saturation": <float>,
-        "Brightness": <float>
+        "Brightness": <float>,
+
+        "ColorGenerationMethod": <enum>,
+        "Trigger": <Trigger>
     }
 }
 ~~~
@@ -92,6 +95,10 @@ Brightness of colors.
 ~~~
 
 </div>
+
+{% include variables/colorgenerationmethod.md %}
+
+{% include variables/trigger.md %}
 
 ## Example
 

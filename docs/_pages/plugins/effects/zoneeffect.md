@@ -7,7 +7,13 @@ permalink: /plugins/effects/zoneeffect
 
 ~~~
 {
-  "Effects": [<Effect>]
+    "Type": "ZoneEffect",
+    "Config": {
+        "Effects": [<Effect>],
+
+        "ColorGenerationMethod": <enum>,
+        "Trigger": <Trigger>
+    }
 }
 ~~~
 
@@ -28,26 +34,30 @@ List of [Effect]({{ "/plugins/effect" | relative_url }}) objects.
 **Example:**
 ~~~
 "Effects": [
-  {
-    "Type": "StaticColorEffect",
-    "Config": {
-      "Color": {
-        "Full": [255, 0, 0]
-      }
+    {
+        "Type": "StaticColorEffect",
+        "Config": {
+            "Color": {
+                "Full": [255, 0, 0]
+            }
+        }
+    },
+    {
+        "Type": "StaticColorEffect",
+        "Config": {
+            "Color": {
+                "Full": [0, 255, 0]
+            }
+        }
     }
-  },
-  {
-    "Type": "StaticColorEffect",
-    "Config": {
-      "Color": {
-        "Full": [0, 255, 0]
-      }
-    }
-  }
 ]
 ~~~
 
 </div>
+
+{% include variables/colorgenerationmethod.md %}
+
+{% include variables/trigger.md %}
 
 ## Example
 

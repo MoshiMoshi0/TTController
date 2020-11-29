@@ -13,7 +13,10 @@ permalink: /plugins/effects/pingpongeffect
         "Height": <float>,
         "Width": <float>,
         "ColorGradient": <LedColorGradient>,
-        "EnableSmoothing": <bool>
+        "EnableSmoothing": <bool>,
+        
+        "ColorGenerationMethod": <enum>,
+        "Trigger": <Trigger>
     }
 }
 ~~~
@@ -118,6 +121,10 @@ true
 ~~~
 
 </div>
+
+{% include variables/colorgenerationmethod.md %}
+
+{% include variables/trigger.md %}
 
 ## Example
 

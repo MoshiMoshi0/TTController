@@ -12,7 +12,10 @@ permalink: /plugins/effects/sensoreffect
         "Sensors": [<SensorIdentifier>],
         "SensorMixFunction": <enum>,
         "SmoothingFactor": <float>,
-        "ColorGradient": <LedColorGradient>
+        "ColorGradient": <LedColorGradient>,
+
+        "ColorGenerationMethod": <enum>,
+        "Trigger": <Trigger>
     }
 }
 ~~~
@@ -98,6 +101,9 @@ A [Led Color Gradient]({{ "/common/led-color-gradient" | relative_url }}) to tra
 
 </div>
 
+{% include variables/colorgenerationmethod.md %}
+
+{% include variables/trigger.md %}
 
 ## Example
 

@@ -11,7 +11,10 @@ permalink: /plugins/effects/spectrumeffect
     "Config": {
         "Saturation": <float>,
         "Brightness": <float>,
-        "HueStep": <float>
+        "HueStep": <float>,
+
+        "ColorGenerationMethod": <enum>,
+        "Trigger": <Trigger>
     }
 }
 ~~~
@@ -74,6 +77,10 @@ Color hue increment each update tick.
 ~~~
 
 </div>
+
+{% include variables/colorgenerationmethod.md %}
+
+{% include variables/trigger.md %}
 
 ## Example
 

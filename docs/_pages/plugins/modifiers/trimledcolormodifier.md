@@ -7,10 +7,10 @@ permalink: /plugins/modifiers/trimledcolormodifier
 
 ~~~
 {
-  "Type": ReverseLedColorModifier",
-  "Config": {
-    "WrapRemainder": <bool>
-  }
+    "Type": ReverseLedColorModifier",
+    "Config": {
+        "WrapRemainder": <bool>
+    }
 }
 ~~~
 

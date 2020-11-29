@@ -12,7 +12,10 @@ Allows usage of effects saved on the controller box.
     "Type": "RawEffect",
     "Config": {
         "EffectType": <string>,
-        "Color": <LedColorProvider>
+        "Color": <LedColorProvider>,
+        
+        "ColorGenerationMethod": <enum>,
+        "Trigger": <Trigger>
     }
 }
 ~~~
@@ -60,6 +63,10 @@ A [Led Color Provider]({{ "/common/led-color-provider" | relative_url }}) object
 ~~~
 
 </div>
+
+{% include variables/colorgenerationmethod.md %}
+
+{% include variables/trigger.md %}
 
 ## Example
 

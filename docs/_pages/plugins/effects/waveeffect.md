@@ -11,6 +11,9 @@ permalink: /plugins/effects/waveeffect
     "Config": {
         "TickInterval": <int>,
         "Color": <LedColorProvider>,
+
+        "ColorGenerationMethod": <enum>,
+        "Trigger": <Trigger>
     }
 }
 ~~~
@@ -55,6 +58,10 @@ A [Led Color Provider]({{ "/common/led-color-provider" | relative_url }}) object
 ~~~
 
 </div>
+
+{% include variables/colorgenerationmethod.md %}
+
+{% include variables/trigger.md %}
 
 ## Example
 

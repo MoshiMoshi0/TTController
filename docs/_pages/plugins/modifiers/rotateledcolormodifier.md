@@ -7,11 +7,11 @@ permalink: /plugins/modifiers/rotateledcolormodifier
 
 ~~~
 {
-  "Type": RotateLedColorModifier",
-  "Config": {
-    "Rotation": <int>,
-    "ZoneRotation": [<int>]
-  }
+    "Type": RotateLedColorModifier",
+    "Config": {
+        "Rotation": <int>,
+        "ZoneRotation": [<int>]
+    }
 }
 ~~~
 
