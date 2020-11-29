@@ -50,8 +50,8 @@ List of [Port Identifiers]({{ "/common/port-identifier" | relative_url }}) modif
 **Example:**
 ~~~
 "Ports": [
-    [9802, 9101, 1],
-    [9802, 9101, 3]
+  [9802, 9101, 1],
+  [9802, 9101, 3]
 ]
 ~~~
 
@@ -73,8 +73,8 @@ List of [Speed Controllers]({{ "/plugins/speed-controller" | relative_url }}).
 **Example:**
 ~~~
 "SpeedControllers": [
-    {...},
-    {...}
+  {...},
+  {...}
 ]
 ~~~
 
@@ -96,8 +96,8 @@ List of [Effects]({{ "/plugins/effect" | relative_url }}).
 **Example:**
 ~~~
 "Effects": [
-    {...},
-    {...}
+  {...},
+  {...}
 ]
 ~~~
 

@@ -49,8 +49,8 @@ List of [Profile Configs]({{ "/config/profile" | relative_url }}).
 **Example:**
 ~~~
 "Profiles": [
-    {...},
-    {...}
+  {...},
+  {...}
 ]
 ~~~
 
@@ -69,8 +69,8 @@ List of [ComputerStateProfile Configs]({{ "/config/computerstateprofile" | relat
 **Example:**
 ~~~
 "ComputerStateProfiles": [
-    {...},
-    {...}
+  {...},
+  {...}
 ]
 ~~~
 
@@ -92,8 +92,8 @@ List of [Port Configs]({{ "/config/port" | relative_url }}).
 **Example:**
 ~~~
 "PortConfigs": [
-    {...},
-    {...}
+  {...},
+  {...}
 ]
 ~~~
 
@@ -115,8 +115,8 @@ List of [Sensor Configs]({{ "/config/sensor" | relative_url }}).
 **Example:**
 ~~~
 "SensorConfigs": [
-    {...},
-    {...}
+  {...},
+  {...}
 ]
 ~~~
 

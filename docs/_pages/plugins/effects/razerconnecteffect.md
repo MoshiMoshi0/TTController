@@ -9,13 +9,13 @@ Receives 5 colors from razer chroma.
 
 ~~~
 {
-    "Type": "RazerConnectEffect",
-    "Config": {
-        "Layer": <enum>,
+  "Type": "RazerConnectEffect",
+  "Config": {
+    "Layer": <enum>,
 
-        "ColorGenerationMethod": <enum>,
-        "Trigger": <Trigger>
-    }
+    "ColorGenerationMethod": <enum>,
+    "Trigger": <Trigger>
+  }
 }
 ~~~
 
@@ -48,7 +48,4 @@ Specifies which razer connect layer colors to use.
 ## Example
 
 ~~~
-{
-    "Type": "RazerConnectEffect"
-}
 ~~~

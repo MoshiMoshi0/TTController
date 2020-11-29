@@ -33,8 +33,8 @@ List of [Port Identifiers]({{ "/common/port-identifier" | relative_url }}) modif
 **Example:**
 ~~~
 "Ports": [
-    [9802, 9101, 1],
-    [9802, 9101, 3]
+  [9802, 9101, 1],
+  [9802, 9101, 3]
 ]
 ~~~
 

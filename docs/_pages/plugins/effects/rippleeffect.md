@@ -7,16 +7,16 @@ permalink: /plugins/effects/rippleeffect
 
 ~~~
 {
-    "Type": "RippleEffect",
-    "Config": {
-        "Length": <int>,
-        "TickInterval": <int>,
-        "RippleColor": <LedColorProvider>,
-        "BackgroundColor": <LedColorProvider>,
+  "Type": "RippleEffect",
+  "Config": {
+    "Length": <int>,
+    "TickInterval": <int>,
+    "RippleColor": <LedColorProvider>,
+    "BackgroundColor": <LedColorProvider>,
 
-        "ColorGenerationMethod": <enum>,
-        "Trigger": <Trigger>
-    }
+    "ColorGenerationMethod": <enum>,
+    "Trigger": <Trigger>
+  }
 }
 ~~~
 
@@ -68,11 +68,11 @@ A [Led Color Provider]({{ "/common/led-color-provider" | relative_url }}) object
 **Example:**
 ~~~
 {
-    "Gradient": [
-        [0, [255, 0, 0]],
-        [0.5, [0, 255, 0]],
-        [1.0 [255, 0, 0]]
-    ]
+  "Gradient": [
+    [0, [255, 0, 0]],
+    [0.5, [0, 255, 0]],
+    [1.0 [255, 0, 0]]
+  ]
 }
 ~~~
 
@@ -90,11 +90,11 @@ A [Led Color Provider]({{ "/common/led-color-provider" | relative_url }}) object
 **Example:**
 ~~~
 "Color": {
-    "Gradient": [
-        [0, [255, 0, 0]],
-        [0.5, [0, 255, 0]],
-        [1.0 [255, 0, 0]]
-    ]
+  "Gradient": [
+    [0, [255, 0, 0]],
+    [0.5, [0, 255, 0]],
+    [1.0 [255, 0, 0]]
+  ]
 }
 ~~~
 

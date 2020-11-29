@@ -7,16 +7,16 @@ permalink: /plugins/effects/sensoreffect
 
 ~~~
 {
-    "Type": "SensorEffect",
-    "Config": {
-        "Sensors": [<SensorIdentifier>],
-        "SensorMixFunction": <enum>,
-        "SmoothingFactor": <float>,
-        "ColorGradient": <LedColorGradient>,
+  "Type": "SensorEffect",
+  "Config": {
+    "Sensors": [<SensorIdentifier>],
+    "SensorMixFunction": <enum>,
+    "SmoothingFactor": <float>,
+    "ColorGradient": <LedColorGradient>,
 
-        "ColorGenerationMethod": <enum>,
-        "Trigger": <Trigger>
-    }
+    "ColorGenerationMethod": <enum>,
+    "Trigger": <Trigger>
+  }
 }
 ~~~
 
@@ -92,10 +92,10 @@ A [Led Color Gradient]({{ "/common/led-color-gradient" | relative_url }}) to tra
 **Example:**
 ~~~
 "ColorGradient": [
-    [30, [16, 0, 0]],
-    [50, [64, 0, 0]],
-    [70, [256, 0, 0]],
-    ...
+  [30, [16, 0, 0]],
+  [50, [64, 0, 0]],
+  [70, [256, 0, 0]],
+  ...
 ]
 ~~~
 

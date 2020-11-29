@@ -7,13 +7,13 @@ permalink: /plugins/speed-controllers/ipcspeedcontroller
 
 ~~~
 {
-    "Type": "IpcSpeedController",
-    "Config": {
-        "IpcName": <string>,
-        "DefaultSpeed": <int>,
+  "Type": "IpcSpeedController",
+  "Config": {
+    "IpcName": <string>,
+    "DefaultSpeed": <int>,
 
-        "Trigger": <Trigger>
-    }
+    "Trigger": <Trigger>
+  }
 }
 ~~~
 
@@ -23,10 +23,10 @@ The plugin expects data sent to the [Ipc Server]({{ "/plugins/ipc-server" | rela
 
 ~~~
 [
-    {
-        "Port": <PortIdentifier>,
-        "Speed": <int>
-    }
+  {
+    "Port": <PortIdentifier>,
+    "Speed": <int>
+  }
 ]
 ~~~
 

@@ -12,12 +12,12 @@ Sets the speed of DPSG controller to one of the internal profiles.
 
 ~~~
 {
-    "Type": "DpsgSpeedController",
-    "Config": {
-        "FanMode": <enum>,
+  "Type": "DpsgSpeedController",
+  "Config": {
+    "FanMode": <enum>,
 
-        "Trigger": <Trigger>
-    }
+    "Trigger": <Trigger>
+  }
 }
 ~~~
 
@@ -49,9 +49,9 @@ Internal fan mode name.
 
 ~~~
 {
-    "Type": "DpsgSpeedController",
-    "Config": {
-        "FanMode": "Performance"
-    }
+  "Type": "DpsgSpeedController",
+  "Config": {
+    "FanMode": "Performance"
+  }
 }
 ~~~

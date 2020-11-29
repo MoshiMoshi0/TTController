@@ -7,18 +7,18 @@ permalink: /plugins/effects/auroraeffect
 
 ~~~
 {
-    "Type": "AuroraEffect",
-    "Config": {
-        "Step": <float>,
-        "Length": <int>,
-        "Mirror": <bool>,
-        "Brightness": <float>,
-        "Saturation": <float>,
-        "Gradient": <LedColorGradient>,
+  "Type": "AuroraEffect",
+  "Config": {
+    "Step": <float>,
+    "Length": <int>,
+    "Mirror": <bool>,
+    "Brightness": <float>,
+    "Saturation": <float>,
+    "Gradient": <LedColorGradient>,
 
-        "ColorGenerationMethod": <enum>,
-        "Trigger": <Trigger>
-    }
+    "ColorGenerationMethod": <enum>,
+    "Trigger": <Trigger>
+  }
 }
 ~~~
 
@@ -136,9 +136,9 @@ A [Led Color Gradient]({{ "/common/led-color-gradient" | relative_url }}).
 **Example:**
 ~~~
 "Gradient": [
-    [0.0, [0, 0, 0]],
-    [0.75, [255, 255, 255]],
-    [1.0, [255, 0, 0]]
+  [0.0, [0, 0, 0]],
+  [0.75, [255, 255, 255]],
+  [1.0, [255, 0, 0]]
 ]
 ~~~
 

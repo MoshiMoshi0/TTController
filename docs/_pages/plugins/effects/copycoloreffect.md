@@ -12,13 +12,13 @@ Copies the led colors from another port.
 
 ~~~
 {
-    "Type": "CopyColorEffect",
-    "Config": {
-        "Target": <PortIdentifier>,
+  "Type": "CopyColorEffect",
+  "Config": {
+    "Target": <PortIdentifier>,
 
-        "ColorGenerationMethod": <enum>,
-        "Trigger": <Trigger>
-    }
+    "ColorGenerationMethod": <enum>,
+    "Trigger": <Trigger>
+  }
 }
 ~~~
 
@@ -48,9 +48,9 @@ The [Port Identifier]({{ "/common/port-identifier" | relative_url }}) to copy th
 
 ~~~
 {
-    "Type": "CopyColorEffect",
-    "Config": {
-        "Target": [9802, 8101, 1]
-    }
+  "Type": "CopyColorEffect",
+  "Config": {
+    "Target": [9802, 8101, 1]
+  }
 }
 ~~~

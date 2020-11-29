@@ -7,11 +7,11 @@ permalink: /plugins/triggers/ipctrigger
 
 ~~~
 {
-    "Type": "IpcTrigger",
-    "Config": {
-        "IpcName": <string>,
-        "EnabledByDefault": <bool>
-    }
+  "Type": "IpcTrigger",
+  "Config": {
+    "IpcName": <string>,
+    "EnabledByDefault": <bool>
+  }
 }
 ~~~
 
@@ -21,7 +21,7 @@ The plugin expects data sent to the [Ipc Server]({{ "/plugins/ipc-server" | rela
 
 ~~~
 {
-    "Enabled": <bool>
+  "Enabled": <bool>
 }
 ~~~
 

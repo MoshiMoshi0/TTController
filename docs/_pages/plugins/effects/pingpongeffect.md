@@ -7,17 +7,17 @@ permalink: /plugins/effects/pingpongeffect
 
 ~~~
 {
-    "Type": "PingPongEffect",
-    "Config": {
-        "Step": <float>,
-        "Height": <float>,
-        "Width": <float>,
-        "ColorGradient": <LedColorGradient>,
-        "EnableSmoothing": <bool>,
+  "Type": "PingPongEffect",
+  "Config": {
+    "Step": <float>,
+    "Height": <float>,
+    "Width": <float>,
+    "ColorGradient": <LedColorGradient>,
+    "EnableSmoothing": <bool>,
         
-        "ColorGenerationMethod": <enum>,
-        "Trigger": <Trigger>
-    }
+    "ColorGenerationMethod": <enum>,
+    "Trigger": <Trigger>
+  }
 }
 ~~~
 
@@ -96,10 +96,10 @@ A [Led Color Gradient]({{ "/common/led-color-gradient" | relative_url }}) to tra
 **Example:**
 ~~~
 "ColorGradient": [
-    [0.0, [16, 0, 0]],
-    [0.5, [64, 0, 0]],
-    [1.0, [256, 0, 0]],
-    ...
+  [0.0, [16, 0, 0]],
+  [0.5, [64, 0, 0]],
+  [1.0, [256, 0, 0]],
+  ...
 ]
 ~~~
 

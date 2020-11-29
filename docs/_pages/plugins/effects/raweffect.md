@@ -9,14 +9,14 @@ Allows usage of effects saved on the controller box.
 
 ~~~
 {
-    "Type": "RawEffect",
-    "Config": {
-        "EffectType": <string>,
-        "Color": <LedColorProvider>,
+  "Type": "RawEffect",
+  "Config": {
+    "EffectType": <string>,
+    "Color": <LedColorProvider>,
         
-        "ColorGenerationMethod": <enum>,
-        "Trigger": <Trigger>
-    }
+    "ColorGenerationMethod": <enum>,
+    "Trigger": <Trigger>
+  }
 }
 ~~~
 
@@ -54,11 +54,11 @@ A [Led Color Provider]({{ "/common/led-color-provider" | relative_url }}) object
 **Example:**
 ~~~
 {
-    "Gradient": [
-        [0, [255, 0, 0]],
-        [0.5, [0, 255, 0]],
-        [1.0 [255, 0, 0]]
-    ]
+  "Gradient": [
+    [0, [255, 0, 0]],
+    [0.5, [0, 255, 0]],
+    [1.0 [255, 0, 0]]
+  ]
 }
 ~~~
 

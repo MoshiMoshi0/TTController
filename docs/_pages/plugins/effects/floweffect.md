@@ -7,16 +7,16 @@ permalink: /plugins/effects/floweffect
 
 ~~~
 {
-    "Type": "FlowEffect",
-    "Config": {
-        "FillStep": <float>,
-        "HueStep": <int>,
-        "Saturation": <float>,
-        "Brightness": <float>,
+  "Type": "FlowEffect",
+  "Config": {
+    "FillStep": <float>,
+    "HueStep": <int>,
+    "Saturation": <float>,
+    "Brightness": <float>,
 
-        "ColorGenerationMethod": <enum>,
-        "Trigger": <Trigger>
-    }
+    "ColorGenerationMethod": <enum>,
+    "Trigger": <Trigger>
+  }
 }
 ~~~
 

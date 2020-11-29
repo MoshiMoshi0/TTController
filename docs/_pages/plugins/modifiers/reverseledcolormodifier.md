@@ -9,11 +9,11 @@ Modifies colors by reversing the colors.
 
 ~~~
 {
-    "Type": ReverseLedColorModifier",
-    "Config": {
-        "Reverse": <bool>,
-        "ZoneReverse": [<bool>]
-    }
+  "Type": ReverseLedColorModifier",
+  "Config": {
+    "Reverse": <bool>,
+    "ZoneReverse": [<bool>]
+  }
 }
 ~~~
 

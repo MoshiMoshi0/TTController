@@ -53,8 +53,8 @@ List of [Port Identifiers]({{ "/common/port-identifier" | relative_url }}) modif
 **Example:**
 ~~~
 "Ports": [
-    [9802, 9101, 1],
-    [9802, 9101, 3]
+  [9802, 9101, 1],
+  [9802, 9101, 3]
 ]
 ~~~
 
@@ -108,11 +108,11 @@ A [Led Color Provider]({{ "/common/led-color-provider" | relative_url }}) object
 **Example:**
 ~~~
 {
-    "Gradient": [
-        [0, [255, 0, 0]],
-        [0.5, [0, 255, 0]],
-        [1.0 [255, 0, 0]]
-    ]
+  "Gradient": [
+    [0, [255, 0, 0]],
+    [0.5, [0, 255, 0]],
+    [1.0 [255, 0, 0]]
+  ]
 }
 ~~~
 

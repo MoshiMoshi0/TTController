@@ -9,8 +9,8 @@ Triggers cause other plugins to be enabled or disabled dynamically.
 
 ~~~
 {
-    "Type": <string>,
-    "Config": <TriggerConfig>
+  "Type": <string>,
+  "Config": <TriggerConfig>
 }
 ~~~
 

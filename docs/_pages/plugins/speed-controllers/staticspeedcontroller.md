@@ -9,12 +9,12 @@ Sets the speed to a constant value.
 
 ~~~
 {
-    "Type": "StaticSpeedController",
-    "Config": {
-        "Speed": <int>,
+  "Type": "StaticSpeedController",
+  "Config": {
+    "Speed": <int>,
 
-        "Trigger": <Trigger>
-    }
+    "Trigger": <Trigger>
+  }
 }
 ~~~
 
@@ -49,9 +49,9 @@ Constant speed value from `0` to `100` in percent.
 
 ~~~
 {
-    "Type": "StaticSpeedController",
-    "Config": {
-        "Speed": 75
-    }
+  "Type": "StaticSpeedController",
+  "Config": {
+    "Speed": 75
+  }
 }
 ~~~

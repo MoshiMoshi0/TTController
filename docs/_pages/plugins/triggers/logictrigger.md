@@ -70,8 +70,8 @@ List of [Triggers]({{ "/plugins/trigger" | relative_url }}) to combine the value
 **Example:**
 ~~~
 "Triggers": [
-    {...},
-    {...}
+  {...},
+  {...}
 ]
 ~~~
 

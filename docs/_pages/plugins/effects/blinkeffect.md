@@ -7,16 +7,16 @@ permalink: /plugins/effects/blinkeffect
 
 ~~~
 {
-    "Type": "BlinkEffect",
-    "Config": {
-        "OnTime": <int>,
-        "OffTime": <int>,
-        "OnColor": <LedColorProvider>,
-        "OffColor": <LedColorProvider>,
+  "Type": "BlinkEffect",
+  "Config": {
+    "OnTime": <int>,
+    "OffTime": <int>,
+    "OnColor": <LedColorProvider>,
+    "OffColor": <LedColorProvider>,
 
-        "ColorGenerationMethod": <enum>,
-        "Trigger": <Trigger>
-    }
+    "ColorGenerationMethod": <enum>,
+    "Trigger": <Trigger>
+  }
 }
 ~~~
 
@@ -74,11 +74,11 @@ A [Led Color Provider]({{ "/common/led-color-provider" | relative_url }}) object
 **Example:**
 ~~~
 {
-    "Gradient": [
-        [0, [255, 0, 0]],
-        [0.5, [0, 255, 0]],
-        [1.0 [255, 0, 0]]
-    ]
+  "Gradient": [
+    [0, [255, 0, 0]],
+    [0.5, [0, 255, 0]],
+    [1.0 [255, 0, 0]]
+  ]
 }
 ~~~
 
@@ -96,11 +96,11 @@ A [Led Color Provider]({{ "/common/led-color-provider" | relative_url }}) object
 **Example:**
 ~~~
 {
-    "Gradient": [
-        [0, [255, 0, 0]],
-        [0.5, [0, 255, 0]],
-        [1.0 [255, 0, 0]]
-    ]
+  "Gradient": [
+    [0, [255, 0, 0]],
+    [0.5, [0, 255, 0]],
+    [1.0 [255, 0, 0]]
+  ]
 }
 ~~~
 

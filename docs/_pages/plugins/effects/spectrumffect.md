@@ -7,15 +7,15 @@ permalink: /plugins/effects/spectrumeffect
 
 ~~~
 {
-    "Type": "SpectrumEffect",
-    "Config": {
-        "Saturation": <float>,
-        "Brightness": <float>,
-        "HueStep": <float>,
+  "Type": "SpectrumEffect",
+  "Config": {
+    "Saturation": <float>,
+    "Brightness": <float>,
+    "HueStep": <float>,
 
-        "ColorGenerationMethod": <enum>,
-        "Trigger": <Trigger>
-    }
+    "ColorGenerationMethod": <enum>,
+    "Trigger": <Trigger>
+  }
 }
 ~~~
 

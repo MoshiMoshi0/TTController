@@ -7,18 +7,18 @@ permalink: /plugins/effects/soundeffect
 
 ~~~
 {
-    "Type": "SoundEffect",
-    "Config": {
-        "UseAverage": <bool>,
-        "MinimumFrequency": <int>,
-        "MaximumFrequency": <int>,
-        "ScalingStrategy": <enum>,
-        "ScalingFactor": <float>,
-        "ColorGradient": <LedColorGradient>,
+  "Type": "SoundEffect",
+  "Config": {
+    "UseAverage": <bool>,
+    "MinimumFrequency": <int>,
+    "MaximumFrequency": <int>,
+    "ScalingStrategy": <enum>,
+    "ScalingFactor": <float>,
+    "ColorGradient": <LedColorGradient>,
 
-        "ColorGenerationMethod": <enum>,
-        "Trigger": <Trigger>
-    }
+    "ColorGenerationMethod": <enum>,
+    "Trigger": <Trigger>
+  }
 }
 ~~~
 
@@ -131,9 +131,9 @@ A [Led Color Gradient]({{ "/common/led-color-gradient" | relative_url }}) to tra
 **Example:**
 ~~~
 "ColorGradient": [
-    [0.0, [0, 0, 0]],
-    [0.75, [255, 255, 255]],
-    [1.0, [255, 0, 0]]
+  [0.0, [0, 0, 0]],
+  [0.75, [255, 255, 255]],
+  [1.0, [255, 0, 0]]
 ]
 ~~~
 

@@ -9,16 +9,16 @@ Sets the speed based on a custom PWM curve.
 
 ~~~
 {
-    "Type": "PwmSpeedController",
-    "Config": {
-        "CurvePoints": [<CurvePoint>],
-        "Sensors": [<SensorIdentifier>],
-        "SensorMixFunction": <enum>,
-        "MinimumChange": <int>,
-        "MaximumChange": <int>,
+  "Type": "PwmSpeedController",
+  "Config": {
+    "CurvePoints": [<CurvePoint>],
+    "Sensors": [<SensorIdentifier>],
+    "SensorMixFunction": <enum>,
+    "MinimumChange": <int>,
+    "MaximumChange": <int>,
 
-        "Trigger": <Trigger>
-    }
+    "Trigger": <Trigger>
+  }
 }
 ~~~
 
@@ -49,11 +49,11 @@ List of pwm curve points in `[<value>, <speed>]` format.
 **Example:**
 ~~~
 "CurvePoints": [
-    [30, 30],
-    [45, 50],
-    [55, 60],
-    [65, 75],
-    [75, 100]
+  [30, 30],
+  [45, 50],
+  [55, 60],
+  [65, 75],
+  [75, 100]
 ]
 ~~~
 
@@ -142,19 +142,19 @@ Maximum allowed change of speed in percent.
 
 ~~~
 {
-    "Type": "PwmSpeedController", 
-    "Config": {
-        "CurvePoints": [
-            [30, 30],
-            [45, 50],
-            [55, 60],
-            [65, 75],
-            [75, 100]
-        ],
-        "Sensors": ["/intelcpu/0/temperature/8"],
-        "Trigger": {
-            "Type": "AlwaysTrigger"
-        }
+  "Type": "PwmSpeedController", 
+  "Config": {
+    "CurvePoints": [
+      [30, 30],
+      [45, 50],
+      [55, 60],
+      [65, 75],
+      [75, 100]
+    ],
+    "Sensors": ["/intelcpu/0/temperature/8"],
+    "Trigger": {
+      "Type": "AlwaysTrigger"
     }
+  }
 }
 ~~~

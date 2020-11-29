@@ -12,12 +12,12 @@ Copies the speed from another port.
 
 ~~~
 {
-    "Type": "CopySpeedController",
-    "Config": {
-        "Target": <PortIdentifier>,
+  "Type": "CopySpeedController",
+  "Config": {
+    "Target": <PortIdentifier>,
 
-        "Trigger": <Trigger>
-    }
+    "Trigger": <Trigger>
+  }
 }
 ~~~
 
@@ -45,9 +45,9 @@ The [Port Identifier]({{ "/common/port-identifier" | relative_url }}) to copy th
 
 ~~~
 {
-    "Type": "CopySpeedController",
-    "Config": {
-        "Target": [9802, 8101, 1]
-    }
+  "Type": "CopySpeedController",
+  "Config": {
+    "Target": [9802, 8101, 1]
+  }
 }
 ~~~
