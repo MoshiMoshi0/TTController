@@ -11,7 +11,9 @@ Sets the speed to a constant value.
 {
     "Type": "StaticSpeedController",
     "Config": {
-        "Speed": <int>
+        "Speed": <int>,
+
+        "Trigger": <Trigger>
     }
 }
 ~~~
@@ -40,6 +42,8 @@ Constant speed value from `0` to `100` in percent.
 ~~~
 
 </div>
+
+{% include variables/trigger.md %}
 
 ## Example
 

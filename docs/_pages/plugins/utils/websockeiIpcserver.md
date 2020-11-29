@@ -9,11 +9,11 @@ A [Ipc Server]({{ "/plugins/ipc-server" | relative_url }}) using websockets for 
 
 ~~~
 {
-  "Type": "WebSocketIpcServer",
-  "Config": {
-    "Address": <string>,
-    "Port": <int>
-  }
+    "Type": "WebSocketIpcServer",
+    "Config": {
+        "Address": <string>,
+        "Port": <int>
+    }
 }
 ~~~
 

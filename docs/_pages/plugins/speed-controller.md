@@ -9,8 +9,8 @@ Speed controllers generate speed values for specific ports.
 
 ~~~
 {
-  "Type": <string>,
-  "Config": <SpeedControllerConfig>
+    "Type": <string>,
+    "Config": <SpeedControllerConfig>
 }
 ~~~
 

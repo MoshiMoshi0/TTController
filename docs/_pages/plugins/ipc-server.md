@@ -8,8 +8,8 @@ Ipc servers are used to exchange data with the service either localy or over net
 ## Format
 ~~~
 {
-  "Type": <string>,
-  "Config": <IpcServerConfig>
+    "Type": <string>,
+    "Config": <IpcServerConfig>
 }
 ~~~
 

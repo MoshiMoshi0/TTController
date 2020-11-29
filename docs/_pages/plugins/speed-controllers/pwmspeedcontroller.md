@@ -15,7 +15,9 @@ Sets the speed based on a custom PWM curve.
         "Sensors": [<SensorIdentifier>],
         "SensorMixFunction": <enum>,
         "MinimumChange": <int>,
-        "MaximumChange": <int>
+        "MaximumChange": <int>,
+
+        "Trigger": <Trigger>
     }
 }
 ~~~
@@ -133,6 +135,8 @@ Maximum allowed change of speed in percent.
 ~~~
 
 </div>
+
+{% include variables/trigger.md %}
 
 ## Example
 

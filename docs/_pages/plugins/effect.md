@@ -9,8 +9,8 @@ Effects generate list of [Led Color]({{ "/common/led-color" | relative_url }}).
 
 ~~~
 {
-  "Type": <string>,
-  "Config": <EffectConfig>
+    "Type": <string>,
+    "Config": <EffectConfig>
 }
 ~~~
 

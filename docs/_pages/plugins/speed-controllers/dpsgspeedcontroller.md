@@ -14,7 +14,9 @@ Sets the speed of DPSG controller to one of the internal profiles.
 {
     "Type": "DpsgSpeedController",
     "Config": {
-        "FanMode": <enum>
+        "FanMode": <enum>,
+
+        "Trigger": <Trigger>
     }
 }
 ~~~
@@ -40,6 +42,8 @@ Internal fan mode name.
 ~~~
 
 </div>
+
+{% include variables/trigger.md %}
 
 ## Example
 

@@ -7,11 +7,13 @@ permalink: /plugins/speed-controllers/ipcspeedcontroller
 
 ~~~
 {
-  "Type": "IpcSpeedController",
-  "Config": {
-    "IpcName": <string>,
-    "DefaultSpeed": <int>
-  }
+    "Type": "IpcSpeedController",
+    "Config": {
+        "IpcName": <string>,
+        "DefaultSpeed": <int>,
+
+        "Trigger": <Trigger>
+    }
 }
 ~~~
 
@@ -21,10 +23,10 @@ The plugin expects data sent to the [Ipc Server]({{ "/plugins/ipc-server" | rela
 
 ~~~
 [
-  {
-    "Port": <PortIdentifier>,
-    "Speed": <int>
-  }
+    {
+        "Port": <PortIdentifier>,
+        "Speed": <int>
+    }
 ]
 ~~~
 
@@ -65,6 +67,8 @@ Fallback speed value that will be used if data for a specific port has not been 
 ~~~
 
 </div>
+
+{% include variables/trigger.md %}
 
 ## Example
 

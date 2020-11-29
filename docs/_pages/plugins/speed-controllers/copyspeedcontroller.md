@@ -14,7 +14,9 @@ Copies the speed from another port.
 {
     "Type": "CopySpeedController",
     "Config": {
-        "Target": <PortIdentifier>
+        "Target": <PortIdentifier>,
+
+        "Trigger": <Trigger>
     }
 }
 ~~~
@@ -36,6 +38,8 @@ The [Port Identifier]({{ "/common/port-identifier" | relative_url }}) to copy th
 ~~~
 
 </div>
+
+{% include variables/trigger.md %}
 
 ## Example
 
