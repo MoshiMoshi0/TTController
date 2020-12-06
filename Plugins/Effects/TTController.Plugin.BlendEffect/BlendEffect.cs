@@ -57,32 +57,37 @@ namespace TTController.Plugin.BlendEffect
 
         public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
         {
-            var result = new Dictionary<PortIdentifier, List<LedColor>>();
-            foreach (var port in ports)
+            if (Config.ColorGenerationMethod == ColorGenerationMethod.PerPort)
             {
-                var device = cache.GetDeviceConfig(port);
-                List<LedColor> destinationColors = null;
-
-                foreach(var effect in Config.Effects)
-                {
-                    var colors = effect.GenerateColors(device.LedCount, cache);
-                    if (destinationColors == null)
-                    {
-                        destinationColors = colors;
-                        continue;
-                    }
-
-                    destinationColors = Blend(destinationColors, colors, Config.BlendMode);
-                }
-
-                result.Add(port, destinationColors);
+                return EffectUtils.GenerateColorsPerPort(ports, cache, (_, ledCount) => GenerateColors(ledCount, cache));
+            }
+            else if(Config.ColorGenerationMethod == ColorGenerationMethod.SpanPorts)
+            {
+                var totalLedCount = ports.Select(p => cache.GetDeviceConfig(p).LedCount).Sum();
+                return EffectUtils.SplitColorsPerPort(GenerateColors(totalLedCount, cache), ports, cache);
             }
 
-            return result;
+            return null;
         }
 
         public override List<LedColor> GenerateColors(int count, ICacheProvider cache)
-            => throw new NotImplementedException();
+        {
+            List<LedColor> destinationColors = null;
+
+            foreach (var effect in Config.Effects)
+            {
+                var colors = effect.GenerateColors(count, cache);
+                if (destinationColors == null)
+                {
+                    destinationColors = colors;
+                    continue;
+                }
+
+                destinationColors = Blend(destinationColors, colors, Config.BlendMode);
+            }
+
+            return destinationColors;
+        }
 
         private List<LedColor> Blend(List<LedColor> destination, List<LedColor> source, BlendMode mode)
         {
