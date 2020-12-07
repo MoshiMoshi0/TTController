@@ -19,10 +19,10 @@ namespace TTController.Plugin.RawEffect
 
         public RawEffect(RawEffectConfig config) : base(config) { }
 
-        public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
+        protected override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
             => ports.ToDictionary(p => p, p => Config.Color.Get(cache.GetDeviceConfig(p).LedCount).ToList());
 
-        public override List<LedColor> GenerateColors(int count, ICacheProvider cache)
+        protected override List<LedColor> GenerateColors(int count, ICacheProvider cache)
             => throw new NotImplementedException();
     }
 }

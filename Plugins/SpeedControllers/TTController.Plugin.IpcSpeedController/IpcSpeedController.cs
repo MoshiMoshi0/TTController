@@ -43,7 +43,7 @@ namespace TTController.Plugin.IpcSpeedController
             catch (JsonReaderException) { }
         }
 
-        public override IDictionary<PortIdentifier, byte> GenerateSpeeds(List<PortIdentifier> ports, ICacheProvider cache)
+        protected override IDictionary<PortIdentifier, byte> GenerateSpeeds(List<PortIdentifier> ports, ICacheProvider cache)
             => ports.ToDictionary(p => p, p => {
                 if (_speedMap.TryGetValue(p, out var speed))
                     return speed == 0 || speed >= 20 ? speed : (byte)20;

@@ -4,7 +4,7 @@ using System.ComponentModel;
 using TTController.Common;
 using TTController.Common.Plugin;
 
-namespace TTController.Plugin.LerpLedColorModifier
+namespace TTController.Plugin.LerpPortModifier
 {
     public enum LerpType
     {
@@ -12,16 +12,15 @@ namespace TTController.Plugin.LerpLedColorModifier
         Nearest
     }
 
-    public class LerpLedColorModifierConfig : ModifierConfigBase
+    public class LerpPortModifierConfig : ModifierConfigBase
     {
         [DefaultValue(LerpType.Smooth)] public LerpType LerpType { get; internal set; } = LerpType.Smooth;
     }
 
-    public class LerpLedColorModifier : LedColorModifierBase<LerpLedColorModifierConfig>
+    public class LerpPortModifier : PortModifierBase<LerpPortModifierConfig>
     {
-        public LerpLedColorModifier(LerpLedColorModifierConfig config) : base(config) { }
+        public LerpPortModifier(LerpPortModifierConfig config) : base(config) { }
 
-        public override void Apply(ref List<LedColor> colors) => throw new NotImplementedException();
         public override void Apply(ref List<LedColor> colors, PortIdentifier port, ICacheProvider cache)
         {
             var ledCount = cache.GetDeviceConfig(port).LedCount;

@@ -21,7 +21,7 @@ namespace TTController.Plugin.PwmSpeedController
     {
         public PwmSpeedController(PwmSpeedControllerConfig config) : base(config) { }
 
-        public override IDictionary<PortIdentifier, byte> GenerateSpeeds(List<PortIdentifier> ports, ICacheProvider cache)
+        protected override IDictionary<PortIdentifier, byte> GenerateSpeeds(List<PortIdentifier> ports, ICacheProvider cache)
         {
             var values = Config.Sensors.Select(cache.GetSensorValue);
             var value = float.NaN;

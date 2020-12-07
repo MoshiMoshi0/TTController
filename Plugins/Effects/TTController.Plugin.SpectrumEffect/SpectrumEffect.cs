@@ -29,10 +29,10 @@ namespace TTController.Plugin.SpectrumEffect
             _hue = (_hue + Config.HueStep) % 360;
         }
 
-        public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
+        protected override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
             => ports.ToDictionary(p => p, p => GenerateColors(cache.GetDeviceConfig(p).LedCount, cache));
 
-        public override List<LedColor> GenerateColors(int count, ICacheProvider cache)
+        protected override List<LedColor> GenerateColors(int count, ICacheProvider cache)
         {
             var color = LedColor.FromHsv(_hue, Config.Saturation, Config.Brightness);
             return Enumerable.Repeat(color, count).ToList();

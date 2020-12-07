@@ -33,7 +33,7 @@ namespace TTController.Plugin.WaveEffect
             }
         }
 
-        public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
+        protected override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
         {
             if (Config.ColorGenerationMethod == ColorGenerationMethod.PerPort)
             {
@@ -48,7 +48,7 @@ namespace TTController.Plugin.WaveEffect
             return null;
         }
 
-        public override List<LedColor> GenerateColors(int count, ICacheProvider cache)
+        protected override List<LedColor> GenerateColors(int count, ICacheProvider cache)
             => Config.Color.Get(count).RotateRight(_rotation % count).ToList();
     }
 }

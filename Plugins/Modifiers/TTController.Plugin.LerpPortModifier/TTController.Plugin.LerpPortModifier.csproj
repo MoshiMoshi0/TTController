@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
-    <AssemblyTitle>TTController.Plugin.TrimLedColorModifier</AssemblyTitle>
-    <Product>TTController.Plugin.TrimLedColorModifier</Product>
+    <AssemblyTitle>TTController.Plugin.LerpPortModifier</AssemblyTitle>
+    <Product>TTController.Plugin.LerpPortModifier</Product>
     <Copyright>Copyright ©  2020</Copyright>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>

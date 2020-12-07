@@ -38,7 +38,7 @@ namespace TTController.Plugin.AuroraEffect
             _rotation += Config.Step;
         }
 
-        public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
+        protected override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
         {
             if (Config.ColorGenerationMethod == ColorGenerationMethod.PerPort)
             {
@@ -54,7 +54,7 @@ namespace TTController.Plugin.AuroraEffect
             return null;
         }
 
-        public override List<LedColor> GenerateColors(int count, ICacheProvider cache)
+        protected override List<LedColor> GenerateColors(int count, ICacheProvider cache)
         {
             float Wrap(float a, float b) => (a % b + b) % b;
             LedColor GetColor(int i) => Config.Gradient.GetColor(Wrap((float)i / Config.Length + _rotation, 1));

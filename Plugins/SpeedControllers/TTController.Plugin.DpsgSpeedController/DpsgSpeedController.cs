@@ -22,7 +22,7 @@ namespace TTController.Plugin.DpsgSpeedController
     {
         public DpsgSpeedController(DpsgSpeedControllerConfig config) : base(config) { }
 
-        public override IDictionary<PortIdentifier, byte> GenerateSpeeds(List<PortIdentifier> ports, ICacheProvider cache)
+        protected override IDictionary<PortIdentifier, byte> GenerateSpeeds(List<PortIdentifier> ports, ICacheProvider cache)
             => ports.ToDictionary(p => p, _ => (byte)Config.FanMode);
     }
 }

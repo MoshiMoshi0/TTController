@@ -32,7 +32,7 @@ namespace TTController.Plugin.PulseEffect
                 _direction = -_direction;
         }
 
-        public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
+        protected override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
         {
             if (Config.ColorGenerationMethod == ColorGenerationMethod.PerPort)
             {
@@ -47,7 +47,7 @@ namespace TTController.Plugin.PulseEffect
             return null;
         }
 
-        public override List<LedColor> GenerateColors(int count, ICacheProvider cache)
+        protected override List<LedColor> GenerateColors(int count, ICacheProvider cache)
             => Config.Color.Get(count).Select(c => LedColor.ChangeValue(c, c.GetValue() * _t)).ToList();
     }
 }

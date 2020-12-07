@@ -40,7 +40,7 @@ namespace TTController.Plugin.FlowEffect
             }
         }
 
-        public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
+        protected override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
         {
             if (Config.ColorGenerationMethod == ColorGenerationMethod.PerPort)
             {
@@ -56,7 +56,7 @@ namespace TTController.Plugin.FlowEffect
             return null;
         }
 
-        public override List<LedColor> GenerateColors(int count, ICacheProvider cache)
+        protected override List<LedColor> GenerateColors(int count, ICacheProvider cache)
         {
             var lastColor = LedColor.FromHsv(_lastHue, Config.Saturation, Config.Brightness);
             var currentColor = LedColor.FromHsv(_currentHue, Config.Saturation, Config.Brightness);

@@ -17,7 +17,7 @@ namespace TTController.Plugin.CopyColorEffect
 
         public override string EffectType => "PerLed";
 
-        public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
+        protected override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
         {
             var colors = cache.GetPortColors(Config.Target);
             if (colors == null)
@@ -26,7 +26,7 @@ namespace TTController.Plugin.CopyColorEffect
             return ports.ToDictionary(p => p, _ => colors);
         }
 
-        public override List<LedColor> GenerateColors(int count, ICacheProvider cache)
+        protected override List<LedColor> GenerateColors(int count, ICacheProvider cache)
             => cache.GetPortColors(Config.Target).ToList();
     }
 }

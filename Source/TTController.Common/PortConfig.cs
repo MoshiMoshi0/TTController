@@ -6,8 +6,7 @@ namespace TTController.Common
 {
     public class PortConfig
     {
-        public List<ILedColorModifierBase> ColorModifiers { get; internal set; } = new List<ILedColorModifierBase>();
-
+        [DefaultValue(null)] public List<IPortModifier> ColorModifiers { get; internal set; } = null;
         [DefaultValue("Unknown")] public string Name { get; internal set; } = "Unknown";
         [DefaultValue("Default")] public string DeviceType { get; internal set; } = "Default";
         [DefaultValue(false)] public bool IgnoreColorCache { get; internal set; } = false;
