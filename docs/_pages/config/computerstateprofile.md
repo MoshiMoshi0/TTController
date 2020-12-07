@@ -11,7 +11,7 @@ permalink: /config/computerstateprofile
   "Ports": [<PortIdentifier>],
   "Speed": <byte>,
   "EffectType": <string>,
-  "EffectColor": <LedColorProvider>
+  "Color": <LedColorProvider>
 }
 ~~~
 
@@ -53,8 +53,8 @@ List of [Port Identifiers]({{ "/common/port-identifier" | relative_url }}) modif
 **Example:**
 ~~~
 "Ports": [
-    [9802, 9101, 1],
-    [9802, 9101, 3]
+  [9802, 9101, 1],
+  [9802, 9101, 3]
 ]
 ~~~
 
@@ -96,23 +96,23 @@ Effect type to set the devices to when the profile is enabled.
 
 </div>
 
-### EffectColor
+### Color
 <div class="variable-block" markdown="block">
 
 A [Led Color Provider]({{ "/common/led-color-provider" | relative_url }}) object.
 
-**Required:** **Yes** if [EffectType](#effecttype) is set<br>
+**Required:** No<br>
 **Default value:**
 ~~~
 ~~~
 **Example:**
 ~~~
 {
-    "Gradient": [
-        [0, [255, 0, 0]],
-        [0.5, [0, 255, 0]],
-        [1.0 [255, 0, 0]]
-    ]
+  "Gradient": [
+    [0, [255, 0, 0]],
+    [0.5, [0, 255, 0]],
+    [1.0 [255, 0, 0]]
+  ]
 }
 ~~~
 
@@ -126,8 +126,7 @@ A [Led Color Provider]({{ "/common/led-color-provider" | relative_url }}) object
     [9802, 8101, 1]
   ],
   "Speed": 35,
-  "EffectType": "Full",
-  "EffectColor": {
+  "Color": {
     "Full": [255, 0, 0]
   }
 }
@@ -139,9 +138,12 @@ A [Led Color Provider]({{ "/common/led-color-provider" | relative_url }}) object
     [9802, 8101, 1],
     [9802, 8101, 3]
   ],
-  "EffectType": "Pulse_Fast",
-  "EffectColor": {
-    "Full": [50, 0, 0]
+  "Color": {
+    "Gradient": [
+      [0, [0, 0, 0]],
+      [0.5, [255, 0, 0]],
+      [1, [0, 0, 0]]
+    ]
   }
 }
 ~~~

@@ -8,9 +8,9 @@ A helper object to simplify configuration of colors for effects.
 ## Format
 ~~~
 {
-    "Full": <LedColor>,
-    "PerLed": [<LedColor>],
-    "Gradient": <LedColorGradient>
+  "Full": <LedColor>,
+  "PerLed": [<LedColor>],
+  "Gradient": <LedColorGradient>
 }
 ~~~
 
@@ -21,25 +21,25 @@ A helper object to simplify configuration of colors for effects.
 
 ~~~ json
 {
-    "PerLed": [
-        [255, 0, 0],
-        [0, 255, 0],
-        [255, 0, 0],
-        ...
-    ]
+  "PerLed": [
+    [255, 0, 0],
+    [0, 255, 0],
+    [255, 0, 0],
+    ...
+  ]
 }
 ~~~
 ~~~ json
 {
-    "Full": [255, 0, 0]
+  "Full": [255, 0, 0]
 }
 ~~~
 ~~~ json
 {
-    "Gradient": [
-        [0, [255, 0, 0]],
-        [0.5, [0, 255, 0]],
-        [1.0, [255, 0, 0]]
-    ]
+  "Gradient": [
+    [0, [255, 0, 0]],
+    [0.5, [0, 255, 0]],
+    [1.0, [255, 0, 0]]
+  ]
 }
 ~~~

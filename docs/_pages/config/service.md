@@ -15,6 +15,9 @@ permalink: /config/service
   "PortConfigs":  [<PortConfig>],
   "SensorConfigs":   [<SensorConfig>],
 
+  "IpcServer": <IpcServer>,
+  "IpcServerEnabled": <bool>,
+
   "CpuSensorsEnabled": <bool>,
   "GpuSensorsEnabled": <bool>,
   "StorageSensorsEnabled": <bool>,
@@ -23,9 +26,10 @@ permalink: /config/service
   "NetworkSensorsEnabled": <bool>,
   "ControllerSensorsEnabled": <bool>,
 
-  "SensorTimerInterval ": <int>,
+  "SensorTimerInterval": <int>,
   "DeviceSpeedTimerInterval": <int>,
   "DeviceRgbTimerInterval": <int>,
+  "IpcClientTimerInterval": <int>,
   "DebugTimerInterval": <int>
 }
 ~~~
@@ -45,8 +49,8 @@ List of [Profile Configs]({{ "/config/profile" | relative_url }}).
 **Example:**
 ~~~
 "Profiles": [
-    {...},
-    {...}
+  {...},
+  {...}
 ]
 ~~~
 
@@ -65,8 +69,8 @@ List of [ComputerStateProfile Configs]({{ "/config/computerstateprofile" | relat
 **Example:**
 ~~~
 "ComputerStateProfiles": [
-    {...},
-    {...}
+  {...},
+  {...}
 ]
 ~~~
 
@@ -88,8 +92,8 @@ List of [Port Configs]({{ "/config/port" | relative_url }}).
 **Example:**
 ~~~
 "PortConfigs": [
-    {...},
-    {...}
+  {...},
+  {...}
 ]
 ~~~
 
@@ -111,9 +115,48 @@ List of [Sensor Configs]({{ "/config/sensor" | relative_url }}).
 **Example:**
 ~~~
 "SensorConfigs": [
-    {...},
-    {...}
+  {...},
+  {...}
 ]
+~~~
+
+</div>
+
+### IpcServer
+<div class="variable-block" markdown="block">
+
+Intance of [Ipc Server]({{ "/plugins/ipc-server" | relative_url }}) to use for ipc.
+
+**Required:** No<br>
+**Default value:**
+~~~
+~~~
+**Example:**
+~~~
+{
+  "Type": "WebSocketIpcServer",
+  "Config": {
+    "Address": "127.0.0.1",
+    "Port": 8888
+  }
+}
+~~~
+
+</div>
+
+### IpcServerEnabled
+<div class="variable-block" markdown="block">
+
+Enables [IpcServer](#ipcenabled) instance.
+
+**Required:** No<br>
+**Default value:**
+~~~
+false
+~~~
+**Example:**
+~~~
+"IpcServerEnabled": true
 ~~~
 
 </div>
@@ -237,7 +280,7 @@ false
 
 </div>
 
-### SensorTimerInterval 
+### SensorTimerInterval
 <div class="variable-block" markdown="block">
 
 Determines timer delay for updating sensor values.
@@ -293,6 +336,29 @@ Determines timer delay for updating led colors.
 **Example:**
 ~~~
 "DeviceRgbTimerInterval": 16
+~~~
+
+</div>
+
+### IpcClientTimerInterval
+<div class="variable-block" markdown="block">
+
+Determines timer delay for updating the internal ipc service client.
+
+**Note:** Valid only if [IpcServerEnabled](#ipcenabled) is set to `true` and [IpcServer](#ipcenabled) is set to a [IpcServer]({{ "/plugins/ipc-server" | relative_url }}) instance.
+{: .notice--info}
+
+**Note:** Value in miliseconds.
+{: .notice--info}
+
+**Required:** No<br>
+**Default value:**
+~~~
+0
+~~~
+**Example:**
+~~~
+"IpcClientTimerInterval": 1000
 ~~~
 
 </div>
@@ -373,10 +439,9 @@ Determines timer delay for logging debug data.
         [9802, 8101, 1]
       ],
       "Speed": 35,
-      "EffectType": "Full",
-      "EffectColors": [
-        [255, 0, 0]
-      ]
+      "Colors": {
+        "Full": [255, 0, 0]
+      }
     }
   ],
   "PortConfigs": [
@@ -384,8 +449,20 @@ Determines timer delay for logging debug data.
       "Ports": [[9802, 8101, 1]],
       "Config": {
         "Name": "Top Fan",
-        "LedRotation": [11],
-        "LedReverse": [false]
+        "ColorModifiers": [
+          {
+            "Type": "RotateLedColorModifier",
+            "Config": {
+              "Rotation": 11
+            }
+          },
+          {
+            "Type": "ReverseLedColorModifier",
+            "Config": {
+              "Reverse": true
+            }
+          }
+        ]
       }
     }
   ],

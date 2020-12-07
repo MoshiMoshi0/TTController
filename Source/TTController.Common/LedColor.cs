@@ -38,6 +38,7 @@ namespace TTController.Common
         public double GetHue() => ToHsv().hue;
         public double GetSaturation() => ToHsv().saturation;
         public double GetValue() => ToHsv().value;
+        public double GetLuminance() => 0.299 * R / 255 + 0.587 * G / 255 + 0.114 * B / 255;
 
         public static LedColor Lerp(double t, LedColor from, LedColor to)
         {

@@ -50,8 +50,8 @@ List of [Port Identifiers]({{ "/common/port-identifier" | relative_url }}) modif
 **Example:**
 ~~~
 "Ports": [
-    [9802, 9101, 1],
-    [9802, 9101, 3]
+  [9802, 9101, 1],
+  [9802, 9101, 3]
 ]
 ~~~
 
@@ -60,9 +60,9 @@ List of [Port Identifiers]({{ "/common/port-identifier" | relative_url }}) modif
 ### SpeedControllers
 <div class="variable-block" markdown="block">
 
-List of [Speed Controllers]({{ "/common/speed-controller" | relative_url }}).
+List of [Speed Controllers]({{ "/plugins/speed-controller" | relative_url }}).
 
-**Note:** The order matters because the speed controller that will be used is the first one whose [Trigger]({{ "/common/trigger" | relative_url }}) returns `true` value. This means that you always want the last speed controller in the list to have a [AlwaysTrigger]({{ "/triggers/alwaystrigger" | relative_url }}) set.
+**Note:** The order matters because the speed controller that will be used is the first one whose [Trigger]({{ "/plugins/trigger" | relative_url }}) returns `true` value. This means that you always want the last speed controller in the list to have a [AlwaysTrigger]({{ "/triggers/alwaystrigger" | relative_url }}) set.
 {: .notice--info}
 
 **Required:** No<br>
@@ -73,8 +73,8 @@ List of [Speed Controllers]({{ "/common/speed-controller" | relative_url }}).
 **Example:**
 ~~~
 "SpeedControllers": [
-    {...},
-    {...}
+  {...},
+  {...}
 ]
 ~~~
 
@@ -83,9 +83,9 @@ List of [Speed Controllers]({{ "/common/speed-controller" | relative_url }}).
 ### Effects
 <div class="variable-block" markdown="block">
 
-List of [Effects]({{ "/common/effect" | relative_url }}).
+List of [Effects]({{ "/plugins/effect" | relative_url }}).
 
-**Note:** The order matters because the effect that will be used is the first one whose [Trigger]({{ "/common/trigger" | relative_url }}) returns `true` value. This means that you always want the last effect in the list to have a [AlwaysTrigger]({{ "/triggers/alwaystrigger" | relative_url }}) set.
+**Note:** The order matters because the effect that will be used is the first one whose [Trigger]({{ "/plugins/trigger" | relative_url }}) returns `true` value. This means that you always want the last effect in the list to have a [AlwaysTrigger]({{ "/triggers/alwaystrigger" | relative_url }}) set.
 {: .notice--info}
 
 **Required:** No<br>
@@ -96,8 +96,8 @@ List of [Effects]({{ "/common/effect" | relative_url }}).
 **Example:**
 ~~~
 "Effects": [
-    {...},
-    {...}
+  {...},
+  {...}
 ]
 ~~~
 

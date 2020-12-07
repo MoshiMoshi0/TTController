@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TTController.Common.Plugin
 {
-    public interface ILedColorModifierBase
+    public interface ILedColorModifierBase : IModifierBase
     {
         void Apply(ref List<LedColor> colors);
         void Apply(ref List<LedColor> colors, PortIdentifier port, ICacheProvider cache);

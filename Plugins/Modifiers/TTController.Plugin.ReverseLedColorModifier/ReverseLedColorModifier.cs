@@ -15,7 +15,7 @@ namespace TTController.Plugin.ReverseLedColorModifier
 
     public class ReverseLedColorModifier : LedColorModifierBase<ReverseLedColorModifierConfig>
     {
-        protected ReverseLedColorModifier(ReverseLedColorModifierConfig config) : base(config) { }
+        public ReverseLedColorModifier(ReverseLedColorModifierConfig config) : base(config) { }
 
         public override void Apply(ref List<LedColor> colors)
         {

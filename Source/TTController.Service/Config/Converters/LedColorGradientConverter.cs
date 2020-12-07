@@ -15,4 +15,10 @@ namespace TTController.Service.Config.Converters
             JsonSerializer serializer) =>
             new LedColorGradient(JArray.Load(reader).ToObject<List<LedColorGradientPoint>>());
     }
+
+    public class LedColorGradientPointConverter : AbstractObjectToArrayConverter<LedColorGradientPoint>
+    {
+        protected override object[] CreateConstructorArgs(JArray array) =>
+            new object[] { array[0].Value<double>(), array[1].ToObject<LedColor>() };
+    }
 }
