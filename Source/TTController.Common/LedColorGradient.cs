@@ -40,8 +40,21 @@ namespace TTController.Common
             if(_points.Count == 0)
                 return (0, 0, 0);
 
+            if (location <= _points.First().Location)
+            {
+                var (r, g, b) = _points.First().Color;
+                return (r, g, b);
+            }
+
+            if (location >= _points.Last().Location)
+            {
+                var (r, g, b) = _points.Last().Color;
+                return (r, g, b);
+            }
+
             var i = 0;
-            LedColorGradientPoint start, end;
+            var start = default(LedColorGradientPoint);
+            var end = default(LedColorGradientPoint);
             do
             {
                 start = _points[i++];
