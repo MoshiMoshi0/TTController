@@ -4,7 +4,7 @@ title: Home
 
 Welcome to the TTController documentation!
 
-**Note:** This documentation is still Work-in-Progress, if you have problems with configuring the service please make a new [<i class="fab fa-github"/> issue](https://github.com/MoshiMoshi0/TTController/issues/new/choose).
+**Note:** If you have issues with configuring the service, try asking for help in [<i class="fab fa-github"/> github discussions](https://github.com/MoshiMoshi0/TTController/discussions/new).
 {: .notice--info}
 
 **Important:** This documentation might not apply to development builds.
