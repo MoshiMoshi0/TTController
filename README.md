@@ -17,7 +17,8 @@ It allows you to fully customize your Thermaltake devices by using _speed contro
 
 <br>
 
-Check the [docs](https://moshimoshi0.github.io/TTController/) for more detailed information and help with configuring the service. 
+Check the [docs](https://moshimoshi0.github.io/TTController/) for a quick start and more detailed information about configuring the service. <br/>
+If you have issues with configuring the service, try asking for help in [<i class="fab fa-github"/> github discussions](https://github.com/MoshiMoshi0/TTController/discussions/new).
 <h1></h1>
 
 <br><br>
