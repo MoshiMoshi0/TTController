@@ -67,7 +67,7 @@ namespace TTController.Plugin.RiingController
                 PortId = result[3],
                 Speed = result[5],
                 Rpm = (result[7] << 8) + result[6],
-                ["Unknown"] = result[4]
+                ["LastUsedPort"] = result[4]
             };
 
             return data;
