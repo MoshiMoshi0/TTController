@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
-    <AssemblyTitle>TTController.Plugin.RotateLedColorModifier</AssemblyTitle>
-    <Product>TTController.Plugin.RotateLedColorModifier</Product>
+    <AssemblyTitle>TTController.Plugin.TrimPortModifier</AssemblyTitle>
+    <Product>TTController.Plugin.TrimPortModifier</Product>
     <Copyright>Copyright ©  2020</Copyright>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>

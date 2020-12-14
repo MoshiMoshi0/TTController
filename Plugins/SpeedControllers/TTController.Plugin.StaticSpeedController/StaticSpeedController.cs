@@ -19,7 +19,7 @@ namespace TTController.Plugin.StaticSpeedController
                 Config.Speed = 20;
         }
 
-        public override IDictionary<PortIdentifier, byte> GenerateSpeeds(List<PortIdentifier> ports, ICacheProvider cache)
+        protected override IDictionary<PortIdentifier, byte> GenerateSpeeds(List<PortIdentifier> ports, ICacheProvider cache)
             => ports.ToDictionary(p => p, _ => Config.Speed);
     }
 }

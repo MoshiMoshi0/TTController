@@ -6,11 +6,11 @@ namespace TTController.Common.Plugin
 {
     public interface IEffectBase : IPlugin, IDisposable
     {
-        bool IsEnabled(ICacheProvider cache);
         string EffectType { get; }
 
+        bool IsEnabled(ICacheProvider cache);
         void Update(ICacheProvider cache);
-        IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache);
-        List<LedColor> GenerateColors(int count, ICacheProvider cache);
+        IDictionary<PortIdentifier, List<LedColor>> GetColors(List<PortIdentifier> ports, ICacheProvider cache);
+        List<LedColor> GetColors(int count, ICacheProvider cache);
     }
 }

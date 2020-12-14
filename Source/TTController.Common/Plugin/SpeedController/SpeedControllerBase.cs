@@ -30,6 +30,8 @@ namespace TTController.Common.Plugin
             Config = null;
         }
 
-        public abstract IDictionary<PortIdentifier, byte> GenerateSpeeds(List<PortIdentifier> ports, ICacheProvider cache);
+        public IDictionary<PortIdentifier, byte> GetSpeeds(List<PortIdentifier> ports, ICacheProvider cache) => GenerateSpeeds(ports, cache);
+
+        protected abstract IDictionary<PortIdentifier, byte> GenerateSpeeds(List<PortIdentifier> ports, ICacheProvider cache);
     }
 }

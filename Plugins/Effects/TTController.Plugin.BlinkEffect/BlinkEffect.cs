@@ -36,7 +36,7 @@ namespace TTController.Plugin.BlinkEffect
             }
         }
 
-        public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
+        protected override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
         {
             if (Config.ColorGenerationMethod == ColorGenerationMethod.PerPort)
             {
@@ -51,7 +51,7 @@ namespace TTController.Plugin.BlinkEffect
             return null;
         }
 
-        public override List<LedColor> GenerateColors(int count, ICacheProvider cache)
+        protected override List<LedColor> GenerateColors(int count, ICacheProvider cache)
             => (_state ? Config.OnColor : Config.OffColor).Get(count).ToList();
     }
 }

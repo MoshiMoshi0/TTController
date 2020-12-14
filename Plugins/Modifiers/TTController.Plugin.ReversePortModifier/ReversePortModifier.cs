@@ -5,29 +5,24 @@ using System.Linq;
 using TTController.Common;
 using TTController.Common.Plugin;
 
-namespace TTController.Plugin.ReverseLedColorModifier
+namespace TTController.Plugin.ReversePortModifier
 {
-    public class ReverseLedColorModifierConfig : ModifierConfigBase
+    public class ReversePortModifierConfig : ModifierConfigBase
     {
         [DefaultValue(null)] public bool? Reverse { get; internal set; } = null;
         [DefaultValue(null)] public bool[] ZoneReverse { get; internal set; } = null;
     }
 
-    public class ReverseLedColorModifier : LedColorModifierBase<ReverseLedColorModifierConfig>
+    public class ReversePortModifier : PortModifierBase<ReversePortModifierConfig>
     {
-        public ReverseLedColorModifier(ReverseLedColorModifierConfig config) : base(config) { }
-
-        public override void Apply(ref List<LedColor> colors)
-        {
-            if (Config.Reverse == true)
-                colors.Reverse();
-        }
+        public ReversePortModifier(ReversePortModifierConfig config) : base(config) { }
 
         public override void Apply(ref List<LedColor> colors, PortIdentifier port, ICacheProvider cache)
         {
             if (Config.Reverse != null)
             {
-                Apply(ref colors);
+                if (Config.Reverse == true)
+                    colors.Reverse();
             }
             else
             {

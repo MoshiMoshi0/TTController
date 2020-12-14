@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace TTController.Common.Plugin
 {
-    public abstract class LedColorModifierBase<T> : ModifierBase<T>, ILedColorModifierBase where T : ModifierConfigBase
+    public abstract class PortModifierBase<T> : ModifierBase<T>, IPortModifier where T : ModifierConfigBase
     {
-        protected LedColorModifierBase(T config) : base(config) { }
+        protected PortModifierBase(T config) : base(config) { }
 
-        public abstract void Apply(ref List<LedColor> colors);
         public abstract void Apply(ref List<LedColor> colors, PortIdentifier port, ICacheProvider cache);
     }
 }

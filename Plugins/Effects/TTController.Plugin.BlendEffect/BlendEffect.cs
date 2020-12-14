@@ -55,7 +55,7 @@ namespace TTController.Plugin.BlendEffect
                 effect.Update(cache);
         }
 
-        public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
+        protected override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
         {
             if (Config.ColorGenerationMethod == ColorGenerationMethod.PerPort)
             {
@@ -70,13 +70,19 @@ namespace TTController.Plugin.BlendEffect
             return null;
         }
 
-        public override List<LedColor> GenerateColors(int count, ICacheProvider cache)
+        protected override List<LedColor> GenerateColors(int count, ICacheProvider cache)
         {
             List<LedColor> destinationColors = null;
 
             foreach (var effect in Config.Effects)
             {
-                var colors = effect.GenerateColors(count, cache);
+                var colors = default(List<LedColor>);
+                try { colors = effect.GetColors(count, cache); }
+                catch (NotImplementedException) { }
+
+                if (colors == null)
+                    continue;
+
                 if (destinationColors == null)
                 {
                     destinationColors = colors;

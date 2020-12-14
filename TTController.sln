@@ -110,15 +110,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.ZoneEff
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modifiers", "Modifiers", "{EA09CF17-E583-4C9C-B68A-05764654BCE3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.LerpLedColorModifier", "Plugins\Modifiers\TTController.Plugin.LerpLedColorModifier\TTController.Plugin.LerpLedColorModifier.csproj", "{ECAB03D1-537D-41A5-B99C-574737591DBE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.LerpPortModifier", "Plugins\Modifiers\TTController.Plugin.LerpPortModifier\TTController.Plugin.LerpPortModifier.csproj", "{ECAB03D1-537D-41A5-B99C-574737591DBE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.TrimLedColorModifier", "Plugins\Modifiers\TTController.Plugin.TrimLedColorModifier\TTController.Plugin.TrimLedColorModifier.csproj", "{194E027F-FD95-449F-9D17-729036DD9CE6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.TrimPortModifier", "Plugins\Modifiers\TTController.Plugin.TrimPortModifier\TTController.Plugin.TrimPortModifier.csproj", "{194E027F-FD95-449F-9D17-729036DD9CE6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.RotateLedColorModifier", "Plugins\Modifiers\TTController.Plugin.RotateLedColorModifier\TTController.Plugin.RotateLedColorModifier.csproj", "{42E8E8E9-E4BB-4D8F-81DC-63880A84A970}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.RotatePortModifier", "Plugins\Modifiers\TTController.Plugin.RotatePortModifier\TTController.Plugin.RotatePortModifier.csproj", "{42E8E8E9-E4BB-4D8F-81DC-63880A84A970}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.ReverseLedColorModifier", "Plugins\Modifiers\TTController.Plugin.ReverseLedColorModifier\TTController.Plugin.ReverseLedColorModifier.csproj", "{BEA975C9-DADC-4EE3-9B38-D4AD3A72D4C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.ReversePortModifier", "Plugins\Modifiers\TTController.Plugin.ReversePortModifier\TTController.Plugin.ReversePortModifier.csproj", "{BEA975C9-DADC-4EE3-9B38-D4AD3A72D4C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.BlendEffect", "Plugins\Effects\TTController.Plugin.BlendEffect\TTController.Plugin.BlendEffect.csproj", "{FD094EA9-D258-4C04-8E91-D9C85C5568D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.BlendEffect", "Plugins\Effects\TTController.Plugin.BlendEffect\TTController.Plugin.BlendEffect.csproj", "{FD094EA9-D258-4C04-8E91-D9C85C5568D8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

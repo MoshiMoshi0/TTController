@@ -324,7 +324,7 @@ namespace TTController.Service
                         if (speedController == null)
                             continue;
 
-                        speedMap = speedController.GenerateSpeeds(profile.Ports, _cache.AsReadOnly());
+                        speedMap = speedController.GetSpeeds(profile.Ports, _cache.AsReadOnly());
                     }
                 }
                 catch(Exception e)
@@ -371,7 +371,7 @@ namespace TTController.Service
                         continue;
 
                     effect.Update(_cache.AsReadOnly());
-                    colorMap = effect.GenerateColors(profile.Ports, _cache.AsReadOnly());
+                    colorMap = effect.GetColors(profile.Ports, _cache.AsReadOnly());
                     effectType = effect.EffectType;
                 }
                 catch (Exception e)
@@ -381,28 +381,29 @@ namespace TTController.Service
                     effectType = "PerLed";
                 }
 
-                if (colorMap == null)
+                if (colorMap == null || effectType == null)
                     continue;
 
                 foreach (var (port, _) in colorMap)
                 {
+                    var controller = _deviceManager.GetController(port);
+                    if (controller == null)
+                        continue;
+
                     var colors = colorMap[port];
                     if (colors == null)
                         continue;
 
                     var config = _cache.GetPortConfig(port);
+                    if(config.ColorModifiers != null)
+                        foreach (var modifier in config.ColorModifiers)
+                            modifier.Apply(ref colors, port, _cache.AsReadOnly());
+
+                    if (colors == null)
+                        continue;
+
                     if (!config.IgnoreColorCache && colors.ContentsEqual(_cache.GetPortColors(port)))
                         continue;
-
-                    if (effectType == null)
-                        continue;
-
-                    var controller = _deviceManager.GetController(port);
-                    if (controller == null)
-                        continue;
-
-                    foreach (var modifier in config.ColorModifiers)
-                        modifier.Apply(ref colors, port, _cache.AsReadOnly());
 
                     lock (controller)
                     {

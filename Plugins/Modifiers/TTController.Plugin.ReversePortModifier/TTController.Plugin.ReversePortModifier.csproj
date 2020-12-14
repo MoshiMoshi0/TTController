@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
-    <AssemblyTitle>TTController.Plugin.LerpLedColorModifier</AssemblyTitle>
-    <Product>TTController.Plugin.LerpLedColorModifier</Product>
+    <AssemblyTitle>TTController.Plugin.ReversePortModifier</AssemblyTitle>
+    <Product>TTController.Plugin.ReversePortModifier</Product>
     <Copyright>Copyright ©  2020</Copyright>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>

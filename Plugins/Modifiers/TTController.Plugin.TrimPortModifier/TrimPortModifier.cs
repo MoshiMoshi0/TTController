@@ -5,18 +5,17 @@ using System.Linq;
 using TTController.Common;
 using TTController.Common.Plugin;
 
-namespace TTController.Plugin.TrimLedColorModifier
+namespace TTController.Plugin.TrimPortModifier
 {
-    public class TrimLedColorModifierConfig : ModifierConfigBase
+    public class TrimPortModifierConfig : ModifierConfigBase
     {
         [DefaultValue(false)] public bool WrapRemainder { get; internal set; } = false;
     }
 
-    public class TrimLedColorModifier : LedColorModifierBase<TrimLedColorModifierConfig>
+    public class TrimPortModifier : PortModifierBase<TrimPortModifierConfig>
     {
-        public TrimLedColorModifier(TrimLedColorModifierConfig config) : base(config) { }
+        public TrimPortModifier(TrimPortModifierConfig config) : base(config) { }
 
-        public override void Apply(ref List<LedColor> colors) => throw new NotImplementedException();
         public override void Apply(ref List<LedColor> colors, PortIdentifier port, ICacheProvider cache)
         {
             var ledCount = cache.GetDeviceConfig(port).LedCount;

@@ -25,7 +25,7 @@ namespace TTController.Plugin.ZoneEffect
                 effect.Update(cache);
         }
 
-        public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
+        protected override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
         {
             var result = new Dictionary<PortIdentifier, List<LedColor>>();
             foreach(var port in ports)
@@ -41,7 +41,7 @@ namespace TTController.Plugin.ZoneEffect
                     var zoneSize = device.Zones[i];
 
                     var zoneColors = default(List<LedColor>);
-                    try { zoneColors = effect.GenerateColors(zoneSize, cache); }
+                    try { zoneColors = effect.GetColors(zoneSize, cache); }
                     catch (NotImplementedException) { }
 
                     if (zoneColors == null)
@@ -65,7 +65,7 @@ namespace TTController.Plugin.ZoneEffect
             return result;
         }
 
-        public override List<LedColor> GenerateColors(int count, ICacheProvider cache)
+        protected override List<LedColor> GenerateColors(int count, ICacheProvider cache)
             => throw new NotImplementedException();
     }
 }

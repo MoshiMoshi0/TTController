@@ -29,7 +29,7 @@ namespace TTController.Plugin.PingPongEffect
 
         public override string EffectType => "PerLed";
 
-        public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
+        protected override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports, ICacheProvider cache)
         {
             _t += Config.Step * _direction;
             if (_t <= 0 || _t >= 1)
@@ -127,7 +127,7 @@ namespace TTController.Plugin.PingPongEffect
             return colors;
         }
 
-        public override List<LedColor> GenerateColors(int count, ICacheProvider cache)
+        protected override List<LedColor> GenerateColors(int count, ICacheProvider cache)
             => throw new NotImplementedException();
     }
 }

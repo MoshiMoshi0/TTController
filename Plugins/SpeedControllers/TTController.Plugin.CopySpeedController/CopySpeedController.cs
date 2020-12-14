@@ -14,7 +14,7 @@ namespace TTController.Plugin.CopySpeedController
     {
         public CopySpeedController(CopySpeedControllerConfig config) : base(config) { }
 
-        public override IDictionary<PortIdentifier, byte> GenerateSpeeds(List<PortIdentifier> ports, ICacheProvider cache)
+        protected override IDictionary<PortIdentifier, byte> GenerateSpeeds(List<PortIdentifier> ports, ICacheProvider cache)
         {
             var speed = cache.GetPortSpeed(Config.Target);
             if (!speed.HasValue)

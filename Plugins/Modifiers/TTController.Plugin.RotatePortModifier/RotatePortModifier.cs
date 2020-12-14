@@ -5,35 +5,27 @@ using System.Linq;
 using TTController.Common;
 using TTController.Common.Plugin;
 
-namespace TTController.Plugin.RotateLedColorModifier
+namespace TTController.Plugin.RotatePortModifier
 {
-    public class RotateLedColorModifierConfig : ModifierConfigBase
+    public class RotatePortModifierConfig : ModifierConfigBase
     {
         [DefaultValue(null)] public int? Rotation { get; internal set; } = null;
         [DefaultValue(null)] public int[] ZoneRotation { get; internal set; } = null;
     }
 
-    public class RotateLedColorModifier : LedColorModifierBase<RotateLedColorModifierConfig>
+    public class RotatePortModifier : PortModifierBase<RotatePortModifierConfig>
     {
-        public RotateLedColorModifier(RotateLedColorModifierConfig config) : base(config) { }
-
-        public override void Apply(ref List<LedColor> colors)
-        {
-            if (Config.Rotation == null)
-                return;
-
-            var rotate = Config.Rotation.Value;
-            if (rotate > 0)
-                colors = colors.RotateRight(rotate).ToList();
-            else if (rotate < 0)
-                colors = colors.RotateLeft(rotate).ToList();
-        }
+        public RotatePortModifier(RotatePortModifierConfig config) : base(config) { }
 
         public override void Apply(ref List<LedColor> colors, PortIdentifier port, ICacheProvider cache)
         {
             if(Config.Rotation != null)
             {
-                Apply(ref colors);
+                var rotate = Config.Rotation.Value;
+                if (rotate > 0)
+                    colors = colors.RotateRight(rotate).ToList();
+                else if (rotate < 0)
+                    colors = colors.RotateLeft(rotate).ToList();
             }
             else
             {

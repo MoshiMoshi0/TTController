@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace TTController.Common.Plugin
 {
@@ -6,5 +7,6 @@ namespace TTController.Common.Plugin
     {
         [DefaultValue(null)] public ITriggerBase Trigger { get; internal set; } = null;
         [DefaultValue(ColorGenerationMethod.PerPort)] public ColorGenerationMethod ColorGenerationMethod { get; internal set; } = ColorGenerationMethod.PerPort;
+        [DefaultValue(null)] public List<IEffectModifier> Modifiers { get; internal set; } = null;
     }
 }
