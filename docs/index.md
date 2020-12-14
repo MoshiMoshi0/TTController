@@ -14,6 +14,8 @@ Welcome to the TTController documentation!
 
 ### Installing the service
 
+Installing the service will make the service auto start with windows, the service starts before the windows login screen and you are not required to log in to start it.
+
 1. Unpack all files to the desired directory.
 2. Run **TTController.Service.exe**.
 
@@ -40,7 +42,8 @@ Welcome to the TTController documentation!
 **Note:** See [Service Config]({{ "/config/service" | relative_url }}) as a starting point.
 {: .notice--info}
 
-**Note:** It is recommended to use the [Console mode](console-mode) when testing and/or updating the configuration.
+**Note:** It is recommended to use the [Console mode](#console-mode) when testing and/or updating the configuration.
+{: .notice--info}
 
 **Note:** You can use `Main Menu -> Debug -> Controllers` menu to find your port identifiers and `Main Menu -> Debug -> Sensors` menu to find your sensor identifiers to be used in **config.json**.
 {: .notice--info}
