@@ -120,6 +120,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.Reverse
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.BlendEffect", "Plugins\Effects\TTController.Plugin.BlendEffect\TTController.Plugin.BlendEffect.csproj", "{FD094EA9-D258-4C04-8E91-D9C85C5568D8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.DelayPortModifier", "Plugins\Modifiers\TTController.Plugin.DelayPortModifier\TTController.Plugin.DelayPortModifier.csproj", "{7982B97B-9106-4F28-895D-051C46547533}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -304,6 +306,10 @@ Global
 		{FD094EA9-D258-4C04-8E91-D9C85C5568D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD094EA9-D258-4C04-8E91-D9C85C5568D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD094EA9-D258-4C04-8E91-D9C85C5568D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7982B97B-9106-4F28-895D-051C46547533}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7982B97B-9106-4F28-895D-051C46547533}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7982B97B-9106-4F28-895D-051C46547533}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7982B97B-9106-4F28-895D-051C46547533}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -360,6 +366,7 @@ Global
 		{42E8E8E9-E4BB-4D8F-81DC-63880A84A970} = {EA09CF17-E583-4C9C-B68A-05764654BCE3}
 		{BEA975C9-DADC-4EE3-9B38-D4AD3A72D4C0} = {EA09CF17-E583-4C9C-B68A-05764654BCE3}
 		{FD094EA9-D258-4C04-8E91-D9C85C5568D8} = {521264D1-73FB-44B3-8243-CB3C95AFB179}
+		{7982B97B-9106-4F28-895D-051C46547533} = {EA09CF17-E583-4C9C-B68A-05764654BCE3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9B8A6C39-77D8-476B-B89B-C39D2AF3D3B9}
