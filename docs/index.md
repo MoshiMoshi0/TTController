@@ -17,8 +17,8 @@ Welcome to the TTController documentation!
 1. Unpack all files to the desired directory.
 2. Run **TTController.Service.exe**.
 
-**Note:** A quick test to see if the service will work properly is to run debug report found in `Main Menu -> Debug -> Report` menu. It should list all detected controllers, sensors and plugins.
-{: .notice--info}
+    **Note:** A quick test to see if the service will work properly is to run debug report found in `Main Menu -> Debug -> Report` menu. It should list all detected controllers, sensors and plugins.
+    {: .notice--info}
 
 3. Select **Manage Service** from the menu and select **Install** option to install the service.
 
