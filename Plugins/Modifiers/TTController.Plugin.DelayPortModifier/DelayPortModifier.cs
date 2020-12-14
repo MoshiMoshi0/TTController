@@ -9,31 +9,35 @@ namespace TTController.Plugin.DelayPortModifier
 {
     public class DelayPortModifierConfig : ModifierConfigBase
     {
-        [DefaultValue(60)] public int FrameCount { get; internal set; } = 60;
+        [DefaultValue(32)] public int FrameCount { get; internal set; } = 32;
         public LedColorProvider FallbackColor { get; internal set; } = new LedColorProvider();
     }
 
     public class DelayPortModifier : PortModifierBase<DelayPortModifierConfig>
     {
-        private readonly Queue<List<LedColor>> _queue;
+        private readonly Dictionary<PortIdentifier, Queue<List<LedColor>>> _portQueues;
 
         public DelayPortModifier(DelayPortModifierConfig config) : base(config)
         {
-            _queue = new Queue<List<LedColor>>();
+            _portQueues = new Dictionary<PortIdentifier, Queue<List<LedColor>>>();
         }
 
         public override void Apply(ref List<LedColor> colors, PortIdentifier port, ICacheProvider cache)
         {
-            _queue.Enqueue(colors);
+            if (!_portQueues.ContainsKey(port))
+                _portQueues.Add(port, new Queue<List<LedColor>>());
 
-            if (_queue.Count < Config.FrameCount)
+            var queue = _portQueues[port];
+            queue.Enqueue(colors);
+
+            if (queue.Count < Config.FrameCount)
             {
                 colors = Config.FallbackColor.Get(colors.Count).ToList();
                 return;
             }
 
-            while (_queue.Count >= Config.FrameCount)
-                colors = _queue.Dequeue();
+            while (queue.Count >= Config.FrameCount)
+                colors = queue.Dequeue();
         }
     }
 }
