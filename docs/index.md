@@ -16,15 +16,18 @@ Welcome to the TTController documentation!
 
 1. Unpack all files to the desired directory.
 2. Run **TTController.Service.exe**.
+
+**Note:** A quick test to see if the service will work properly is to run debug report found in `Main Menu -> Debug -> Report` menu. It should list all detected controllers, sensors and plugins.
+{: .notice--info}
+
 3. Select **Manage Service** from the menu and select **Install** option to install the service.
 
 **Important:** If you can'f find the **TTController.Service.exe** file you propably downloaded the source code. Check the [<i class="fab fa-github"/> releases](https://github.com/MoshiMoshi0/TTController/releases) tab for all released builds.
 {: .notice--warning}
 
-**Note:** The service will start automatically and will create a default empty config. See [Configuring the service](#configuring-the-service) section on how to configure it.
-{: .notice--info}
+**Important:** You cannot move the service files once it is installed. You have to [uninstall](#uninstalling-the-service) it first, and reinstall after moving to a desired location.
 
-**Note:** A quick test to see if the service will work properly is to run debug report found in `Main Menu -> Debug -> Report` menu. It should list all detected controllers, sensors and plugins.
+**Note:** The service will start automatically and will create a default empty config. See [Configuring the service](#configuring-the-service) section on how to configure it.
 {: .notice--info}
 
 ### Configuring the service
@@ -35,6 +38,8 @@ Welcome to the TTController documentation!
 
 **Note:** See [Service Config]({{ "/config/service" | relative_url }}) as a starting point.
 {: .notice--info}
+
+**Note:** It is recommended to use the [Console mode](console-mode) when testing and/or updating the configuration.
 
 **Note:** You can use `Main Menu -> Debug -> Controllers` menu to find your port identifiers and `Main Menu -> Debug -> Sensors` menu to find your sensor identifiers to be used in **config.json**.
 {: .notice--info}
@@ -49,6 +54,13 @@ Welcome to the TTController documentation!
 2. Remove all files except **config.json**.
 3. Unpack newest release to the same directory.
 4. Start the service using **Manage Service** menu.
+
+### Console mode
+
+1. If the service is running, stop it using **Manage Service** menu.
+2. Select `Main Menu -> Run in console` option.
+
+In console mode the service will output its logs to the console window with some additional debug information to help diagnose any issues with the service or configuration. Console mode does not require the service to be installed.
 
 ## How to read the docs
 
