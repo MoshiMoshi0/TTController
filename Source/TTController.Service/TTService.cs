@@ -250,6 +250,12 @@ namespace TTController.Service
             Logger.Info("Applying computer state profile: {0}", state);
             foreach (var profile in _config.ComputerStateProfiles.Where(p => p.StateType == state))
             {
+                var speed = profile.Speed;
+                var colorMap = profile.Effect?.GetColors(profile.Ports, _cache);
+
+                if (speed == null && colorMap == null)
+                    continue;
+
                 foreach (var port in profile.Ports)
                 {
                     var controller = _deviceManager.GetController(port);
@@ -259,11 +265,18 @@ namespace TTController.Service
                     lock (controller)
                     {
                         var isDirty = false;
-                        if (profile.Speed.HasValue)
+                        if (speed != null)
                             isDirty |= controller.SetSpeed(port.Id, profile.Speed.Value);
 
-                        if (profile.EffectType != null && profile.Color != null)
-                            isDirty |= controller.SetRgb(port.Id, profile.EffectType, profile.Color.Get(_cache.GetDeviceConfig(port).LedCount));
+                        var colors = colorMap?[port];
+                        if (colors != null)
+                        {
+                            var config = _cache.GetPortConfig(port);
+                            foreach (var modifier in config.ColorModifiers)
+                                modifier.Apply(ref colors, port, _cache.AsReadOnly());
+
+                            isDirty |= controller.SetRgb(port.Id, profile.Effect.EffectType, colors);
+                        }
 
                         if (state == ComputerStateType.Boot && isDirty)
                             controller.SaveProfile();
@@ -395,12 +408,8 @@ namespace TTController.Service
                         continue;
 
                     var config = _cache.GetPortConfig(port);
-                    if(config.ColorModifiers != null)
-                        foreach (var modifier in config.ColorModifiers)
-                            modifier.Apply(ref colors, port, _cache.AsReadOnly());
-
-                    if (colors == null)
-                        continue;
+                    foreach (var modifier in config.ColorModifiers)
+                        modifier.Apply(ref colors, port, _cache.AsReadOnly());
 
                     if (!config.IgnoreColorCache && colors.ContentsEqual(_cache.GetPortColors(port)))
                         continue;
