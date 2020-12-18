@@ -2,46 +2,68 @@
 using System.Collections.Generic;
 using CSCore;
 using CSCore.DSP;
+using TTController.Common;
 
 namespace TTController.Plugin.SoundEffect
 {
-    public abstract class SpectrumBase
+    public enum ScalingStrategy
     {
-        private int _fftSize;
+        Decibel,
+        Linear,
+        Sqrt
+    }
+
+    public class SpectrumConfig
+    {
+        public FftSize FftSize { get; set; } = FftSize.Fft1024;
+        public int MinDbValue { get; set; } = -90;
+        public int MaxDbValue { get; set; } = 0;
+        public int DbScale => MaxDbValue - MinDbValue;
+        public float ScalingFactor { get; set; } = 2.0f;
+        public int MaximumFrequency { get; set; } = 20000;
+        public int MinimumFrequency { get; set; } = 20;
+        public bool IsXLogScale { get; set; }
+        public ScalingStrategy ScalingStrategy { get; set; }
+        public bool UseAverage { get; set; }
+    }
+
+    public class SpectrumBase
+    {
+        private readonly SpectrumConfig _config;
+
         private int _maxFftIndex;
         private int _maximumFrequencyIndex;
         private int _minimumFrequencyIndex;
         private int[] _spectrumIndexMax;
 
+        protected ISpectrumProvider SpectrumProvider { get; private set; }
+
         protected int SpectrumResolution { get; set; }
 
-        public int MinDbValue { get; set; } = -90;
-        public int MaxDbValue { get; set; } = 0;
-        public int DbScale => MaxDbValue - MinDbValue;
-        public double ScalingFactor { get; set; } = 2.0;
-        public int MaximumFrequency { get; set; } = 20000;
-        public int MinimumFrequency { get; set; } = 20;
-        public ISpectrumProvider SpectrumProvider { get; set; }
-        public bool IsXLogScale { get; set; }
-        public ScalingStrategy ScalingStrategy { get; set; }
-        public bool UseAverage { get; set; }
-
-        public FftSize FftSize
+        public SpectrumBase(ISpectrumProvider spectrumProvider, SpectrumConfig config)
         {
-            get => (FftSize)_fftSize;
-            set
-            {
-                _fftSize = (int)value;
-                _maxFftIndex = _fftSize / 2 - 1;
-            }
+            SpectrumProvider = spectrumProvider;
+
+            _config = config;
+            _maxFftIndex = (int)_config.FftSize / 2 - 1;
         }
 
-        protected SpectrumBase() { }
-
-        protected virtual void UpdateFrequencyMapping()
+        public bool UpdateFrequencyMappingIfNecessary(int count)
         {
-            _maximumFrequencyIndex = Math.Min(SpectrumProvider.GetFftBandIndex(MaximumFrequency) + 1, _maxFftIndex);
-            _minimumFrequencyIndex = Math.Min(SpectrumProvider.GetFftBandIndex(MinimumFrequency), _maxFftIndex);
+            if (count != SpectrumResolution)
+            {
+                SpectrumResolution = count;
+                UpdateFrequencyMapping();
+                return true;
+            }
+
+            return false;
+        }
+
+        public void UpdateFrequencyMapping()
+        {
+            _maximumFrequencyIndex = Math.Min(SpectrumProvider.GetFftBandIndex(_config.MaximumFrequency) + 1, _maxFftIndex);
+            _minimumFrequencyIndex = Math.Min(SpectrumProvider.GetFftBandIndex(_config.MinimumFrequency), _maxFftIndex);
 
             var actualResolution = SpectrumResolution;
             var indexCount = _maximumFrequencyIndex - _minimumFrequencyIndex;
@@ -50,7 +72,7 @@ namespace TTController.Plugin.SoundEffect
             _spectrumIndexMax = _spectrumIndexMax.CheckBuffer(actualResolution, false);
             for (var i = 1; i < actualResolution; i++)
             {
-                if (!IsXLogScale)
+                if (!_config.IsXLogScale)
                 {
                     _spectrumIndexMax[i - 1] = _minimumFrequencyIndex + (int)(i * linearIndexBucketSize);
                 }
@@ -67,28 +89,28 @@ namespace TTController.Plugin.SoundEffect
                 _spectrumIndexMax[_spectrumIndexMax.Length - 1] = _maximumFrequencyIndex;
         }
 
-        protected List<SpectrumPointData> CalculateSpectrumPoints(double maxValue, float[] fftBuffer)
+        public List<SpectrumPoint> CalculateSpectrumPoints(float maxValue, float[] fftBuffer)
         {
-            var dataPoints = new List<SpectrumPointData>();
+            var dataPoints = new List<SpectrumPoint>();
 
-            var value = 0.0;
-            var value0 = 0.0;
-            var lastValue = 0.0;
+            var value = 0.0f;
+            var value0 = 0.0f;
+            var lastValue = 0.0f;
             var actualMaxValue = maxValue;
             var spectrumPointIndex = 0;
 
             for (var i = _minimumFrequencyIndex; i <= _maximumFrequencyIndex; i++)
             {
-                switch (ScalingStrategy)
+                switch (_config.ScalingStrategy)
                 {
                     case ScalingStrategy.Decibel:
-                        value0 = ((20 * Math.Log10(fftBuffer[i]) - MinDbValue) / DbScale) * actualMaxValue;
+                        value0 = ((20 * (float)Math.Log10(fftBuffer[i]) - _config.MinDbValue) / _config.DbScale) * actualMaxValue;
                         break;
                     case ScalingStrategy.Linear:
-                        value0 = fftBuffer[i] * ScalingFactor * actualMaxValue;
+                        value0 = fftBuffer[i] * _config.ScalingFactor * actualMaxValue;
                         break;
                     case ScalingStrategy.Sqrt:
-                        value0 = Math.Sqrt(fftBuffer[i]) * ScalingFactor * actualMaxValue;
+                        value0 = (float)Math.Sqrt(fftBuffer[i]) * _config.ScalingFactor * actualMaxValue;
                         break;
                 }
 
@@ -103,13 +125,13 @@ namespace TTController.Plugin.SoundEffect
                     if (value > maxValue)
                         value = maxValue;
 
-                    if (UseAverage && spectrumPointIndex > 0)
-                        value = (lastValue + value) / 2.0;
+                    if (_config.UseAverage && spectrumPointIndex > 0)
+                        value = (lastValue + value) / 2.0f;
 
-                    dataPoints.Add(new SpectrumPointData(spectrumPointIndex, value));
+                    dataPoints.Add(new SpectrumPoint(spectrumPointIndex, value));
 
                     lastValue = value;
-                    value = 0.0;
+                    value = 0.0f;
                     spectrumPointIndex++;
                     recalc = false;
                 }
