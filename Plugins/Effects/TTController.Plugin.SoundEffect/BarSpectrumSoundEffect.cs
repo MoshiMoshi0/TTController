@@ -35,7 +35,11 @@ namespace TTController.Plugin.SoundEffect
             {
                 var totalLedCount = ports.Select(p => cache.GetDeviceConfig(p).LedCount).Sum();
                 var colors = GenerateColors(totalLedCount, points);
-                return EffectUtils.SplitColorsPerPort(colors, ports, cache);
+
+                if (Config.Mirror)
+                    return EffectUtils.SplitMirroredColorsPerPort(colors, ports, cache);
+                else
+                    return EffectUtils.SplitColorsPerPort(colors, ports, cache);
             }
 
             return null;
@@ -58,26 +62,9 @@ namespace TTController.Plugin.SoundEffect
             }
 
             if (Config.Mirror)
-            {
-                var colors = Enumerable.Range(0, count).Select(_ => new LedColor()).ToList();
-                var isOdd = count % 2 != 0;
-                var halfCount = count / 2 + (isOdd ? 0 : -1);
-                for (var i = 0; i <= halfCount; i++)
-                {
-                    var color = GetColor(i, halfCount);
-                    colors[i] = color;
-                    if (!isOdd)
-                        colors[count - i - 1] = color;
-                    else if (i != 0 && (i != count / 2 || isOdd))
-                        colors[count - i] = color;
-                }
-
-                return colors;
-            }
+                return EffectUtils.GenerateMirroredColors(count, (index, halfSize) => GetColor(index, halfSize));
             else
-            {
                 return Enumerable.Range(0, count).Select(x => GetColor(x, count)).ToList();
-            }
         }
     }
 }
