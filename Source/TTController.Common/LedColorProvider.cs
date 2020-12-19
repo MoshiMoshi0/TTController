@@ -24,7 +24,7 @@ namespace TTController.Common
         {
             if (Full != null) return Enumerable.Repeat(Full.Value, size);
             if (PerLed != null) return size <= PerLed.Count ? PerLed : PerLed.Concat(Enumerable.Repeat(new LedColor(0, 0, 0), size - PerLed.Count));
-            if (Gradient != null) return Enumerable.Range(0, size).Select(x => Gradient.GetColor(x / (size - 1d)));
+            if (Gradient != null) return Gradient.GetColors(size);
 
             return Enumerable.Repeat(new LedColor(0, 0, 0), size);
         }

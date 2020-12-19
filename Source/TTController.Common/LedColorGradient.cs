@@ -35,6 +35,12 @@ namespace TTController.Common
             return new LedColor((byte)Math.Round(r), (byte)Math.Round(g), (byte)Math.Round(b));
         }
 
+        public IEnumerable<LedColor> GetColors(int count)
+        {
+            for (var i = 0; i < count; i++)
+                yield return GetColor(i / (count - 1.0f));
+        }
+
         public (double, double, double) GetColorSmooth(double location)
         {
             if(_points.Count == 0)
