@@ -9,8 +9,6 @@ namespace TTController.Common.Plugin
 {
     public abstract class ModifierBase<T> : IModifierBase where T : ModifierConfigBase
     {
-        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         protected T Config { get; private set; }
 
         protected ModifierBase(T config)

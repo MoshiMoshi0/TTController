@@ -1,10 +1,13 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Runtime.InteropServices;
 
 namespace TTController.Plugin.RazerConnectEffect
 {
     public class RzChromaBroadcastManager : IDisposable
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private readonly RzBroadcastCallback _callback;
         private readonly int[] _colors;
 
@@ -37,12 +40,16 @@ namespace TTController.Plugin.RazerConnectEffect
                 if (data != IntPtr.Zero)
                 {
                     Marshal.Copy(data, _colors, 0, RzChromaBroadcastNative.BroadcastColorCount);
+
+                    Logger.Trace("Razer broadcast colors updated");
                     ColorChanged?.Invoke(this, new RzBroadcastColorChangedEventArgs(_colors));
                 }
             }
             else if (message == 2)
             {
-                ConnectionChanged?.Invoke(this, new RzBroadcastConnectionChangedEventArgs(data.ToInt32() == 1));
+                var connected = data.ToInt32() == 1;
+                Logger.Trace("Razer broadcast connection changed: {0}", connected);
+                ConnectionChanged?.Invoke(this, new RzBroadcastConnectionChangedEventArgs(connected));
             }
 
             return 0;

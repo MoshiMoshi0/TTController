@@ -8,8 +8,6 @@ namespace TTController.Common.Plugin
 {
     public abstract class SpeedControllerBase<T> : ISpeedControllerBase where T : SpeedControllerConfigBase
     {
-        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         protected T Config { get; private set; }
 
         protected SpeedControllerBase(T config)

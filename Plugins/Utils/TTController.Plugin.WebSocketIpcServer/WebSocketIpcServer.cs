@@ -1,4 +1,4 @@
-﻿using NLog;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,6 +21,8 @@ namespace TTController.Service.Ipc
 
     public class WebSocketIpcServer : IpcServerBase<WebSocketIpcServerConfig>
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private readonly IPAddress _address;
         private readonly int _port;
         private readonly HttpListener _listener;
@@ -40,7 +42,13 @@ namespace TTController.Service.Ipc
         public override void RegisterClient(IIpcClient client)
         {
             base.RegisterClient(client);
-            _listener.Prefixes.Add($"http://{_address}:{_port}/{client.IpcName}/");
+
+            var uri = $"{_address}:{_port}/{client.IpcName}/";
+            if (!_listener.Prefixes.Contains(uri, StringComparer.OrdinalIgnoreCase))
+            {
+                Logger.Info("Registered new websocket url: \"ws://{0}\"", uri);
+                _listener.Prefixes.Add($"http://{uri}");
+            }
         }
 
         public override void Start()

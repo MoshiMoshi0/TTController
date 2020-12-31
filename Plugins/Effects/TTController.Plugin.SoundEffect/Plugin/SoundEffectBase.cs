@@ -5,6 +5,7 @@ using CSCore;
 using CSCore.DSP;
 using CSCore.SoundIn;
 using CSCore.Streams;
+using NLog;
 using TTController.Common;
 using TTController.Common.Plugin;
 
@@ -14,6 +15,8 @@ namespace TTController.Plugin.SoundEffect
 
     public abstract class SoundEffectBase<T> : EffectBase<T> where T : SoundEffectConfigBase
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         protected WasapiLoopbackCapture SoundIn { get; private set; }
 
         private bool _initialized;

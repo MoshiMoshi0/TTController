@@ -45,14 +45,12 @@ namespace TTController.Plugin.RazerConnectEffect
 
         private void OnColorUpdate(object sender, RzBroadcastColorChangedEventArgs e)
         {
-            Logger.Trace("Razer broadcast colors updated");
             for (var i = 0; i < _colors.Length; i++)
                 _colors[i] = LedColor.Unpack(e.Colors[i]);
         }
 
         private void OnConnectionUpdate(object sender, RzBroadcastConnectionChangedEventArgs e)
         {
-            Logger.Trace("Razer broadcast connection changed: {0}", e.Connected);
             _connected = e.Connected;
         }
 

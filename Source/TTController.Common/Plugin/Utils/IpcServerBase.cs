@@ -1,4 +1,4 @@
-﻿using NLog;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +9,6 @@ namespace TTController.Common.Plugin
 {
     public abstract class IpcServerBase<T> : IIpcServer where T : IpcServerConfigBase
     {
-        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         public T Config { get; private set; }
         protected List<IIpcClient> Clients { get; }
 
