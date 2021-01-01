@@ -76,6 +76,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Devices", "Devices", "{A1AD8FD0-8BA7-4278-B7A8-2E3EF9D13579}"
 	ProjectSection(SolutionItems) = preProject
 		Plugins\Devices\FloeRiing.json = Plugins\Devices\FloeRiing.json
+		Plugins\Devices\LedStrip12.json = Plugins\Devices\LedStrip12.json
+		Plugins\Devices\LedStrip24.json = Plugins\Devices\LedStrip24.json
+		Plugins\Devices\LedStrip36.json = Plugins\Devices\LedStrip36.json
 		Plugins\Devices\Level20Desk.json = Plugins\Devices\Level20Desk.json
 		Plugins\Devices\PurePlus.json = Plugins\Devices\PurePlus.json
 		Plugins\Devices\Riing.json = Plugins\Devices\Riing.json
@@ -120,7 +123,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.Reverse
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.BlendEffect", "Plugins\Effects\TTController.Plugin.BlendEffect\TTController.Plugin.BlendEffect.csproj", "{FD094EA9-D258-4C04-8E91-D9C85C5568D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.DelayPortModifier", "Plugins\Modifiers\TTController.Plugin.DelayPortModifier\TTController.Plugin.DelayPortModifier.csproj", "{7982B97B-9106-4F28-895D-051C46547533}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.DelayPortModifier", "Plugins\Modifiers\TTController.Plugin.DelayPortModifier\TTController.Plugin.DelayPortModifier.csproj", "{7982B97B-9106-4F28-895D-051C46547533}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

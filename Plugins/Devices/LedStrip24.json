@@ -1,0 +1,5 @@
+﻿{
+  "Name": "LedStrip24",
+  "LedCount": 24,
+  "Zones": [ 24 ]
+}
