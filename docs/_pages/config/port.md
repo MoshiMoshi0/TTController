@@ -83,7 +83,7 @@ Used by effects to know exact led count and zones of each device<br>This ensures
 ### ColorModifiers
 <div class="variable-block" markdown="block">
 
-List of [Led Color Modifier]({{ "/common/led-color-modifier" | relative_url }}) objects to use for modifying colors before they are set on [Ports](#ports).
+List of [Led Color Modifier]({{ "/plugins/led-color-modifier" | relative_url }}) objects to use for modifying colors before they are set on [Ports](#ports).
 
 **Required:** No<br>
 **Default value:**

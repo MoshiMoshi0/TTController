@@ -147,7 +147,7 @@ Intance of [Ipc Server]({{ "/plugins/ipc-server" | relative_url }}) to use for i
 ### IpcServerEnabled
 <div class="variable-block" markdown="block">
 
-Enables [IpcServer](#ipcenabled) instance.
+Enables [IpcServer](#ipcserver) instance.
 
 **Required:** No<br>
 **Default value:**
@@ -345,7 +345,7 @@ Determines timer delay for updating led colors.
 
 Determines timer delay for updating the internal ipc service client.
 
-**Note:** Valid only if [IpcServerEnabled](#ipcenabled) is set to `true` and [IpcServer](#ipcenabled) is set to a [IpcServer]({{ "/plugins/ipc-server" | relative_url }}) instance.
+**Note:** Valid only if [IpcServerEnabled](#ipcserverenabled) is set to `true` and [IpcServer](#ipcserver) is set to a [IpcServer]({{ "/plugins/ipc-server" | relative_url }}) instance.
 {: .notice--info}
 
 **Note:** Value in miliseconds.
