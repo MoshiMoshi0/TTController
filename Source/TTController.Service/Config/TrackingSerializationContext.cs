@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TTController.Service.Utils;
 
 namespace TTController.Service.Config
@@ -17,7 +15,6 @@ namespace TTController.Service.Config
             foreach(var type in types)
                 if (!_objects.ContainsKey(type))
                     _objects.Add(type, new List<object>());
-
         }
 
         public void Handle(object o)

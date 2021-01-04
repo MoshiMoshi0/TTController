@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using CSCore;
-using CSCore.DSP;
 using CSCore.SoundIn;
-using CSCore.Streams;
 using NLog;
 using TTController.Common;
 using TTController.Common.Plugin;

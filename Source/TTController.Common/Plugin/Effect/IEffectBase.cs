@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using LibreHardwareMonitor.Hardware;
 
 namespace TTController.Common.Plugin
 {

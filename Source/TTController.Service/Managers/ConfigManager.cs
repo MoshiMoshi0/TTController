@@ -6,7 +6,6 @@ using System.Linq;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Serialization;
 using NLog;
 using TTController.Common;
 using TTController.Service.Config;
@@ -29,7 +28,6 @@ namespace TTController.Service.Managers
             _filename = filename;
             _deviceConfigs = new Dictionary<string, DeviceConfig>();
 
-            
             var converters = typeof(JsonConverter).FindImplementations()
                     .Where(t => (t.Namespace?.StartsWith("TTController") ?? false) && !t.IsGenericType && !t.IsAbstract)
                     .Select(t => (JsonConverter)Activator.CreateInstance(t))

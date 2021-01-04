@@ -105,7 +105,7 @@ namespace TTController.Service
             {
                 _ipcClient = new ServiceIpcClient(_config.Profiles.SelectMany(p => p.Ports), _cache.AsReadOnly());
                 _pluginStore.Add(_ipcClient);
-                _config.IpcServer.Register(_ipcClient); 
+                _config.IpcServer.Register(_ipcClient);
 
                 foreach (var plugin in serializationContext.Get<IIpcClient>())
                     _config.IpcServer.Register(plugin);

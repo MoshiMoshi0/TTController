@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using TTController.Common.Plugin;
 
 namespace TTController.Plugin.Level20DeskController

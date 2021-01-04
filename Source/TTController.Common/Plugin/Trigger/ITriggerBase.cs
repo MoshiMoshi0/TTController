@@ -1,6 +1,4 @@
-﻿using LibreHardwareMonitor.Hardware;
-using System;
-using System.Collections.Generic;
+﻿using System;
 
 namespace TTController.Common.Plugin
 {

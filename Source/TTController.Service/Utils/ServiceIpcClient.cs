@@ -1,12 +1,9 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using NLog;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
@@ -157,7 +154,6 @@ namespace TTController.Service.Utils
 
             _cancellationSource.Dispose();
         }
-
 
         public bool TryRead(out string item) => _writerChannel.Reader.TryRead(out item);
         public ValueTask<bool> WaitToReadAsync(CancellationToken cancellationToken = default) => _writerChannel.Reader.WaitToReadAsync( cancellationToken);
