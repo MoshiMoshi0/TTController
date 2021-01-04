@@ -8,7 +8,7 @@ namespace TTController.Common.Plugin
 {
     public interface IIpcServer : IPlugin, IDisposable
     {
-        void RegisterClient(IIpcClient client);
+        void Register(IIpcClient client);
         void Start();
     }
 }

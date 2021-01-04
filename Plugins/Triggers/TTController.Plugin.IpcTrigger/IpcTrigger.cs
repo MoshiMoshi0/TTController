@@ -34,7 +34,7 @@ namespace TTController.Plugin.IpcTrigger
 
             try
             {
-                var document = JToken.Parse(data);
+                var document = JObject.Parse(data);
                 _enabled = document["Enabled"].ToObject<bool>();
             }
             catch (JsonReaderException) { }

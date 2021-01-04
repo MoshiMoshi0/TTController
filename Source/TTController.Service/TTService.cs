@@ -48,10 +48,7 @@ namespace TTController.Service
             Logger.Info("Initializing service, version \"{0}\"", FileVersionInfo.GetVersionInfo(Assembly.GetCallingAssembly().Location)?.ProductVersion);
             PluginLoader.LoadAll(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Plugins"));
 
-            var serializationContext = new TrackingSerializationContext();
-            serializationContext.Track(typeof(IPlugin));
-            serializationContext.Track(typeof(Identifier));
-
+            var serializationContext = new TrackingSerializationContext(typeof(IPlugin), typeof(Identifier));
             _configManager = new ConfigManager("config.json", serializationContext);
             if (!_configManager.LoadOrCreateConfig())
                 return false;
@@ -106,12 +103,12 @@ namespace TTController.Service
 
             if (_config.IpcServerEnabled && _config.IpcServer != null)
             {
-                _ipcClient = new ServiceIpcClient();
+                _ipcClient = new ServiceIpcClient(_config.Profiles.SelectMany(p => p.Ports), _cache.AsReadOnly());
                 _pluginStore.Add(_ipcClient);
-                _config.IpcServer.RegisterClient(_ipcClient);
+                _config.IpcServer.Register(_ipcClient); 
 
                 foreach (var plugin in serializationContext.Get<IIpcClient>())
-                    _config.IpcServer.RegisterClient(plugin);
+                    _config.IpcServer.Register(plugin);
                 _config.IpcServer.Start();
             }
 
@@ -122,8 +119,6 @@ namespace TTController.Service
             _timerManager.RegisterTimer(_config.DeviceSpeedTimerInterval, DeviceSpeedTimerCallback);
             _timerManager.RegisterTimer(_config.DeviceRgbTimerInterval, DeviceRgbTimerCallback);
 
-            if (_config.IpcClientTimerInterval > 0)
-                _timerManager.RegisterTimer(_config.IpcClientTimerInterval, IpcClientTimerCallback);
             if(LogManager.Configuration.LoggingRules.Any(r => r.IsLoggingEnabledForLevel(LogLevel.Debug)))
                 _timerManager.RegisterTimer(_config.DebugTimerInterval, DebugTimerCallback);
 
@@ -422,15 +417,6 @@ namespace TTController.Service
                 }
             }
 
-            return true;
-        }
-
-        public bool IpcClientTimerCallback()
-        {
-            if (_ipcClient == null)
-                return false;
-
-            _ipcClient.Update(_config.Profiles.SelectMany(p => p.Ports), _cache.AsReadOnly());
             return true;
         }
 

@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace TTController.Common
 {
@@ -23,6 +25,12 @@ namespace TTController.Common
 
             return true;
         }
+
+        public static Task<T> WithCancellation<T>(this Task<T> task, CancellationToken cancellationToken)
+            => task.IsCompleted ? task : task.ContinueWith(completedTask => completedTask.GetAwaiter().GetResult(),
+                                                           cancellationToken,
+                                                           TaskContinuationOptions.ExecuteSynchronously,
+                                                           TaskScheduler.Default);
 
         public static void Deconstruct<TKey, TValue>(this KeyValuePair<TKey, TValue> kvp, out TKey key, out TValue value)
         {

@@ -1,6 +1,10 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using NLog;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -11,61 +15,126 @@ using TTController.Common.Plugin;
 
 namespace TTController.Service.Utils
 {
-    public class ServiceIpcClient : IIpcClient
+    public class ServiceIpcClient : IIpcWriterClient, IIpcReaderClient
     {
-        private readonly Task _sendTask;
-        private readonly  CancellationTokenSource _cancellationSource;
-        private readonly EventWaitHandle _dirtyWaitHandle;
-        private readonly List<ServiceIpcDataItem> _ipcData;
+        private readonly List<PortIdentifier> _ports;
+        private readonly ICacheProvider _cache;
+
+        private readonly Task _receiveTask;
+        private readonly ConcurrentDictionary<DataType, (Task Task, CancellationTokenSource CancellationSource)> _sendTasks;
+
+        private readonly CancellationTokenSource _cancellationSource;
+        private readonly Channel<string> _readerChannel;
+        private readonly Channel<string> _writerChannel;
 
         public string IpcName => "service";
 
-        public Channel<string> SendChannel { get; }
-        public Channel<string> ReceiveChannel { get; }
-
-        public ServiceIpcClient()
+        public ServiceIpcClient(IEnumerable<PortIdentifier> ports, ICacheProvider cache)
         {
-            ReceiveChannel = null;
-            SendChannel = Channel.CreateBounded<string>(1);
+            _ports = ports.ToList();
+            _cache = cache;
+
+            _readerChannel = Channel.CreateBounded<string>(1);
+            _writerChannel = Channel.CreateBounded<string>(1);
 
             _cancellationSource = new CancellationTokenSource();
-            _sendTask = Task.Factory.StartNew(() => SendAsync(_cancellationSource.Token), _cancellationSource.Token);
-            _dirtyWaitHandle = new AutoResetEvent(false);
-            _ipcData = new List<ServiceIpcDataItem>();
+
+            _receiveTask = Task.Factory.StartNew(() => ReceiveAsync(_cancellationSource.Token), _cancellationSource.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default).Unwrap();
+            _sendTasks = new ConcurrentDictionary<DataType, (Task Task, CancellationTokenSource CancellationSource)>();
         }
 
-        private async void SendAsync(CancellationToken cancellationToken)
+        private async Task SendAsync(CancellationToken cancellationToken, DataType type, int interval)
         {
             try
             {
+                var settings = JsonConvert.DefaultSettings();
+                settings.NullValueHandling = NullValueHandling.Include;
+                settings.DefaultValueHandling = DefaultValueHandling.Include;
+                settings.Formatting = Formatting.None;
+
                 while (!cancellationToken.IsCancellationRequested)
                 {
-                    await _dirtyWaitHandle.WaitOneAsync(cancellationToken);
-                    await SendChannel.Writer.WaitToWriteAsync(cancellationToken);
+                    var data = default(string);
+                    switch (type)
+                    {
+                        case DataType.Colors:
+                            data = JsonConvert.SerializeObject(_ports.Select(p => new { Port = p, Colors = _cache.GetPortColors(p) }), settings);
+                            break;
+                        case DataType.Speed:
+                            data = JsonConvert.SerializeObject(_ports.Select(p => new { Port = p, Speed = _cache.GetPortSpeed(p) }), settings);
+                            break;
+                        case DataType.Data:
+                            data = JsonConvert.SerializeObject(_ports.Select(p => new { Port = p, Data = _cache.GetPortData(p) }), settings);
+                            break;
+                        case DataType.Config:
+                            data = JsonConvert.SerializeObject(_ports.Select(p => new { Port = p, Config = _cache.GetPortConfig(p) }), settings);
+                            break;
+                    }
 
-                    var data = JsonConvert.SerializeObject(_ipcData, Formatting.None);
-                    await SendChannel.Writer.WriteAsync(data, cancellationToken);
+                    await _writerChannel.Writer.WaitToWriteAsync(cancellationToken);
+                    await _writerChannel.Writer.WriteAsync(data, cancellationToken);
+                    await Task.Delay(interval);
                 }
             }
             catch (OperationCanceledException) { }
         }
 
-        public void Update(IEnumerable<PortIdentifier> ports, ICacheProvider cache)
+        private async Task ReceiveAsync(CancellationToken cancellationToken)
         {
-            _ipcData.Clear();
-            foreach (var port in ports)
+            try
             {
-                _ipcData.Add(new ServiceIpcDataItem()
+                while (!cancellationToken.IsCancellationRequested)
                 {
-                    Port = port,
-                    Data = cache.GetPortData(port),
-                    Colors = cache.GetPortColors(port),
-                    Speed = cache.GetPortSpeed(port),
-                    DeviceConfig = cache.GetDeviceConfig(port)
-                });
-            }
+                    var result = await _readerChannel.Reader.ReadAsync(cancellationToken);
 
-            _dirtyWaitHandle.Set();
+                    if (string.IsNullOrWhiteSpace(result))
+                        continue;
+
+                    try
+                    {
+                        var document = JObject.Parse(result);
+
+                        if (document.TryGetValue("Enable", StringComparison.OrdinalIgnoreCase, out var enableToken)
+                         && document.TryGetValue("Interval", StringComparison.OrdinalIgnoreCase, out var intervalToken)
+                         && Enum.TryParse<DataType>(enableToken.Value<string>(), out var enableType))
+                        {
+                            Enable(enableType, intervalToken.Value<int>());
+                        }
+                        else if (document.TryGetValue("Disable", StringComparison.OrdinalIgnoreCase, out var disableToken)
+                              && Enum.TryParse<DataType>(disableToken.Value<string>(), out var disableType))
+                        {
+                            Disable(disableType);
+                        }
+                    }
+                    catch (JsonReaderException) { }
+                }
+            }
+            catch (OperationCanceledException) { }
+        }
+
+        private void Enable(DataType type, int interval)
+        {
+            if (_sendTasks.ContainsKey(type))
+                return;
+
+            var cancellationSource = CancellationTokenSource.CreateLinkedTokenSource(_cancellationSource.Token);
+            var task = Task.Factory.StartNew(() => SendAsync(cancellationSource.Token, type, interval), _cancellationSource.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default).Unwrap();
+
+            _sendTasks.TryAdd(type, (task, cancellationSource));
+        }
+
+        private void Disable(DataType type)
+        {
+            if (!_sendTasks.ContainsKey(type))
+                return;
+
+            var (task, cancellationSource) = _sendTasks[type];
+
+            cancellationSource.Cancel();
+            task.Wait();
+            cancellationSource.Dispose();
+
+            _sendTasks.TryRemove(type, out var _);
         }
 
         public void Dispose()
@@ -77,18 +146,33 @@ namespace TTController.Service.Utils
         protected virtual void Dispose(bool disposing)
         {
             _cancellationSource.Cancel();
-            _sendTask.Wait();
+            Task.WaitAll(_receiveTask);
+
+            foreach (var (task, cancellationSource) in _sendTasks.Values)
+            {
+                cancellationSource.Cancel();
+                task.Wait();
+                cancellationSource.Dispose();
+            }
+
             _cancellationSource.Dispose();
-            _dirtyWaitHandle.Dispose();
         }
 
-        private class ServiceIpcDataItem
+
+        public bool TryRead(out string item) => _writerChannel.Reader.TryRead(out item);
+        public ValueTask<bool> WaitToReadAsync(CancellationToken cancellationToken = default) => _writerChannel.Reader.WaitToReadAsync( cancellationToken);
+        public ValueTask<string> ReadAsync(CancellationToken cancellationToken = default) => _writerChannel.Reader.ReadAsync(cancellationToken);
+
+        public bool TryWrite(string item) => _readerChannel.Writer.TryWrite(item);
+        public ValueTask<bool> WaitToWriteAsync(CancellationToken cancellationToken = default) => _readerChannel.Writer.WaitToWriteAsync(cancellationToken);
+        public ValueTask WriteAsync(string item, CancellationToken cancellationToken = default) => _readerChannel.Writer.WriteAsync(item, cancellationToken);
+
+        private enum DataType
         {
-            public PortIdentifier Port { get; set; }
-            public List<LedColor> Colors { get; set; }
-            public byte? Speed { get; set; }
-            public PortData Data { get; set; }
-            public DeviceConfig DeviceConfig { get; set; }
+            Colors,
+            Speed,
+            Data,
+            Config
         }
     }
 }

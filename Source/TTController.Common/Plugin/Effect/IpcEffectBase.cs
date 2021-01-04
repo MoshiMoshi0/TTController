@@ -8,22 +8,19 @@ using System.Threading.Tasks;
 
 namespace TTController.Common.Plugin
 {
-    public abstract class IpcEffectBase<T> : EffectBase<T>, IIpcClient where T : EffectConfigBase
+    public abstract class IpcEffectBase<T> : EffectBase<T>, IIpcReaderClient where T : EffectConfigBase
     {
         private readonly CancellationTokenSource _cancellationSource;
         private readonly Task _receiveTask;
+        private readonly Channel<string> _channel;
 
         public abstract string IpcName { get; }
-        public Channel<string> SendChannel { get; }
-        public Channel<string> ReceiveChannel { get; }
 
         protected IpcEffectBase(T config) : base(config)
         {
-            SendChannel = null;
-            ReceiveChannel = Channel.CreateBounded<string>(8);
-
+            _channel = Channel.CreateBounded<string>(8);
             _cancellationSource = new CancellationTokenSource();
-            _receiveTask = Task.Factory.StartNew(() => ReceiveAsync(_cancellationSource.Token), _cancellationSource.Token);
+            _receiveTask = Task.Factory.StartNew(() => ReceiveAsync(_cancellationSource.Token), _cancellationSource.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default).Unwrap();
         }
 
         protected abstract void OnDataReceived(string data);
@@ -37,17 +34,21 @@ namespace TTController.Common.Plugin
             _cancellationSource.Dispose();
         }
 
-        private async void ReceiveAsync(CancellationToken cancellationToken)
+        private async Task ReceiveAsync(CancellationToken cancellationToken)
         {
             try
             {
                 while (!cancellationToken.IsCancellationRequested)
                 {
-                    var result = await ReceiveChannel.Reader.ReadAsync(cancellationToken);
+                    var result = await _channel.Reader.ReadAsync(cancellationToken);
                     OnDataReceived(result);
                 }
             }
             catch (OperationCanceledException) { }
         }
+
+        public bool TryWrite(string item) => _channel.Writer.TryWrite(item);
+        public ValueTask<bool> WaitToWriteAsync(CancellationToken cancellationToken = default) => _channel.Writer.WaitToWriteAsync(cancellationToken);
+        public ValueTask WriteAsync(string item, CancellationToken cancellationToken = default) => _channel.Writer.WriteAsync(item, cancellationToken);
     }
 }

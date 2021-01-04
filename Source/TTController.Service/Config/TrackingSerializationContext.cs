@@ -11,15 +11,13 @@ namespace TTController.Service.Config
     {
         private readonly Dictionary<Type, List<object>> _objects;
 
-        public TrackingSerializationContext()
+        public TrackingSerializationContext(params Type[] types)
         {
             _objects = new Dictionary<Type, List<object>>();
-        }
+            foreach(var type in types)
+                if (!_objects.ContainsKey(type))
+                    _objects.Add(type, new List<object>());
 
-        public void Track(Type type)
-        {
-            if(!_objects.ContainsKey(type))
-                _objects.Add(type, new List<object>());
         }
 
         public void Handle(object o)
