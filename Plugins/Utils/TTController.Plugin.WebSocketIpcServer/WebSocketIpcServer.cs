@@ -108,7 +108,7 @@ namespace TTController.Service.Ipc
                     if (!Clients.ContainsKey(ipcName))
                         return;
 
-                    var clients = Clients[ipcName].OfType<IIpcReaderClient>().ToList();
+                    var clients = Clients[ipcName].OfType<IIpcReader>().ToList();
                     if (!clients.Any())
                         return;
 
@@ -141,7 +141,7 @@ namespace TTController.Service.Ipc
                     if (!Clients.ContainsKey(ipcName))
                         return;
 
-                    var clients = Clients[ipcName].OfType<IIpcWriterClient>().ToList();
+                    var clients = Clients[ipcName].OfType<IIpcWriter>().ToList();
                     if (!clients.Any())
                         return;
 
@@ -151,9 +151,8 @@ namespace TTController.Service.Ipc
                         {
                             while (!cancellationToken.IsCancellationRequested && socket.State == WebSocketState.Open)
                             {
-                                await client.WaitToReadAsync(cancellationToken);
                                 var result = await client.ReadAsync(cancellationToken);
-                                Logger.Debug("\"{0}\" sent data: \"{1}\"", client.IpcName, result);
+                                Logger.Debug("\"{0}\" sent data: \"{1}\"", ipcName, result);
                                 if (string.IsNullOrWhiteSpace(result))
                                     continue;
 

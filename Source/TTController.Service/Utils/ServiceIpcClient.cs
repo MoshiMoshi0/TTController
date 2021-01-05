@@ -12,7 +12,7 @@ using TTController.Common.Plugin;
 
 namespace TTController.Service.Utils
 {
-    public class ServiceIpcClient : IIpcWriterClient, IIpcReaderClient
+    public class ServiceIpcClient : IIpcClient, IIpcWriter, IIpcReader
     {
         private readonly List<PortIdentifier> _ports;
         private readonly ICacheProvider _cache;
@@ -68,7 +68,6 @@ namespace TTController.Service.Utils
                             break;
                     }
 
-                    await _writerChannel.Writer.WaitToWriteAsync(cancellationToken);
                     await _writerChannel.Writer.WriteAsync(data, cancellationToken);
                     await Task.Delay(interval);
                 }
@@ -155,12 +154,7 @@ namespace TTController.Service.Utils
             _cancellationSource.Dispose();
         }
 
-        public bool TryRead(out string item) => _writerChannel.Reader.TryRead(out item);
-        public ValueTask<bool> WaitToReadAsync(CancellationToken cancellationToken = default) => _writerChannel.Reader.WaitToReadAsync( cancellationToken);
         public ValueTask<string> ReadAsync(CancellationToken cancellationToken = default) => _writerChannel.Reader.ReadAsync(cancellationToken);
-
-        public bool TryWrite(string item) => _readerChannel.Writer.TryWrite(item);
-        public ValueTask<bool> WaitToWriteAsync(CancellationToken cancellationToken = default) => _readerChannel.Writer.WaitToWriteAsync(cancellationToken);
         public ValueTask WriteAsync(string item, CancellationToken cancellationToken = default) => _readerChannel.Writer.WriteAsync(item, cancellationToken);
 
         private enum DataType

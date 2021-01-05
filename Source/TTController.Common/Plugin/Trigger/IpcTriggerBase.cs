@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace TTController.Common.Plugin
 {
-    public abstract class IpcTriggerBase<T> : TriggerBase<T>, IIpcReaderClient where T : TriggerConfigBase
+    public abstract class IpcTriggerBase<T> : TriggerBase<T>, IIpcClient, IIpcReader where T : TriggerConfigBase
     {
         private readonly CancellationTokenSource _cancellationSource;
         private readonly Task _receiveTask;
@@ -41,8 +41,6 @@ namespace TTController.Common.Plugin
             catch (OperationCanceledException) { }
         }
 
-        public bool TryWrite(string item) => _channel.Writer.TryWrite(item);
-        public ValueTask<bool> WaitToWriteAsync(CancellationToken cancellationToken = default) => _channel.Writer.WaitToWriteAsync(cancellationToken);
         public ValueTask WriteAsync(string item, CancellationToken cancellationToken = default) => _channel.Writer.WriteAsync(item, cancellationToken);
     }
 }

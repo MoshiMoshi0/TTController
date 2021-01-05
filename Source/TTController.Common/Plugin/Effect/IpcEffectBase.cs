@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace TTController.Common.Plugin
 {
-    public abstract class IpcEffectBase<T> : EffectBase<T>, IIpcReaderClient where T : EffectConfigBase
+    public abstract class IpcEffectBase<T> : EffectBase<T>, IIpcClient, IIpcReader where T : EffectConfigBase
     {
         private readonly CancellationTokenSource _cancellationSource;
         private readonly Task _receiveTask;
@@ -36,16 +36,11 @@ namespace TTController.Common.Plugin
             try
             {
                 while (!cancellationToken.IsCancellationRequested)
-                {
-                    var result = await _channel.Reader.ReadAsync(cancellationToken);
-                    OnDataReceived(result);
-                }
+                    OnDataReceived(await _channel.Reader.ReadAsync(cancellationToken));
             }
             catch (OperationCanceledException) { }
         }
 
-        public bool TryWrite(string item) => _channel.Writer.TryWrite(item);
-        public ValueTask<bool> WaitToWriteAsync(CancellationToken cancellationToken = default) => _channel.Writer.WaitToWriteAsync(cancellationToken);
         public ValueTask WriteAsync(string item, CancellationToken cancellationToken = default) => _channel.Writer.WriteAsync(item, cancellationToken);
     }
 }
