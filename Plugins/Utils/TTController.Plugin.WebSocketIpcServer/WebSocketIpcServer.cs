@@ -1,4 +1,4 @@
-using NLog;
+﻿using NLog;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,6 +9,7 @@ using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using TTController.Common;
 using TTController.Common.Plugin;
 
 namespace TTController.Service.Ipc
@@ -39,9 +40,9 @@ namespace TTController.Service.Ipc
             _cancellationSource = new CancellationTokenSource();
         }
 
-        public override void RegisterClient(IIpcClient client)
+        public override void Register(IIpcClient client)
         {
-            base.RegisterClient(client);
+            base.Register(client);
 
             var uri = $"{_address}:{_port}/{client.IpcName}/";
             if (!_listener.Prefixes.Contains(uri, StringComparer.OrdinalIgnoreCase))
@@ -52,9 +53,9 @@ namespace TTController.Service.Ipc
         }
 
         public override void Start()
-            => _tasks.Add(Task.Factory.StartNew(() => StartAsync(_cancellationSource.Token), _cancellationSource.Token));
+            => _tasks.Add(Task.Factory.StartNew(() => StartAsync(_cancellationSource.Token), _cancellationSource.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default).Unwrap());
 
-        private async void StartAsync(CancellationToken cancellationToken)
+        private async Task StartAsync(CancellationToken cancellationToken)
         {
             try
             {
@@ -63,7 +64,7 @@ namespace TTController.Service.Ipc
 
                 while (!cancellationToken.IsCancellationRequested)
                 {
-                    var context = await _listener.GetContextAsync();
+                    var context = await _listener.GetContextAsync().WithCancellation(cancellationToken);
                     if (!context.Request.IsWebSocketRequest)
                     {
                         context.Response.StatusCode = 400;
@@ -73,18 +74,15 @@ namespace TTController.Service.Ipc
 
                     try
                     {
-                        var webSocketContext = await context.AcceptWebSocketAsync(subProtocol: null);
-                        var client = Clients.FirstOrDefault(c => webSocketContext.RequestUri.Segments[1].StartsWith(c.IpcName));
+                        var webSocketContext = await context.AcceptWebSocketAsync(subProtocol: null).WithCancellation(cancellationToken);
 
-                        if (client == null)
+                        var ipcName = webSocketContext.RequestUri.Segments.Last();
+                        if (!Clients.TryGetValue(ipcName, out var clients) || clients.Count == 0)
                             continue;
 
-                        Logger.Info("New websocket connection: {1}", client.IpcName, webSocketContext.RequestUri);
-                        if (client.ReceiveChannel != null)
-                            _tasks.Add(Task.Factory.StartNew(() => ReceiveTask(webSocketContext, client, cancellationToken), cancellationToken));
-
-                        if (client.SendChannel != null)
-                            _tasks.Add(Task.Factory.StartNew(() => SendTask(webSocketContext, client, cancellationToken), cancellationToken));
+                        Logger.Info("New websocket connection: {1}", ipcName, webSocketContext.RequestUri);
+                        _tasks.Add(Task.Factory.StartNew(() => ReceiveAsync(ipcName, webSocketContext, cancellationToken), cancellationToken, TaskCreationOptions.LongRunning, TaskScheduler.Default).Unwrap());
+                        _tasks.Add(Task.Factory.StartNew(() => SendAsync(ipcName, webSocketContext, cancellationToken), cancellationToken, TaskCreationOptions.LongRunning, TaskScheduler.Default).Unwrap());
                     }
                     catch
                     {
@@ -96,53 +94,85 @@ namespace TTController.Service.Ipc
             }
             catch (OperationCanceledException) { }
             catch (ObjectDisposedException) { }
+            catch (WebSocketException) { }
         }
 
-        private async void ReceiveTask(WebSocketContext context, IIpcClient client, CancellationToken cancellationToken)
+        private async Task ReceiveAsync(string ipcName, WebSocketContext context, CancellationToken cancellationToken)
         {
             try
             {
-                var webSocket = context.WebSocket;
-                while (!cancellationToken.IsCancellationRequested && webSocket.State == WebSocketState.Open)
+                var socket = context.WebSocket;
+
+                try
                 {
-                    var result = await ReceiveStringAsync(webSocket, cancellationToken);
+                    if (!Clients.ContainsKey(ipcName))
+                        return;
 
-                    Logger.Debug("\"{0}\" received data: \"{1}\"", client.IpcName, result);
-                    if (string.IsNullOrWhiteSpace(result))
-                        continue;
+                    var clients = Clients[ipcName].OfType<IIpcReader>().ToList();
+                    if (!clients.Any())
+                        return;
 
-                    await client.ReceiveChannel.Writer.WriteAsync(result, cancellationToken);
-                    if (webSocket.State != WebSocketState.Open)
-                        break;
+                    while (!cancellationToken.IsCancellationRequested && socket.State == WebSocketState.Open)
+                    {
+                        var result = await ReceiveStringAsync(socket, cancellationToken);
+                        if (string.IsNullOrWhiteSpace(result))
+                            continue;
+
+                        Logger.Debug("\"{0}\" received data: \"{1}\"", ipcName, result);
+                        foreach (var client in clients)
+                            await client.WriteAsync(result, cancellationToken);
+                    }
                 }
+                catch (OperationCanceledException) { }
+
+                await socket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken.None);
             }
-            catch (OperationCanceledException) { }
+            catch (WebSocketException) { }
         }
 
-        private async void SendTask(WebSocketContext context, IIpcClient client, CancellationToken cancellationToken)
+        private async Task SendAsync(string ipcName, WebSocketContext context, CancellationToken cancellationToken)
         {
             try
             {
-                var webSocket = context.WebSocket;
-                while (!cancellationToken.IsCancellationRequested && webSocket.State == WebSocketState.Open)
+                var socket = context.WebSocket;
+
+                try
                 {
-                    var result = await client.SendChannel.Reader.ReadAsync(cancellationToken);
-                    if (webSocket.State != WebSocketState.Open)
-                        break;
+                    if (!Clients.ContainsKey(ipcName))
+                        return;
 
-                    Logger.Debug("\"{0}\" sent data: \"{1}\"", client.IpcName, result);
-                    if (string.IsNullOrWhiteSpace(result))
-                        continue;
+                    var clients = Clients[ipcName].OfType<IIpcWriter>().ToList();
+                    if (!clients.Any())
+                        return;
 
-                    await SendStringAsync(webSocket, result, cancellationToken);
+                    var semaphore = new SemaphoreSlim(1, 1);
+                    await Task.WhenAll(clients.Select(client =>
+                        Task.Factory.StartNew(async () =>
+                        {
+                            while (!cancellationToken.IsCancellationRequested && socket.State == WebSocketState.Open)
+                            {
+                                var result = await client.ReadAsync(cancellationToken);
+                                Logger.Debug("\"{0}\" sent data: \"{1}\"", ipcName, result);
+                                if (string.IsNullOrWhiteSpace(result))
+                                    continue;
+
+                                await semaphore.WaitAsync(cancellationToken);
+                                await SendStringAsync(socket, result, cancellationToken);
+                                semaphore.Release();
+                            }
+                        }, cancellationToken, TaskCreationOptions.LongRunning, TaskScheduler.Default).Unwrap()
+                    ));
                 }
+                catch (OperationCanceledException) { }
+
+                await socket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken.None);
             }
-            catch (OperationCanceledException) { }
+            catch (WebSocketException) { }
         }
 
         private async Task<string> ReceiveStringAsync(WebSocket socket, CancellationToken cancellationToken)
         {
-            WebSocketReceiveResult result;
+            var result = default(WebSocketReceiveResult);
             var buffer = new ArraySegment<byte>(new byte[1024]);
             using (var stream = new MemoryStream())
             {
@@ -150,16 +180,18 @@ namespace TTController.Service.Ipc
                 {
                     result = await socket.ReceiveAsync(buffer, cancellationToken);
                     if (result.MessageType == WebSocketMessageType.Close)
+                    {
+                        await socket.CloseOutputAsync(WebSocketCloseStatus.NormalClosure, string.Empty, cancellationToken);
                         return null;
+                    }
 
-                    stream.Write(buffer.Array, buffer.Offset, result.Count);
+                    await stream.WriteAsync(buffer.Array, buffer.Offset, result.Count, cancellationToken);
                 }
                 while (!result.EndOfMessage);
 
                 stream.Seek(0, SeekOrigin.Begin);
-
                 using (var reader = new StreamReader(stream, Encoding.UTF8))
-                    return reader.ReadToEnd();
+                    return await reader.ReadToEndAsync();
             }
         }
 

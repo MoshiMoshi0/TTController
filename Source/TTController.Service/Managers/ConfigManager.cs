@@ -6,7 +6,6 @@ using System.Linq;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Serialization;
 using NLog;
 using TTController.Common;
 using TTController.Service.Config;
@@ -29,26 +28,31 @@ namespace TTController.Service.Managers
             _filename = filename;
             _deviceConfigs = new Dictionary<string, DeviceConfig>();
 
-            var jsonSettings = new JsonSerializerSettings()
-            {
-                NullValueHandling = NullValueHandling.Ignore,
-                DefaultValueHandling = DefaultValueHandling.Ignore,
-                Formatting = Formatting.Indented,
-                Culture = CultureInfo.InvariantCulture,
-                Context = new StreamingContext(StreamingContextStates.All, context),
-                ContractResolver = new ContractResolver()
-            };
-            jsonSettings.Error += (sender, args) => { };
-
             var converters = typeof(JsonConverter).FindImplementations()
                     .Where(t => (t.Namespace?.StartsWith("TTController") ?? false) && !t.IsGenericType && !t.IsAbstract)
-                    .Select(t => (JsonConverter)Activator.CreateInstance(t));
+                    .Select(t => (JsonConverter)Activator.CreateInstance(t))
+                    .ToList();
 
-            jsonSettings.Converters.Add(new StringEnumConverter());
-            foreach (var converter in converters)
-                jsonSettings.Converters.Add(converter);
+            converters.Add(new StringEnumConverter());
 
-            JsonConvert.DefaultSettings = () => jsonSettings;
+            JsonConvert.DefaultSettings = () =>
+            {
+                var jsonSettings = new JsonSerializerSettings()
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+                    DefaultValueHandling = DefaultValueHandling.Ignore,
+                    Formatting = Formatting.Indented,
+                    Culture = CultureInfo.InvariantCulture,
+                    Context = new StreamingContext(StreamingContextStates.All, context),
+                    ContractResolver = new ContractResolver()
+                };
+                jsonSettings.Error += (sender, args) => { };
+
+                foreach (var converter in converters)
+                    jsonSettings.Converters.Add(converter);
+
+                return jsonSettings;
+            };
         }
 
         public bool SaveConfig()

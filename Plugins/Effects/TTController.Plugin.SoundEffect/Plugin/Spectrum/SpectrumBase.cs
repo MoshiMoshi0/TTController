@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using CSCore;
 using CSCore.DSP;
-using TTController.Common;
 
 namespace TTController.Plugin.SoundEffect
 {

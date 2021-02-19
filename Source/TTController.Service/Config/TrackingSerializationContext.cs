@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TTController.Service.Utils;
 
 namespace TTController.Service.Config
@@ -11,15 +9,12 @@ namespace TTController.Service.Config
     {
         private readonly Dictionary<Type, List<object>> _objects;
 
-        public TrackingSerializationContext()
+        public TrackingSerializationContext(params Type[] types)
         {
             _objects = new Dictionary<Type, List<object>>();
-        }
-
-        public void Track(Type type)
-        {
-            if(!_objects.ContainsKey(type))
-                _objects.Add(type, new List<object>());
+            foreach(var type in types)
+                if (!_objects.ContainsKey(type))
+                    _objects.Add(type, new List<object>());
         }
 
         public void Handle(object o)

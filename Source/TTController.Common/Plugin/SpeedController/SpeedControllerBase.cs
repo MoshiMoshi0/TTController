@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using LibreHardwareMonitor.Hardware;
-using NLog;
 
 namespace TTController.Common.Plugin
 {
