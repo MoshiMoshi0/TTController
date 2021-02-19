@@ -40,11 +40,10 @@ namespace TTController.Plugin.RiingTrioController
             if (!_availableEffects.TryGetValue(effectType, out var mode))
                 return false;
 
-            bool WriteChunk(byte chunkId)
+            bool WriteChunk(byte chunkId, IEnumerable<LedColor> chunkColors)
             {
-                const byte maxPerChunk = 19;
                 var bytes = new List<byte> { 0x32, 0x52, port, mode, 0x03, chunkId, 0x00 };
-                foreach (var color in colors.Skip((chunkId - 1) * maxPerChunk).Take(maxPerChunk))
+                foreach (var color in chunkColors)
                 {
                     bytes.Add(color.G);
                     bytes.Add(color.R);
@@ -54,9 +53,18 @@ namespace TTController.Plugin.RiingTrioController
                 return Device.WriteReadBytes(bytes)?[3] == 0xfc;
             }
 
+            const byte maxPerChunk = 19;
             var result = true;
-            for(byte i = 0x01; i <= 0x02; i++)
-                result &= WriteChunk(i);
+            var colorList = colors.ToList();
+            var chunkCount = (byte)Math.Max(2, Math.Ceiling(colorList.Count / (float)maxPerChunk));
+            if (chunkCount > 4)
+                return false;
+
+            for (var chunkId = (byte)0x01; chunkId <= chunkCount; chunkId++)
+            {
+                var chunkColors = colorList.Skip((chunkId - 1) * maxPerChunk).Take(maxPerChunk);
+                result &= WriteChunk(chunkId, chunkColors);
+            }
 
             return result;
         }
