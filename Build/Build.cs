@@ -1,4 +1,4 @@
-using System;
+using System.ComponentModel;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -7,12 +7,25 @@ using Nuke.Common;
 using Nuke.Common.Execution;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
+using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.GitVersion;
 using Nuke.Common.Utilities.Collections;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
+
+[TypeConverter(typeof(TypeConverter<Configuration>))]
+public class Configuration : Enumeration
+{
+    public static Configuration Debug = new Configuration { Value = nameof(Debug) };
+    public static Configuration Release = new Configuration { Value = nameof(Release) };
+
+    public static implicit operator string(Configuration configuration)
+    {
+        return configuration.Value;
+    }
+}
 
 [CheckBuildProjectConfigurations]
 [UnsetVisualStudioEnvironmentVariables]
@@ -110,8 +123,9 @@ class Build : NukeBuild
 
     private static void ZipFiles(string outFile, string workingDirectory, IEnumerable<string> files)
     {
-        using (var zip = ZipFile.Open(outFile, ZipArchiveMode.Create))
-            foreach (var file in files)
-                zip.CreateEntryFromFile(file, Path.GetRelativePath(workingDirectory, file), CompressionLevel.Optimal);
+        using var zip = ZipFile.Open(outFile, ZipArchiveMode.Create);
+
+        foreach (var file in files)
+            zip.CreateEntryFromFile(file, Path.GetRelativePath(workingDirectory, file), CompressionLevel.Optimal);
     }
 }

@@ -19,6 +19,7 @@ namespace TTController.Service.Config.Converters
                     { ValueName(), WriteValue(v) }
                 });
             }
+
             o.WriteTo(writer);
         }
 
