@@ -89,7 +89,7 @@ namespace TTController.Plugin.DpsgController
                 var value = bytes[1] << 8 | bytes[0];
                 var exponent = (value & 0x7800) >> 11;
                 var sign = (value & 0x8000) >> 15;
-                var fraction = (value & 0x7ff);
+                var fraction = value & 0x7ff;
 
                 if (sign == 1)
                     exponent -= 16;

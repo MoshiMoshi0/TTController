@@ -138,9 +138,8 @@ namespace TTController.Service.Managers
                 set
                 {
                     if (value < 0f || float.IsNaN(value))
-                    {
                         throw new ArgumentOutOfRangeException(nameof(value));
-                    }
+
                     _interval = value;
                 }
             }
@@ -186,6 +185,7 @@ namespace TTController.Service.Managers
                 {
                     _thread.Priority = ThreadPriority.Highest;
                 }
+
                 _thread.Start();
             }
 

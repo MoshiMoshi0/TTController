@@ -42,7 +42,7 @@ namespace TTController.Plugin.LerpPortModifier
                 var newColors = new List<LedColor>();
                 for (var i = 0; i < ledCount; i++)
                 {
-                    var idx = (int)Math.Round((i / (ledCount - 1d)) * (colors.Count - 1d));
+                    var idx = (int)Math.Round(i / (ledCount - 1d) * (colors.Count - 1d));
                     newColors.Add(colors[idx]);
                 }
 

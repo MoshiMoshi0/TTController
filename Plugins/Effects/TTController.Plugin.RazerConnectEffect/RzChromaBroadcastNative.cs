@@ -84,10 +84,10 @@ namespace TTController.Plugin.RazerConnectEffect
         {
             var i = new BigInteger(guid.ToByteArray());
 
-            var a = ((i >> 96) & 0xFFFFFFFF);
-            var b = ((i >> 64) & 0xFFFFFFFF);
-            var c = ((i >> 32) & 0xFFFFFFFF);
-            var d = ((i >> 0) & 0xFFFFFFFF);
+            var a = (i >> 96) & 0xFFFFFFFF;
+            var b = (i >> 64) & 0xFFFFFFFF;
+            var c = (i >> 32) & 0xFFFFFFFF;
+            var d = (i >> 0) & 0xFFFFFFFF;
 
             if (Environment.Is64BitProcess)
             {

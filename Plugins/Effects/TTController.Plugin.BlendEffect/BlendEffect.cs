@@ -187,8 +187,8 @@ namespace TTController.Plugin.BlendEffect
 
                         LedColor Create(Func<float, float> func) => SafeCreate01(func(cr), func(cg), func(cb));
 
-                        if (minC < 0) return Create(x => sl + ((x - sl) * sl) / (sl - minC));
-                        if (maxC > 1) return Create(x => sl + ((x - sl) * (1 - sl)) / (maxC - sl));
+                        if (minC < 0) return Create(x => sl + (x - sl) * sl / (sl - minC));
+                        if (maxC > 1) return Create(x => sl + (x - sl) * (1 - sl) / (maxC - sl));
                         return Create(x => x);
                     }
                 default: return new LedColor();

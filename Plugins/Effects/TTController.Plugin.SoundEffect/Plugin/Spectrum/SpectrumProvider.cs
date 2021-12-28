@@ -23,7 +23,7 @@ namespace TTController.Plugin.SoundEffect
         public int GetFftBandIndex(float frequency)
         {
             var f = _sampleRate / 2.0;
-            return (int)((frequency / f) * ((int)FftSize / 2));
+            return (int)(frequency / f * ((int)FftSize / 2));
         }
 
         public bool GetFftData(float[] fftBuffer, object context)

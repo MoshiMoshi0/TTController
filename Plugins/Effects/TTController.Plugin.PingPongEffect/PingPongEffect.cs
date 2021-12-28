@@ -110,7 +110,7 @@ namespace TTController.Plugin.PingPongEffect
                     if (Config.EnableSmoothing)
                     {
                         var dist = Math.Abs(Math.Min(y - localStart, localEnd - y));
-                        var falloff = (2 * dist) / (localEnd - localStart);
+                        var falloff = 2 * dist / (localEnd - localStart);
 
                         var (h, s, v) = LedColor.ToHsv(color);
                         color = LedColor.FromHsv(h, s, v * falloff);

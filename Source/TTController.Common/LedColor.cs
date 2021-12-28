@@ -95,7 +95,7 @@ namespace TTController.Common
             hue *= 60;
             if (hue < 0.0) hue += 360;
 
-            var saturation = (max == 0) ? 0 : 1d - (1d * min / max);
+            var saturation = (max == 0) ? 0 : 1d - 1d * min / max;
             var value = max / 255d;
             return (hue, saturation, value);
         }

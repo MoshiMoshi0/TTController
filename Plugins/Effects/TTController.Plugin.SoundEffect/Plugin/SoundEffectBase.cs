@@ -66,6 +66,4 @@ namespace TTController.Plugin.SoundEffect
             base.Dispose(disposing);
         }
     }
-
-
 }

@@ -195,6 +195,7 @@ namespace TTController.Service
                     Console.ForegroundColor = ConsoleColor.Cyan;
                     Console.Write($"{value}");
                 }
+
                 Console.WriteLine();
                 Console.ResetColor();
             }

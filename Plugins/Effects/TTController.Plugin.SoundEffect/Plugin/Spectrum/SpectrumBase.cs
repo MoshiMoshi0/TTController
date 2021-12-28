@@ -30,7 +30,7 @@ namespace TTController.Plugin.SoundEffect
     {
         private readonly SpectrumConfig _config;
 
-        private int _maxFftIndex;
+        private readonly int _maxFftIndex;
         private int _maximumFrequencyIndex;
         private int _minimumFrequencyIndex;
         private int[] _spectrumIndexMax;
@@ -103,7 +103,7 @@ namespace TTController.Plugin.SoundEffect
                 switch (_config.ScalingStrategy)
                 {
                     case ScalingStrategy.Decibel:
-                        value0 = ((20 * (float)Math.Log10(fftBuffer[i]) - _config.MinDbValue) / _config.DbScale) * actualMaxValue;
+                        value0 = (20 * (float)Math.Log10(fftBuffer[i]) - _config.MinDbValue) / _config.DbScale * actualMaxValue;
                         break;
                     case ScalingStrategy.Linear:
                         value0 = fftBuffer[i] * _config.ScalingFactor * actualMaxValue;
