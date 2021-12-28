@@ -295,20 +295,22 @@ namespace TTController.Service
                 {
                     switch (type)
                     {
-                        case SensorType.Voltage:     return $"{value:F2} V";
-                        case SensorType.Clock:       return $"{value:F0} MHz";
-                        case SensorType.Load:        return $"{value:F1} %";
+                        case SensorType.Voltage:     return $"{value:F3} V";
+                        case SensorType.Current:     return $"{value:F3} A";
+                        case SensorType.Power:       return $"{value:F1} W";
+                        case SensorType.Clock:       return $"{value:F1} MHz";
                         case SensorType.Temperature: return $"{value:F1} °C";
+                        case SensorType.Load:        return $"{value:F1} %";
+                        case SensorType.Frequency:   return $"{value:F1} Hz";
                         case SensorType.Fan:         return $"{value:F0} RPM";
-                        case SensorType.Flow:        return $"{value:F0} L/h";
+                        case SensorType.Flow:        return $"{value:F1} L/h";
                         case SensorType.Control:     return $"{value:F1} %";
                         case SensorType.Level:       return $"{value:F1} %";
-                        case SensorType.Power:       return $"{value:F0} W";
-                        case SensorType.Data:        return $"{value:F0} GB";
-                        case SensorType.SmallData:   return $"{value:F1} MB";
                         case SensorType.Factor:      return $"{value:F3}";
-                        case SensorType.Frequency:   return $"{value:F1} Hz";
+                        case SensorType.Data:        return $"{value:F1} GB";
+                        case SensorType.SmallData:   return $"{value:F1} MB";
                         case SensorType.Throughput:  return $"{value:F1} B/s";
+                        case SensorType.TimeSpan:    return $"{value:g}";
                     }
 
                     return $"{value}";
