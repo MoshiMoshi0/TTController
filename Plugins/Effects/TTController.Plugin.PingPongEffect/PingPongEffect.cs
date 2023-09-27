@@ -67,6 +67,11 @@ namespace TTController.Plugin.PingPongEffect
                             colors.AddRange(GenerateColors(12, portStart, portEnd));
                             colors.AddRange(GenerateColors(6, portStart, portEnd, radius: 0.33, oddDivide: false));
                             break;
+                        case "Toughfan":
+                            colors.AddRange(GenerateColors(12, portStart, portEnd));
+                            colors.AddRange(colors.ToList());
+                            colors.AddRange(GenerateColors(6, portStart, portEnd, radius: 0.33, oddDivide: false));
+                            break;
                         case "PurePlus":
                             colors.AddRange(GenerateColors(9, portStart, portEnd, radius: 0.33));
                             break;
