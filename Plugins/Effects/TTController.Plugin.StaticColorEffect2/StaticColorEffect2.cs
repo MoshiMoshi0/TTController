@@ -29,6 +29,37 @@ namespace TTController.Plugin.StaticColorEffect2
 
         public override string EffectType => "PerLed";
 
+        private Color InterpolateColor(double temperature)
+        {
+            var minTemperature = Config.CurvePoints.Min(x => x.Value);
+            var maxTemperature = Config.CurvePoints.Max(x => x.Value);
+            var minConfig = Config.CurvePoints.First(x => x.Value == minTemperature);
+            var maxConfig = Config.CurvePoints.First(x => x.Value == maxTemperature);
+            var lowerPoint = Color.FromArgb(minConfig.Red, minConfig.Green, minConfig.Blue);
+            var upperPoint = Color.FromArgb(maxConfig.Red, maxConfig.Green, maxConfig.Blue);
+
+            for (int i = 0; i < Config.CurvePoints.Count - 1; i++)
+            {
+                if (Config.CurvePoints[i].Value <= temperature && temperature <= Config.CurvePoints[i + 1].Value)
+                {
+                    lowerPoint = Color.FromArgb(Config.CurvePoints[i].Red, Config.CurvePoints[i].Green,
+                        Config.CurvePoints[i].Blue);
+                    upperPoint = Color.FromArgb(Config.CurvePoints[i + 1].Red, Config.CurvePoints[i + 1].Green,
+                        Config.CurvePoints[i + 1].Blue);
+                    break;
+                }
+            }
+
+            var t = (temperature - minTemperature) / (maxTemperature - minTemperature);
+
+            var r = (int)(lowerPoint.R + t * (upperPoint.R - lowerPoint.R));
+            var g = (int)(lowerPoint.G + t * (upperPoint.G - lowerPoint.G));
+            var b = (int)(lowerPoint.B + t * (upperPoint.B - lowerPoint.B));
+
+            return Color.FromArgb(r, g, b);
+        }
+
+
         public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports,
             ICacheProvider cache)
         {
@@ -44,32 +75,8 @@ namespace TTController.Plugin.StaticColorEffect2
             if (float.IsNaN(value))
                 return ports.ToDictionary(p => p, _ => new List<LedColor> { new LedColor(255, 255, 255) });
 
-            var curveTargetColor = Color.FromArgb(255, 255, 255, 255); // Default color (e.g., gray)
-
-            for (var i = 0; i <= Config.CurvePoints.Count; i++)
-            {
-                var current = i == Config.CurvePoints.Count
-                    ? new CurvePoint(100, Config.CurvePoints[i - 1].Red, Config.CurvePoints[i - 1].Green,
-                        Config.CurvePoints[i - 1].Blue)
-                    : Config.CurvePoints[i];
-
-                if (value >= current.Value)
-                    continue;
-
-                var last = i == 0
-                    ? new CurvePoint(0, current.Red, current.Green, current.Blue)
-                    : Config.CurvePoints[i - 1];
-
-                var t = (value - last.Value) / (current.Value - last.Value);
-                var red = (byte)Math.Round(last.Red * (1 - t) + current.Red * t);
-                var green = (byte)Math.Round(last.Green * (1 - t) + current.Green * t);
-                var blue = (byte)Math.Round(last.Blue * (1 - t) + current.Blue * t);
-
-                curveTargetColor = Color.FromArgb(255, red, green, blue);
-
-                break;
-            }
-
+            var curveTargetColor = InterpolateColor(value);
+            
             return ports.ToDictionary(p => p, _ => new List<LedColor>
                 { new LedColor(curveTargetColor.R, curveTargetColor.G, curveTargetColor.B) }
             );
