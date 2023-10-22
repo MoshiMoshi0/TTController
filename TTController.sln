@@ -82,6 +82,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Devices", "Devices", "{A1AD
 		Plugins\Devices\RiingDuo.json = Plugins\Devices\RiingDuo.json
 		Plugins\Devices\RiingQuad.json = Plugins\Devices\RiingQuad.json
 		Plugins\Devices\RiingTrio.json = Plugins\Devices\RiingTrio.json
+		Plugins\Devices\Toughfan.json = Plugins\Devices\Toughfan.json
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.CopyColorEffect", "Plugins\Effects\TTController.Plugin.CopyColorEffect\TTController.Plugin.CopyColorEffect.csproj", "{7CD00102-32DA-4664-83EB-7FDDCE5B9129}"
@@ -117,6 +118,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.RotateLedColorModifier", "Plugins\Modifiers\TTController.Plugin.RotateLedColorModifier\TTController.Plugin.RotateLedColorModifier.csproj", "{42E8E8E9-E4BB-4D8F-81DC-63880A84A970}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTController.Plugin.ReverseLedColorModifier", "Plugins\Modifiers\TTController.Plugin.ReverseLedColorModifier\TTController.Plugin.ReverseLedColorModifier.csproj", "{BEA975C9-DADC-4EE3-9B38-D4AD3A72D4C0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.ToughfanController", "Plugins\Controllers\TTController.Plugin.ToughfanController\TTController.Plugin.ToughfanController.csproj", "{6B41EC5A-23B0-4705-937E-345B2812B408}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTController.Plugin.StaticColorEffect2", "Plugins\Effects\TTController.Plugin.StaticColorEffect2\TTController.Plugin.StaticColorEffect2.csproj", "{4912FE98-A9D3-4947-842B-9B5330FEAF1A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -298,6 +303,14 @@ Global
 		{BEA975C9-DADC-4EE3-9B38-D4AD3A72D4C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BEA975C9-DADC-4EE3-9B38-D4AD3A72D4C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BEA975C9-DADC-4EE3-9B38-D4AD3A72D4C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B41EC5A-23B0-4705-937E-345B2812B408}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B41EC5A-23B0-4705-937E-345B2812B408}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B41EC5A-23B0-4705-937E-345B2812B408}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B41EC5A-23B0-4705-937E-345B2812B408}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4912FE98-A9D3-4947-842B-9B5330FEAF1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4912FE98-A9D3-4947-842B-9B5330FEAF1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4912FE98-A9D3-4947-842B-9B5330FEAF1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4912FE98-A9D3-4947-842B-9B5330FEAF1A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -353,6 +366,8 @@ Global
 		{194E027F-FD95-449F-9D17-729036DD9CE6} = {EA09CF17-E583-4C9C-B68A-05764654BCE3}
 		{42E8E8E9-E4BB-4D8F-81DC-63880A84A970} = {EA09CF17-E583-4C9C-B68A-05764654BCE3}
 		{BEA975C9-DADC-4EE3-9B38-D4AD3A72D4C0} = {EA09CF17-E583-4C9C-B68A-05764654BCE3}
+		{6B41EC5A-23B0-4705-937E-345B2812B408} = {72415EA8-F57C-4F2C-9B6C-167BF94FE3F8}
+		{4912FE98-A9D3-4947-842B-9B5330FEAF1A} = {521264D1-73FB-44B3-8243-CB3C95AFB179}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9B8A6C39-77D8-476B-B89B-C39D2AF3D3B9}

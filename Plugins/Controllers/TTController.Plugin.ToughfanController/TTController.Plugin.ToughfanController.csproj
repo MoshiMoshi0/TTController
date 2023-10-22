@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <AssemblyTitle>TTController.Plugin.ToughfanController</AssemblyTitle>
+    <Product>TTController.Plugin.ToughfanController</Product>
+    <Copyright>Copyright ©  2023</Copyright>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Source\TTController.Common\TTController.Common.csproj" />
+  </ItemGroup>
+</Project>

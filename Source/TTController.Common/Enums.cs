@@ -19,6 +19,7 @@
         RiingTrio,
         RiingDuo,
         FloeRiing,
-        PurePlus
+        PurePlus,
+        Toughfan,
     }
 }
