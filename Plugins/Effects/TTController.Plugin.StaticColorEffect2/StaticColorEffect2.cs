@@ -31,34 +31,70 @@ namespace TTController.Plugin.StaticColorEffect2
 
         private Color InterpolateColor(double temperature)
         {
-            var minTemperature = Config.CurvePoints.Min(x => x.Value);
-            var maxTemperature = Config.CurvePoints.Max(x => x.Value);
-            var minConfig = Config.CurvePoints.First(x => x.Value == minTemperature);
-            var maxConfig = Config.CurvePoints.First(x => x.Value == maxTemperature);
-            var lowerPoint = Color.FromArgb(minConfig.Red, minConfig.Green, minConfig.Blue);
-            var upperPoint = Color.FromArgb(maxConfig.Red, maxConfig.Green, maxConfig.Blue);
+            var curvePoints = Config.CurvePoints.OrderBy(p => p.Value).ToArray();
+            var n = curvePoints.Length;
 
-            for (int i = 0; i < Config.CurvePoints.Count - 1; i++)
+            if (temperature <= curvePoints[0].Value)
             {
-                if (Config.CurvePoints[i].Value <= temperature && temperature <= Config.CurvePoints[i + 1].Value)
+                return CreateColorFromCurvePoint(curvePoints[0]);
+            }
+
+            if (temperature >= curvePoints[n - 1].Value)
+            {
+                return CreateColorFromCurvePoint(curvePoints[n - 1]);
+            }
+
+            for (var i = 0; i < n - 1; i++)
+            {
+                if (IsInRange(temperature, curvePoints[i].Value, curvePoints[i + 1].Value))
                 {
-                    lowerPoint = Color.FromArgb(Config.CurvePoints[i].Red, Config.CurvePoints[i].Green,
-                        Config.CurvePoints[i].Blue);
-                    upperPoint = Color.FromArgb(Config.CurvePoints[i + 1].Red, Config.CurvePoints[i + 1].Green,
-                        Config.CurvePoints[i + 1].Blue);
-                    break;
+                    var t = CalculateInterpolationParameter(temperature, curvePoints[i].Value,
+                        curvePoints[i + 1].Value);
+
+                    var r = InterpolateLinear(curvePoints[i].Red, curvePoints[i + 1].Red, t);
+                    var g = InterpolateLinear(curvePoints[i].Green, curvePoints[i + 1].Green, t);
+                    var b = InterpolateLinear(curvePoints[i].Blue, curvePoints[i + 1].Blue, t);
+
+                    return CreateColorFromRgbValues(r, g, b);
                 }
             }
 
-            var t = (temperature - minTemperature) / (maxTemperature - minTemperature);
-
-            var r = (int)(lowerPoint.R + t * (upperPoint.R - lowerPoint.R));
-            var g = (int)(lowerPoint.G + t * (upperPoint.G - lowerPoint.G));
-            var b = (int)(lowerPoint.B + t * (upperPoint.B - lowerPoint.B));
-
-            return Color.FromArgb(r, g, b);
+            return Color.White; // Handle cases outside the defined range
         }
 
+        private Color CreateColorFromCurvePoint(CurvePoint curvePoint)
+        {
+            return Color.FromArgb(curvePoint.Red, curvePoint.Green, curvePoint.Blue);
+        }
+
+        private bool IsInRange(double value, int minValue, int maxValue)
+        {
+            return value >= minValue && value <= maxValue;
+        }
+
+        private double CalculateInterpolationParameter(double value, int minValue, int maxValue)
+        {
+            return (double)(value - minValue) / (maxValue - minValue);
+        }
+
+        private double InterpolateLinear(int startValue, int endValue, double t)
+        {
+            return startValue + t * (endValue - startValue);
+        }
+
+        private Color CreateColorFromRgbValues(double r, double g, double b)
+        {
+            return Color.FromArgb(Clamp((int)r, 0, 255), Clamp((int)g, 0, 255), Clamp((int)b, 0, 255));
+        }
+
+        private int Clamp(int value, int min, int max)
+        {
+            if (value < min)
+                return min;
+            if (value > max)
+                return max;
+            return value;
+        }
 
         public override IDictionary<PortIdentifier, List<LedColor>> GenerateColors(List<PortIdentifier> ports,
             ICacheProvider cache)
@@ -76,7 +112,7 @@ namespace TTController.Plugin.StaticColorEffect2
                 return ports.ToDictionary(p => p, _ => new List<LedColor> { new LedColor(255, 255, 255) });
 
             var curveTargetColor = InterpolateColor(value);
-            
+
             return ports.ToDictionary(p => p, _ => new List<LedColor>
                 { new LedColor(curveTargetColor.R, curveTargetColor.G, curveTargetColor.B) }
             );
